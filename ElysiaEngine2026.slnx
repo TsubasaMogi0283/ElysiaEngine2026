@@ -1,7 +1,11 @@
 <Solution>
   <Configurations>
     <Platform Name="x64" />
-    <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/External/">
+    <Project Path="External/DirectXTex/DirectXTex_Desktop_2022_Win10.vcxproj" />
+    <Project Path="External/ImGui/ImGui.vcxproj" />
+    <Project Path="External/nlohmannJSON/nlohmannJSON.vcxproj" />
+  </Folder>
   <Project Path="ElysiaEngine2026.vcxproj" />
 </Solution>

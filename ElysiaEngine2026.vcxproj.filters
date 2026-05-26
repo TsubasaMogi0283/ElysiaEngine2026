@@ -1,17 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
+    <Filter Include="Elysia">
+      <UniqueIdentifier>{01727e63-f350-4c4f-b5ee-1dec675025f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="ヘッダー ファイル">
+    <Filter Include="Elysia\ヘッダー ファイル">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="リソース ファイル">
+    <Filter Include="Elysia\リソース ファイル">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Project">
+      <UniqueIdentifier>{ed7a5829-f449-4cd8-9481-3ff3fa608ab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\AllGameScene">
+      <UniqueIdentifier>{d6f796fa-7bb8-4cdf-8773-48f91a98a341}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
+      <Filter>Project\AllGameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\TestScene\TestScene.cpp">
+      <Filter>Project\AllGameScene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig">
+      <Filter>Elysia</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Project\CollisionConfig\CollisionConfig.h">
+      <Filter>Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\GameSceneFactory.h">
+      <Filter>Project\AllGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\TestScene\TestScene.h">
+      <Filter>Project\AllGameScene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
