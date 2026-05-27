@@ -14,4 +14,3 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//終了
 	return 0;
 }
-

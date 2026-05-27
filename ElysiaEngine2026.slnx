@@ -3,9 +3,9 @@
     <Platform Name="x64" />
   </Configurations>
   <Folder Name="/External/">
-    <Project Path="External/DirectXTex/DirectXTex_Desktop_2022_Win10.vcxproj" />
-    <Project Path="External/ImGui/ImGui.vcxproj" />
-    <Project Path="External/nlohmannJSON/nlohmannJSON.vcxproj" />
+    <Project Path="External/DirectXTex/DirectXTex_Desktop_2022_Win10.vcxproj" Id="371b9fa9-4c90-4ac6-a123-aced756d6c77" />
+    <Project Path="External/ImGui/ImGui.vcxproj" Id="0f410817-3951-48cc-b7e1-b0d424d9e376" />
+    <Project Path="External/nlohmannJSON/nlohmannJSON.vcxproj" Id="6a069f8d-4e27-4764-bbbd-f5522ceb957d" />
   </Folder>
-  <Project Path="ElysiaEngine2026.vcxproj" />
+  <Project Path="ElysiaEngine2026.vcxproj" Id="dc07548d-cd7d-4400-8dd2-2675bbf10c9f" />
 </Solution>

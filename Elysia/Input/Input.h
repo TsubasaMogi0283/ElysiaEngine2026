@@ -192,6 +192,19 @@ namespace Kamaboko {
 			ShowCursor(isDisplay);
 		};
 
+	public:
+		/// <summary>
+		/// マウスの情報
+		/// </summary>
+		enum MouseInformation {
+			//左
+			LeftButton,
+			//右
+			RightButton,
+			//ホイール
+			MouseWheel,
+		};
+
 	private:
 		//ウィンドウズクラス
 		WindowsSetup* windowsSetup_ = nullptr;
