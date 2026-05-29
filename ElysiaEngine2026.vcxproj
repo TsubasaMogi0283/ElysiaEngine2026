@@ -54,12 +54,15 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(ProjectDir)External;$(ProjectDir)External\assimp\include;$(ProjectDir)External\ImGui;$(ProjectDir)External\nlohmann;$(ProjectDir)Elysia\Audio;$(ProjectDir)Elysia\Camera;$(ProjectDir)Elysia\Convert;$(ProjectDir)Elysia\DirectX;$(ProjectDir)Elysia\Framework;$(ProjectDir)Elysia\GlobalVariables;$(ProjectDir)Elysia\Input;$(ProjectDir)Elysia\Lighting;$(ProjectDir)Elysia\Line;$(ProjectDir)Elysia\Manager;$(ProjectDir)Elysia\Manager\Animation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/ignore:4049 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(ProjectDir)External\assimp\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -81,10 +84,13 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(ProjectDir)External;$(ProjectDir)External\assimp\include;$(ProjectDir)External\ImGui;$(ProjectDir)External\nlohmann;$(ProjectDir)Elysia\Audio;$(ProjectDir)Elysia\Camera;$(ProjectDir)Elysia\Convert;$(ProjectDir)Elysia\DirectX;$(ProjectDir)Elysia\Framework;$(ProjectDir)Elysia\GlobalVariables;$(ProjectDir)Elysia\Input;$(ProjectDir)Elysia\Lighting;$(ProjectDir)Elysia\Line;$(ProjectDir)Elysia\Manager;$(ProjectDir)Elysia\Manager\Animation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)External\assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -110,26 +116,22 @@
     <ClCompile Include="Elysia\Lighting\SpotLight.cpp" />
     <ClCompile Include="Elysia\Line\Line.cpp" />
     <ClCompile Include="Elysia\main.cpp" />
-    <ClCompile Include="Elysia\Manager\AnimationManager\AnimationManager.cpp" />
-    <ClCompile Include="Elysia\Manager\CollisionManager\CollisionManager.cpp" />
-    <ClCompile Include="Elysia\Manager\GameManager\GameManager.cpp" />
-    <ClCompile Include="Elysia\Manager\ImGuiManager\ImGuiManager.cpp" />
-    <ClCompile Include="Elysia\Manager\LevelDataManager\LevelDataManager.cpp" />
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditor.cpp" />
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditorCollider.cpp" />
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\BaseObjectForLevelEditor.cpp" />
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditor.cpp" />
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditorCollider.cpp" />
-    <ClCompile Include="Elysia\Manager\ModelManager\Animation.cpp" />
-    <ClCompile Include="Elysia\Manager\ModelManager\Joint.cpp" />
-    <ClCompile Include="Elysia\Manager\ModelManager\ModelManager.cpp" />
-    <ClCompile Include="Elysia\Manager\ModelManager\ReadNode.cpp" />
-    <ClCompile Include="Elysia\Manager\ModelManager\Skeleton.cpp" />
-    <ClCompile Include="Elysia\Manager\ModelManager\SkinCluster.cpp" />
-    <ClCompile Include="Elysia\Manager\PipelineManager\PipelineManager.cpp" />
-    <ClCompile Include="Elysia\Manager\RtvManager\RtvManager.cpp" />
-    <ClCompile Include="Elysia\Manager\SrvManager\SrvManager.cpp" />
-    <ClCompile Include="Elysia\Manager\TextureManager\TextureManager.cpp" />
+    <ClCompile Include="Elysia\Manager\Animation\AnimationManager.cpp" />
+    <ClCompile Include="Elysia\Manager\Animation\Animation\Animation.cpp" />
+    <ClCompile Include="Elysia\Manager\Animation\Joint\Joint.cpp" />
+    <ClCompile Include="Elysia\Manager\Animation\Node\ReadNode.cpp" />
+    <ClCompile Include="Elysia\Manager\Animation\Skeleton\Skeleton.cpp" />
+    <ClCompile Include="Elysia\Manager\Animation\SkinCluster\SkinCluster.cpp" />
+    <ClCompile Include="Elysia\Manager\Collision\CollisionManager.cpp" />
+    <ClCompile Include="Elysia\Manager\Game\GameManager.cpp" />
+    <ClCompile Include="Elysia\Manager\ImGui\ImGuiManager.cpp" />
+    <ClCompile Include="Elysia\Manager\LevelData\LevelDataManager.cpp" />
+    <ClCompile Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditor.cpp" />
+    <ClCompile Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditorCollider.cpp" />
+    <ClCompile Include="Elysia\Manager\LevelData\Model\BaseObjectForLevelEditor.cpp" />
+    <ClCompile Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditor.cpp" />
+    <ClCompile Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditorCollider.cpp" />
+    <ClCompile Include="Elysia\Manager\Model\ModelManager.cpp" />
     <ClCompile Include="Elysia\Material\Dissolve\Dissolve.cpp" />
     <ClCompile Include="Elysia\Material\Material.cpp" />
     <ClCompile Include="Elysia\Material\RandomNoise\RandomNoise.cpp" />
@@ -191,40 +193,34 @@
     <ClInclude Include="Elysia\Lighting\PointLight.h" />
     <ClInclude Include="Elysia\Lighting\SpotLight.h" />
     <ClInclude Include="Elysia\Line\Line.h" />
-    <ClInclude Include="Elysia\Manager\AnimationManager\AnimationManager.h" />
-    <ClInclude Include="Elysia\Manager\CollisionManager\Collider.h" />
-    <ClInclude Include="Elysia\Manager\CollisionManager\CollisionManager.h" />
-    <ClInclude Include="Elysia\Manager\GameManager\GameManager.h" />
-    <ClInclude Include="Elysia\Manager\GameManager\IAbstractSceneFactory.h" />
-    <ClInclude Include="Elysia\Manager\GameManager\IGameScene.h" />
-    <ClInclude Include="Elysia\Manager\ImGuiManager\ImGuiManager.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\LevelDataManager.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Listener.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditor.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditorCollider.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\BaseObjectForLevelEditor.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\IObjectForLevelEditorCollider.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditor.h" />
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditorCollider.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\Animation.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\Joint.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\JoinWeightData.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\KeyFrame.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\ModelData.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\ModelManager.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\Node.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\NodeAnimation.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\ReadNode.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\Skeleton.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\SkinCluster.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\VertexInfluence.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\VertexWeightData.h" />
-    <ClInclude Include="Elysia\Manager\ModelManager\WellForGPU.h" />
-    <ClInclude Include="Elysia\Manager\PipelineManager\BlendMode.h" />
-    <ClInclude Include="Elysia\Manager\PipelineManager\PipelineManager.h" />
-    <ClInclude Include="Elysia\Manager\RtvManager\RtvManager.h" />
-    <ClInclude Include="Elysia\Manager\SrvManager\SrvManager.h" />
-    <ClInclude Include="Elysia\Manager\TextureManager\TextureManager.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Animation\Animation.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Animation\NodeAnimation.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Joint\Joint.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Joint\JoinWeightData.h" />
+    <ClInclude Include="Elysia\Manager\Animation\KeyFrame\KeyFrame.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Node\Node.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Node\ReadNode.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Skeleton\Skeleton.h" />
+    <ClInclude Include="Elysia\Manager\Animation\SkinCluster\SkinCluster.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Vertex\VertexInfluence.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Vertex\VertexWeightData.h" />
+    <ClInclude Include="Elysia\Manager\Animation\Well\WellForGPU.h" />
+    <ClInclude Include="Elysia\Manager\Collision\Collider.h" />
+    <ClInclude Include="Elysia\Manager\Collision\CollisionManager.h" />
+    <ClInclude Include="Elysia\Manager\Game\GameManager.h" />
+    <ClInclude Include="Elysia\Manager\Game\IAbstractSceneFactory.h" />
+    <ClInclude Include="Elysia\Manager\Game\IGameScene.h" />
+    <ClInclude Include="Elysia\Manager\ImGui\ImGuiManager.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\LevelDataManager.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\Listener.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditor.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditorCollider.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\Model\BaseObjectForLevelEditor.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\Model\IObjectForLevelEditorCollider.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditor.h" />
+    <ClInclude Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditorCollider.h" />
+    <ClInclude Include="Elysia\Manager\Model\ModelData.h" />
+    <ClInclude Include="Elysia\Manager\Model\ModelManager.h" />
     <ClInclude Include="Elysia\Material\Color.h" />
     <ClInclude Include="Elysia\Material\Dissolve\Dissolve.h" />
     <ClInclude Include="Elysia\Material\Material.h" />

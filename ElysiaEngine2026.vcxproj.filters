@@ -82,81 +82,6 @@
     <Filter Include="Elysia\ヘッダー ファイル\Manager">
       <UniqueIdentifier>{c3bdca13-a126-4364-b0fa-10845b5c0919}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Animation">
-      <UniqueIdentifier>{c7889c95-f4d1-4cdb-b90a-58b37cda53a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Collision">
-      <UniqueIdentifier>{36aa3e77-30ad-49ef-968d-a1eff2c2d9b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Game">
-      <UniqueIdentifier>{1ad2bb4b-ff80-40c7-a614-649b6dc9edaf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\ImGui">
-      <UniqueIdentifier>{1aecda3d-df9d-4c5c-9911-63dde1cb5dfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\LevelData">
-      <UniqueIdentifier>{91a6c761-9b2a-4088-a92f-dc161d14ca64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Model">
-      <UniqueIdentifier>{957fc70a-4a0a-4c82-b3ad-fb960760add1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Pipeline">
-      <UniqueIdentifier>{07db74f1-c0a8-4aae-bff1-ba41985b0ae6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Rtv">
-      <UniqueIdentifier>{d4d64914-8e3f-4de7-9a06-6021189b133d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Srv">
-      <UniqueIdentifier>{6ef3848a-43bc-4344-826d-d7ea7dce97aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Texture">
-      <UniqueIdentifier>{544d8b08-5434-48fc-a259-957dc80092c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Animation">
-      <UniqueIdentifier>{39156300-c01d-48d2-8eef-85a4ff1dc89d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Collision">
-      <UniqueIdentifier>{bb53e582-59bb-4b5a-973b-ee9af4ccfda7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Game">
-      <UniqueIdentifier>{a793a24b-371a-427e-a15e-c7db7b041d4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\ImGui">
-      <UniqueIdentifier>{2764b46b-96d4-4ae4-bc6a-0c3e7287b6c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\LevelData">
-      <UniqueIdentifier>{54d51b0c-f9d6-41c6-86b0-a3911f913ff8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Model">
-      <UniqueIdentifier>{29e33ba8-77fb-424f-8f5c-8fa91f91c4e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Pipeline">
-      <UniqueIdentifier>{a4bfd2fa-25b8-40c5-ab55-3523551842af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Rtv">
-      <UniqueIdentifier>{90449ac3-435b-4f22-a1f1-57156426b443}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Srv">
-      <UniqueIdentifier>{be83b759-bf6f-4143-b401-a26f5c0a44c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Texture">
-      <UniqueIdentifier>{6c3913bc-bc2c-4172-b3b6-da71745e48ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\LevelData\Model">
-      <UniqueIdentifier>{fc4bb293-7817-4650-8f2e-ed29cf4577f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\LevelData\Model\Collider">
-      <UniqueIdentifier>{0de4be29-b376-4518-9dcc-33501b6c5762}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\LevelData\Model">
-      <UniqueIdentifier>{961d46c7-8fed-402e-bf78-916dc4cb0252}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\LevelData\Model\Collider">
-      <UniqueIdentifier>{87a790cf-bb70-45ac-9896-ebe365ba572d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\LevelData\Model\Object">
-      <UniqueIdentifier>{d8945ee4-6a50-400d-a545-25ed5386f9dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Elysia\ヘッダー ファイル\Material">
       <UniqueIdentifier>{cb2e4b7c-6791-4d22-8758-5a71df0c3e3c}</UniqueIdentifier>
     </Filter>
@@ -238,6 +163,54 @@
     <Filter Include="Elysia\ヘッダー ファイル\Convert">
       <UniqueIdentifier>{524c6be5-c01f-4488-83ee-8c6fbdb8bfe9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Animation">
+      <UniqueIdentifier>{8ad00c0d-911e-4e45-bbab-4df5e4de7770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Animation">
+      <UniqueIdentifier>{d1922a48-3c8d-4163-9c6f-9127f0f11b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Collision">
+      <UniqueIdentifier>{61bd1c91-93fd-4ee2-a7ef-2c4ed16491b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Collision">
+      <UniqueIdentifier>{5006744d-c635-4c6b-b15e-0032183e62d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Game">
+      <UniqueIdentifier>{6629ad91-2269-4eed-b43c-7fac157291a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Game">
+      <UniqueIdentifier>{047641a2-f6d9-42ff-9ac5-0b6097afd3a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\ImGui">
+      <UniqueIdentifier>{b63f5cef-a23f-4566-a0bd-cad42d349163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\ImGui">
+      <UniqueIdentifier>{76977275-0a18-4544-96f6-0c6f2f2a0f04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Level">
+      <UniqueIdentifier>{1e4b9e76-be43-439d-9639-19387a50956e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Level">
+      <UniqueIdentifier>{b25c3840-473c-4fba-b57d-1e2755ee5e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Level\Model">
+      <UniqueIdentifier>{0f89e765-af5f-41b4-8a2e-4e86c23387ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Level\Collider">
+      <UniqueIdentifier>{b367776f-a0d2-43f5-a727-a13b2c4fdd2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Level\Mode">
+      <UniqueIdentifier>{203bdaf1-61b5-4479-930e-fc232829d8f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Level\Collider">
+      <UniqueIdentifier>{27b57ef2-10cd-460f-b294-125cf04e95e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Model">
+      <UniqueIdentifier>{fa3de637-9020-443f-b5fb-3c81b805e417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Model">
+      <UniqueIdentifier>{9db2c1eb-1354-43f8-96f7-96857ada4536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -278,63 +251,6 @@
     </ClCompile>
     <ClCompile Include="Elysia\Line\Line.cpp">
       <Filter>Elysia\ソース ファイル\Line</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\AnimationManager\AnimationManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\CollisionManager\CollisionManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\GameManager\GameManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\ImGuiManager\ImGuiManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\BaseObjectForLevelEditor.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\LevelData\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\LevelDataManager\LevelDataManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\LevelData</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditorCollider.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\LevelData\Model\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditor.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\LevelData\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditorCollider.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\LevelData\Model\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditor.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\LevelData\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\ModelManager\Animation.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\ModelManager\Joint.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\ModelManager\ModelManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\ModelManager\SkinCluster.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\ModelManager\Skeleton.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\PipelineManager\PipelineManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Pipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\RtvManager\RtvManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Rtv</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\SrvManager\SrvManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Srv</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\TextureManager\TextureManager.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Material\Dissolve\Dissolve.cpp">
       <Filter>Elysia\ソース ファイル\Material</Filter>
@@ -435,7 +351,52 @@
     <ClCompile Include="Elysia\main.cpp">
       <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Manager\ModelManager\ReadNode.cpp">
+    <ClCompile Include="Elysia\Manager\Animation\AnimationManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Animation\Animation\Animation.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Animation\Joint\Joint.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Animation\Node\ReadNode.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Animation\Skeleton\Skeleton.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Animation\SkinCluster\SkinCluster.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Collision\CollisionManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Game\GameManager.cpp">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\ImGui\ImGuiManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\LevelData\LevelDataManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditor.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Level\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\LevelData\Model\BaseObjectForLevelEditor.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Level\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditor.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Level\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditorCollider.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Level\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditorCollider.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Level\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Model\ModelManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -495,102 +456,6 @@
     </ClInclude>
     <ClInclude Include="Elysia\Line\Line.h">
       <Filter>Elysia\ヘッダー ファイル\Line</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\AnimationManager\AnimationManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\CollisionManager\Collider.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\CollisionManager\CollisionManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\GameManager\GameManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\GameManager\IAbstractSceneFactory.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\GameManager\IGameScene.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ImGuiManager\ImGuiManager.h">
-      <Filter>Elysia\ソース ファイル\Manager\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\LevelDataManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Listener.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditor.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\BaseObjectForLevelEditor.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditor.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\AudioObjectForLevelEditorCollider.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData\Model\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\IObjectForLevelEditorCollider.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData\Model\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\LevelDataManager\Model\StageObjectForLevelEditorCollider.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\LevelData\Model\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\Animation.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\Joint.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\JoinWeightData.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\KeyFrame.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\ModelData.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\ModelManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\Node.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\NodeAnimation.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\Skeleton.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\SkinCluster.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\VertexInfluence.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\VertexWeightData.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\PipelineManager\PipelineManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\PipelineManager\BlendMode.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\RtvManager\RtvManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Rtv</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\SrvManager\SrvManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Srv</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\TextureManager\TextureManager.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Material\Color.h">
       <Filter>Elysia\ヘッダー ファイル\Material</Filter>
@@ -751,10 +616,88 @@
     <ClInclude Include="Elysia\Convert\Convert.h">
       <Filter>Elysia\ヘッダー ファイル\Convert</Filter>
     </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\WellForGPU.h">
-      <Filter>Elysia\ヘッダー ファイル\Polygone\3D\Model</Filter>
+    <ClInclude Include="Elysia\Manager\Animation\Animation\Animation.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Elysia\Manager\ModelManager\ReadNode.h">
+    <ClInclude Include="Elysia\Manager\Animation\Animation\NodeAnimation.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Joint\Joint.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Joint\JoinWeightData.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\KeyFrame\KeyFrame.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Node\Node.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Node\ReadNode.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Skeleton\Skeleton.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\SkinCluster\SkinCluster.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Vertex\VertexInfluence.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Vertex\VertexWeightData.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Animation\Well\WellForGPU.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Collision\Collider.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Collision\CollisionManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Game\GameManager.h">
+      <Filter>Elysia\ソース ファイル\Manager\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Game\IAbstractSceneFactory.h">
+      <Filter>Elysia\ソース ファイル\Manager\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Game\IGameScene.h">
+      <Filter>Elysia\ソース ファイル\Manager\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\ImGui\ImGuiManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditor.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\Model\BaseObjectForLevelEditor.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditor.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\Model\AudioObjectForLevelEditorCollider.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\Model\IObjectForLevelEditorCollider.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\Model\StageObjectForLevelEditorCollider.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\LevelDataManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\LevelData\Listener.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Model\ModelManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Model\ModelData.h">
       <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
     </ClInclude>
   </ItemGroup>
