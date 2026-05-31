@@ -42,7 +42,7 @@ void Elysia::SrvManager::CreateSRVForTexture2D(const uint32_t& srvIndex, ID3D12R
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 
 	//キューブマップの場合
-	if (isCubeMap == true) {
+	if (isCubeMap) {
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURECUBE;
 		//unionがTextureCubeになったが、内部パラメータの意味はTexture2Dと変わらない
 		srvDesc.TextureCube.MostDetailedMip = 0u;

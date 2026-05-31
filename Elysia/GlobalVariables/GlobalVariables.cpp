@@ -234,23 +234,23 @@ void Elysia::GlobalVariables::SaveFile(const std::string& groupName){
 
 
         //int32_tの場合
-        if (std::holds_alternative<int32_t>(item.value) == true) {
+        if (std::holds_alternative<int32_t>(item.value)) {
             //int32_t型の値を登録
             root[groupName][itemName] = std::get<int32_t>(item.value);
         }
         //floatの場合
-        else if (std::holds_alternative<float>(item.value) == true) {
+        else if (std::holds_alternative<float>(item.value)) {
             //float型の値を登録
             root[groupName][itemName] = std::get<float>(item.value);
         }
         //Vector2の場合
-        else if (std::holds_alternative<Vector2>(item.value) == true) {
+        else if (std::holds_alternative<Vector2>(item.value)) {
             //float型のjson配列登録
             Vector2 value = std::get<Vector2>(item.value);
             root[groupName][itemName] = nlohmann::json::array({ value.x, value.y});
         }
         //Vector3の場合
-        else if (std::holds_alternative<Vector3>(item.value) == true) {
+        else if (std::holds_alternative<Vector3>(item.value)) {
             //float型のjson配列登録
             Vector3 value = std::get<Vector3>(item.value);
             root[groupName][itemName] = nlohmann::json::array({value.x, value.y, value.z});
@@ -432,7 +432,7 @@ void Elysia::GlobalVariables::Update(){
             //「std::holds_alternative」で型の判別が出来るよ
 
             //int32_t型を持っている場合
-            if (std::holds_alternative<int32_t>(item.value) == true) {
+            if (std::holds_alternative<int32_t>(item.value)) {
                 //違いに注意！
                 //「get」で値を取得
                 //「get_if」でポインタを取得
@@ -440,7 +440,7 @@ void Elysia::GlobalVariables::Update(){
                 ImGui::InputInt(itItemName.c_str(), ptr, 0, 100);
             }
             //float型を持っている場合
-            else if (std::holds_alternative<float>(item.value) == true) {
+            else if (std::holds_alternative<float>(item.value)) {
                 //ポインタの取得
                 float* ptr = std::get_if<float>(&item.value);
                 ImGui::InputFloat(itItemName.c_str(), ptr);

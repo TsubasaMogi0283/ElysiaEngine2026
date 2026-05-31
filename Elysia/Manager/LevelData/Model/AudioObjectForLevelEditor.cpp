@@ -76,7 +76,7 @@ void AudioObjectForLevelEditor::Update(){
 
 void AudioObjectForLevelEditor::BackGround() {
 	//接触時に鳴らす
-	if (isTouch_ == true) {
+	if (isTouch_) {
 		audio_->Play(audioDataForLevelEditor_.handle, audioDataForLevelEditor_.isLoop);
 
 	}
@@ -90,7 +90,7 @@ void AudioObjectForLevelEditor::BackGround() {
 void AudioObjectForLevelEditor::Action() {
 
 	//接触かつ動いている時に鳴らす
-	if (isTouch_ == true && isListenerMove_ == true) {
+	if (isTouch_ && isListenerMove_) {
 		audio_->Play(audioDataForLevelEditor_.handle, audioDataForLevelEditor_.isLoop);
 	}
 	else {

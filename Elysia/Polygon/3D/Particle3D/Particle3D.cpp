@@ -168,16 +168,16 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine(seedGenerator());
 	//一度だけ出すモード
-	if (isReleaseOnceMode_ == true) {
+	if (isReleaseOnceMode_) {
 		//パーティクルを作る
-		if (isReleasedOnce_ == false) {
+		if (!isReleasedOnce_ ) {
 			particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
 			isReleasedOnce_ = true;
 		}
 	}
 	else {
 		//最初に1回だけ出す
-		if (isFirstRelease_ == false) {
+		if (!isFirstRelease_) {
 			particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
 			//出し終わったことを示す
 			isFirstRelease_ = true;
@@ -214,6 +214,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 		Matrix4x4 scaleMatrix = {};
 		Matrix4x4 translateMatrix = {};
 		Matrix4x4 billBoardMatrix = {};
+		//
 		Vector3 absorbPosition = {};
 
 		///時間経過
@@ -225,7 +226,6 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 
 			if (!isReleaseOnceMode_) {
 				if (particleIterator->lifeTime <= particleIterator->currentTime) {
-
 					continue;
 				}
 			}
@@ -261,7 +261,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 				particleIterator->color = COLOR;
 
 				//透明になっていくようにするかどうか
-				if (isToTransparent_ == true) {
+				if (isToTransparent_) {
 					//アルファはVector4でのwだね
 					float alpha = 1.0f - (particleIterator->currentTime / particleIterator->lifeTime);
 					particleForGpuData_[numInstance_].color.w = alpha;
@@ -317,9 +317,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 					//アルファはVector4でのwだね
 					particleForGpuData_[numInstance_].color.w = 0.0f;
 
-				}
-
-				
+				}	
 			}
 			break;
 
@@ -350,12 +348,12 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 
 			//最大値を超えないようにする
 			//そして生成停止までの処理
-			if (numInstance_ < MAX_INSTANCE_NUMBER_ && isStopGenerate_ == false) {
+			if (numInstance_ < MAX_INSTANCE_NUMBER_ && !isStopGenerate_) {
 				particleForGpuData_[numInstance_].world = worldMatrix;
 				particleForGpuData_[numInstance_].color = particleIterator->color;
 
 				//透明になっていくようにするかどうか
-				if (isToTransparent_ == true) {
+				if (isToTransparent_) {
 					//アルファはVector4でのwだね
 					float alpha = 1.0f - (particleIterator->currentTime / particleIterator->lifeTime);
 					particleIterator->color.w = alpha;

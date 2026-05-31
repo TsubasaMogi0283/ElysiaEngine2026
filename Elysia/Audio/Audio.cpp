@@ -326,7 +326,7 @@ void Elysia::Audio::PlayMP3(const uint32_t& audioHandle, const bool& isLoop) {
 	buffer.pAudioData = Audio::GetInstance()->audioInformation_[fileKey].mediaData.data();
 	buffer.Flags = XAUDIO2_END_OF_STREAM;
 	buffer.AudioBytes = sizeof(BYTE) * static_cast<UINT32>(Elysia::Audio::GetInstance()->audioInformation_[fileKey].mediaData.size());
-	if (isLoop == true) {
+	if (isLoop) {
 		//ずっとループさせたいならLoopCountにXAUDIO2_LOOP_INFINITEをいれよう
 		buffer.LoopCount = XAUDIO2_LOOP_INFINITE;
 	}
@@ -387,11 +387,11 @@ void Elysia::Audio::PlayWave(const uint32_t& audioHandle, const bool& isLoop) {
 	buffer.pAudioData = audioInformation_[fileKey].soundData.pBuffer;
 	buffer.AudioBytes = audioInformation_[fileKey].soundData.bufferSize;
 	buffer.Flags = XAUDIO2_END_OF_STREAM;
-	if (isLoop == true) {
+	if (isLoop) {
 		//ずっとループさせたいならLoopCountにXAUDIO2_LOOP_INFINITEをいれよう
 		buffer.LoopCount = XAUDIO2_LOOP_INFINITE;
 	}
-	if (isLoop == false) {
+	else {
 		buffer.LoopCount = XAUDIO2_NO_LOOP_REGION;
 	}
 

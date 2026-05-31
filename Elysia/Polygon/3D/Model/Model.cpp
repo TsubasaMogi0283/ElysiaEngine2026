@@ -65,7 +65,7 @@ Elysia::Model* Elysia::Model::Create(const uint32_t& modelHandle) {
 
 void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material){
 	//非表示設定がtrueになっていた場合は描画しない
-	if (isInvisible_ == true) {
+	if (isInvisible_ ) {
 		return;
 	}
 
@@ -119,7 +119,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 
 void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const DirectionalLight& directionalLight) {
 	//非表示設定がtrueになっていた場合は描画しない
-	if (isInvisible_ == true) {
+	if (isInvisible_) {
 		return;
 	}
 
@@ -169,7 +169,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	//PixelShaderに送る方のカメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//環境マップ用のテクスチャ
-	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 	//DrawCall
@@ -179,7 +179,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 
 void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const PointLight& pointLight) {
 	//非表示設定がtrueになっていた場合は描画しない
-	if (isInvisible_ == true) {
+	if (isInvisible_) {
 		return;
 	}
 	
@@ -229,7 +229,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	//PointLight
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, pointLight.resource->GetGPUVirtualAddress());
 
-	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 
@@ -240,7 +240,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 
 void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const SpotLight& spotLight) {
 	//非表示設定がtrueになっていた場合は描画しない
-	if (isInvisible_ == true) {
+	if (isInvisible_) {
 		return;
 	}
 
@@ -297,7 +297,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
 
 	//環境マッピングの設定
-	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 

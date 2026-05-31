@@ -78,7 +78,7 @@ void TestScene::Update(Elysia::GameManager* gameManager){
 
 
 	//再読み込み
-	if (input_->IsTriggerKey(DIK_R) == true) {
+	if (input_->IsTriggerKey(DIK_R)) {
 		levelDataManager_->Reload(levelHandle_);
 	}
 

@@ -88,7 +88,7 @@ Elysia::Sprite* Elysia::Sprite::Create(const uint32_t& textureHandle, const Vect
 void Elysia::Sprite::Draw() {
 
 	//非表示にするかどうか
-	if (isInvisible_ == true) {
+	if (isInvisible_) {
 		return;
 	}
 
@@ -135,7 +135,7 @@ void Elysia::Sprite::Draw() {
 	float_t texBottom= 1.0f;
 
 	//UVをいじりたいとき設定するもの
-	if (isUVSetting_ == true) {
+	if (isUVSetting_ ) {
 		//uv
 		texLeft = textureLeftTop_.x / size_.x;
 		texRight = (textureLeftTop_.x+textureSize_.x) / size_.x;
@@ -147,12 +147,12 @@ void Elysia::Sprite::Draw() {
 
 
 	//左右反転
-	if (isFlipX_ == true) {
+	if (isFlipX_) {
 		left = -left;
 		right = -right;
 	}
 	//上下反転
-	if (isFlipY_ == true) {
+	if (isFlipY_) {
 		top = -top;
 		bottom = -bottom;
 	}
@@ -187,7 +187,7 @@ void Elysia::Sprite::Draw() {
 	
 	//座標の再設定
 	Vector3 newPosition = {};
-	if (isBack_ == true) {
+	if (isBack_ ) {
 		newPosition = { .x = position_.x,.y = position_.y,.z = 1.0f };
 	}
 	else {
@@ -258,7 +258,7 @@ void Elysia::Sprite::Draw() {
 
 void Elysia::Sprite::Draw(const uint32_t& texturehandle){
 	//非表示にするかどうか
-	if (isInvisible_ == true) {
+	if (isInvisible_ ) {
 		return;
 	}
 
@@ -305,7 +305,7 @@ void Elysia::Sprite::Draw(const uint32_t& texturehandle){
 	float_t texBottom = 1.0f;
 
 	//UVをいじりたいとき設定するもの
-	if (isUVSetting_ == true) {
+	if (isUVSetting_) {
 		//uv
 		texLeft = textureLeftTop_.x / size_.x;
 		texRight = (textureLeftTop_.x + textureSize_.x) / size_.x;
@@ -317,12 +317,12 @@ void Elysia::Sprite::Draw(const uint32_t& texturehandle){
 
 
 	//左右反転
-	if (isFlipX_ == true) {
+	if (isFlipX_) {
 		left = -left;
 		right = -right;
 	}
 	//上下反転
-	if (isFlipY_ == true) {
+	if (isFlipY_) {
 		top = -top;
 		bottom = -bottom;
 	}
@@ -361,7 +361,7 @@ void Elysia::Sprite::Draw(const uint32_t& texturehandle){
 
 	//座標の再設定
 	Vector3 newPosition = {};
-	if (isBack_ == true) {
+	if (isBack_) {
 		newPosition = { .x = position_.x,.y = position_.y,.z = 1.0f };
 	}
 	else {

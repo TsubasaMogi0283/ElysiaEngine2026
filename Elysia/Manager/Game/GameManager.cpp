@@ -65,7 +65,7 @@ void Elysia::GameManager::Update() {
 			}
 
 			// 現在選択されているアイテムにフォーカスを設定する
-			if (isSelected == true) {
+			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
 			}
 

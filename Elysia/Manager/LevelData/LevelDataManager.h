@@ -198,7 +198,7 @@ namespace Elysia {
 						
 						//指定されたオブジェクトだったら追加
 						if (objectData.type == objectType) {
-							if (objectData.isModelGenerate == true) {
+							if (objectData.isModelGenerate ) {
 								positions.push_back(objectData.objectForLeveEditor->GetWorldPosition());
 							}
 							else {

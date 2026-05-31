@@ -90,7 +90,7 @@ void Elysia::CollisionManager::CheckFanAndPoint(Collider* colliderA, Collider* c
 
 	if (colliderA->GetCollisionType() == ColliderType::PointType) {
 		//衝突判定の計算
-		if (CollisionCalculation::IsFanCollision(colliderB->GetFan3D(), colliderA->GetWorldPosition()) == true) {
+		if (CollisionCalculation::IsFanCollision(colliderB->GetFan3D(), colliderA->GetWorldPosition())) {
 			colliderA->OnCollision();
 			colliderB->OnCollision();
 		}
@@ -101,7 +101,7 @@ void Elysia::CollisionManager::CheckFanAndPoint(Collider* colliderA, Collider* c
 	}
 	else if (colliderA->GetCollisionType() == ColliderType::FanType) {
 		//衝突判定の計算
-		if (CollisionCalculation::IsFanCollision(colliderA->GetFan3D(), colliderB->GetWorldPosition()) == true) {
+		if (CollisionCalculation::IsFanCollision(colliderA->GetFan3D(), colliderB->GetWorldPosition())) {
 			colliderA->OnCollision();
 			colliderB->OnCollision();
 		}
@@ -123,7 +123,7 @@ void Elysia::CollisionManager::CheckPlaneAndPoint(Collider* colliderA, Collider*
 
 	if (colliderA->GetCollisionType() == ColliderType::PointType) {
 		//衝突判定の計算
-		if (CollisionCalculation::IsCollisionPlaneAndPoint(colliderA->GetWorldPosition(), colliderB->GetPlane()) == true) {
+		if (CollisionCalculation::IsCollisionPlaneAndPoint(colliderA->GetWorldPosition(), colliderB->GetPlane())) {
 			colliderA->OnCollision();
 			colliderB->OnCollision();
 		}
@@ -134,7 +134,7 @@ void Elysia::CollisionManager::CheckPlaneAndPoint(Collider* colliderA, Collider*
 	}
 	else if (colliderA->GetCollisionType() == ColliderType::PlaneType) {
 		//衝突判定の計算
-		if (CollisionCalculation::IsCollisionPlaneAndPoint(colliderB->GetWorldPosition(), colliderA->GetPlane()) == true) {
+		if (CollisionCalculation::IsCollisionPlaneAndPoint(colliderB->GetWorldPosition(), colliderA->GetPlane())) {
 			colliderA->OnCollision();
 			colliderB->OnCollision();
 		}

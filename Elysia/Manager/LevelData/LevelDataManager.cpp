@@ -201,7 +201,7 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 					//trueの場合エリア上でした音が鳴らない
 					//falseの場合リスナーと距離が離れると音が小さくなっていく
 					//この時コライダーいらない
-					if (objectData.isHavingCollider == true) {
+					if (objectData.isHavingCollider) {
 						objectData.levelAudioData.isOnArea = audio["on_area"];
 
 					} else {
@@ -238,7 +238,7 @@ void Elysia::LevelDataManager::Generate(LevelData& levelData) {
 			objectData.isModelGenerate = true;
 
 			//コライダーがある場合
-			if (objectData.isHavingCollider == true) {
+			if (objectData.isHavingCollider) {
 				//生成
 				StageObjectForLevelEditorCollider* collider = new StageObjectForLevelEditorCollider();
 				collider->SetSize(objectData.size);
@@ -285,7 +285,7 @@ void Elysia::LevelDataManager::Generate(LevelData& levelData) {
 			objectData.isModelGenerate = true;
 
 			//コライダーがある場合
-			if (objectData.isHavingCollider == true) {
+			if (objectData.isHavingCollider) {
 
 				//生成
 				AudioObjectForLevelEditorCollider* collider = new AudioObjectForLevelEditorCollider();
@@ -476,14 +476,14 @@ void Elysia::LevelDataManager::Update(const uint32_t& levelDataHandle) {
 
 			for (const auto& object : levelData->objectData) {
 				//モデルを生成した時
-				if (object.isModelGenerate == true) {
+				if (object.isModelGenerate) {
 					//更新
 					object.objectForLeveEditor->SetIsListenerMove(isListenerMove);
 					object.objectForLeveEditor->Update();
 					Vector3 objectWorldPosition = object.objectForLeveEditor->GetWorldPosition();
 
 					//衝突判定の設定
-					if (object.isHavingCollider == true) {
+					if (object.isHavingCollider) {
 						bool isTouch = object.levelDataObjectCollider->GetIsTouch();
 						object.objectForLeveEditor->SetIsTouch(isTouch);
 						object.levelDataObjectCollider->SetObjectPosition(objectWorldPosition);
@@ -535,7 +535,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 
 			//描画
 			for (const auto& object : levelData->objectData) {
-				if (object.isInvisible == false && object.isModelGenerate == true) {
+				if (!object.isInvisible && object.isModelGenerate) {
 					object.objectForLeveEditor->Draw(camera);
 				}
 			}
@@ -557,7 +557,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 
 			//描画
 			for (const auto& object : levelData->objectData) {
-				if (object.isInvisible == false && object.isModelGenerate == true) {
+				if (!object.isInvisible && object.isModelGenerate) {
 					object.objectForLeveEditor->Draw(camera, directionalLight);
 				}
 			}
@@ -577,7 +577,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 
 			//描画
 			for (const auto& object : levelData->objectData) {
-				if (object.isInvisible == false && object.isModelGenerate == true) {
+				if (!object.isInvisible && object.isModelGenerate) {
 					object.objectForLeveEditor->Draw(camera, pointLight);
 				}
 			}
@@ -599,7 +599,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 			//描画
 			for (const auto& object : levelData->objectData) {
 				//描画
-				if (object.isInvisible == false && object.isModelGenerate == true) {
+				if (!object.isInvisible && object.isModelGenerate ) {
 					object.objectForLeveEditor->Draw(camera, spotLight);
 				}
 			}

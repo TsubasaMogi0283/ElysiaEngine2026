@@ -320,7 +320,7 @@ uint32_t Elysia::ModelManager::Load(const std::string& directoryPath, const std:
 	++modelHandle_;
 
 	Animation newAnimation = {};
-	if (isAnimationLoad == true) {
+	if (isAnimationLoad) {
 		//アニメーションの読み込み
 		newAnimation = LoadAnimationFile(directoryPath, fileName);
 	}

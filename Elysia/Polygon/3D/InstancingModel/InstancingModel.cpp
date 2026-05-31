@@ -115,7 +115,7 @@ void InstancingModel::Draw(const WorldTransform& worldTransform, const Camera& c
 	//PixelShaderに送る方のカメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//環境マップ
-	if (material.isEnviromentMap == true && eviromentTextureHandle_ != 0u) {
+	if (material.isEnviromentMap && eviromentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8u, eviromentTextureHandle_);
 	}
 	//DrawCall
@@ -166,7 +166,7 @@ void InstancingModel::Draw(const WorldTransform& worldTransform, const Camera& c
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//PointLight
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, pointLight.resource->GetGPUVirtualAddress());
-	if (material.isEnviromentMap == true && eviromentTextureHandle_ != 0u) {
+	if (material.isEnviromentMap && eviromentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8, eviromentTextureHandle_);
 	}
 	//DrawCall
@@ -219,7 +219,7 @@ void InstancingModel::Draw(const WorldTransform& worldTransform, const Camera& c
 	//SpotLight
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
 	//環境マッピングの設定
-	if (material.isEnviromentMap == true && eviromentTextureHandle_ != 0u) {
+	if (material.isEnviromentMap && eviromentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8, eviromentTextureHandle_);
 	}
 	//DrawCall
