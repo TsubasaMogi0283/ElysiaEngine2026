@@ -2,7 +2,7 @@
 
 void DirectionalLight::Initialize(){
 	//リソースの生成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(DirectionalLightData)).Get();
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(DirectionalLightData)).Get();
 
 	//初期値
 	//ライトの色

@@ -7,7 +7,7 @@
 #include "GameSceneFactory.h"
 
 
-void Kamaboko::GameManager::Initialize() {
+void Elysia::GameManager::Initialize() {
 	
 	//シーンファクトリーの生成
 	abstractSceneFactory_ = std::make_unique<GameSceneFactory>();
@@ -25,7 +25,7 @@ void Kamaboko::GameManager::Initialize() {
 
 
 
-void Kamaboko::GameManager::ChangeScene(const std::string& sceneName){
+void Elysia::GameManager::ChangeScene(const std::string& sceneName){
 
 	//強制解放
 	if (currentGamaScene_) {
@@ -47,7 +47,7 @@ void Kamaboko::GameManager::ChangeScene(const std::string& sceneName){
 	
 }
 
-void Kamaboko::GameManager::Update() {
+void Elysia::GameManager::Update() {
 	//更新
 	currentGamaScene_->Update(this);
 
@@ -80,23 +80,23 @@ void Kamaboko::GameManager::Update() {
 
 }
 
-void Kamaboko::GameManager::DrawObject3D() {
+void Elysia::GameManager::DrawObject3D() {
 	//3Dオブジェクトの描画
 	currentGamaScene_->DrawObject3D();
 }
 
-void Kamaboko::GameManager::DrawSprite(){
+void Elysia::GameManager::DrawSprite(){
 	//スプライトの描画
 	currentGamaScene_->DrawSprite();
 }
 
-void Kamaboko::GameManager::PreDrawPostEffect(){
+void Elysia::GameManager::PreDrawPostEffect(){
 	//ポストエフェクト描画処理前
 	currentGamaScene_->PreDrawPostEffect();
 }
 
 
-void Kamaboko::GameManager::DrawPostEffect(){
+void Elysia::GameManager::DrawPostEffect(){
 	//ポストエフェクト描画前
 	currentGamaScene_->DrawPostEffect();
 }

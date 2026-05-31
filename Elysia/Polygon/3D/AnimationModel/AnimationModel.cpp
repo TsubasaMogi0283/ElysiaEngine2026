@@ -18,26 +18,26 @@
 #include "DirectionalLight.h"
 
 
-Kamaboko::AnimationModel::AnimationModel(){
+Elysia::AnimationModel::AnimationModel(){
 	//DirectXのクラスを取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスを取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//SRV管理クラスを取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 	//テクスチャ管理クラスを取得
-	textureManager_ = Kamaboko::TextureManager::GetInstance();
+	textureManager_ = Elysia::TextureManager::GetInstance();
 	//モデル管理クラスを取得
-	modelManager_ = Kamaboko::ModelManager::GetInstance();
+	modelManager_ = Elysia::ModelManager::GetInstance();
 
 }
 
-Kamaboko::AnimationModel* Kamaboko::AnimationModel::Create(const uint32_t& modelHandle){
+Elysia::AnimationModel* Elysia::AnimationModel::Create(const uint32_t& modelHandle){
 	//新たなModel型のインスタンスのメモリを確保
-	Kamaboko::AnimationModel* model = new AnimationModel();
+	Elysia::AnimationModel* model = new AnimationModel();
 
 	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(Kamaboko::ModelManager::GetInstance()->GetModelData(modelHandle).textureFilePath);
+	model->textureHandle_ = model->textureManager_->Load(Elysia::ModelManager::GetInstance()->GetModelData(modelHandle).textureFilePath);
 	//Drawでも使いたいので取り入れる
 	model->modelHandle_ = modelHandle;
 
@@ -46,7 +46,7 @@ Kamaboko::AnimationModel* Kamaboko::AnimationModel::Create(const uint32_t& model
 
 	//頂点
 	//リソースを作る
-	model->vertexResource_ = model->directXSetup_->CreateBufferResource(sizeof(VertexData) * Kamaboko::ModelManager::GetInstance()->GetModelData(modelHandle).vertices.size()).Get(); 
+	model->vertexResource_ = model->directXSetup_->CreateBufferResource(sizeof(VertexData) * Elysia::ModelManager::GetInstance()->GetModelData(modelHandle).vertices.size()).Get(); 
 	//リソースの先頭のアドレスから使う
 	model->vertexBufferView_.BufferLocation = model->vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースは頂点のサイズ
@@ -56,7 +56,7 @@ Kamaboko::AnimationModel* Kamaboko::AnimationModel::Create(const uint32_t& model
 
 	//インデックス
 	//ソースの作成
-	model->indexResource_ = model->directXSetup_->CreateBufferResource(sizeof(uint32_t) * Kamaboko::ModelManager::GetInstance()->GetModelData(modelHandle).indices.size()).Get();
+	model->indexResource_ = model->directXSetup_->CreateBufferResource(sizeof(uint32_t) * Elysia::ModelManager::GetInstance()->GetModelData(modelHandle).indices.size()).Get();
 	//リソースの先頭のアドレスから使う
 	model->indexBufferView_.BufferLocation = model->indexResource_->GetGPUVirtualAddress();
 	//サイズ
@@ -72,7 +72,7 @@ Kamaboko::AnimationModel* Kamaboko::AnimationModel::Create(const uint32_t& model
 	
 }
 
-void Kamaboko::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const DirectionalLight& directionalLight){
+void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const DirectionalLight& directionalLight){
 	//Materialのライティングの設定が平行光源ではない場合止める
 	assert(material.lightingKinds == DirectionalLighting);
 
@@ -137,7 +137,7 @@ void Kamaboko::AnimationModel::Draw(const WorldTransform& worldTransform, const 
 
 }
 
-void Kamaboko::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const PointLight& pointLight){
+void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const PointLight& pointLight){
 	
 	//Materialのライティングの設定が点光源ではない場合止める
 	assert(material.lightingKinds == PointLighting);
@@ -206,7 +206,7 @@ void Kamaboko::AnimationModel::Draw(const WorldTransform& worldTransform, const 
 	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
 }
 
-void Kamaboko::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const SpotLight& spotLight){
+void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const SpotLight& spotLight){
 	
 	//Materialのライティングの設定がスポットライトではない場合止める
 	assert(material.lightingKinds == SpotLighting);

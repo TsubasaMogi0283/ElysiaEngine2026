@@ -11,8 +11,7 @@
 #include <map>
 #include <memory>
 #include <fstream>
-#include <json.hpp>
-
+#include <nlohmannJSON/json.hpp>
 #include "Vector3.h"
 #include "Model.h"
 #include "WorldTransform.h"
@@ -51,7 +50,7 @@ struct SpotLight;
 /// <summary>
 /// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// レベルデータ管理クラス
@@ -646,7 +645,7 @@ namespace Kamaboko {
 
 	private:
 		//オーディオ
-		Kamaboko::Audio* audio_ = nullptr;
+		Elysia::Audio* audio_ = nullptr;
 
 	private:
 		//Resourceにあるレベルデータの場所

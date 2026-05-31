@@ -21,9 +21,9 @@ struct Vignette;
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// ウィンドウクラス
 	/// </summary>
@@ -85,15 +85,15 @@ namespace Kamaboko {
 
 	private:
 		//ウィンドウクラス
-		Kamaboko::WindowsSetup* windowsSetup_ = nullptr;
+		Elysia::WindowsSetup* windowsSetup_ = nullptr;
 		//DirectXクラス
-		Kamaboko::DirectXSetup* directXSetup_ = nullptr;
+		Elysia::DirectXSetup* directXSetup_ = nullptr;
 		//パイプライン管理クラス
-		Kamaboko::PipelineManager* pipelinemanager_ = nullptr;
+		Elysia::PipelineManager* pipelinemanager_ = nullptr;
 		//RTV管理クラス
-		Kamaboko::RtvManager* rtvManager_ = nullptr;
+		Elysia::RtvManager* rtvManager_ = nullptr;
 		//SRV管理クラス
-		Kamaboko::SrvManager* srvManager_ = nullptr;
+		Elysia::SrvManager* srvManager_ = nullptr;
 
 	private:
 		//ハンドル

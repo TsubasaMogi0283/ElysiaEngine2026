@@ -9,15 +9,15 @@
 #include "TextureManager.h"
 
 
-Kamaboko::SkyBox::SkyBox(){
+Elysia::SkyBox::SkyBox(){
 	//DirectX
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラス
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 }
 
 //初期化
-void Kamaboko::SkyBox::Create() {
+void Elysia::SkyBox::Create() {
 
 	//頂点リソース
 	vertexResource_ = DirectXSetup::GetInstance()->CreateBufferResource(sizeof(VertexData) * SURFACE_VERTEX_* SURFACE_AMOUNT_);
@@ -91,7 +91,7 @@ void Kamaboko::SkyBox::Create() {
 
 
 
-void Kamaboko::SkyBox::Draw(const uint32_t& texturehandle, const WorldTransform& worldTransform, const Camera& camera) {
+void Elysia::SkyBox::Draw(const uint32_t& texturehandle, const WorldTransform& worldTransform, const Camera& camera) {
 
 	//マテリアルにデータを書き込む
 	//書き込むためのアドレスを取得

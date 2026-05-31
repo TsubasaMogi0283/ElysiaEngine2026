@@ -7,25 +7,25 @@
 #include "Matrix4x4.h"
 #include "Matrix4x4Calculation.h"
 
-Kamaboko::Sprite::Sprite() {
+Elysia::Sprite::Sprite() {
 	//ウィンドウクラス
-	windowsSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスを取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 
 	//パイプライン管理クラスを取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 
 }
 
 
-void Kamaboko::Sprite::Initialize(const uint32_t& textureHandle, const Vector2& position) {
+void Elysia::Sprite::Initialize(const uint32_t& textureHandle, const Vector2& position) {
 	this->textureHandle_ = textureHandle;
 	this->position_ = position;
 	color_ = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 	
 	//テクスチャの情報を取得
-	D3D12_RESOURCE_DESC resourceDesc_ = {}; resourceDesc_ = Kamaboko::TextureManager::GetInstance()->GetResourceDesc(textureHandle_);
+	D3D12_RESOURCE_DESC resourceDesc_ = {}; resourceDesc_ = Elysia::TextureManager::GetInstance()->GetResourceDesc(textureHandle_);
 	size_ = {.x = static_cast<float_t>(resourceDesc_.Width),.y = static_cast<float_t>(resourceDesc_.Height) };
 
 
@@ -52,9 +52,9 @@ void Kamaboko::Sprite::Initialize(const uint32_t& textureHandle, const Vector2& 
 
 
 	//マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-	materialResource_ = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(MaterialData));
+	materialResource_ = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(MaterialData));
 	//TransformationMatrix用のリソースを作る。
-	transformationMatrixResource_ = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(TransformationMatrix));
+	transformationMatrixResource_ = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(TransformationMatrix));
 
 
 	//UVトランスフォームの初期化
@@ -73,9 +73,9 @@ void Kamaboko::Sprite::Initialize(const uint32_t& textureHandle, const Vector2& 
 
 
 
-Kamaboko::Sprite* Kamaboko::Sprite::Create(const uint32_t& textureHandle, const Vector2& position) {
+Elysia::Sprite* Elysia::Sprite::Create(const uint32_t& textureHandle, const Vector2& position) {
 	//生成
-	Kamaboko::Sprite* sprite = new Kamaboko::Sprite();
+	Elysia::Sprite* sprite = new Elysia::Sprite();
 	
 	//初期化
 	sprite->Initialize(textureHandle,position);
@@ -85,7 +85,7 @@ Kamaboko::Sprite* Kamaboko::Sprite::Create(const uint32_t& textureHandle, const 
 
 }
 //描画
-void Kamaboko::Sprite::Draw() {
+void Elysia::Sprite::Draw() {
 
 	//非表示にするかどうか
 	if (isInvisible_ == true) {
@@ -245,7 +245,7 @@ void Kamaboko::Sprite::Draw() {
 	
 	
 	if (textureHandle_ != 0u) {
-		Kamaboko::TextureManager::GetInstance()->GraphicsCommand(2u,textureHandle_);
+		Elysia::TextureManager::GetInstance()->GraphicsCommand(2u,textureHandle_);
 
 	}
 	
@@ -256,7 +256,7 @@ void Kamaboko::Sprite::Draw() {
 
 }
 
-void Kamaboko::Sprite::Draw(const uint32_t& texturehandle){
+void Elysia::Sprite::Draw(const uint32_t& texturehandle){
 	//非表示にするかどうか
 	if (isInvisible_ == true) {
 		return;
@@ -419,7 +419,7 @@ void Kamaboko::Sprite::Draw(const uint32_t& texturehandle){
 
 
 	if (texturehandle != 0u) {
-		Kamaboko::TextureManager::GetInstance()->GraphicsCommand(2u, texturehandle);
+		Elysia::TextureManager::GetInstance()->GraphicsCommand(2u, texturehandle);
 
 	}
 

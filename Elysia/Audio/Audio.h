@@ -36,7 +36,7 @@ using Microsoft::WRL::ComPtr;
 #include "AudioInformation.h"
 
 
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// エフェクトのタイプ。LoadAudioの時に使う
 	/// </summary>

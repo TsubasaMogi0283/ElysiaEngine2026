@@ -7,20 +7,20 @@
 #include "RtvManager.h"
 #include "Dissolve.h"
 
-Kamaboko::DissolvePostEffect::DissolvePostEffect(){
+Elysia::DissolvePostEffect::DissolvePostEffect(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//RTV管理クラスの取得
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-void Kamaboko::DissolvePostEffect::Initialize(const Vector4& clearColor){
+void Elysia::DissolvePostEffect::Initialize(const Vector4& clearColor){
 	
 	
 	renderTargetClearColor_ = clearColor;
@@ -39,7 +39,7 @@ void Kamaboko::DissolvePostEffect::Initialize(const Vector4& clearColor){
 
 }
 
-void Kamaboko::DissolvePostEffect::PreDraw(){
+void Elysia::DissolvePostEffect::PreDraw(){
 	
 	const float CLEAR_COLOR[] = { renderTargetClearColor_.x,renderTargetClearColor_.y,renderTargetClearColor_.z,renderTargetClearColor_.w };
 	//RT
@@ -57,14 +57,14 @@ void Kamaboko::DissolvePostEffect::PreDraw(){
 	uint32_t height = windowSetup_->GetClientHeight();
 
 	//ビューポート
-	directXSetup_->GenarateViewport(width, height);
+	directXSetup_->GenerateViewport(width, height);
 	//シザー矩形 
-	directXSetup_->GenarateScissor(width, height);
+	directXSetup_->GenerateScissor(width, height);
 
 
 }
 
-void Kamaboko::DissolvePostEffect::Draw(const Dissolve& dissolve){
+void Elysia::DissolvePostEffect::Draw(const Dissolve& dissolve){
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(

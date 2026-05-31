@@ -13,15 +13,15 @@
 
 
 
-Kamaboko::ModelManager* Kamaboko::ModelManager::GetInstance() {
+Elysia::ModelManager* Elysia::ModelManager::GetInstance() {
 	//関数内static変数として宣言する
-	static Kamaboko::ModelManager instance;
+	static Elysia::ModelManager instance;
 	return &instance;
 }
 
 #pragma region レベルエディタ用
 
-ModelData Kamaboko::ModelManager::LoadFileForLevelData(const std::string& fileNameFolder, const std::string& fileName) {
+ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileNameFolder, const std::string& fileName) {
 	ModelData modelData;
 
 
@@ -129,20 +129,20 @@ ModelData Kamaboko::ModelManager::LoadFileForLevelData(const std::string& fileNa
 	return modelData;
 }
 
-uint32_t Kamaboko::ModelManager::LoadModelFileForLevelData(const std::string& directoryPath, const std::string& fileName) {
+uint32_t Elysia::ModelManager::LoadModelFileForLevelData(const std::string& directoryPath, const std::string& fileName) {
 
 
 	//一度読み込んだものはその値を返す
 	//新規は勿論読み込みをする
 	std::string filePath = directoryPath + "/" + fileName + "/" + fileName;
-	if (Kamaboko::ModelManager::GetInstance()->modelInformation_.find(filePath) != Kamaboko::ModelManager::GetInstance()->modelInformation_.end()) {
-		return Kamaboko::ModelManager::GetInstance()->modelInformation_[filePath].handle;
+	if (Elysia::ModelManager::GetInstance()->modelInformation_.find(filePath) != Elysia::ModelManager::GetInstance()->modelInformation_.end()) {
+		return Elysia::ModelManager::GetInstance()->modelInformation_[filePath].handle;
 	}
 
 	++modelHandle_;
 
 	//モデルの読み込み
-	ModelData newModelData = Kamaboko::ModelManager::GetInstance()->LoadFileForLevelData(directoryPath, fileName);
+	ModelData newModelData = Elysia::ModelManager::GetInstance()->LoadFileForLevelData(directoryPath, fileName);
 	//ハンドル
 	uint32_t handle = modelHandle_;
 	//パス
@@ -160,7 +160,7 @@ uint32_t Kamaboko::ModelManager::LoadModelFileForLevelData(const std::string& di
 	};
 
 	//登録
-	Kamaboko::ModelManager::GetInstance()->modelInformation_[filePath] = modelInformation;
+	Elysia::ModelManager::GetInstance()->modelInformation_[filePath] = modelInformation;
 
 	//値を返す
 	return modelHandle_;
@@ -171,7 +171,7 @@ uint32_t Kamaboko::ModelManager::LoadModelFileForLevelData(const std::string& di
 
 #pragma region 通常
 
-ModelData Kamaboko::ModelManager::LoadFile(const std::string& directoryPath, const std::string& fileName) {
+ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const std::string& fileName) {
 	//1.中で必要となる変数の宣言
 	ModelData modelData;
 	//assimpでモデルを読む
@@ -271,7 +271,7 @@ ModelData Kamaboko::ModelManager::LoadFile(const std::string& directoryPath, con
 	return modelData;
 }
 
-uint32_t Kamaboko::ModelManager::Load(const std::string& directoryPath, const std::string& fileName) {
+uint32_t Elysia::ModelManager::Load(const std::string& directoryPath, const std::string& fileName) {
 
 	//一度読み込んだものはその値を返す
 	//新規は勿論読み込みをする
@@ -307,7 +307,7 @@ uint32_t Kamaboko::ModelManager::Load(const std::string& directoryPath, const st
 	return modelHandle_;
 }
 
-uint32_t Kamaboko::ModelManager::Load(const std::string& directoryPath, const std::string& fileName, const bool& isAnimationLoad) {
+uint32_t Elysia::ModelManager::Load(const std::string& directoryPath, const std::string& fileName, const bool& isAnimationLoad) {
 	//一度読み込んだものはその値を返す
 	//新規は勿論読み込みをする
 	std::string filePath = directoryPath + "/" + fileName;

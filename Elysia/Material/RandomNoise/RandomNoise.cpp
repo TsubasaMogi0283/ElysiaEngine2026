@@ -4,7 +4,7 @@
 
 void RandomNoise::Initialize(){
 	//リソースの生成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(RandomNoiseData));
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(RandomNoiseData));
 
 	//乱数生成の初期化
 	std::random_device rand;

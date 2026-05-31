@@ -41,9 +41,9 @@ struct D3DResourceLeakChecker {
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko{
+namespace Elysia{
 
 	/// <summary>
 	/// ウィンドウクラス
@@ -93,7 +93,7 @@ namespace Kamaboko{
 		/// <param name="numDescriptors"></param>
 		/// <param name="shaderVisible"></param>
 		/// <returns></returns>
-		static ComPtr<ID3D12DescriptorHeap> GenarateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType,UINT numDescriptors, bool shaderVisible);
+		static ComPtr<ID3D12DescriptorHeap> GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType,UINT numDescriptors, bool shaderVisible);
 
 
 
@@ -140,7 +140,7 @@ namespace Kamaboko{
 		/// <summary>
 		/// ディスクリプタヒープの生成
 		/// </summary>
-		void GenarateDescriptorHeap();
+		void GenerateDescriptorHeap();
 
 		/// <summary>
 		/// スワップチェーンを引っ張ってくる
@@ -150,7 +150,7 @@ namespace Kamaboko{
 		/// <summary>
 		/// フェンスの生成
 		/// </summary>
-		void GenarateFence();
+		void GenerateFence();
 
 
 	public:
@@ -159,7 +159,7 @@ namespace Kamaboko{
 		/// </summary>
 		/// <param name="width">横幅</param>
 		/// <param name="height">縦幅</param>
-		void GenarateViewport(const uint32_t& width, const uint32_t& height);
+		void GenerateViewport(const uint32_t& width, const uint32_t& height);
 
 
 		/// <summary>
@@ -167,7 +167,7 @@ namespace Kamaboko{
 		/// </summary>
 		/// <param name="right_">横幅</param>
 		/// <param name="bottom">立幅</param>
-		void GenarateScissor(const uint32_t& right, const uint32_t& bottom);
+		void GenerateScissor(const uint32_t& right, const uint32_t& bottom);
 
 
 		/// <summary>

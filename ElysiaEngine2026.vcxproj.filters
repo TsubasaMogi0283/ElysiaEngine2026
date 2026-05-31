@@ -211,6 +211,30 @@
     <Filter Include="Elysia\ヘッダー ファイル\Manager\Model">
       <UniqueIdentifier>{9db2c1eb-1354-43f8-96f7-96857ada4536}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Pipeline">
+      <UniqueIdentifier>{ea695a14-0297-4891-9680-48db60817e61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Pipeline">
+      <UniqueIdentifier>{00c8833f-14dd-486b-b9f1-7688cda19401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Rtv">
+      <UniqueIdentifier>{a2f8f5e7-8668-4452-9e21-9b485ceb03c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Rtv">
+      <UniqueIdentifier>{c229cd85-541a-4683-b94b-075761ab9be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Srv">
+      <UniqueIdentifier>{cfac01d2-1854-4b81-a561-c2c51b5c898f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Srv">
+      <UniqueIdentifier>{df0185aa-e85e-494f-a724-1ce0647e2c41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ヘッダー ファイル\Manager\Texture">
+      <UniqueIdentifier>{0f21ffa1-df39-4639-a13a-e25ad5b07ad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Manager\Texture">
+      <UniqueIdentifier>{0a783e46-1515-4e6f-98ac-8e668d926bea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -398,6 +422,18 @@
     </ClCompile>
     <ClCompile Include="Elysia\Manager\Model\ModelManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Pipeline\PipelineManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Rtv\RtvManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Rtv</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Srv\SrvManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Srv</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Texture\TextureManager.cpp">
+      <Filter>Elysia\ソース ファイル\Manager\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -699,6 +735,21 @@
     </ClInclude>
     <ClInclude Include="Elysia\Manager\Model\ModelData.h">
       <Filter>Elysia\ヘッダー ファイル\Manager\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Pipeline\BlendMode.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Pipeline\PipelineManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Rtv\RtvManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Rtv</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Srv\SrvManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Srv</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Manager\Texture\TextureManager.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager\Texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

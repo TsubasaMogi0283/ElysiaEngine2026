@@ -3,15 +3,15 @@
 #include "WindowsSetup.h"
 #include "Vector4.h"
 
-D3D12_CPU_DESCRIPTOR_HANDLE Kamaboko::RtvManager::rtvHandles_[RtvManager::RTV_DESCRIPTOR_SIZE_] = {};
+D3D12_CPU_DESCRIPTOR_HANDLE Elysia::RtvManager::rtvHandles_[RtvManager::RTV_DESCRIPTOR_SIZE_] = {};
 
-Kamaboko::RtvManager* Kamaboko::RtvManager::GetInstance(){
+Elysia::RtvManager* Elysia::RtvManager::GetInstance(){
     static RtvManager instance;
     return &instance;
 }
 
 
-ComPtr<ID3D12Resource> Kamaboko::RtvManager::CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4& clearColor) {
+ComPtr<ID3D12Resource> Elysia::RtvManager::CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4& clearColor) {
 
 	uint32_t width = WindowsSetup::GetInstance()->GetClientWidth();
 	uint32_t height= WindowsSetup::GetInstance()->GetClientHeight();
@@ -66,7 +66,7 @@ ComPtr<ID3D12Resource> Kamaboko::RtvManager::CreateRenderTextureResource(const D
 	return resource;
 }
 
-ComPtr<ID3D12Resource>  Kamaboko::RtvManager::CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4& clearColor){
+ComPtr<ID3D12Resource>  Elysia::RtvManager::CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4& clearColor){
 
 	uint32_t width = WindowsSetup::GetInstance()->GetClientWidth();
 	uint32_t height = WindowsSetup::GetInstance()->GetClientHeight();
@@ -125,7 +125,7 @@ ComPtr<ID3D12Resource>  Kamaboko::RtvManager::CreateRenderTextureResourceForDept
 }
 
 
-uint32_t  Kamaboko::RtvManager::Allocate(const std::string& name){
+uint32_t  Elysia::RtvManager::Allocate(const std::string& name){
 	//上限だったらasset
 	assert(index_ < RTV_DESCRIPTOR_SIZE_);
 
@@ -157,7 +157,7 @@ uint32_t  Kamaboko::RtvManager::Allocate(const std::string& name){
 
 }
 
-void  Kamaboko::RtvManager::GenarateRenderTargetView(const ComPtr<ID3D12Resource>& resource,const uint32_t& handle){
+void  Elysia::RtvManager::GenarateRenderTargetView(const ComPtr<ID3D12Resource>& resource,const uint32_t& handle){
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				//出力結果をSRGBに変換して書き込む
@@ -190,12 +190,12 @@ void  Kamaboko::RtvManager::GenarateRenderTargetView(const ComPtr<ID3D12Resource
 
 
 
-void Kamaboko::RtvManager::Initialize(){
+void Elysia::RtvManager::Initialize(){
 	//Resourceに対して作業を行うにはViewが必要
 	//Viewは作業方法
 	
 	//DescriptorHeapを作る
-	rtvDescriptorHeap_ = DirectXSetup::GetInstance()->GenarateDescriptorHeap(
+	rtvDescriptorHeap_ = DirectXSetup::GetInstance()->GenerateDescriptorHeap(
 		D3D12_DESCRIPTOR_HEAP_TYPE_RTV, RTV_DESCRIPTOR_SIZE_, false);
 
 

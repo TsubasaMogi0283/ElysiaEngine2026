@@ -8,12 +8,12 @@
 
 
 
-Kamaboko::PipelineManager* Kamaboko::PipelineManager::GetInstance() {
+Elysia::PipelineManager* Elysia::PipelineManager::GetInstance() {
 	static PipelineManager instance;
 	return &instance;
 }
 
-void Kamaboko::PipelineManager::GenaratePSO(PSOInformation& psoInformation,const D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc,const D3D12_BLEND_DESC& blendDesc,const D3D12_RASTERIZER_DESC& rasterizerDesc){
+void Elysia::PipelineManager::GenaratePSO(PSOInformation& psoInformation,const D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc,const D3D12_BLEND_DESC& blendDesc,const D3D12_RASTERIZER_DESC& rasterizerDesc){
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	graphicsPipelineStateDesc.pRootSignature = psoInformation.rootSignature_.Get();
@@ -60,7 +60,7 @@ void Kamaboko::PipelineManager::GenaratePSO(PSOInformation& psoInformation,const
 
 }
 
-void Kamaboko::PipelineManager::Initialize(){
+void Elysia::PipelineManager::Initialize(){
 	
 	//ブレンドモード
 	const uint32_t BLEND_MODE = BlemdMode::BlendModeNormal;
@@ -122,7 +122,7 @@ void Kamaboko::PipelineManager::Initialize(){
 	GenarateSkyBoxPSO();
 }
 
-void Kamaboko::PipelineManager::GenaratedLinePSO() {
+void Elysia::PipelineManager::GenaratedLinePSO() {
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように間レンズけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -197,7 +197,7 @@ void Kamaboko::PipelineManager::GenaratedLinePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->linePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -329,7 +329,7 @@ void Kamaboko::PipelineManager::GenaratedLinePSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenerateSpritePSO() {
+void Elysia::PipelineManager::GenerateSpritePSO() {
 
 	//PSO
 	////RootSignatureを作成
@@ -414,7 +414,7 @@ void Kamaboko::PipelineManager::GenerateSpritePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->spritePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -628,7 +628,7 @@ void Kamaboko::PipelineManager::GenerateSpritePSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenerateModelPSO() {
+void Elysia::PipelineManager::GenerateModelPSO() {
 
 	//PSO
 	////RootSignatureを作成
@@ -783,7 +783,7 @@ void Kamaboko::PipelineManager::GenerateModelPSO() {
 	HRESULT hrResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->modelPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hrResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -912,7 +912,7 @@ void Kamaboko::PipelineManager::GenerateModelPSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenerateAnimationModelPSO() {
+void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 
 	//PSO
 	////RootSignatureを作成
@@ -1093,7 +1093,7 @@ void Kamaboko::PipelineManager::GenerateAnimationModelPSO() {
 	HRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->animationModelPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -1311,7 +1311,7 @@ void Kamaboko::PipelineManager::GenerateAnimationModelPSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenerateParticle3DPSO() {
+void Elysia::PipelineManager::GenerateParticle3DPSO() {
 
 	//PSO
 	////RootSignatureを作成
@@ -1452,7 +1452,7 @@ void Kamaboko::PipelineManager::GenerateParticle3DPSO() {
 	HRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->particle3DPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -1561,7 +1561,7 @@ void Kamaboko::PipelineManager::GenerateParticle3DPSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenarateFullScreenPSO() {
+void Elysia::PipelineManager::GenarateFullScreenPSO() {
 
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
@@ -1656,7 +1656,7 @@ void Kamaboko::PipelineManager::GenarateFullScreenPSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->fullScreenPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -1720,7 +1720,7 @@ void Kamaboko::PipelineManager::GenarateFullScreenPSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenarateGrayScalePSO(){
+void Elysia::PipelineManager::GenarateGrayScalePSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -1782,7 +1782,7 @@ void Kamaboko::PipelineManager::GenarateGrayScalePSO(){
 	HRESULT hr_ = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->grayScalePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr_)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -1889,7 +1889,7 @@ void Kamaboko::PipelineManager::GenarateGrayScalePSO(){
 
 }
 
-void Kamaboko::PipelineManager::GenarateSepiaScalePSO(){
+void Elysia::PipelineManager::GenarateSepiaScalePSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -1951,7 +1951,7 @@ void Kamaboko::PipelineManager::GenarateSepiaScalePSO(){
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->sepiaScalePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2057,7 +2057,7 @@ void Kamaboko::PipelineManager::GenarateSepiaScalePSO(){
 
 }
 
-void Kamaboko::PipelineManager::GenarateVignettePSO(){
+void Elysia::PipelineManager::GenarateVignettePSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2129,7 +2129,7 @@ void Kamaboko::PipelineManager::GenarateVignettePSO(){
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->vignettePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2192,7 +2192,7 @@ void Kamaboko::PipelineManager::GenarateVignettePSO(){
 
 }
 
-void Kamaboko::PipelineManager::GenarateBoxFilterPSO(){
+void Elysia::PipelineManager::GenarateBoxFilterPSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2264,7 +2264,7 @@ void Kamaboko::PipelineManager::GenarateBoxFilterPSO(){
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->boxFilterPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2374,7 +2374,7 @@ void Kamaboko::PipelineManager::GenarateBoxFilterPSO(){
 
 }
 
-void Kamaboko::PipelineManager::GenarateGaussianFilterPSO(){
+void Elysia::PipelineManager::GenarateGaussianFilterPSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2446,7 +2446,7 @@ void Kamaboko::PipelineManager::GenarateGaussianFilterPSO(){
 	HRESULT hResult  = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->gaussianFilterPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2551,7 +2551,7 @@ void Kamaboko::PipelineManager::GenarateGaussianFilterPSO(){
 	assert(SUCCEEDED(hResult));
 }
 
-void Kamaboko::PipelineManager::GenarateLuminanceBasedOutlinePSO() {
+void Elysia::PipelineManager::GenarateLuminanceBasedOutlinePSO() {
 
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
@@ -2619,7 +2619,7 @@ void Kamaboko::PipelineManager::GenarateLuminanceBasedOutlinePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->luminanceBasedOutlinePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2730,7 +2730,7 @@ void Kamaboko::PipelineManager::GenarateLuminanceBasedOutlinePSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenarateDepthBasedOutlinePSO() {
+void Elysia::PipelineManager::GenarateDepthBasedOutlinePSO() {
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2836,7 +2836,7 @@ void Kamaboko::PipelineManager::GenarateDepthBasedOutlinePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->depthBasedOutlinePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2944,7 +2944,7 @@ void Kamaboko::PipelineManager::GenarateDepthBasedOutlinePSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenerateRadialBlurPSO() {
+void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -3011,7 +3011,7 @@ void Kamaboko::PipelineManager::GenerateRadialBlurPSO() {
 	HRESULT hResult= D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->radialBlurPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -3119,7 +3119,7 @@ void Kamaboko::PipelineManager::GenerateRadialBlurPSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenarateDissolvePSO() {
+void Elysia::PipelineManager::GenarateDissolvePSO() {
 
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
@@ -3210,7 +3210,7 @@ void Kamaboko::PipelineManager::GenarateDissolvePSO() {
 	HRESULT hResult= D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->dissolvePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -3316,7 +3316,7 @@ void Kamaboko::PipelineManager::GenarateDissolvePSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenarateRandomEffectPSO() {
+void Elysia::PipelineManager::GenarateRandomEffectPSO() {
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -3385,7 +3385,7 @@ void Kamaboko::PipelineManager::GenarateRandomEffectPSO() {
 	HRESULT hr_= D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->randomEffectPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr_)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -3491,7 +3491,7 @@ void Kamaboko::PipelineManager::GenarateRandomEffectPSO() {
 
 }
 
-void Kamaboko::PipelineManager::GenarateSkyBoxPSO() {
+void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 
 	//PSO
 	////RootSignatureを作成
@@ -3592,7 +3592,7 @@ void Kamaboko::PipelineManager::GenarateSkyBoxPSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->skyBoxPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Kamaboko::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 

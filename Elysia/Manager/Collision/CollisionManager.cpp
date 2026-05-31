@@ -4,13 +4,13 @@
 #include "AABB.h"
 #include <CollisionCalculation.h>
 
-void Kamaboko::CollisionManager::RegisterList(Collider* collider) {
+void Elysia::CollisionManager::RegisterList(Collider* collider) {
 	//引数から登録
 	colliders_.push_back(collider);
 }
 
 
-void Kamaboko::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, Collider* colliderB) {
+void Elysia::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, Collider* colliderB) {
 
 	//コライダーAのワールド座標を取得
 	Vector3 colliderPositionA = colliderA->GetWorldPosition();
@@ -49,7 +49,7 @@ void Kamaboko::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, C
 
 }
 
-void Kamaboko::CollisionManager::CheckAABBCollisionPair(Collider* colliderA, Collider* colliderB) {
+void Elysia::CollisionManager::CheckAABBCollisionPair(Collider* colliderA, Collider* colliderB) {
 
 	//衝突フィルタリング
 	//ビット演算だから&で
@@ -77,7 +77,7 @@ void Kamaboko::CollisionManager::CheckAABBCollisionPair(Collider* colliderA, Col
 
 
 
-void Kamaboko::CollisionManager::CheckFanAndPoint(Collider* colliderA, Collider* colliderB) {
+void Elysia::CollisionManager::CheckFanAndPoint(Collider* colliderA, Collider* colliderB) {
 
 	//衝突フィルタリング
 	//ビット演算だから&で
@@ -112,7 +112,7 @@ void Kamaboko::CollisionManager::CheckFanAndPoint(Collider* colliderA, Collider*
 	}
 }
 
-void Kamaboko::CollisionManager::CheckPlaneAndPoint(Collider* colliderA, Collider* colliderB) {
+void Elysia::CollisionManager::CheckPlaneAndPoint(Collider* colliderA, Collider* colliderB) {
 
 
 	if ((colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask()) == 0 ||
@@ -148,7 +148,7 @@ void Kamaboko::CollisionManager::CheckPlaneAndPoint(Collider* colliderA, Collide
 }
 
 
-void Kamaboko::CollisionManager::CheckAllCollision() {
+void Elysia::CollisionManager::CheckAllCollision() {
 	//総当たりの判定
 	for (std::list<Collider*>::iterator itrA = colliders_.begin(); itrA != colliders_.end(); ++itrA) {
 
@@ -193,6 +193,6 @@ void Kamaboko::CollisionManager::CheckAllCollision() {
 }
 
 
-void Kamaboko::CollisionManager::ClearList() {
+void Elysia::CollisionManager::ClearList() {
 	colliders_.clear();
 }

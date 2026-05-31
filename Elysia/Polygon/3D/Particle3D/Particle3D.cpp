@@ -18,24 +18,24 @@
 #include "VectorCalculation.h"
 
 
-Kamaboko::Particle3D::Particle3D() {
+Elysia::Particle3D::Particle3D() {
 	//インスタンスの取得
 	//モデル管理
-	modelManager_ = Kamaboko::ModelManager::GetInstance();
+	modelManager_ = Elysia::ModelManager::GetInstance();
 	//テクスチャ管理クラス
-	textureManager_ = Kamaboko::TextureManager::GetInstance();
+	textureManager_ = Elysia::TextureManager::GetInstance();
 	//DirectXクラス
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//SRV管理クラス
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 	//パイプライン管理クラス
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 
 }
 
-std::unique_ptr<Kamaboko::Particle3D> Kamaboko::Particle3D::Create(const uint32_t& moveType) {
+std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& moveType) {
 	//生成
-	std::unique_ptr<Kamaboko::Particle3D> particle3D = std::make_unique<Kamaboko::Particle3D>();
+	std::unique_ptr<Elysia::Particle3D> particle3D = std::make_unique<Elysia::Particle3D>();
 
 	//モデルの読み込み
 	uint32_t modelHandle = particle3D->modelManager_->Load("Resources/Model/Particle", "ParticlePlane.obj");
@@ -73,24 +73,20 @@ std::unique_ptr<Kamaboko::Particle3D> Kamaboko::Particle3D::Create(const uint32_
 
 }
 
-std::unique_ptr<Kamaboko::Particle3D> Kamaboko::Particle3D::Create(const uint32_t& modelHandle, const uint32_t& moveType) {
+std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& modelHandle, const uint32_t& moveType) {
 	//生成
-	std::unique_ptr<Kamaboko::Particle3D> particle3D = std::make_unique<Kamaboko::Particle3D>();
+	std::unique_ptr<Elysia::Particle3D> particle3D = std::make_unique<Elysia::Particle3D>();
 
 	//モデルの読み込み
 	ModelData modelData = particle3D->modelManager_->GetModelData(modelHandle);
-
 	//テクスチャの読み込み
 	particle3D->textureHandle_ = particle3D->textureManager_->Load(modelData.textureFilePath);
-
 	//動きの種類
 	particle3D->moveType_ = moveType;
 
 	//頂点リソースを作る
 	particle3D->vertices_ = particle3D->modelManager_->GetModelData(modelHandle).vertices;
 	particle3D->vertexResource_ = particle3D->directXSetup_->CreateBufferResource(sizeof(VertexData) * particle3D->vertices_.size());
-
-
 	//リソースの先頭のアドレスから使う
 	particle3D->vertexBufferView_.BufferLocation = particle3D->vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースは頂点のサイズ
@@ -117,7 +113,7 @@ std::unique_ptr<Kamaboko::Particle3D> Kamaboko::Particle3D::Create(const uint32_
 
 }
 
-ParticleInformation Kamaboko::Particle3D::MakeNewParticle(std::mt19937& randomEngine) {
+ParticleInformation Elysia::Particle3D::MakeNewParticle(std::mt19937& randomEngine) {
 
 	//ランダムの値で位置を決める
 	//SRは固定
@@ -155,18 +151,18 @@ ParticleInformation Kamaboko::Particle3D::MakeNewParticle(std::mt19937& randomEn
 
 }
 
-std::list<ParticleInformation> Kamaboko::Particle3D::Emission(const Emitter& emmitter, std::mt19937& randomEngine) {
+std::list<ParticleInformation> Elysia::Particle3D::Emission(const Emitter& emmitter, std::mt19937& randomEngine) {
 	std::list<ParticleInformation> particles;
 
 	for (uint32_t count = 0u; count < emmitter.count; ++count) {
-		//emmitterで設定したカウントまで増やしていくよ
+		//emitterで設定したカウントまで増やしていくよ
 		particles.push_back(MakeNewParticle(randomEngine));
 	}
 
 	return particles;
 }
 
-void Kamaboko::Particle3D::Update(const Camera& camera) {
+void Elysia::Particle3D::Update(const Camera& camera) {
 
 	//ランダムエンジン
 	std::random_device seedGenerator;
@@ -174,9 +170,9 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 	//一度だけ出すモード
 	if (isReleaseOnceMode_ == true) {
 		//パーティクルを作る
-		if (isReeasedOnce_ == false) {
+		if (isReleasedOnce_ == false) {
 			particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
-			isReeasedOnce_ = true;
+			isReleasedOnce_ = true;
 		}
 	}
 	else {
@@ -185,12 +181,11 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 			particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
 			//出し終わったことを示す
 			isFirstRelease_ = true;
-
 		}
 
 		//そのあと循環
 		//時間経過
-		emitter_.frequencyTime += DELTA_TIME;
+		emitter_.frequencyTime += DELTA_TIME_;
 		//頻度より大きいかつまだ生成が停止されていない
 		if (emitter_.frequency <= emitter_.frequencyTime && isStopGenerate_==false) {
 			//パーティクルを作る
@@ -206,10 +201,8 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 		}
 	}
 
-
 	//書き込み
 	instancingResource_->Map(0u, nullptr, reinterpret_cast<void**>(&particleForGpuData_));
-
 
 	//座標の計算など
 	numInstance_ = 0u;
@@ -221,14 +214,16 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 		Matrix4x4 scaleMatrix = {};
 		Matrix4x4 translateMatrix = {};
 		Matrix4x4 billBoardMatrix = {};
-		float_t accel = -0.001f;
-		particleIterator->currentTime += DELTA_TIME;
+		Vector3 absorbPosition = {};
+
+		///時間経過
+		particleIterator->currentTime += DELTA_TIME_;
 
 		switch (moveType_) {
 		case ParticleMoveType::NormalRelease:
 #pragma region 通常の放出
 
-			if (isReleaseOnceMode_ == false) {
+			if (!isReleaseOnceMode_) {
 				if (particleIterator->lifeTime <= particleIterator->currentTime) {
 
 					continue;
@@ -272,7 +267,6 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 					particleForGpuData_[numInstance_].color.w = alpha;
 					particleIterator->color.w = alpha;
 				}
-
 			}
 
 			break;
@@ -282,7 +276,7 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 
 		case ParticleMoveType::ThrowUp:
 #pragma region 鉛直投げ上げ
-			throwUpVelocityY_ += accel;
+			throwUpVelocityY_ += ACCEL_;
 
 			//加速を踏まえた位置計算
 			particleIterator->transform.translate.x += particleIterator->velocity.x / 3.0f;
@@ -378,7 +372,7 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 			particleIterator->absorbT += T_INCREASE_VALUE_;
 			
 			//線形補間でやって綺麗に集まるようにする
-			Vector3 newPosition = VectorCalculation::Lerp(VectorCalculation::Add(releasePositionForAbsorb_, particleIterator->transform.translate), absorbPosition_, particleIterator->absorbT);
+			absorbPosition = VectorCalculation::Lerp(VectorCalculation::Add(releasePositionForAbsorb_, particleIterator->transform.translate), absorbPosition_, particleIterator->absorbT);
 
 			//カメラの回転を適用する
 			billBoardMatrix = camera.viewMatrix;
@@ -390,22 +384,20 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 			billBoardMatrix = Matrix4x4Calculation::Inverse(billBoardMatrix);
 			//行列を作っていくよ
 			scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(particleIterator->transform.scale);
-			translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(newPosition);
+			translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(absorbPosition);
 
 			//パーティクル個別のRotateは関係ないよ
 			//その代わりにさっき作ったbillBoardMatrixを入れるよ
 			worldMatrix = Matrix4x4Calculation::Multiply(scaleMatrix, Matrix4x4Calculation::Multiply(billBoardMatrix, translateMatrix));
 
-
-
 			//最大値を超えないようにする
 			//そして生成停止までの処理
-			if (numInstance_ < MAX_INSTANCE_NUMBER_ && isStopGenerate_ == false) {
+			if (numInstance_ < MAX_INSTANCE_NUMBER_ && !isStopGenerate_) {
 				particleForGpuData_[numInstance_].world = worldMatrix;
 				particleForGpuData_[numInstance_].color = particleIterator->color;
 
 				//透明になっていくようにするかどうか
-				if (isToTransparent_ == true) {
+				if (isToTransparent_) {
 					//どんどん透明にしていく
 					float_t alpha = 1.0f - particleIterator->absorbT;
 					particleIterator->color.w = alpha;
@@ -438,12 +430,12 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 
 			//最大値を超えないようにする
 			//そして生成停止までの処理
-			if (numInstance_ < MAX_INSTANCE_NUMBER_ && isStopGenerate_ == false) {
+			if (numInstance_ < MAX_INSTANCE_NUMBER_ && !isStopGenerate_) {
 				particleForGpuData_[numInstance_].world = worldMatrix;
 				particleForGpuData_[numInstance_].color = particleIterator->color;
 
 				//透明になっていくようにするかどうか
-				if (isToTransparent_ == true) {
+				if (isToTransparent_) {
 					//どんどん透明にしていく
 					float_t alpha = 1.0f - (particleIterator->currentTime / particleIterator->lifeTime);
 					particleIterator->color.w = alpha;
@@ -458,7 +450,7 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 		}
 
 		//生成を止めた時
-		if (isStopGenerate_ == true) {
+		if (isStopGenerate_) {
 			const float DECREASE_ALPHA_VALUE = 0.1f;
 			particleForGpuData_[numInstance_].color.w -= DECREASE_ALPHA_VALUE;
 		}
@@ -477,7 +469,7 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 	instancingResource_->Unmap(0u, nullptr);
 
 	//全て見えなくなったらisAllInvisible_がtrueになる
-	if (isReeasedOnce_ == true) {
+	if (isReleasedOnce_) {
 		//all_ofは中にある全ての要素が満たす時にtrueを返す
 		//今回の場合はparticles_にあるisInvisibleが全てtrueに鳴ったらtrueを返すという仕組みになっている
 		isAllInvisible_ = std::all_of(particles_.begin(), particles_.end(), [](const ParticleInformation& particle) {
@@ -486,7 +478,7 @@ void Kamaboko::Particle3D::Update(const Camera& camera) {
 	}
 }
 
-void Kamaboko::Particle3D::Draw(const Camera& camera, const Material& material) {
+void Elysia::Particle3D::Draw(const Camera& camera, const Material& material) {
 
 	assert(material.lightingKinds == LightingType::NoneLighting);
 	//更新
@@ -521,7 +513,7 @@ void Kamaboko::Particle3D::Draw(const Camera& camera, const Material& material) 
 	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
 }
 
-void Kamaboko::Particle3D::Draw(const Camera& camera, const  Material& material, const DirectionalLight& directionalLight) {
+void Elysia::Particle3D::Draw(const Camera& camera, const  Material& material, const DirectionalLight& directionalLight) {
 
 	//Directionalではなかったらassert
 	if (material.lightingKinds != LightingType::DirectionalLighting) {
@@ -564,7 +556,7 @@ void Kamaboko::Particle3D::Draw(const Camera& camera, const  Material& material,
 
 }
 
-void Kamaboko::Particle3D::Draw(const Camera& camera, const Material& material, const PointLight& pointLight) {
+void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, const PointLight& pointLight) {
 	//Pointではなかったらassert
 	if (material.lightingKinds != LightingType::PointLighting) {
 		assert(0);
@@ -607,7 +599,7 @@ void Kamaboko::Particle3D::Draw(const Camera& camera, const Material& material, 
 
 }
 
-void Kamaboko::Particle3D::Draw(const Camera& camera, const Material& material, const SpotLight& spotLight) {
+void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, const SpotLight& spotLight) {
 	//Spotではなかったらassert
 	if (material.lightingKinds != LightingType::SpotLighting) {
 		assert(0);
@@ -646,6 +638,4 @@ void Kamaboko::Particle3D::Draw(const Camera& camera, const Material& material, 
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
-
 }
-

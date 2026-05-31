@@ -8,9 +8,9 @@
 
 
  /// <summary>
- /// KamabokoEngine
+ /// ElysiaEngine
  /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// ImGui管理クラス

@@ -20,9 +20,9 @@
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// ウィンドウクラス
 	/// </summary>

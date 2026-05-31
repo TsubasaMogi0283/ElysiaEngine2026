@@ -25,7 +25,7 @@ public:
 	/// </summary>
 	/// <param name="sceneName">シーン名</param>
 	/// <returns>シーン</returns>
-	virtual std::unique_ptr<Kamaboko::IGameScene> CreateScene(const std::string& sceneName) = 0;
+	virtual std::unique_ptr<Elysia::IGameScene> CreateScene(const std::string& sceneName) = 0;
 
 	/// <summary>
 	/// デストラクタ

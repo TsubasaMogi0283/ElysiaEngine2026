@@ -5,9 +5,9 @@
 #include "Collider.h"
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// コリジョン管理クラス

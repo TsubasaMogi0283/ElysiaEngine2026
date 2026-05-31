@@ -120,7 +120,7 @@ public:
 	
 private:
 	//オーディオ
-	Kamaboko::Audio* audio_ = nullptr;
+	Elysia::Audio* audio_ = nullptr;
 	
 	//レベルエディタ側で設定した値を持ってくる
 	AudioDataForLevelEditor audioDataForLevelEditor_ = {};

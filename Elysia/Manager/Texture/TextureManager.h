@@ -17,9 +17,9 @@
 #include "Vector2.h"
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// テクスチャ管理クラス

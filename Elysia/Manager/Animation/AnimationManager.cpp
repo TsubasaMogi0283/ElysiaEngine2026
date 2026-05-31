@@ -10,12 +10,12 @@
 #include "ModelManager.h"
 #include "Calculation/QuaternionCalculation.h"
 
-Kamaboko::AnimationManager* Kamaboko::AnimationManager::GetInstance(){
+Elysia::AnimationManager* Elysia::AnimationManager::GetInstance(){
     static AnimationManager instance;
     return &instance;
 }
 
-Vector3 Kamaboko::AnimationManager::CalculationValue(const std::vector<KeyFrameVector3>& keyFrames, const float_t& time) {
+Vector3 Elysia::AnimationManager::CalculationValue(const std::vector<KeyFrameVector3>& keyFrames, const float_t& time) {
     //特殊なケースを除外
     //キーが無いものは✕
     assert(!keyFrames.empty());
@@ -40,7 +40,7 @@ Vector3 Kamaboko::AnimationManager::CalculationValue(const std::vector<KeyFrameV
 
 }
 
-Quaternion Kamaboko::AnimationManager::CalculationValue(const std::vector<KeyFrameQuaternion>& keyFrames, const float& time) {
+Quaternion Elysia::AnimationManager::CalculationValue(const std::vector<KeyFrameQuaternion>& keyFrames, const float& time) {
     //特殊なケースを除外
     //キーが無いものは✕
     assert(!keyFrames.empty());
@@ -65,7 +65,7 @@ Quaternion Kamaboko::AnimationManager::CalculationValue(const std::vector<KeyFra
 
 
 
-Animation Kamaboko::AnimationManager::LoadAnimationFile(const std::string& directoryPath, const std::string& fileName) {
+Animation Elysia::AnimationManager::LoadAnimationFile(const std::string& directoryPath, const std::string& fileName) {
     Animation animation = {};
     Assimp::Importer importer;
     std::string filePath = directoryPath + "/" + fileName;
@@ -130,7 +130,7 @@ Animation Kamaboko::AnimationManager::LoadAnimationFile(const std::string& direc
     return animation;
 }
 
-uint32_t Kamaboko::AnimationManager::LoadFile(const std::string& directoryPath, const std::string& fileName){
+uint32_t Elysia::AnimationManager::LoadFile(const std::string& directoryPath, const std::string& fileName){
 
     for (uint32_t i = 0u; i < ANIMATION_MAX_AMOUNT_; ++i) {
         if (AnimationManager::GetInstance()->animationInfromtion_[i].directoryPath == directoryPath &&
@@ -159,7 +159,7 @@ uint32_t Kamaboko::AnimationManager::LoadFile(const std::string& directoryPath, 
 
 }
 
-void Kamaboko::AnimationManager::ApplyAnimation(Skeleton& skeleton,const uint32_t& animationHandle, float_t animationTime){
+void Elysia::AnimationManager::ApplyAnimation(Skeleton& skeleton,const uint32_t& animationHandle, float_t animationTime){
 
 
     Animation animationData = AnimationManager::GetInstance()->animationInfromtion_[animationHandle].animationData;

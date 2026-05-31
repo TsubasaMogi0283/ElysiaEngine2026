@@ -58,9 +58,9 @@ struct SpotLight;
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	
 
 	/// <summary>
@@ -155,15 +155,15 @@ public:
 
 private:
 	//DirectXクラス
-	Kamaboko::DirectXSetup* directXSetup_ = nullptr;
+	Elysia::DirectXSetup* directXSetup_ = nullptr;
 	//テクスチャ管理クラス
-	Kamaboko::TextureManager* textureManager_ = nullptr;
+	Elysia::TextureManager* textureManager_ = nullptr;
 	//モデル管理クラス
-	Kamaboko::ModelManager* modelmanager_ = nullptr;
+	Elysia::ModelManager* modelmanager_ = nullptr;
 	//パイプライン管理クラス
-	Kamaboko::PipelineManager* pipelineManager_ = nullptr;
+	Elysia::PipelineManager* pipelineManager_ = nullptr;
 	//SRV管理クラス
-	Kamaboko::SrvManager* srvManager_ = nullptr;
+	Elysia::SrvManager* srvManager_ = nullptr;
 
 private:
 	//頂点

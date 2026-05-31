@@ -10,37 +10,36 @@
 
 #include "SrvManager.h"
 #include "WorldTransform.h"
-#include "Camera.h"
 #include "Material.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 
-Kamaboko::Model::Model() {
+Elysia::Model::Model() {
 	//テクスチャ管理クラスの取得
-	textureManager_ = Kamaboko::TextureManager::GetInstance();
+	textureManager_ = Elysia::TextureManager::GetInstance();
 	//モデル管理クラスの取得
-	modelmanager_ = Kamaboko::ModelManager::GetInstance();
+	modelManager_ = Elysia::ModelManager::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//SRV管理クラスも取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-Kamaboko::Model* Kamaboko::Model::Create(const uint32_t& modelHandle) {
+Elysia::Model* Elysia::Model::Create(const uint32_t& modelHandle) {
 
 	//生成
-	Kamaboko::Model* model = new Kamaboko::Model();
+	Elysia::Model* model = new Elysia::Model();
 
 	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(model->modelmanager_->GetModelData(modelHandle).textureFilePath);
+	model->textureHandle_ = model->textureManager_->Load(model->modelManager_->GetModelData(modelHandle).textureFilePath);
 	//モデルデータ
-	model->modelData_ = model->modelmanager_->GetModelData(modelHandle);
+	model->modelData_ = model->modelManager_->GetModelData(modelHandle);
 
 	//頂点リソースを作る
-	model->vertexResource_ = model->directXSetup_->CreateBufferResource(sizeof(VertexData) * model->modelmanager_->GetModelData(modelHandle).vertices.size()).Get();
+	model->vertexResource_ = model->directXSetup_->CreateBufferResource(sizeof(VertexData) * model->modelManager_->GetModelData(modelHandle).vertices.size()).Get();
 	//リソースの先頭のアドレスから使う
 	model->vertexBufferView_.BufferLocation = model->vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースは頂点のサイズ
@@ -49,7 +48,7 @@ Kamaboko::Model* Kamaboko::Model::Create(const uint32_t& modelHandle) {
 	model->vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
 	//解析したデータを使ってResourceとBufferViewを作成する
-	model->indexResource_ = model->directXSetup_->CreateBufferResource(sizeof(uint32_t) * model->modelmanager_->GetModelData(modelHandle).indices.size()).Get();
+	model->indexResource_ = model->directXSetup_->CreateBufferResource(sizeof(uint32_t) * model->modelManager_->GetModelData(modelHandle).indices.size()).Get();
 	//場所
 	model->indexBufferView_.BufferLocation = model->indexResource_->GetGPUVirtualAddress();
 	//サイズ
@@ -64,7 +63,7 @@ Kamaboko::Model* Kamaboko::Model::Create(const uint32_t& modelHandle) {
 
 }
 
-void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material){
+void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material){
 	//非表示設定がtrueになっていた場合は描画しない
 	if (isInvisible_ == true) {
 		return;
@@ -103,7 +102,6 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//Material
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//資料見返してみたがhlsl(GPU)に計算を任せているわけだった
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
 	//テクスチャ
@@ -119,7 +117,7 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 
 }
 
-void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const DirectionalLight& directionalLight) {
+void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const DirectionalLight& directionalLight) {
 	//非表示設定がtrueになっていた場合は描画しない
 	if (isInvisible_ == true) {
 		return;
@@ -158,7 +156,6 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//Material
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//資料見返してみたがhlsl(GPU)に計算を任せているわけだった
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
@@ -172,15 +169,15 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 	//PixelShaderに送る方のカメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//環境マップ用のテクスチャ
-	if (material.isEnviromentMap == true && eviromentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8u, eviromentTextureHandle_);
+	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
 
 }
 
-void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const PointLight& pointLight) {
+void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const PointLight& pointLight) {
 	//非表示設定がtrueになっていた場合は描画しない
 	if (isInvisible_ == true) {
 		return;
@@ -218,7 +215,6 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//Material
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//資料見返してみたがhlsl(GPU)に計算を任せているわけだった
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
@@ -233,8 +229,8 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 	//PointLight
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, pointLight.resource->GetGPUVirtualAddress());
 
-	if (material.isEnviromentMap == true && eviromentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8u, eviromentTextureHandle_);
+	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 
 	//DrawCall
@@ -242,7 +238,7 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 
 }
 
-void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const SpotLight& spotLight) {
+void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const SpotLight& spotLight) {
 	//非表示設定がtrueになっていた場合は描画しない
 	if (isInvisible_ == true) {
 		return;
@@ -287,7 +283,6 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//Material
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//資料見返してみたがhlsl(GPU)に計算を任せているわけだった
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
@@ -302,8 +297,8 @@ void Kamaboko::Model::Draw(const WorldTransform& worldTransform, const Camera& c
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
 
 	//環境マッピングの設定
-	if (material.isEnviromentMap == true && eviromentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8u, eviromentTextureHandle_);
+	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 
 	//DrawCall

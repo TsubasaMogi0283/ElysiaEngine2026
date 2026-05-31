@@ -9,20 +9,20 @@
 
 
 
-Kamaboko::GrayScale::GrayScale(){
+Elysia::GrayScale::GrayScale(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//RTV管理クラスの取得
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-void Kamaboko::GrayScale::Initialize() {
+void Elysia::GrayScale::Initialize() {
 	
 	//RTV
 	const Vector4 RENDER_TARGET_CLEAR_VALUE = {.x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
@@ -41,7 +41,7 @@ void Kamaboko::GrayScale::Initialize() {
 
 }
 
-void Kamaboko::GrayScale::PreDraw() {
+void Elysia::GrayScale::PreDraw() {
 
 	const float RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
 	//RT
@@ -59,13 +59,13 @@ void Kamaboko::GrayScale::PreDraw() {
 	uint32_t height = windowSetup_->GetClientHeight();
 
 	//ビューポート
-	directXSetup_->GenarateViewport(width, height);
+	directXSetup_->GenerateViewport(width, height);
 	//シザー矩形 
-	directXSetup_->GenarateScissor(width, height);
+	directXSetup_->GenerateScissor(width, height);
 
 }
 
-void Kamaboko::GrayScale::Draw() {
+void Elysia::GrayScale::Draw() {
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(

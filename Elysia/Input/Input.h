@@ -23,9 +23,9 @@ using namespace Microsoft::WRL;
 #pragma comment(lib,"xinput.lib")
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// ウィンドウズクラス

@@ -4,14 +4,14 @@
 #include "PipelineManager.h"
 #include "Camera.h"
 
-Kamaboko::Line::Line(){
+Elysia::Line::Line(){
 	//DirectXのインスタンスを取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスのインスタンスを取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 }
 
-void Kamaboko::Line::Initialize() {
+void Elysia::Line::Initialize() {
 
 	//ここでBufferResourceを作る
 	//頂点を6に増やす
@@ -39,7 +39,7 @@ void Kamaboko::Line::Initialize() {
 
 
 //描画
-void Kamaboko::Line::Draw(const Vector3& start, const Vector3& end, const Camera& camera) {
+void Elysia::Line::Draw(const Vector3& start, const Vector3& end, const Camera& camera) {
 
 	
 	//データ

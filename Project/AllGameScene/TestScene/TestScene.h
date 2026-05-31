@@ -16,7 +16,7 @@
 /// <summary>
 /// ElysiaEngine(前方宣言)
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// レベルエディタ
 	/// </summary>
@@ -49,7 +49,7 @@ namespace Kamaboko {
 }
 
 
-class TestScene : public Kamaboko::IGameScene{
+class TestScene : public Elysia::IGameScene{
 public:
 
 	/// <summary>
@@ -66,7 +66,7 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="gameManager"></param>
-	void Update(Kamaboko::GameManager* gameManager)override;
+	void Update(Elysia::GameManager* gameManager)override;
 
 	/// <summary>
 	/// 3Dオブジェクト
@@ -95,11 +95,11 @@ public:
 
 private:
 	//入力
-	Kamaboko::Input* input_ = nullptr;
+	Elysia::Input* input_ = nullptr;
 	//モデル管理クラス
-	Kamaboko::ModelManager* modelManager_ = nullptr;
+	Elysia::ModelManager* modelManager_ = nullptr;
 	//レベルエディタ
-	Kamaboko::LevelDataManager* levelDataManager_ = nullptr;
+	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル
 	uint32_t levelHandle_ = 0u;
 
@@ -113,10 +113,10 @@ private:
 private:
 
 	//背景
-	std::unique_ptr<Kamaboko::BackTexture>backTexture_ = nullptr;
+	std::unique_ptr<Elysia::BackTexture>backTexture_ = nullptr;
 
 	//仮プレイヤー
-	std::unique_ptr<Kamaboko::Model>playerModel_ = nullptr;
+	std::unique_ptr<Elysia::Model>playerModel_ = nullptr;
 	WorldTransform playerWorldTransform_ = {};
 	const float_t SIZE = 1.0f;
 	const Vector3 CUBE_SIZE = { .x = SIZE ,.y = SIZE ,.z = SIZE };
@@ -124,14 +124,14 @@ private:
 	Vector3 playerCenterPosition_ = {};
 
 	//パーティクル
-	std::unique_ptr<Kamaboko::Particle3D>deadParticle_ = nullptr;
-	std::unique_ptr<Kamaboko::Particle3D>particle2_ = nullptr;
+	std::unique_ptr<Elysia::Particle3D>deadParticle_ = nullptr;
+	std::unique_ptr<Elysia::Particle3D>particle2_ = nullptr;
 
 
 	//四隅
 	static const uint32_t COUNER_QUANTITY_ = 4u;
-	std::array<std::unique_ptr<Kamaboko::Model>, COUNER_QUANTITY_>playerCounerModel_ = {};
-	std::array<WorldTransform, COUNER_QUANTITY_>playerCounerWorldTransform_ = {};
+	std::array<std::unique_ptr<Elysia::Model>, COUNER_QUANTITY_>playerCornerModel_ = {};
+	std::array<WorldTransform, COUNER_QUANTITY_>playerCornerWorldTransform_ = {};
 
 	//カメラ
 	Camera camera_ = {};

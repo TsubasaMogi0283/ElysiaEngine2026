@@ -19,18 +19,18 @@
 
 
 
-Kamaboko::LevelDataManager::LevelDataManager() {
+Elysia::LevelDataManager::LevelDataManager() {
 	//オーディオのインスタンスを取得
-	audio_ = Kamaboko::Audio::GetInstance();
+	audio_ = Elysia::Audio::GetInstance();
 }
 
 
-Kamaboko::LevelDataManager* Kamaboko::LevelDataManager::GetInstance() {
+Elysia::LevelDataManager* Elysia::LevelDataManager::GetInstance() {
 	static LevelDataManager instance;
 	return &instance;
 }
 
-void Kamaboko::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelData) {
+void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelData) {
 
 	//"objects"の全オブジェクトを走査
 	for (nlohmann::json& object : objects) {
@@ -215,7 +215,7 @@ void Kamaboko::LevelDataManager::Place(nlohmann::json& objects, LevelData& level
 
 }
 
-void Kamaboko::LevelDataManager::Generate(LevelData& levelData) {
+void Elysia::LevelDataManager::Generate(LevelData& levelData) {
 
 	//ディレクトリパス
 	std::string levelEditorDirectoryPath = LEVEL_DATA_PATH_ + levelData.folderName;
@@ -304,7 +304,7 @@ void Kamaboko::LevelDataManager::Generate(LevelData& levelData) {
 	}
 }
 
-nlohmann::json Kamaboko::LevelDataManager::Deserialize(const std::string& fullFilePath) {
+nlohmann::json Elysia::LevelDataManager::Deserialize(const std::string& fullFilePath) {
 	std::ifstream file;
 	//ファイルを開ける
 	file.open(fullFilePath);
@@ -337,7 +337,7 @@ nlohmann::json Kamaboko::LevelDataManager::Deserialize(const std::string& fullFi
 
 }
 
-uint32_t Kamaboko::LevelDataManager::Load(const std::string& filePath) {
+uint32_t Elysia::LevelDataManager::Load(const std::string& filePath) {
 
 	//パスの結合
 	std::string fullFilePath = LEVEL_DATA_PATH_ + filePath;
@@ -393,7 +393,7 @@ uint32_t Kamaboko::LevelDataManager::Load(const std::string& filePath) {
 
 }
 
-void Kamaboko::LevelDataManager::Reload(const uint32_t& levelDataHandle) {
+void Elysia::LevelDataManager::Reload(const uint32_t& levelDataHandle) {
 
 
 	//一度全てのオブジェクトのデータを消す
@@ -454,7 +454,7 @@ void Kamaboko::LevelDataManager::Reload(const uint32_t& levelDataHandle) {
 
 }
 
-void Kamaboko::LevelDataManager::Update(const uint32_t& levelDataHandle) {
+void Elysia::LevelDataManager::Update(const uint32_t& levelDataHandle) {
 
 	//この書き方はC++17からの構造化束縛というものらしい
 	//イテレータではなくこっちでやった方が良いかな
@@ -497,7 +497,7 @@ void Kamaboko::LevelDataManager::Update(const uint32_t& levelDataHandle) {
 	}
 }
 
-void Kamaboko::LevelDataManager::Delete(const uint32_t& levelDataHandle) {
+void Elysia::LevelDataManager::Delete(const uint32_t& levelDataHandle) {
 
 
 	//一度全てのオブジェクトのデータを消す
@@ -528,7 +528,7 @@ void Kamaboko::LevelDataManager::Delete(const uint32_t& levelDataHandle) {
 
 #pragma region 描画
 
-void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera) {
+void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera) {
 	//指定したハンドルのデータだけを描画
 	for (auto& [key, levelData] : levelData_) {
 		if (levelData->handle == levelDataHandle) {
@@ -549,7 +549,7 @@ void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Cam
 }
 
 
-void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const DirectionalLight& directionalLight) {
+void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const DirectionalLight& directionalLight) {
 
 	//指定したハンドルのデータだけを描画
 	for (auto& [key, levelData] : levelData_) {
@@ -570,7 +570,7 @@ void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Cam
 	}
 }
 
-void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const PointLight& pointLight) {
+void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const PointLight& pointLight) {
 	//指定したハンドルのデータだけを描画
 	for (auto& [key, levelData] : levelData_) {
 		if (levelData->handle == levelDataHandle) {
@@ -590,7 +590,7 @@ void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Cam
 	}
 }
 
-void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const SpotLight& spotLight) {
+void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const SpotLight& spotLight) {
 
 	//指定したハンドルのデータだけを描画
 	for (auto& [key, levelData] : levelData_) {
@@ -612,7 +612,7 @@ void Kamaboko::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Cam
 #pragma endregion
 
 
-void Kamaboko::LevelDataManager::Finalize() {
+void Elysia::LevelDataManager::Finalize() {
 
 	//全て解放
 	for (auto& [key, levelData] : levelData_) {

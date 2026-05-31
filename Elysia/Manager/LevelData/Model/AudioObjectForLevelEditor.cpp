@@ -5,7 +5,7 @@
 
 AudioObjectForLevelEditor::AudioObjectForLevelEditor(){
 	//インスタンスの取得
-	audio_ = Kamaboko::Audio::GetInstance();
+	audio_ = Elysia::Audio::GetInstance();
 }
 
 void AudioObjectForLevelEditor::Initialize(const uint32_t& modelhandle, const Transform& transform){
@@ -14,7 +14,7 @@ void AudioObjectForLevelEditor::Initialize(const uint32_t& modelhandle, const Tr
 	objectType_ = LevelEditorObjectType::AudioObject;
 	
 	//モデルの生成
-	model_.reset(Kamaboko::Model::Create(modelhandle));
+	model_.reset(Elysia::Model::Create(modelhandle));
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();

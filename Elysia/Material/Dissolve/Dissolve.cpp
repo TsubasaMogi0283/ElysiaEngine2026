@@ -3,7 +3,7 @@
 void Dissolve::Initialize(){
 	//初期化
 	//リソースの生成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(DissolveData));
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(DissolveData));
 	//エッジを使うかどうか
 	isUseEdge = true;
 	//厚さ

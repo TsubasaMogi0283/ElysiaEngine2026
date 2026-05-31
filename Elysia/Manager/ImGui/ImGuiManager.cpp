@@ -8,12 +8,12 @@
 #include "RtvManager.h"
 
 
-Kamaboko::ImGuiManager* Kamaboko::ImGuiManager::GetInstance() {
+Elysia::ImGuiManager* Elysia::ImGuiManager::GetInstance() {
 	static ImGuiManager instance;
 	return &instance;
 }
 
-void Kamaboko::ImGuiManager::Initialize() {
+void Elysia::ImGuiManager::Initialize() {
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -42,7 +42,7 @@ void Kamaboko::ImGuiManager::Initialize() {
 
 }
 
-void Kamaboko::ImGuiManager::BeginFrame() {
+void Elysia::ImGuiManager::BeginFrame() {
 	//フレーム始まり
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -53,7 +53,7 @@ void Kamaboko::ImGuiManager::BeginFrame() {
 
 
 
-void Kamaboko::ImGuiManager::Draw() {
+void Elysia::ImGuiManager::Draw() {
 	//描画
 	ImGui::Render();
 
@@ -63,7 +63,7 @@ void Kamaboko::ImGuiManager::Draw() {
 }
 
 
-void Kamaboko::ImGuiManager::EndDraw() {
+void Elysia::ImGuiManager::EndDraw() {
 	//コマンドを積む
 	//実際のcommandListのImGuiの描画コマンドを積む
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), DirectXSetup::GetInstance()->GetCommandList().Get());
@@ -71,7 +71,7 @@ void Kamaboko::ImGuiManager::EndDraw() {
 
 
 
-void Kamaboko::ImGuiManager::Finalize() {
+void Elysia::ImGuiManager::Finalize() {
 	//解放
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();

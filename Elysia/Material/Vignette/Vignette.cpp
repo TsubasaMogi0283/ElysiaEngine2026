@@ -2,7 +2,7 @@
 
 void Vignette::Initialize(){
 	//リソースの生成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(VignetteData));
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(VignetteData));
 
 	//初期値
 	scale = 16.0f;

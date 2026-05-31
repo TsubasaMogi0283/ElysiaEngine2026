@@ -10,9 +10,9 @@ void  SkinCluster::Create(const Skeleton& newSkeleton, const ModelData& modelDat
     skeleton = newSkeleton;
 
     //DirectXクラスを取得
-    Kamaboko::DirectXSetup* directXSetup = Kamaboko::DirectXSetup::GetInstance();
+    Elysia::DirectXSetup* directXSetup = Elysia::DirectXSetup::GetInstance();
     //SRV管理クラスを取得
-    Kamaboko::SrvManager* srvManager = Kamaboko::SrvManager::GetInstance();
+    Elysia::SrvManager* srvManager = Elysia::SrvManager::GetInstance();
 
 
     //palette用のリソースを生成

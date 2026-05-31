@@ -6,17 +6,17 @@
 #include "WindowsSetup.h"
 
 
-Kamaboko::GlobalVariables* Kamaboko::GlobalVariables::GetInstance(){
+Elysia::GlobalVariables* Elysia::GlobalVariables::GetInstance(){
     static GlobalVariables instance;
     return &instance;
 }
 
-void Kamaboko::GlobalVariables::CreateGroup(const std::string& groupName){
+void Elysia::GlobalVariables::CreateGroup(const std::string& groupName){
     //指定名のオブジェクトが無ければ追加
     datas_[groupName];
 }
 
-void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std::string& key,const int32_t& value){
+void Elysia::GlobalVariables::SetValue(const std::string& groupName, const std::string& key,const int32_t& value){
     //グループの参照
     Group& group = datas_[groupName];
     
@@ -29,7 +29,7 @@ void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std
 
 }
 
-void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std::string& key,const float& value){
+void Elysia::GlobalVariables::SetValue(const std::string& groupName, const std::string& key,const float& value){
     //グループの参照
     Group& group = datas_[groupName];
 
@@ -42,7 +42,7 @@ void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std
 
 }
 
-void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std::string& key, const Vector2& value){
+void Elysia::GlobalVariables::SetValue(const std::string& groupName, const std::string& key, const Vector2& value){
     //グループの参照
     Group& group = datas_[groupName];
 
@@ -54,7 +54,7 @@ void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std
     group.items[key] = newItem;
 }
 
-void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std::string& key, const Vector3& value){
+void Elysia::GlobalVariables::SetValue(const std::string& groupName, const std::string& key, const Vector3& value){
     //グループの参照
     Group& group = datas_[groupName];
 
@@ -67,7 +67,7 @@ void Kamaboko::GlobalVariables::SetValue(const std::string& groupName, const std
 
 }
 
-void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std::string& key,const int32_t& value){
+void Elysia::GlobalVariables::AddItem(const std::string& groupName, const std::string& key,const int32_t& value){
     
 
     //グループを検索
@@ -88,7 +88,7 @@ void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std:
     
 }
 
-void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std::string& key,const float& value){
+void Elysia::GlobalVariables::AddItem(const std::string& groupName, const std::string& key,const float& value){
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
 
@@ -105,7 +105,7 @@ void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std:
     }
 }
 
-void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std::string& key, const Vector2& value){
+void Elysia::GlobalVariables::AddItem(const std::string& groupName, const std::string& key, const Vector2& value){
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
 
@@ -121,7 +121,7 @@ void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std:
     }
 }
 
-void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std::string& key, const Vector3& value){
+void Elysia::GlobalVariables::AddItem(const std::string& groupName, const std::string& key, const Vector3& value){
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
 
@@ -137,7 +137,7 @@ void Kamaboko::GlobalVariables::AddItem(const std::string& groupName, const std:
     }
 }
 
-int32_t Kamaboko::GlobalVariables::GetIntValue(const std::string& groupName, const std::string& key) {
+int32_t Elysia::GlobalVariables::GetIntValue(const std::string& groupName, const std::string& key) {
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
 
@@ -156,7 +156,7 @@ int32_t Kamaboko::GlobalVariables::GetIntValue(const std::string& groupName, con
 
 }
 
-float Kamaboko::GlobalVariables::GetFloatValue(const std::string& groupName, const std::string& key) {
+float Elysia::GlobalVariables::GetFloatValue(const std::string& groupName, const std::string& key) {
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
 
@@ -173,7 +173,7 @@ float Kamaboko::GlobalVariables::GetFloatValue(const std::string& groupName, con
 
 }
 
-Vector2 Kamaboko::GlobalVariables::GetVector2Value(const std::string& groupName, const std::string& key){
+Vector2 Elysia::GlobalVariables::GetVector2Value(const std::string& groupName, const std::string& key){
 
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
@@ -192,7 +192,7 @@ Vector2 Kamaboko::GlobalVariables::GetVector2Value(const std::string& groupName,
 
 }
 
-Vector3 Kamaboko::GlobalVariables::GetVector3Value(const std::string& groupName, const std::string& key) {
+Vector3 Elysia::GlobalVariables::GetVector3Value(const std::string& groupName, const std::string& key) {
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
     
@@ -210,7 +210,7 @@ Vector3 Kamaboko::GlobalVariables::GetVector3Value(const std::string& groupName,
 
 }
 
-void Kamaboko::GlobalVariables::SaveFile(const std::string& groupName){
+void Elysia::GlobalVariables::SaveFile(const std::string& groupName){
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
 
@@ -294,7 +294,7 @@ void Kamaboko::GlobalVariables::SaveFile(const std::string& groupName){
 
 }
 
-void Kamaboko::GlobalVariables::LoadAllFile(){
+void Elysia::GlobalVariables::LoadAllFile(){
     //保存先ディレクトリのパスをローカル変数で宣言する
     std::filesystem::path directory(DIRECTORY_PATH_);
 
@@ -330,7 +330,7 @@ void Kamaboko::GlobalVariables::LoadAllFile(){
 
 }
 
-void Kamaboko::GlobalVariables::LoadFile(const std::string& groupName){
+void Elysia::GlobalVariables::LoadFile(const std::string& groupName){
     //読み込むJSONファイルのフルパスを合成する
     std::string filePath = DIRECTORY_PATH_ + groupName + ".json";
     //読み込み用のファイルストリーム
@@ -395,7 +395,7 @@ void Kamaboko::GlobalVariables::LoadFile(const std::string& groupName){
     }
 }
 
-void Kamaboko::GlobalVariables::Update(){
+void Elysia::GlobalVariables::Update(){
 #ifdef _DEBUG
 
     //メニューバーを使用可能なフラグを付けてウィンドウを開く

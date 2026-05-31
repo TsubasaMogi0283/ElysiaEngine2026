@@ -2,7 +2,7 @@
 
 void PointLight::Initialize(){
 	//Resource作成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(PointLightData)).Get();
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(PointLightData)).Get();
 
 	//初期値
 	//色

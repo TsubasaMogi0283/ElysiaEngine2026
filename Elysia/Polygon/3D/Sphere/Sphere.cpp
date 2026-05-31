@@ -10,16 +10,16 @@
 
 
 
-Kamaboko::Sphere::Sphere(){
+Elysia::Sphere::Sphere(){
 	//インスタンスの取得
 	//ウィンドウクラス
-	windowsSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectX
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 }
 
 //初期化
-void Kamaboko::Sphere::Initialize() {
+void Elysia::Sphere::Initialize() {
 	
 
 	//ここでBufferResourceを作る
@@ -60,7 +60,7 @@ void Kamaboko::Sphere::Initialize() {
 
 //描画
 //左上、右上、左下、右下
-void Kamaboko::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix4x4 viewMatrix,Matrix4x4 projectionMatrix ,Vector4 color) {
+void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix4x4 viewMatrix,Matrix4x4 projectionMatrix ,Vector4 color) {
 
 	
 	//書き込み用のアドレスを取得

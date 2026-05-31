@@ -13,9 +13,9 @@
 Triangle::Triangle(){
 
 	//ウィンドウクラスの取得
-	windowsSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 
 }
 
@@ -140,7 +140,7 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
 	if (textureHandle_ != 0) {
-		Kamaboko::TextureManager::GetInstance()->GraphicsCommand(2u,textureHandle_);
+		Elysia::TextureManager::GetInstance()->GraphicsCommand(2u,textureHandle_);
 	}
 
 	//描画(DrawCall)３頂点で１つのインスタンス。

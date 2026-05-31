@@ -7,20 +7,20 @@
 #include "SrvManager.h"
 #include "RtvManager.h"
 
-Kamaboko::BoxFilter::BoxFilter(){
+Elysia::BoxFilter::BoxFilter(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//RTV管理クラスの取得
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-void Kamaboko::BoxFilter::Initialize(){
+void Elysia::BoxFilter::Initialize(){
 
 	//リソース
 	boxFilterTypeResource_ = directXSetup_->CreateBufferResource(sizeof(BoxFilterType));
@@ -43,7 +43,7 @@ void Kamaboko::BoxFilter::Initialize(){
 
 }
 
-void Kamaboko::BoxFilter::PreDraw(){
+void Elysia::BoxFilter::PreDraw(){
 	
 	//RT
 	const float RENDER_TARGET_CLEAR_VALUE[] = {color_.x, color_.y, color_.z, color_.w};
@@ -61,13 +61,13 @@ void Kamaboko::BoxFilter::PreDraw(){
 	uint32_t height = windowSetup_->GetClientHeight();
 
 	//ビューポート
-	directXSetup_->GenarateViewport(width,height);
+	directXSetup_->GenerateViewport(width,height);
 	//シザー矩形 
-	directXSetup_->GenarateScissor(width, height);
+	directXSetup_->GenerateScissor(width, height);
 	
 }
 
-void Kamaboko::BoxFilter::Draw(){
+void Elysia::BoxFilter::Draw(){
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(

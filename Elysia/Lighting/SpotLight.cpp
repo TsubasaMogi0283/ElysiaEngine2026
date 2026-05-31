@@ -3,7 +3,7 @@
 
 void SpotLight::Initialize(){
 	//Resource作成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(SpotLightData)).Get();
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(SpotLightData)).Get();
 
 	//初期値
 	//色

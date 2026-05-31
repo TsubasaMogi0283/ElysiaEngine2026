@@ -7,20 +7,20 @@
 #include "SrvManager.h"
 #include "RtvManager.h"
 
-Kamaboko::RadialBlur::RadialBlur(){
+Elysia::RadialBlur::RadialBlur(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//RTV管理クラスの取得
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-void Kamaboko::RadialBlur::Initialize(){
+void Elysia::RadialBlur::Initialize(){
 
 	//RTV
 	//リソース
@@ -37,7 +37,7 @@ void Kamaboko::RadialBlur::Initialize(){
 	srvManager_->CreateSRVForRenderTexture(rtvResource_.Get(), srvHandle_);
 }
 
-void Kamaboko::RadialBlur::PreDraw(){
+void Elysia::RadialBlur::PreDraw(){
 	
 	//RT
 	const float RENDER_TARGET_CLEAR_VALUE[] = { color_.x,color_.y,color_.z,color_.w };
@@ -55,12 +55,12 @@ void Kamaboko::RadialBlur::PreDraw(){
 	uint32_t height = windowSetup_->GetClientHeight();
 
 	//ビューポート
-	directXSetup_->GenarateViewport(width, height);
+	directXSetup_->GenerateViewport(width, height);
 	//シザー矩形 
-	directXSetup_->GenarateScissor(width, height);
+	directXSetup_->GenerateScissor(width, height);
 }
 
-void Kamaboko::RadialBlur::Draw(){
+void Elysia::RadialBlur::Draw(){
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(
 		rtvResource_.Get(),

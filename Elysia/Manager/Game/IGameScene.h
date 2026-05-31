@@ -8,9 +8,9 @@
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// ゲーム管理クラス
 	/// </summary>
@@ -35,7 +35,7 @@ namespace Kamaboko {
 		/// 更新
 		/// </summary>
 		/// <param name="gameManager"></param>
-		virtual void Update(Kamaboko::GameManager* gameManager) = 0;
+		virtual void Update(Elysia::GameManager* gameManager) = 0;
 
 
 		/// <summary>

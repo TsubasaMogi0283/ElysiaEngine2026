@@ -5,14 +5,14 @@
 #include "Convert.h"
 
 
-Kamaboko::WindowsSetup* Kamaboko::WindowsSetup::GetInstance() {
-	static Kamaboko::WindowsSetup instance;
+Elysia::WindowsSetup* Elysia::WindowsSetup::GetInstance() {
+	static Elysia::WindowsSetup instance;
 	return &instance;
 }
 
 
 
-LRESULT Kamaboko::WindowsSetup::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam){
+LRESULT Elysia::WindowsSetup::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam){
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
 		return true;
 	}
@@ -29,14 +29,14 @@ LRESULT Kamaboko::WindowsSetup::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, L
 
 }
 
-void Kamaboko::WindowsSetup::OutputStringW(std::string& stringText){
+void Elysia::WindowsSetup::OutputStringW(std::string& stringText){
 	//stringからwstringに変換
 	std::wstring newString = Convert::Text::ToWString(stringText);
 	//出力
 	OutputDebugStringW(newString.c_str());
 }
 
-void Kamaboko::WindowsSetup::OutPutStringA(const std::string& text){
+void Elysia::WindowsSetup::OutPutStringA(const std::string& text){
 	//出力
 	OutputDebugStringA(text.c_str());
 }
@@ -45,7 +45,7 @@ void Kamaboko::WindowsSetup::OutPutStringA(const std::string& text){
 #pragma region Initializeに入れる関数
 
 //ウィンドウに情報を入れる
-void  Kamaboko::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
+void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 	
 	//ウィンドウプロシャージャ
 	windowClass_.lpfnWndProc = WindowProc;
@@ -93,14 +93,14 @@ void  Kamaboko::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 	
 }
 
-void Kamaboko::WindowsSetup::DisplayWindow() {
+void Elysia::WindowsSetup::DisplayWindow() {
 	//ウィンドウを表示
 	ShowWindow(hwnd_, SW_SHOW);
 }
 
 #pragma endregion
 
-void Kamaboko::WindowsSetup::Initialize(const wchar_t* title, const int32_t& clientWidth, const int32_t& clientHeight) {
+void Elysia::WindowsSetup::Initialize(const wchar_t* title, const int32_t& clientWidth, const int32_t& clientHeight) {
 	//値を入れる
 	clientWidth_ = clientWidth;
 	clientHeight_ = clientHeight;
@@ -115,12 +115,12 @@ void Kamaboko::WindowsSetup::Initialize(const wchar_t* title, const int32_t& cli
 	DisplayWindow();
 }
 
-void Kamaboko::WindowsSetup::WindowsMSG(MSG& msg) {
+void Elysia::WindowsSetup::WindowsMSG(MSG& msg) {
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
 }
 
-void Kamaboko::WindowsSetup::Close() {
+void Elysia::WindowsSetup::Close() {
 	//ウィンドウを閉じる
 	CloseWindow(hwnd_);
 }

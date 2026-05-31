@@ -13,9 +13,9 @@
 
 
  /// <summary>
- /// KamabokoEngine
+ /// ElysiaEngine
  /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// ウィンドウクラス
 	/// </summary>
@@ -83,15 +83,15 @@ namespace Kamaboko {
 
 	private:
 		//Windowクラス
-		Kamaboko::WindowsSetup* windowSetup_ = nullptr;
+		Elysia::WindowsSetup* windowSetup_ = nullptr;
 		//DirectXクラス
-		Kamaboko::DirectXSetup* directXSetup_ = nullptr;
+		Elysia::DirectXSetup* directXSetup_ = nullptr;
 		//パイプライン管理クラス
-		Kamaboko::PipelineManager* pipelineManager_ = nullptr;
+		Elysia::PipelineManager* pipelineManager_ = nullptr;
 		//RTV管理クラス
-		Kamaboko::RtvManager* rtvManager_ = nullptr;
+		Elysia::RtvManager* rtvManager_ = nullptr;
 		//SRV管理クラス
-		Kamaboko::SrvManager* srvManager_ = nullptr;
+		Elysia::SrvManager* srvManager_ = nullptr;
 
 	private:
 		//SRVハンドル

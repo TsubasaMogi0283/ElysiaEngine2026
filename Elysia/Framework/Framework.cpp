@@ -12,33 +12,33 @@
 #include "LevelDataManager.h"
 #include "GlobalVariables.h"
 
-Kamaboko::Framework::Framework(){
+Elysia::Framework::Framework(){
 
 	//インスタンスの取得
 	//ウィンドウ
-	windowsSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectX
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//SRV
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 	//RTV
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//ImGui管理クラス
-	imGuiManager_ = Kamaboko::ImGuiManager::GetInstance();
+	imGuiManager_ = Elysia::ImGuiManager::GetInstance();
 	//パイプライン
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//入力
-	input_ = Kamaboko::Input::GetInstance();
+	input_ = Elysia::Input::GetInstance();
 	//Audio
-	audio_ = Kamaboko::Audio::GetInstance();
+	audio_ = Elysia::Audio::GetInstance();
 	//JSON読み込み
-	globalVariables_ = Kamaboko::GlobalVariables::GetInstance();
+	globalVariables_ = Elysia::GlobalVariables::GetInstance();
 	//レベルデータ管理クラス
-	levelDataManager_ = Kamaboko::LevelDataManager::GetInstance();
+	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 
 }
 
-void Kamaboko::Framework::Initialize(){
+void Elysia::Framework::Initialize(){
 	//ここでタイトルバーの名前を決めてね
 	const wchar_t* TITLE_BAR_NAME = L"静寂の霊園";
 	//ウィンドウのサイズを決める
@@ -96,7 +96,7 @@ void Kamaboko::Framework::Initialize(){
 
 #pragma region ゲームループ内の関数
 
-void Kamaboko::Framework::BeginFrame(){
+void Elysia::Framework::BeginFrame(){
 	
 	//SRVの更新
 	srvManager_->PreDraw();
@@ -107,7 +107,7 @@ void Kamaboko::Framework::BeginFrame(){
 #endif
 }
 
-void Kamaboko::Framework::Update(){
+void Elysia::Framework::Update(){
 
 	//グローバル変数の更新
 	globalVariables_->Update();
@@ -119,7 +119,7 @@ void Kamaboko::Framework::Update(){
 	gameManager_->Update();
 }
 
-void Kamaboko::Framework::Draw(){
+void Elysia::Framework::Draw(){
 	
 	//PostEffectの描画前処理
 	gameManager_->PreDrawPostEffect();
@@ -144,7 +144,7 @@ void Kamaboko::Framework::Draw(){
 }
 
 
-void Kamaboko::Framework::EndFrame() {
+void Elysia::Framework::EndFrame() {
 
 #ifdef _DEBUG
 	////ImGuiのフレーム終わり
@@ -157,7 +157,7 @@ void Kamaboko::Framework::EndFrame() {
 #pragma endregion
 
 
-void Kamaboko::Framework::Finalize() {
+void Elysia::Framework::Finalize() {
 
 	//レベルエディタの解放
 	levelDataManager_->Finalize();
@@ -184,7 +184,7 @@ void Kamaboko::Framework::Finalize() {
 
 
 
-void Kamaboko::Framework::Run(){
+void Elysia::Framework::Run(){
 	//初期化
 	Initialize();
 	

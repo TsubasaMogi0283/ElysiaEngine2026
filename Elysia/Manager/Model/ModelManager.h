@@ -17,9 +17,9 @@
 
 
  /// <summary>
- /// KamabokoEngine
+ /// ElysiaEngine
  /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// モデル管理クラス

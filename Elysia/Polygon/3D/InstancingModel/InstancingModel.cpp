@@ -18,15 +18,15 @@
 
 InstancingModel::InstancingModel() {
 	//テクスチャ管理クラスの取得
-	textureManager_ = Kamaboko::TextureManager::GetInstance();
+	textureManager_ = Elysia::TextureManager::GetInstance();
 	//モデル管理クラスの取得
-	modelmanager_ = Kamaboko::ModelManager::GetInstance();
+	modelmanager_ = Elysia::ModelManager::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 
 }
 

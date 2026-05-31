@@ -18,9 +18,9 @@
 #include "TransformationMatrix.h"
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// ウィンドウクラス
 	/// </summary>
@@ -204,11 +204,11 @@ namespace Kamaboko {
 
 	private:
 		//ウィンドウクラス
-		Kamaboko::WindowsSetup* windowsSetup_ = nullptr;
+		Elysia::WindowsSetup* windowsSetup_ = nullptr;
 		//DirectXクラス
-		Kamaboko::DirectXSetup* directXSetup_ = nullptr;
+		Elysia::DirectXSetup* directXSetup_ = nullptr;
 		//パイプライン管理クラス
-		Kamaboko::PipelineManager* pipelineManager_ = nullptr;
+		Elysia::PipelineManager* pipelineManager_ = nullptr;
 
 	private:
 

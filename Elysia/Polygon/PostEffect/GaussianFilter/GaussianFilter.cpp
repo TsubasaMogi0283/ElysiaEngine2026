@@ -10,20 +10,20 @@
 
 
 
-Kamaboko::GaussianFilter::GaussianFilter(){
+Elysia::GaussianFilter::GaussianFilter(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//RTV管理クラスの取得
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-void Kamaboko::GaussianFilter::Initialize(){
+void Elysia::GaussianFilter::Initialize(){
 
 	//Effect
 	//リソースの生成
@@ -49,7 +49,7 @@ void Kamaboko::GaussianFilter::Initialize(){
 	srvManager_->CreateSRVForRenderTexture(rtvResource_.Get(), srvHandle_);
 }
 
-void Kamaboko::GaussianFilter::PreDraw(){
+void Elysia::GaussianFilter::PreDraw(){
 	
 	const float RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
@@ -67,13 +67,13 @@ void Kamaboko::GaussianFilter::PreDraw(){
 	uint32_t height = windowSetup_->GetClientHeight();
 
 	//ビューポート
-	directXSetup_->GenarateViewport(width,height);
+	directXSetup_->GenerateViewport(width,height);
 	//シザー矩形 
-	directXSetup_->GenarateScissor(width, height);
+	directXSetup_->GenerateScissor(width, height);
 	
 }
 
-void Kamaboko::GaussianFilter::Draw(){
+void Elysia::GaussianFilter::Draw(){
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(

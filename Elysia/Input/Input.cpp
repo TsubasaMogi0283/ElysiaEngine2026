@@ -1,18 +1,18 @@
 #include "Input.h"
 #include "WindowsSetup.h"
 
-Kamaboko::Input::Input() {
+Elysia::Input::Input() {
 	//インスタンスの取得
 	//ウィンドウズクラス
 	windowsSetup_ = WindowsSetup::GetInstance();
 }
 
-Kamaboko::Input* Kamaboko::Input::GetInstance() {
+Elysia::Input* Elysia::Input::GetInstance() {
 	static Input instance;
 	return &instance;
 }
 
-void Kamaboko::Input::Initialize() {
+void Elysia::Input::Initialize() {
 	
 	//DirectInputオブジェクトの生成
 	HRESULT hr = DirectInput8Create(
@@ -72,7 +72,7 @@ void Kamaboko::Input::Initialize() {
 
 #pragma region キーボード
 
-bool Kamaboko::Input::IsPushKey(const uint8_t& keyNumber) const{
+bool Elysia::Input::IsPushKey(const uint8_t& keyNumber) const{
 	if (currentKey_[keyNumber] != 0) {
 		return true;
 	}
@@ -80,14 +80,14 @@ bool Kamaboko::Input::IsPushKey(const uint8_t& keyNumber) const{
 
 }
 
-bool Kamaboko::Input::IsTriggerKey(const uint8_t& keyNumber) const{
+bool Elysia::Input::IsTriggerKey(const uint8_t& keyNumber) const{
 	if (currentKey_[keyNumber] != 0 && preKey_[keyNumber] == 0) {
 		return true;
 	}
 	return false;
 }
 
-bool Kamaboko::Input::IsReleaseKey(const uint8_t& keyNumber) const{
+bool Elysia::Input::IsReleaseKey(const uint8_t& keyNumber) const{
 	if (currentKey_[keyNumber] == 0 && preKey_[keyNumber] != 0) {
 		return true;
 	}
@@ -97,7 +97,7 @@ bool Kamaboko::Input::IsReleaseKey(const uint8_t& keyNumber) const{
 #pragma endregion
 
 #pragma region マウス
-bool Kamaboko::Input::IsPushMouse(const uint32_t& mouseNumber)const {
+bool Elysia::Input::IsPushMouse(const uint32_t& mouseNumber)const {
 	if (currentMouse_.rgbButtons[mouseNumber] != 0) {
 		return true;
 	}
@@ -105,13 +105,13 @@ bool Kamaboko::Input::IsPushMouse(const uint32_t& mouseNumber)const {
 }
 
 
-bool Kamaboko::Input::IsTriggerMouse(const uint32_t& mouseNumber)const {
+bool Elysia::Input::IsTriggerMouse(const uint32_t& mouseNumber)const {
 	if (currentMouse_.rgbButtons[mouseNumber] != 0 && preMouse_.rgbButtons[mouseNumber] == 0) {
 		return true;
 	}
 	return false;
 }
-bool Kamaboko::Input::IsReleaseMouse(const uint32_t& mouseNumber) const{
+bool Elysia::Input::IsReleaseMouse(const uint32_t& mouseNumber) const{
 	if (currentMouse_.rgbButtons[mouseNumber] == 0 && preMouse_.rgbButtons[mouseNumber] != 0) {
 		return true;
 	}
@@ -122,7 +122,7 @@ bool Kamaboko::Input::IsReleaseMouse(const uint32_t& mouseNumber) const{
 #pragma region コントローラー
 
 
-void Kamaboko::Input::SetVibration(const float_t& leftMotor, const float_t& rightMotor){
+void Elysia::Input::SetVibration(const float_t& leftMotor, const float_t& rightMotor){
 	XINPUT_VIBRATION vibration;
 	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
 	//0から65535まで
@@ -134,7 +134,7 @@ void Kamaboko::Input::SetVibration(const float_t& leftMotor, const float_t& righ
 	XInputSetState(0, &vibration);
 }
 
-void Kamaboko::Input::StopVibration(){
+void Elysia::Input::StopVibration(){
 	XINPUT_VIBRATION vibration;
 	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
 	vibration = {
@@ -148,7 +148,7 @@ void Kamaboko::Input::StopVibration(){
 
 #pragma endregion
 
-void Kamaboko::Input::Update() {
+void Elysia::Input::Update() {
 
 	//キーボード
 	//前回のキー入力を保存

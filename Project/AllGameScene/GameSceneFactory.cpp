@@ -2,10 +2,10 @@
 
 #include "TestScene/TestScene.h"
 
-std::unique_ptr<Kamaboko::IGameScene> GameSceneFactory::CreateScene(const std::string& sceneName){
+std::unique_ptr<Elysia::IGameScene> GameSceneFactory::CreateScene(const std::string& sceneName){
 
     //シーンを生成
-    std::unique_ptr<Kamaboko::IGameScene> newScene = nullptr;
+    std::unique_ptr<Elysia::IGameScene> newScene = nullptr;
 
     //テスト用
     if (sceneName == "Test") {

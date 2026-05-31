@@ -54,9 +54,9 @@ struct Material;
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// DirectXのクラス
 	/// </summary>
@@ -149,15 +149,15 @@ namespace Kamaboko {
 	private:
 
 		//DirectXのクラス
-		Kamaboko::DirectXSetup* directXSetup_ = nullptr;
+		Elysia::DirectXSetup* directXSetup_ = nullptr;
 		//パイプライン管理クラス
-		Kamaboko::PipelineManager* pipelineManager_ = nullptr;
+		Elysia::PipelineManager* pipelineManager_ = nullptr;
 		//SRV管理クラス
-		Kamaboko::SrvManager* srvManager_ = nullptr;
+		Elysia::SrvManager* srvManager_ = nullptr;
 		//テクスチャ管理クラス
-		Kamaboko::TextureManager* textureManager_ = nullptr;
+		Elysia::TextureManager* textureManager_ = nullptr;
 		//モデル管理クラス
-		Kamaboko::ModelManager* modelManager_ = nullptr;
+		Elysia::ModelManager* modelManager_ = nullptr;
 
 
 

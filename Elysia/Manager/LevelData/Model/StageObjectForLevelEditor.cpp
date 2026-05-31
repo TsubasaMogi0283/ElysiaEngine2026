@@ -10,7 +10,7 @@ void StageObjectForLevelEditor::Initialize(const uint32_t& modelhandle, const Tr
 	objectType_ = LevelEditorObjectType::StageObject;
 
 	//モデルの生成
-	model_.reset(Kamaboko::Model::Create(modelhandle));
+	model_.reset(Elysia::Model::Create(modelhandle));
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();

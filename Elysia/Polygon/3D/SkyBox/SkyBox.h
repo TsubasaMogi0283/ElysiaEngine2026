@@ -29,9 +29,9 @@ struct Camera;
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	#pragma region 前方宣言
 

@@ -5,15 +5,15 @@
 
 #include "Convert.h"
 
-Kamaboko::TextureManager* Kamaboko::TextureManager::GetInstance() {
-	static Kamaboko::TextureManager instance;
+Elysia::TextureManager* Elysia::TextureManager::GetInstance() {
+	static Elysia::TextureManager instance;
 	return &instance;
 }
 
 
 
 
-const D3D12_RESOURCE_DESC Kamaboko::TextureManager::GetResourceDesc(const uint32_t& textureHandle) {
+const D3D12_RESOURCE_DESC Elysia::TextureManager::GetResourceDesc(const uint32_t& textureHandle) {
 	//テクスチャの情報を取得
 	// handleからfilePathを取得
 	auto it = handleToFilePathMap_.find(textureHandle);
@@ -26,7 +26,7 @@ const D3D12_RESOURCE_DESC Kamaboko::TextureManager::GetResourceDesc(const uint32
 	return D3D12_RESOURCE_DESC{};
 }
 
-uint64_t Kamaboko::TextureManager::GetTextureWidth(const uint32_t& textureHandle){
+uint64_t Elysia::TextureManager::GetTextureWidth(const uint32_t& textureHandle){
 	//テクスチャの情報を取得
 	//handleからfilePathを取得
 	auto it = handleToFilePathMap_.find(textureHandle);
@@ -38,7 +38,7 @@ uint64_t Kamaboko::TextureManager::GetTextureWidth(const uint32_t& textureHandle
 	return 0u;
 }
 
-uint64_t Kamaboko::TextureManager::GetTextureHeight(const uint32_t& textureHandle){
+uint64_t Elysia::TextureManager::GetTextureHeight(const uint32_t& textureHandle){
 	//テクスチャの情報を取得
 	//handleからfilePathを取得
 	auto it = handleToFilePathMap_.find(textureHandle);
@@ -54,9 +54,9 @@ uint64_t Kamaboko::TextureManager::GetTextureHeight(const uint32_t& textureHandl
 
 
 //統合させた関数
-uint32_t Kamaboko::TextureManager::Load(const std::string& filePath) {
+uint32_t Elysia::TextureManager::Load(const std::string& filePath) {
 
-	Kamaboko::TextureManager* textureManager = TextureManager::GetInstance();
+	Elysia::TextureManager* textureManager = TextureManager::GetInstance();
 
 	//一度読み込んだものはその値を返す
 	//新規は勿論読み込みをする
@@ -66,7 +66,7 @@ uint32_t Kamaboko::TextureManager::Load(const std::string& filePath) {
 	}
 
 	//読み込むたびにインデックスを増やし重複を防ごう
-	textureManager->index_ = Kamaboko::SrvManager::GetInstance()->Allocate();
+	textureManager->index_ = Elysia::SrvManager::GetInstance()->Allocate();
 
 	//読み込んだデータを保存
 	TextureInformation textureInfo;
@@ -82,7 +82,7 @@ uint32_t Kamaboko::TextureManager::Load(const std::string& filePath) {
 		textureInfo.resource.Get(), textureInfo.mipImages).Get();
 
 	//SRVの生成
-	Kamaboko::SrvManager::GetInstance()->CreateSRVForTexture2D(
+	Elysia::SrvManager::GetInstance()->CreateSRVForTexture2D(
 		textureInfo.handle,
 		textureInfo.resource.Get(),
 		metadata.format, UINT(metadata.mipLevels), metadata.IsCubemap());
@@ -124,7 +124,7 @@ uint32_t Kamaboko::TextureManager::Load(const std::string& filePath) {
 //Textureを読み込むためのLoad関数
 //1.TextureデータそのものをCPUで読み込む
 
-DirectX::ScratchImage Kamaboko::TextureManager::LoadTextureData(const std::string& filePath) {
+DirectX::ScratchImage Elysia::TextureManager::LoadTextureData(const std::string& filePath) {
 
 	HRESULT hResult = {};
 
@@ -164,7 +164,7 @@ DirectX::ScratchImage Kamaboko::TextureManager::LoadTextureData(const std::strin
 
 //2.DirectX12のTextureResourceを作る
 
-ComPtr<ID3D12Resource> Kamaboko::TextureManager::CreateTextureResource(const DirectX::TexMetadata& metadata) {
+ComPtr<ID3D12Resource> Elysia::TextureManager::CreateTextureResource(const DirectX::TexMetadata& metadata) {
 	ComPtr<ID3D12Resource> resource = nullptr;
 
 	//1.metadataを基にResourceの設定
@@ -196,7 +196,7 @@ ComPtr<ID3D12Resource> Kamaboko::TextureManager::CreateTextureResource(const Dir
 
 
 	//3.Resourceを生成する
-	HRESULT hResult = Kamaboko::DirectXSetup::GetInstance()->GetDevice()->CreateCommittedResource(
+	HRESULT hResult = Elysia::DirectXSetup::GetInstance()->GetDevice()->CreateCommittedResource(
 		&heapProperties,					//Heapの設定
 		D3D12_HEAP_FLAG_NONE,				//Heapの特殊な設定
 		&resourceDesc,						//Resourceの設定
@@ -214,13 +214,13 @@ ComPtr<ID3D12Resource> Kamaboko::TextureManager::CreateTextureResource(const Dir
 //書き換え
 
 [[nodiscard]]
-ComPtr<ID3D12Resource> Kamaboko::TextureManager::TransferTextureData(ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
+ComPtr<ID3D12Resource> Elysia::TextureManager::TransferTextureData(ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
 
 	std::vector<D3D12_SUBRESOURCE_DATA> subresources;
-	DirectX::PrepareUpload(Kamaboko::DirectXSetup::GetInstance()->GetDevice().Get(), mipImages.GetImages(), mipImages.GetImageCount(), mipImages.GetMetadata(), subresources);
+	DirectX::PrepareUpload(Elysia::DirectXSetup::GetInstance()->GetDevice().Get(), mipImages.GetImages(), mipImages.GetImageCount(), mipImages.GetMetadata(), subresources);
 	uint64_t intermidiateSize = GetRequiredIntermediateSize(texture.Get(), 0, UINT(subresources.size()));
-	ComPtr<ID3D12Resource> intermediateSizeResource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(intermidiateSize);
-	UpdateSubresources(Kamaboko::DirectXSetup::GetInstance()->GetCommandList().Get(), texture.Get(), intermediateSizeResource.Get(), 0, 0, UINT(subresources.size()), subresources.data());
+	ComPtr<ID3D12Resource> intermediateSizeResource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(intermidiateSize);
+	UpdateSubresources(Elysia::DirectXSetup::GetInstance()->GetCommandList().Get(), texture.Get(), intermediateSizeResource.Get(), 0, 0, UINT(subresources.size()), subresources.data());
 
 	//Textureへの転送後は利用できるよう、D312_RESOURCE_STATE_COPY_DESTから
 	//D3D12_RESOURCE_STATE_GENERIC_READへResourceStateを変更する
@@ -231,7 +231,7 @@ ComPtr<ID3D12Resource> Kamaboko::TextureManager::TransferTextureData(ComPtr<ID3D
 	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
-	Kamaboko::DirectXSetup::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier);
+	Elysia::DirectXSetup::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier);
 
 
 	return intermediateSizeResource;
@@ -246,7 +246,7 @@ ComPtr<ID3D12Resource> Kamaboko::TextureManager::TransferTextureData(ComPtr<ID3D
 #pragma endregion
 
 
-void Kamaboko::TextureManager::GraphicsCommand(const uint32_t& rootParameter, const uint32_t& textureHandle) {
-	Kamaboko::SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(rootParameter, textureHandle);
+void Elysia::TextureManager::GraphicsCommand(const uint32_t& rootParameter, const uint32_t& textureHandle) {
+	Elysia::SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(rootParameter, textureHandle);
 }
 

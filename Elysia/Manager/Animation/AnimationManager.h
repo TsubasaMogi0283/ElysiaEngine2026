@@ -15,9 +15,9 @@
 struct Skeleton;
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// アニメーション管理クラス

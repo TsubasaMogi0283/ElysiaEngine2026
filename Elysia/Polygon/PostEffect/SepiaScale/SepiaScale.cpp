@@ -7,20 +7,20 @@
 #include "SrvManager.h"
 #include "RtvManager.h"
 
-Kamaboko::SepiaScale::SepiaScale(){
+Elysia::SepiaScale::SepiaScale(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_ = Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//RTV管理クラスの取得
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-void Kamaboko::SepiaScale::Initialize() {
+void Elysia::SepiaScale::Initialize() {
 	const Vector4 RENDER_TARGET_CLEAR_VALUE = {.x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
 	//リソースの生成
 	rtvResource_ = rtvManager_->CreateRenderTextureResource(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, RENDER_TARGET_CLEAR_VALUE);
@@ -36,7 +36,7 @@ void Kamaboko::SepiaScale::Initialize() {
 
 }
 
-void Kamaboko::SepiaScale::PreDraw() {
+void Elysia::SepiaScale::PreDraw() {
 
 	const float RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
 	//RT
@@ -54,13 +54,13 @@ void Kamaboko::SepiaScale::PreDraw() {
 	uint32_t height = windowSetup_->GetClientHeight();
 
 	//ビューポート
-	directXSetup_->GenarateViewport(width, height);
+	directXSetup_->GenerateViewport(width, height);
 	//シザー矩形 
-	directXSetup_->GenarateScissor(width, height);
+	directXSetup_->GenerateScissor(width, height);
 
 }
 
-void Kamaboko::SepiaScale::Draw() {
+void Elysia::SepiaScale::Draw() {
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(

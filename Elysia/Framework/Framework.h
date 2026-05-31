@@ -12,9 +12,9 @@
 #include "IAbstractSceneFactory.h"
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// ウィンドウクラス

@@ -7,7 +7,7 @@
 
 void WorldTransform::Initialize() {
 	//リソースの作成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(WorldTransformData)).Get();
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(WorldTransformData)).Get();
 
 	//初期値
 	//スケール

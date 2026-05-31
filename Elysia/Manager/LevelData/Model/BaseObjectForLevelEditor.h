@@ -159,7 +159,7 @@ public:
 
 protected:
 	//モデル
-	std::unique_ptr<Kamaboko::Model> model_ = nullptr;
+	std::unique_ptr<Elysia::Model> model_ = nullptr;
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_ = {};

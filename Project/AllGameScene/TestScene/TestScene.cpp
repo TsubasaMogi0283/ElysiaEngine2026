@@ -13,11 +13,11 @@
 TestScene::TestScene(){
 	//インスタンスの取得	
 	//入力
-	input_ = Kamaboko::Input::GetInstance();
+	input_ = Elysia::Input::GetInstance();
 	//モデル管理クラス
-	modelManager_ = Kamaboko::ModelManager::GetInstance();
+	modelManager_ = Elysia::ModelManager::GetInstance();
 	//レベルエディタ管理クラス
-	levelDataManager_ = Kamaboko::LevelDataManager::GetInstance();
+	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 }
 
 void TestScene::Initialize(){
@@ -27,7 +27,7 @@ void TestScene::Initialize(){
 
 	//仮プレイヤー
 	uint32_t playerModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "cube.obj");
-	playerModel_.reset(Kamaboko::Model::Create(playerModelHandle));
+	playerModel_.reset(Elysia::Model::Create(playerModelHandle));
 	playerWorldTransform_.Initialize();
 	playerWorldTransform_.scale = { .x = 0.5f,.y = 1.0f,.z=2.0f };
 	playerCenterPosition_ = { .x = 0.0f,.y = 0.0f,.z = -5.0f };
@@ -38,20 +38,20 @@ void TestScene::Initialize(){
 	uint32_t sphereModelHandle = modelManager_->Load("Resources/Model/Sample/Sphere", "Sphere.obj");
 	//四隅
 	for (uint32_t i = 0; i < COUNER_QUANTITY_; i++) {
-		playerCounerModel_[i].reset(Kamaboko::Model::Create(sphereModelHandle));
-		playerCounerWorldTransform_[i].Initialize();
+		playerCornerModel_[i].reset(Elysia::Model::Create(sphereModelHandle));
+		playerCornerWorldTransform_[i].Initialize();
 
 	}
 	
 	//吸収パーティクル
-	deadParticle_ = std::move(Kamaboko::Particle3D::Create(ParticleMoveType::Absorb));
+	deadParticle_ = std::move(Elysia::Particle3D::Create(ParticleMoveType::Absorb));
 	deadParticle_->SetIsReleaseOnceMode(false);
 	deadParticle_->SetIsToTransparent(true);
 	deadParticle_->SetCount(5u);
 	deadParticle_->SetFrequency(1.0f);
 
 
-	particle2_ = std::move(Kamaboko::Particle3D::Create(ParticleMoveType::NormalRelease));
+	particle2_ = std::move(Elysia::Particle3D::Create(ParticleMoveType::NormalRelease));
 	particle2_->SetIsReleaseOnceMode(false);
 	particle2_->SetIsToTransparent(true);
 	particle2_->SetCount(10u);
@@ -70,11 +70,11 @@ void TestScene::Initialize(){
 	directionalLight_.Initialize();
 
 	//背景
-	backTexture_ = std::make_unique<Kamaboko::BackTexture>();
+	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
 }
 
-void TestScene::Update(Kamaboko::GameManager* gameManager){
+void TestScene::Update(Elysia::GameManager* gameManager){
 
 
 	//再読み込み
@@ -133,7 +133,7 @@ void TestScene::Update(Kamaboko::GameManager* gameManager){
 
 	//四隅の球の更新
 	for (uint32_t i = 0; i < COUNER_QUANTITY_; i++) {
-		playerCounerWorldTransform_[i].Update();
+		playerCornerWorldTransform_[i].Update();
 	}
 
 	//プレイヤー更新

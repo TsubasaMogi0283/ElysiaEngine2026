@@ -1,14 +1,14 @@
 #include "SrvManager.h"
 
 
-Kamaboko::SrvManager* Kamaboko::SrvManager::GetInstance(){
+Elysia::SrvManager* Elysia::SrvManager::GetInstance(){
 	static SrvManager instance;
 	return &instance;
 }
 
-void Kamaboko::SrvManager::Initialize(){
+void Elysia::SrvManager::Initialize(){
 	//デスクリプタヒープの生成
-	descriptorHeap_ = DirectXSetup::GetInstance()->GenarateDescriptorHeap(
+	descriptorHeap_ = DirectXSetup::GetInstance()->GenerateDescriptorHeap(
 		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, MAX_SRV_COUNT_, true);
 
 	//SRV...ShaderResourceView
@@ -19,7 +19,7 @@ void Kamaboko::SrvManager::Initialize(){
 
 }
 
-uint32_t Kamaboko::SrvManager::Allocate(){
+uint32_t Elysia::SrvManager::Allocate(){
 
 	//上限だったらasset
 	assert(useIndex_ < MAX_SRV_COUNT_);
@@ -36,7 +36,7 @@ uint32_t Kamaboko::SrvManager::Allocate(){
 
 
 
-void Kamaboko::SrvManager::CreateSRVForTexture2D(const uint32_t& srvIndex, ID3D12Resource* resource, const  DXGI_FORMAT& format, const UINT& mipLevels, const bool& isCubeMap) {
+void Elysia::SrvManager::CreateSRVForTexture2D(const uint32_t& srvIndex, ID3D12Resource* resource, const  DXGI_FORMAT& format, const UINT& mipLevels, const bool& isCubeMap) {
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
@@ -61,7 +61,7 @@ void Kamaboko::SrvManager::CreateSRVForTexture2D(const uint32_t& srvIndex, ID3D1
 	
 }
 
-void Kamaboko::SrvManager::CreateSRVForStructuredBuffer(const uint32_t& srvIndex, ID3D12Resource* resource, const UINT& numElements, const UINT& structureByteStride){
+void Elysia::SrvManager::CreateSRVForStructuredBuffer(const uint32_t& srvIndex, ID3D12Resource* resource, const UINT& numElements, const UINT& structureByteStride){
 	
 	//SRVの設定
 	D3D12_BUFFER_SRV bufferSRV = {
@@ -85,7 +85,7 @@ void Kamaboko::SrvManager::CreateSRVForStructuredBuffer(const uint32_t& srvIndex
 
 }
 
-void Kamaboko::SrvManager::CreateSRVForRenderTexture(ID3D12Resource* resource,const uint32_t& handle){
+void Elysia::SrvManager::CreateSRVForRenderTexture(ID3D12Resource* resource,const uint32_t& handle){
 
 	//SRVの設定
 	D3D12_TEX2D_SRV tex2DRV = {
@@ -104,7 +104,7 @@ void Kamaboko::SrvManager::CreateSRVForRenderTexture(ID3D12Resource* resource,co
 
 }
 
-void Kamaboko::SrvManager::CreateSRVForDepthTexture(const uint32_t& handle){
+void Elysia::SrvManager::CreateSRVForDepthTexture(const uint32_t& handle){
 
 	//情報を設定
 	D3D12_TEX2D_SRV tex2DRV = {
@@ -126,7 +126,7 @@ void Kamaboko::SrvManager::CreateSRVForDepthTexture(const uint32_t& handle){
 
 }
 
-void Kamaboko::SrvManager::CreateSRVForPalette(const UINT& numElements, const UINT& structureByteStride, ID3D12Resource* resource, const uint32_t& handle){
+void Elysia::SrvManager::CreateSRVForPalette(const UINT& numElements, const UINT& structureByteStride, ID3D12Resource* resource, const uint32_t& handle){
 	
 	
 	//SRVの設定
@@ -148,19 +148,19 @@ void Kamaboko::SrvManager::CreateSRVForPalette(const UINT& numElements, const UI
 	};
 
 	//SRVを作る
-	Kamaboko::DirectXSetup::GetInstance()->GetDevice()->CreateShaderResourceView(
+	Elysia::DirectXSetup::GetInstance()->GetDevice()->CreateShaderResourceView(
 		resource, &paletteSrvDesc, GetCPUDescriptorHandle(handle));
 
 }
 
-void Kamaboko::SrvManager::PreDraw() {
+void Elysia::SrvManager::PreDraw() {
 	//コマンドを積む
 	ID3D12DescriptorHeap* descriptorHeaps[] = { descriptorHeap_.Get() };
 	DirectXSetup::GetInstance()->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
 
 }
 
-void Kamaboko::SrvManager::SetGraphicsRootDescriptorTable(const UINT& rootParameterIndex,const uint32_t& srvIndex){
+void Elysia::SrvManager::SetGraphicsRootDescriptorTable(const UINT& rootParameterIndex,const uint32_t& srvIndex){
 	DirectXSetup::GetInstance()->GetCommandList()->SetGraphicsRootDescriptorTable(
 		rootParameterIndex,
 		GetGPUDescriptorHandle(srvIndex));

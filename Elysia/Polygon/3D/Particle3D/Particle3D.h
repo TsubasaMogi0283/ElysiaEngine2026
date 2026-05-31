@@ -14,7 +14,6 @@
 
 #include "Camera.h"
 #include "Particle.h"
-#include "AccelerationField.h"
 #include "TransformationMatrix.h"
 #include "Matrix4x4Calculation.h"
 #include "VertexData.h"
@@ -50,9 +49,9 @@ struct SpotLight;
 
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// DirectXクラス
 	/// </summary>
@@ -118,7 +117,7 @@ namespace Kamaboko {
 		/// <summary>
 		/// Emitterで発生させる
 		/// </summary>
-		/// <param name="emmitter">エミッター</param>
+		/// <param name="emitter">エミッター</param>
 		/// <param name="randomEngine">ランダムエンジン</param>
 		/// <returns></returns>
 		std::list<ParticleInformation> Emission(const Emitter& emmitter, std::mt19937& randomEngine);
@@ -212,7 +211,7 @@ namespace Kamaboko {
 		/// 鉛直投げ上げのY方向のベロシティを設定
 		/// </summary>
 		/// <param name="velocityY">Yのベロシティ</param>
-		inline void SetThrowUpVeloityY(const float_t& velocityY) {
+		inline void SetThrowUpVelocityY(const float_t& velocityY) {
 			this->throwUpVelocityY_ = velocityY;
 		}
 
@@ -330,21 +329,22 @@ namespace Kamaboko {
 	private:
 
 		//モデル管理クラス
-		Kamaboko::ModelManager* modelManager_ = nullptr;
+		Elysia::ModelManager* modelManager_ = nullptr;
 		//テクスチャ管理クラス
-		Kamaboko::TextureManager* textureManager_ = nullptr;
+		Elysia::TextureManager* textureManager_ = nullptr;
 		//DirectXクラス
-		Kamaboko::DirectXSetup* directXSetup_ = nullptr;
+		Elysia::DirectXSetup* directXSetup_ = nullptr;
 		//SRV管理クラス
-		Kamaboko::SrvManager* srvManager_ = nullptr;
+		Elysia::SrvManager* srvManager_ = nullptr;
 		//パイプライン管理クラス
-		Kamaboko::PipelineManager* pipelineManager_ = nullptr;
+		Elysia::PipelineManager* pipelineManager_ = nullptr;
 
 	private:
 		//時間変化
 		const float_t DELTA_TIME_ = 1.0f / 60.0f;
 		//線形補間で増える値
 		const float_t T_INCREASE_VALUE_ = 0.01f;
+		const float_t ACCEL_ = -0.001f;
 	private:
 
 		//頂点リソースを作る
@@ -400,7 +400,7 @@ namespace Kamaboko {
 		//一度だけ放出するかどうか
 		bool isReleaseOnceMode_ = true;
 		//出し終えたかどうか
-		bool isReeasedOnce_ = false;
+		bool isReleasedOnce_ = false;
 		//生成を止めるかどうか
 		bool isStopGenerate_ = false;
 

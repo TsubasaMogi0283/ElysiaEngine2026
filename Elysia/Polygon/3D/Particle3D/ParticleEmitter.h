@@ -2,7 +2,6 @@
 #include <string>
 #include "Vector3.h"
 #include "Transform.h"
-#include <Polygon/3D/Particle3DManager/Particle3DManager.h>
 
 class ParticleEmitter{
 public:

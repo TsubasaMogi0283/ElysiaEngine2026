@@ -12,9 +12,9 @@
 #include "DirectXSetup.h"
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// パイプライン管理クラス

@@ -7,20 +7,20 @@
 #include "SrvManager.h"
 #include "RtvManager.h"
 
-Kamaboko::BackTexture::BackTexture() {
+Elysia::BackTexture::BackTexture() {
 	//ウィンドウクラスの取得
-	windowsSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
-	directXSetup_= Kamaboko::DirectXSetup::GetInstance();
+	directXSetup_= Elysia::DirectXSetup::GetInstance();
 	//RTV管理クラスの取得
-	rtvManager_ = Kamaboko::RtvManager::GetInstance();
+	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
-	srvManager_ = Kamaboko::SrvManager::GetInstance();
+	srvManager_ = Elysia::SrvManager::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelineManager_ = Kamaboko::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 }
 
-void Kamaboko::BackTexture::Initialize(){
+void Elysia::BackTexture::Initialize(){
 
 	//エフェクトの種類を設定
 	effectType_ = NoneEffect;
@@ -51,7 +51,7 @@ void Kamaboko::BackTexture::Initialize(){
 
 }
 
-void Kamaboko::BackTexture::PreDraw(){
+void Elysia::BackTexture::PreDraw(){
 	
 	//RTの設定
 	const float RENDER_TARGET_CLEAR_VALUE[] = { color_.x,color_.y,color_.z,color_.w };
@@ -71,14 +71,14 @@ void Kamaboko::BackTexture::PreDraw(){
 	uint32_t height = windowsSetup_->GetClientHeight();
 
 	//ビューポート
-	directXSetup_->GenarateViewport(width,height);
+	directXSetup_->GenerateViewport(width,height);
 	
 	//シザー矩形 
-	directXSetup_->GenarateScissor(width, height);
+	directXSetup_->GenerateScissor(width, height);
 	
 }
 
-void Kamaboko::BackTexture::Draw(){
+void Elysia::BackTexture::Draw(){
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(

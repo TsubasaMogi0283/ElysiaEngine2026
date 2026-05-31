@@ -15,7 +15,7 @@ void Material::Initialize(){
 	//環境マップ
 	isEnviromentMap = false;
 	//リソースを生成
-	resource = Kamaboko::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(MaterialData));
+	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(MaterialData));
 
 }
 

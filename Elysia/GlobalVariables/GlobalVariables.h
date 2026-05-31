@@ -11,16 +11,16 @@
 #include <string>
 #include <map>
 #include <fstream>
-#include <json.hpp>
+#include <nlohmannJSON/json.hpp>
 
 
 #include "Vector3.h"
 #include "Vector2.h"
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// 調整項目クラス(グローバル変数クラス)

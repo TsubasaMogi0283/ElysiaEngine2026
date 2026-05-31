@@ -9,9 +9,9 @@
 #include "DirectXSetup.h"
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 
 	/// <summary>
 	/// SRV管理クラス

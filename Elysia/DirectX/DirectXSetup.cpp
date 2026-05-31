@@ -1,6 +1,5 @@
 #include "DirectXSetup.h"
 #include <thread>
-#include <d3dx12.h>
 
 #include "WindowsSetup.h"
 #include "Convert.h"
@@ -11,19 +10,19 @@
 
 
 
-Kamaboko::DirectXSetup::DirectXSetup() {
+Elysia::DirectXSetup::DirectXSetup() {
 	//ウィンドウクラスのインスタンスを取得
-	windowsSetup_ = Kamaboko::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }
 
-Kamaboko::DirectXSetup* Kamaboko::DirectXSetup::GetInstance() {
+Elysia::DirectXSetup* Elysia::DirectXSetup::GetInstance() {
 	//関数内static変数として宣言する
 	static DirectXSetup instance;
 	return &instance;
 }
 
 
-ComPtr<ID3D12DescriptorHeap> Kamaboko::DirectXSetup::GenarateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType,UINT numDescriptors, bool shaderVisible) {
+ComPtr<ID3D12DescriptorHeap> Elysia::DirectXSetup::GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType,UINT numDescriptors, bool shaderVisible) {
 
 	ComPtr<ID3D12DescriptorHeap> descriptorHeap= nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc={
@@ -44,7 +43,7 @@ ComPtr<ID3D12DescriptorHeap> Kamaboko::DirectXSetup::GenarateDescriptorHeap(D3D1
 
 }
 
-ComPtr<ID3D12Resource> Kamaboko::DirectXSetup::CreateBufferResource(const size_t& sizeInBytes) {
+ComPtr<ID3D12Resource> Elysia::DirectXSetup::CreateBufferResource(const size_t& sizeInBytes) {
 
 	ComPtr<ID3D12Resource> resource = nullptr;
 	
@@ -77,7 +76,7 @@ ComPtr<ID3D12Resource> Kamaboko::DirectXSetup::CreateBufferResource(const size_t
 	return resource;
 }
 
-ComPtr<ID3D12Resource> Kamaboko::DirectXSetup::GenerateDepthStencilTextureResource(const uint32_t& width, const uint32_t& height) {
+ComPtr<ID3D12Resource> Elysia::DirectXSetup::GenerateDepthStencilTextureResource(const uint32_t& width, const uint32_t& height) {
 	D3D12_RESOURCE_DESC resourceDesc{
 		//2次元
 		.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D,
@@ -115,7 +114,7 @@ ComPtr<ID3D12Resource> Kamaboko::DirectXSetup::GenerateDepthStencilTextureResour
 
 	//Resourceの作成
 	ComPtr<ID3D12Resource> resource = nullptr;
-	HRESULT hr = Kamaboko::DirectXSetup::GetInstance()->device_->CreateCommittedResource(
+	HRESULT hr = Elysia::DirectXSetup::GetInstance()->device_->CreateCommittedResource(
 		//Heapの設定 
 		&heapProperties,
 		//Heapの特殊な設定。特になし。
@@ -136,7 +135,7 @@ ComPtr<ID3D12Resource> Kamaboko::DirectXSetup::GenerateDepthStencilTextureResour
 
 #pragma region Initializeの所で使う関数
 
-void Kamaboko::DirectXSetup::GenerateDXGIFactory() {
+void Elysia::DirectXSetup::GenerateDXGIFactory() {
 	//DXGIファクトリーの生成
 #ifdef _DEBUG
 	ComPtr<ID3D12Debug1> debugController;
@@ -152,7 +151,7 @@ void Kamaboko::DirectXSetup::GenerateDXGIFactory() {
 	
 }
 
-void Kamaboko::DirectXSetup::SelectAdapter() {
+void Elysia::DirectXSetup::SelectAdapter() {
 	//仕様するアダプタ用の変数、最初にnullptrを入れておく
 
 	ComPtr<IDXGIFactory7> dxgiFactory;
@@ -196,7 +195,7 @@ void Kamaboko::DirectXSetup::SelectAdapter() {
 
 }
 
-void Kamaboko::DirectXSetup::GenerateD3D12Device() {
+void Elysia::DirectXSetup::GenerateD3D12Device() {
 	//機能レベルとログ出力用の文字
 	D3D_FEATURE_LEVEL featureLevels[] = {
 		D3D_FEATURE_LEVEL_12_2,
@@ -228,7 +227,7 @@ void Kamaboko::DirectXSetup::GenerateD3D12Device() {
 
 }
 
-void Kamaboko::DirectXSetup::StopErrorWarning() {
+void Elysia::DirectXSetup::StopErrorWarning() {
 
 #ifdef _DEBUG
 	
@@ -272,7 +271,7 @@ void Kamaboko::DirectXSetup::StopErrorWarning() {
 
 }
 
-void Kamaboko::DirectXSetup::GenerateCommand() {
+void Elysia::DirectXSetup::GenerateCommand() {
 	
 	//コマンドキューを生成する
 	HRESULT hr = {};
@@ -306,7 +305,7 @@ void Kamaboko::DirectXSetup::GenerateCommand() {
 	DirectXSetup::GetInstance()->commandList_ = commandList;
 }
 
-void Kamaboko::DirectXSetup::GenerateSwapChain() {
+void Elysia::DirectXSetup::GenerateSwapChain() {
 	
 	//60fpsそのまま映すと大変なので2枚用意して
 	//描画(フロントバッファ)と表示(バックバッファ、プライマリバッファ)に分ける。
@@ -360,13 +359,13 @@ void Kamaboko::DirectXSetup::GenerateSwapChain() {
 
 }
 
-void Kamaboko::DirectXSetup::GenarateDescriptorHeap() {
+void Elysia::DirectXSetup::GenerateDescriptorHeap() {
 	
 	ComPtr<ID3D12Resource> depthStencilResource = GenerateDepthStencilTextureResource(
 		WindowsSetup::GetInstance()->GetClientWidth(),
 		WindowsSetup::GetInstance()->GetClientHeight());
 
-	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = GenarateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
+	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
 
 
 
@@ -386,7 +385,7 @@ void Kamaboko::DirectXSetup::GenarateDescriptorHeap() {
 	DirectXSetup::GetInstance()->depthStencilResource_ = depthStencilResource;
 }
 
-void Kamaboko::DirectXSetup::PullResourcesFromSwapChain() {
+void Elysia::DirectXSetup::PullResourcesFromSwapChain() {
 	 
 	HRESULT hr = DirectXSetup::GetInstance()->swapChain_.swapChain->GetBuffer(0, IID_PPV_ARGS(& DirectXSetup::GetInstance()->swapChain_.resource[0]));
 	//上手く取得できなければ起動できない
@@ -398,7 +397,7 @@ void Kamaboko::DirectXSetup::PullResourcesFromSwapChain() {
 
 }
 
-void Kamaboko::DirectXSetup::GenarateFence() {
+void Elysia::DirectXSetup::GenerateFence() {
 
 	//上の2つはSwapChain用
 
@@ -432,7 +431,7 @@ void Kamaboko::DirectXSetup::GenarateFence() {
 
 
 
-void Kamaboko::DirectXSetup::GenarateViewport(const uint32_t& width,const uint32_t& height) {
+void Elysia::DirectXSetup::GenerateViewport(const uint32_t& width,const uint32_t& height) {
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	D3D12_VIEWPORT viewport = {
 		.TopLeftX = 0.0f,
@@ -449,7 +448,7 @@ void Kamaboko::DirectXSetup::GenarateViewport(const uint32_t& width,const uint32
 
 }
 
-void Kamaboko::DirectXSetup::GenarateScissor(const uint32_t& right,const uint32_t& bottom) {
+void Elysia::DirectXSetup::GenerateScissor(const uint32_t& right,const uint32_t& bottom) {
 	
 	//基本的にビューポートと同じ矩形が構成されるようにする
 
@@ -467,11 +466,11 @@ void Kamaboko::DirectXSetup::GenarateScissor(const uint32_t& right,const uint32_
 
 }
 
-void Kamaboko::DirectXSetup::SetResourceBarrier(const ComPtr<ID3D12Resource>& resource,const D3D12_RESOURCE_STATES& beforeState,const D3D12_RESOURCE_STATES& afterState){
+void Elysia::DirectXSetup::SetResourceBarrier(const ComPtr<ID3D12Resource>& resource,const D3D12_RESOURCE_STATES& beforeState,const D3D12_RESOURCE_STATES& afterState){
 	
 
 	//TransitionBarrierを張るコード
-	//現在のResourceStateを設定する必要がある → ResorceがどんなStateなのかを追跡する必要がある
+	//現在のResourceStateを設定する必要がある → ResourceがどんなStateなのかを追跡する必要がある
 	//追跡する仕組みはStateTrackingという
 	D3D12_RESOURCE_BARRIER barrier={
 		//タイプを設定
@@ -492,10 +491,10 @@ void Kamaboko::DirectXSetup::SetResourceBarrier(const ComPtr<ID3D12Resource>& re
 
 }
 
-void Kamaboko::DirectXSetup::SetResourceBarrierForSwapChain(const D3D12_RESOURCE_STATES& beforeState,const D3D12_RESOURCE_STATES& afterState){
+void Elysia::DirectXSetup::SetResourceBarrierForSwapChain(const D3D12_RESOURCE_STATES& beforeState,const D3D12_RESOURCE_STATES& afterState){
 
 	//TransitionBarrierを張るコード
-	//現在のResourceStateを設定する必要がある → ResorceがどんなStateなのかを追跡する必要がある
+	//現在のResourceStateを設定する必要がある → ResourceがどんなStateなのかを追跡する必要がある
 	//追跡する仕組みはStateTrackingという
 	
 	//コマンドを積みこんで確定させる
@@ -520,7 +519,7 @@ void Kamaboko::DirectXSetup::SetResourceBarrierForSwapChain(const D3D12_RESOURCE
 
 
 //FPS固定初期化
-void Kamaboko::DirectXSetup::InitializeFPS() {
+void Elysia::DirectXSetup::InitializeFPS() {
 	//現在時間を記録する
 	//初期化前の時間を記録
 	//std::chrono::steady_clock...逆行しないタイマー
@@ -531,7 +530,7 @@ void Kamaboko::DirectXSetup::InitializeFPS() {
 
 #pragma endregion
 
-void Kamaboko::DirectXSetup::FirstInitialize() {
+void Elysia::DirectXSetup::FirstInitialize() {
 	//出力ウィンドウへの文字出力
 	OutputDebugStringA("Hello,DirectX!\n");
 
@@ -570,14 +569,14 @@ void Kamaboko::DirectXSetup::FirstInitialize() {
 	//3.引っ張ってきたResourceに対してDescriptor上にRTVを作る
 
 	////DescriptorHeap(RTV用)を生成する
-	GenarateDescriptorHeap();
+	GenerateDescriptorHeap();
 
 	//スワップチェーンを引っ張ってくる
 	PullResourcesFromSwapChain();
 
 }
 
-void Kamaboko::DirectXSetup::SecondInitialize() {
+void Elysia::DirectXSetup::SecondInitialize() {
 
 	//名前を設定
 	DirectXSetup::GetInstance()->swapChainName_[0] = "SwapChainNumber1";
@@ -594,13 +593,13 @@ void Kamaboko::DirectXSetup::SecondInitialize() {
 
 
 	//フェンスを生成
-	GenarateFence();
+	GenerateFence();
 
 }
 
 
 
-void Kamaboko::DirectXSetup::UpdateFPS() {
+void Elysia::DirectXSetup::UpdateFPS() {
 	//1/60秒ピッタリの時間
 	//1フレームの時間
 	const std::chrono::microseconds MIN_TIME(uint64_t(1000000.0f / 60.0f));
@@ -636,7 +635,7 @@ void Kamaboko::DirectXSetup::UpdateFPS() {
 
 
 
-IDxcBlob* Kamaboko::DirectXSetup::CompileShader(const std::wstring& filePath, const wchar_t* profile){
+IDxcBlob* Elysia::DirectXSetup::CompileShader(const std::wstring& filePath, const wchar_t* profile){
 	//DXCの初期化
 	//dxcCompilerを初期化
 	HRESULT hr = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils_));
@@ -649,15 +648,15 @@ IDxcBlob* Kamaboko::DirectXSetup::CompileShader(const std::wstring& filePath, co
 	hr = dxcUtils_->CreateDefaultIncludeHandler(&includeHandler_);
 	assert(SUCCEEDED(hr));
 
-	//1.hlslファイルを読む
+	//1.HLSLファイルを読む
 	windowsSetup_->OutPutStringA(Convert::Text::ToString(std::format(L"Begin CompileShader,path:{},profile:{}\n", filePath, profile)));
-	//hlslファイルを読む
+	//HLSLファイルを読む
 	IDxcBlobEncoding* shaderSource = nullptr;
 	hr = dxcUtils_->LoadFile(filePath.c_str(), nullptr, &shaderSource);
 	//読めなかったら止める
 	assert(SUCCEEDED(hr));
 	//読み込んだファイルの内容を設定する
-	DxcBuffer shaderSourceBuffer;
+	DxcBuffer shaderSourceBuffer = {};
 	shaderSourceBuffer.Ptr = shaderSource->GetBufferPointer();
 	shaderSourceBuffer.Size = shaderSource->GetBufferSize();
 	shaderSourceBuffer.Encoding = DXC_CP_UTF8;
@@ -705,7 +704,7 @@ IDxcBlob* Kamaboko::DirectXSetup::CompileShader(const std::wstring& filePath, co
 
 }
 
-void Kamaboko::DirectXSetup::StartDraw() {
+void Elysia::DirectXSetup::StartDraw() {
 
 	////コマンドをキックする
 	//コマンドを積む・・・CommandListに処理を追加していくこと
@@ -745,10 +744,10 @@ void Kamaboko::DirectXSetup::StartDraw() {
 	uint32_t height = WindowsSetup::GetInstance()->GetClientHeight();
 
 	//ビューポートの生成
-	GenarateViewport(width, height);
+	GenerateViewport(width, height);
 	
 	//シザーを生成
-	GenarateScissor(width, height);
+	GenerateScissor(width, height);
 	
 }
 
@@ -756,7 +755,7 @@ void Kamaboko::DirectXSetup::StartDraw() {
 
 
 
-void Kamaboko::DirectXSetup::EndDraw() {
+void Elysia::DirectXSetup::EndDraw() {
 	////画面表示出来るようにする
 	//ここがflameの最後
 	//画面に描く処理は「全て終わり」、画面に映すので、状態を遷移
@@ -809,7 +808,7 @@ void Kamaboko::DirectXSetup::EndDraw() {
 	assert(SUCCEEDED(hr));
 }
 
-void Kamaboko::DirectXSetup::Release() {
+void Elysia::DirectXSetup::Release() {
 
 	//解放処理
 	CloseHandle(fenceEvent_);

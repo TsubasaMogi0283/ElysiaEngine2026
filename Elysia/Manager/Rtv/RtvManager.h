@@ -18,9 +18,9 @@
 struct Vector4;
 
 /// <summary>
-/// KamabokoEngine
+/// ElysiaEngine
 /// </summary>
-namespace Kamaboko {
+namespace Elysia {
 	/// <summary>
 	/// RTV管理クラス
 	/// </summary>
