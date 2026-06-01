@@ -106,6 +106,25 @@ struct Vector3 {
 #pragma endregion
 
 	/// <summary>
+	/// 長さを求める(Vector3)
+	/// </summary>
+	/// <param name="v">ベクトル</param>
+	/// <returns>長さ</returns>
+	static inline float_t Length(const Vector3& v) {
+		return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	};
+
+	/// <summary>
+	/// 内積(Vector3)
+	/// </summary>
+	/// <param name="v1">ベクトル1</param>
+	/// <param name="v2">べクトル2</param>
+	/// <returns>内積の計算結果</returns>
+	static inline float_t Dot(const Vector3& v1, const Vector3& v2) {
+		return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+	};
+
+	/// <summary>
 	/// 正規化
 	/// </summary>
 	/// <param name="v"></param>
@@ -166,8 +185,7 @@ struct Vector3 {
 		Vector3 normalizeV2 = Normalize(v2);
 
 		//内積
-		float_t dot = SingleCalculation::Dot(normalizeV1, normalizeV2);
-
+		float_t dot = Dot(normalizeV1, normalizeV2);
 		//θを求める
 		float_t theta = std::acosf(dot) * newT;
 
@@ -216,9 +234,9 @@ struct Vector3 {
 	/// <returns></returns>
 	static inline Vector3 Project(const Vector3& v1, const Vector3& v2) {
 		//内積
-		float_t dot = SingleCalculation::Dot(v1, v2);
+		float_t dot = Dot(v1, v2);
 		//長さ
-		float_t length = SingleCalculation::Length(v2);
+		float_t length = Length(v2);
 		float_t t = dot / (length * length);
 		//最終結果
 		Vector3 result = {

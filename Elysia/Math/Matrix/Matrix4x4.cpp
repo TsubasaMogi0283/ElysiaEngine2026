@@ -2,7 +2,6 @@
 
 #include "Vector3.h"
 #include "Quaternion.h"
-#include "SingleCalculation.h"
 
 Matrix4x4 Matrix4x4::MakeIdentity4x4() {
 	Matrix4x4 result = {

@@ -52,5 +52,3 @@ namespace CollisionCalculation {
 	bool IsFanCollision(const Fan3D& fan, const Vector3& point);
 
 }
-
-

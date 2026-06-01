@@ -18,7 +18,7 @@
 /// </summary>
 struct Animation {
 	//アニメーション全体の尺
-	float duration=0.0f;
+	float_t duration=0.0f;
 	//NodeAnimationの集合
 	//Node名でひけるようにする
 	std::map<std::string, NodeAnimation>nodeAnimations = {};

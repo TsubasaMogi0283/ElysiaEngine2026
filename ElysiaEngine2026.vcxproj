@@ -152,7 +152,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\Math\Matrix\Matrix4x4.cpp" />
     <ClCompile Include="Elysia\Math\PushBackCalculation\PushBackCalculation.cpp" />
     <ClCompile Include="Elysia\Math\Quaternion\Quaternion.cpp" />
-    <ClCompile Include="Elysia\Math\Single\SingleCalculation.cpp" />
     <ClCompile Include="Elysia\Math\Transform\WorldTransform.cpp" />
     <ClCompile Include="Elysia\Math\Vector\Vector3.cpp" />
     <ClCompile Include="Elysia\Polygon\2D\Sprite\Sprite.cpp" />

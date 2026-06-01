@@ -86,7 +86,7 @@ public:
 	/// </summary>
 	/// <param name="quaternion"></param>
 	/// <returns></returns>
-	static inline float_t Norm(const Quaternion& quaternion);
+	static float_t Norm(const Quaternion& quaternion);
 
 	/// <summary>
 	/// 正規化したQuaternionを返す
@@ -119,8 +119,4 @@ public:
 	/// <returns></returns>
 	static Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, const float_t& t);
 
-
-
 };
-
-

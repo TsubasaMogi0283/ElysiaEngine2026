@@ -5,9 +5,6 @@
 #include <cmath>
 #include <imgui.h>
 
-#include "SingleCalculation.h"
-
-
 bool CollisionCalculation::IsCollisionAABBPair(const AABB& aabb1, const AABB& aabb2){
     if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) &&
         (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) &&
@@ -53,8 +50,6 @@ bool CollisionCalculation::IsCollisionAABBAndPoint(const AABB& aabb, const Vecto
     else {
         return false;
     }
-
-
 }
 
 bool CollisionCalculation::IsFanCollision(const Fan2D& fan, const Vector2& point){
@@ -80,11 +75,11 @@ bool CollisionCalculation::IsFanCollision(const Fan2D& fan, const Vector2& point
     //内積を求める
     //左右一致するはず
     //左側
-    float_t centerAndLSDot = SingleCalculation::Dot(direction, fan.leftVector);
+    float_t centerAndLSDot = Vector2::Dot(direction, fan.leftVector);
     //右側
-    float_t centerAndRSDot = SingleCalculation::Dot(direction, fan.rightVector);
+    float_t centerAndRSDot = Vector2::Dot(direction, fan.rightVector);
     //ターゲット
-    float_t centerAndTargetDot = SingleCalculation::Dot(direction, normalizedFanAndPoint); 
+    float_t centerAndTargetDot = Vector2::Dot(direction, normalizedFanAndPoint);
 #ifdef _DEBUG
 
     ImGui::Begin("FanDirection");
@@ -229,11 +224,11 @@ bool CollisionCalculation::IsFanCollision(const Fan3D& fan, const Vector3& point
     Vector2 newZYDirection = { .x = normalizedFanAndPoint.z,.y = normalizedFanAndPoint.y };
 
     //左側
-    float_t dotLS = SingleCalculation::Dot({.x = direction.x,.y = direction.z }, newLeftDirection);
+    float_t dotLS = Vector2::Dot({.x = direction.x,.y = direction.z }, newLeftDirection);
     //右側
-    float_t dotRS = SingleCalculation::Dot({.x = direction.x,.y = direction.z }, newRightDirection);
+    float_t dotRS = Vector2::Dot({.x = direction.x,.y = direction.z }, newRightDirection);
     //ターゲット
-    float_t dotCenterXZ = SingleCalculation::Dot({ .x = direction.x,.y = direction.z }, newXZDirection);
+    float_t dotCenterXZ = Vector2::Dot({ .x = direction.x,.y = direction.z }, newXZDirection);
     //角度を測って当たり判定をとろうと思ったけど一周した後が大変なことになっている
     //内積でやった方が良いことに気づいたのでそちらで計算する
     if (dotCenterXZ < dotLS ||

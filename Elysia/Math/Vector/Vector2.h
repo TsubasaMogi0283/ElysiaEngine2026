@@ -113,5 +113,22 @@ struct Vector2 {
 		return result;
 	};
 
+	/// <summary>
+	/// 長さを求める(Vector2)
+	/// </summary>
+	/// <param name="v">ベクトル</param>
+	/// <returns>長さ</returns>
+	static inline float_t Length(const Vector2& v) {
+		return sqrtf(v.x * v.x + v.y * v.y);
+	};
 
+	/// <summary>
+	/// 内積(Vector2)
+	/// </summary>
+	/// <param name="v1">ベクトル1</param>
+	/// <param name="v2">ベクトル2</param>
+	/// <returns>結果</returns>
+	static inline float_t Dot(const Vector2& v1, const Vector2& v2) {
+		return (v1.x * v2.x + v1.y * v2.y);
+	};
 };

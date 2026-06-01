@@ -294,9 +294,6 @@
     <ClCompile Include="Elysia\Math\PushBackCalculation\PushBackCalculation.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Math\Single\SingleCalculation.cpp">
-      <Filter>Elysia\ソース ファイル\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Math\Transform\WorldTransform.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
