@@ -10,7 +10,6 @@
 
 #include "Vector4.h"
 #include "Matrix4x4.h"
-#include "Matrix4x4Calculation.h"
 #include "Transform.h"
 #include "VertexData.h"
 #include "Material.h"
@@ -54,7 +53,7 @@ namespace Elysia {
 		/// <summary>
 		/// 描画
 		/// </summary>
-		/// <param name="sphereCondtion"></param>
+		/// <param name="sphereCondition"></param>
 		/// <param name="transform"></param>
 		/// <param name="viewMatrix"></param>
 		/// <param name="projectionMatrix"></param>
@@ -73,6 +72,9 @@ namespace Elysia {
 		//DirectX内にある情報を取り入れる
 		DirectXSetup* directXSetup_ = nullptr;
 
+	private:
+		//分割数
+		const int32_t SUBDIVISION_ = 16;
 
 	private:
 
@@ -85,25 +87,23 @@ namespace Elysia {
 
 		//初期化
 		//頂点データ
-		ComPtr<ID3D12Resource> vertexResourceSphere_ = nullptr;
-		VertexData* vertexDataSphere_ = nullptr;
+		ComPtr<ID3D12Resource> vertexResource_ = nullptr;
+		VertexData* vertexData_ = nullptr;
 
 
 		//マテリアル用のリソースを作る
-		ComPtr<ID3D12Resource> materialResourceSphere_ = nullptr;
+		ComPtr<ID3D12Resource> materialResource_ = nullptr;
 		MaterialData* materialData_ = nullptr;
 
 		//球を描画するとき用のTransformationMatrix用のリソースを作る。
 		//Matrix4x4 1つ分サイズを用意する
-		ComPtr<ID3D12Resource> transformationMatrixResourceSphere_ = nullptr;
-		TransformationMatrix* transformationMatrixDataSphere_ = nullptr;
+		ComPtr<ID3D12Resource> transformationMatrixResource_ = nullptr;
+		TransformationMatrix* transformationMatrixData_ = nullptr;
 
 		//Lighting用
 		ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;
 		DirectionalLightData* directionalLightData_ = nullptr;
 
-		//分割数
-		const int32_t SUBDIVISION_ = 16;
-
+		
 	};
 }

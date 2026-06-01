@@ -2,15 +2,14 @@
 
 #include <imgui.h>
 
-#include "VectorCalculation.h"
 
-void StageObjectForLevelEditor::Initialize(const uint32_t& modelhandle, const Transform& transform) {
+void StageObjectForLevelEditor::Initialize(const uint32_t& modelHandle, const Transform& transform) {
 	
 	//レベルエディタ用のオブジェクトのタイプ
 	objectType_ = LevelEditorObjectType::StageObject;
 
 	//モデルの生成
-	model_.reset(Elysia::Model::Create(modelhandle));
+	model_.reset(Elysia::Model::Create(modelHandle));
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
@@ -31,8 +30,8 @@ void StageObjectForLevelEditor::Update(){
 
 	//AABBの設定
 	aabb_ = {
-		.min = VectorCalculation::Subtract(worldTransform_.GetWorldPosition(),size_),
-		.max = VectorCalculation::Add(worldTransform_.GetWorldPosition(),size_)
+		.min = worldTransform_.GetWorldPosition()-size_,
+		.max = worldTransform_.GetWorldPosition()+size_
 	};
 
 #ifdef _DEBUG
@@ -43,7 +42,4 @@ void StageObjectForLevelEditor::Update(){
 	ImGui::InputFloat3("AABB_Min", &aabb_.min.x);
 	ImGui::End();
 #endif // _DEBUG
-
-
-
 }

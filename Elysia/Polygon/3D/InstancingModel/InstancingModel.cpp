@@ -115,8 +115,8 @@ void InstancingModel::Draw(const WorldTransform& worldTransform, const Camera& c
 	//PixelShaderに送る方のカメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//環境マップ
-	if (material.isEnviromentMap && eviromentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8u, eviromentTextureHandle_);
+	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
+		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
@@ -166,8 +166,8 @@ void InstancingModel::Draw(const WorldTransform& worldTransform, const Camera& c
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//PointLight
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, pointLight.resource->GetGPUVirtualAddress());
-	if (material.isEnviromentMap && eviromentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8, eviromentTextureHandle_);
+	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
+		srvManager_->SetGraphicsRootDescriptorTable(8, environmentTextureHandle_);
 	}
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
@@ -219,8 +219,8 @@ void InstancingModel::Draw(const WorldTransform& worldTransform, const Camera& c
 	//SpotLight
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
 	//環境マッピングの設定
-	if (material.isEnviromentMap && eviromentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8, eviromentTextureHandle_);
+	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
+		srvManager_->SetGraphicsRootDescriptorTable(8, environmentTextureHandle_);
 	}
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);

@@ -1,5 +1,4 @@
 #include "CollisionManager.h"
-#include <VectorCalculation.h>
 
 #include "AABB.h"
 #include <CollisionCalculation.h>
@@ -9,12 +8,10 @@ void Elysia::CollisionManager::RegisterList(Collider* collider) {
 	colliders_.push_back(collider);
 }
 
-
 void Elysia::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, Collider* colliderB) {
 
 	//コライダーAのワールド座標を取得
 	Vector3 colliderPositionA = colliderA->GetWorldPosition();
-
 	//コライダーBのワールド座標を取得
 	Vector3 colliderPositionB = colliderB->GetWorldPosition();
 
@@ -26,13 +23,11 @@ void Elysia::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, Col
 		return;
 	}
 
-
-
 	//AとBの差分ベクトルを求める
-	Vector3 difference = VectorCalculation::Subtract(colliderPositionA, colliderPositionB);
+	Vector3 difference = colliderPositionA - colliderPositionB;
 
 	//距離を計算
-	float distance = sqrtf((difference.x * difference.x) +
+	float_t distance = sqrtf((difference.x * difference.x) +
 		(difference.y * difference.y) +
 		(difference.z * difference.z));
 
@@ -45,8 +40,6 @@ void Elysia::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, Col
 		colliderA->OffCollision();
 		colliderB->OffCollision();
 	}
-
-
 }
 
 void Elysia::CollisionManager::CheckAABBCollisionPair(Collider* colliderA, Collider* colliderB) {
@@ -72,10 +65,7 @@ void Elysia::CollisionManager::CheckAABBCollisionPair(Collider* colliderA, Colli
 		colliderA->OffCollision();
 		colliderB->OffCollision();
 	}
-
 }
-
-
 
 void Elysia::CollisionManager::CheckFanAndPoint(Collider* colliderA, Collider* colliderB) {
 
@@ -142,9 +132,7 @@ void Elysia::CollisionManager::CheckPlaneAndPoint(Collider* colliderA, Collider*
 			colliderA->OffCollision();
 			colliderB->OffCollision();
 		}
-
 	}
-
 }
 
 
@@ -162,7 +150,7 @@ void Elysia::CollisionManager::CheckAllCollision() {
 		for (; itrB != colliders_.end(); ++itrB) {
 			Collider* colliderB = *itrB;
 
-			if (colliderB == nullptr) {
+			if (!colliderB) {
 				continue;
 			}
 

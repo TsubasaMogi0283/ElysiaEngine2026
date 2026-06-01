@@ -10,7 +10,6 @@
 #include "Matrix4x4.h"
 #include "Vector4.h"
 #include "TransformationMatrix.h"
-#include "Matrix4x4Calculation.h"
 #include "VertexData.h"
 #include "LightingType.h"
 #include "ModelData.h"
@@ -147,8 +146,8 @@ public:
 	/// 環境マップテクスチャの設定
 	/// </summary>
 	/// <param name="textureHandle"></param>
-	void SetEviromentTexture(const uint32_t& textureHandle) {
-		this->eviromentTextureHandle_ = textureHandle;
+	void SetEnvironmentTexture(const uint32_t& textureHandle) {
+		this->environmentTextureHandle_ = textureHandle;
 	}
 
 
@@ -189,7 +188,7 @@ private:
 	uint32_t textureHandle_ = 0u;
 
 	//環境マップ
-	uint32_t eviromentTextureHandle_ = 0;
+	uint32_t environmentTextureHandle_ = 0;
 
 	//モデルハンドル
 	ModelData modelData_ = {};

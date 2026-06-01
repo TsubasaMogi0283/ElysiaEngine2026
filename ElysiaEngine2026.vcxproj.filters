@@ -288,22 +288,13 @@
     <ClCompile Include="Elysia\Material\Vignette\Vignette.cpp">
       <Filter>Elysia\ソース ファイル\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Math\Matrix\Calculation\Matrix4x4Calculation.cpp">
-      <Filter>Elysia\ソース ファイル\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Math\Collision\CollisionCalculation.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Math\PushBackCalculation\PushBackCalculation.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Math\Quaternion\Calculation\QuaternionCalculation.cpp">
-      <Filter>Elysia\ソース ファイル\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Math\Single\SingleCalculation.cpp">
-      <Filter>Elysia\ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Math\Vector\Calculation\VectorCalculation.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Math\Transform\WorldTransform.cpp">
@@ -435,6 +426,15 @@
     <ClCompile Include="Elysia\Manager\Texture\TextureManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="Elysia\Math\Matrix\Matrix4x4.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Math\Vector\Vector3.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Math\Quaternion\Quaternion.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig">
@@ -514,16 +514,10 @@
     <ClInclude Include="Elysia\Math\Matrix\Matrix4x4.h">
       <Filter>Elysia\ヘッダー ファイル\Math\Matrix</Filter>
     </ClInclude>
-    <ClInclude Include="Elysia\Math\Matrix\Calculation\Matrix4x4Calculation.h">
-      <Filter>Elysia\ヘッダー ファイル\Math\Matrix</Filter>
-    </ClInclude>
     <ClInclude Include="Elysia\Math\Matrix\TransformationMatrix.h">
       <Filter>Elysia\ヘッダー ファイル\Math\Matrix</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Math\Quaternion\Quaternion.h">
-      <Filter>Elysia\ヘッダー ファイル\Math\Quaternion</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Math\Quaternion\Calculation\QuaternionCalculation.h">
       <Filter>Elysia\ヘッダー ファイル\Math\Quaternion</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Math\Shape\AABB.h">
@@ -554,9 +548,6 @@
       <Filter>Elysia\ヘッダー ファイル\Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Math\Vector\Vector4.h">
-      <Filter>Elysia\ヘッダー ファイル\Math\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Math\Vector\Calculation\VectorCalculation.h">
       <Filter>Elysia\ヘッダー ファイル\Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Math\Vector\VertexData.h">

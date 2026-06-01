@@ -11,7 +11,6 @@
 
 #include "Vector4.h"
 #include "Matrix4x4.h"
-#include "Matrix4x4Calculation.h"
 #include "Transform.h"
 #include "VertexData.h"
 #include "TransformationMatrix.h"
@@ -66,10 +65,10 @@ namespace Elysia {
 		/// <summary>
 		/// 描画
 		/// </summary>
-		/// <param name="texturehandle"></param>
+		/// <param name="textureHandle"></param>
 		/// <param name="worldTransform"></param>
 		/// <param name="camera"></param>
-		void Draw(const uint32_t& texturehandle, const WorldTransform& worldTransform, const Camera& camera);
+		void Draw(const uint32_t& textureHandle, const WorldTransform& worldTransform, const Camera& camera);
 
 		/// <summary>
 		/// デストラクタ

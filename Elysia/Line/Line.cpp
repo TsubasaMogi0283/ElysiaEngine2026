@@ -1,6 +1,6 @@
 #include "Line.h"
 
-#include "Matrix4x4Calculation.h"
+#include "Matrix4x4.h"
 #include "PipelineManager.h"
 #include "Camera.h"
 
@@ -62,12 +62,12 @@ void Elysia::Line::Draw(const Vector3& start, const Vector3& end, const Camera& 
 
 	Vector3 scale = {.x = 1.0f,.y = 1.0f,.z = 1.0f };
 	Vector3 rotate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
-	Matrix4x4 worldMatrix = Matrix4x4Calculation::MakeAffineMatrix(scale, rotate, start);
+	Matrix4x4 worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotate, start);
 
 	//書き込む為のアドレスを取得
 	wvpResource_->Map(0u, nullptr, reinterpret_cast<void**>(&wvpData_));
 	//さっき作ったworldMatrixの情報をここに入れる
-	wvpData_->WVP = Matrix4x4Calculation::MakeIdentity4x4();
+	wvpData_->WVP = Matrix4x4::MakeIdentity4x4();
 	wvpData_->World = worldMatrix;
 	wvpResource_->Unmap(0u, nullptr);
 

@@ -127,7 +127,6 @@ private:
 	std::unique_ptr<Elysia::Particle3D>deadParticle_ = nullptr;
 	std::unique_ptr<Elysia::Particle3D>particle2_ = nullptr;
 
-
 	//四隅
 	static const uint32_t COUNER_QUANTITY_ = 4u;
 	std::array<std::unique_ptr<Elysia::Model>, COUNER_QUANTITY_>playerCornerModel_ = {};

@@ -15,7 +15,6 @@
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
-#include "VectorCalculation.h"
 
 
 Elysia::Particle3D::Particle3D() {
@@ -118,15 +117,15 @@ ParticleInformation Elysia::Particle3D::MakeNewParticle(std::mt19937& randomEngi
 	//ランダムの値で位置を決める
 	//SRは固定
 	std::uniform_real_distribution<float_t> distribute(-1.0f, 1.0f);
-	ParticleInformation particle;
+	ParticleInformation particle = {};
 	particle.transform.scale = emitter_.transform.scale;
 	particle.transform.rotate = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 	Vector3 randomTranslate = { .x = distribute(randomEngine),.y = distribute(randomEngine) + 1.0f,.z = distribute(randomEngine) };
-	particle.transform.translate = VectorCalculation::Add(emitter_.transform.translate, randomTranslate);
+	particle.transform.translate = emitter_.transform.translate+ randomTranslate;
 	//投げ上げは少しだけ上にずらす
 	if (moveType_ == ThrowUp) {
 		Vector3 offset = { .x = randomTranslate.x,.y = 0.1f,.z = randomTranslate.z };
-		particle.transform.translate = VectorCalculation::Add(emitter_.transform.translate, offset);
+		particle.transform.translate = emitter_.transform.translate+ offset;
 
 	}
 	//初期トランスフォームを記録
@@ -240,17 +239,17 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			billBoardMatrix.m[3][0] = 0.0f;
 			billBoardMatrix.m[3][1] = 0.0f;
 			billBoardMatrix.m[3][2] = 0.0f;
-			billBoardMatrix = Matrix4x4Calculation::Inverse(billBoardMatrix);
+			billBoardMatrix = Matrix4x4::Inverse(billBoardMatrix);
 			//行列を作っていくよ
 			//Scale
-			scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(particleIterator->transform.scale);
+			scaleMatrix = Matrix4x4::MakeScaleMatrix(particleIterator->transform.scale);
 			//座標
-			translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(particleIterator->transform.translate);
+			translateMatrix = Matrix4x4::MakeTranslateMatrix(particleIterator->transform.translate);
 
 
 			//パーティクル個別のRotateは関係ないよ
 			//その代わりにさっき作ったbillBoardMatrixを入れるよ
-			worldMatrix = Matrix4x4Calculation::Multiply(scaleMatrix, Matrix4x4Calculation::Multiply(billBoardMatrix, translateMatrix));
+			worldMatrix = Matrix4x4::Multiply(scaleMatrix, Matrix4x4::Multiply(billBoardMatrix, translateMatrix));
 
 			//最大値を超えて描画しないようにする
 			if (numInstance_ < MAX_INSTANCE_NUMBER_) {
@@ -263,7 +262,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 				//透明になっていくようにするかどうか
 				if (isToTransparent_) {
 					//アルファはVector4でのwだね
-					float alpha = 1.0f - (particleIterator->currentTime / particleIterator->lifeTime);
+					float_t alpha = 1.0f - (particleIterator->currentTime / particleIterator->lifeTime);
 					particleForGpuData_[numInstance_].color.w = alpha;
 					particleIterator->color.w = alpha;
 				}
@@ -290,15 +289,15 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			billBoardMatrix.m[3][0] = 0.0f;
 			billBoardMatrix.m[3][1] = 0.0f;
 			billBoardMatrix.m[3][2] = 0.0f;
-			billBoardMatrix = Matrix4x4Calculation::Inverse(billBoardMatrix);
+			billBoardMatrix = Matrix4x4::Inverse(billBoardMatrix);
 			//行列を作っていくよ
-			scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(particleIterator->transform.scale);
-			translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(particleIterator->transform.translate);
+			scaleMatrix = Matrix4x4::MakeScaleMatrix(particleIterator->transform.scale);
+			translateMatrix = Matrix4x4::MakeTranslateMatrix(particleIterator->transform.translate);
 
 
 			//パーティクル個別のRotateは関係ないよ
 			//その代わりにさっき作ったbillBoardMatrixを入れるよ
-			worldMatrix = Matrix4x4Calculation::Multiply(scaleMatrix, Matrix4x4Calculation::Multiply(billBoardMatrix, translateMatrix));
+			worldMatrix = Matrix4x4::Multiply(scaleMatrix, Matrix4x4::Multiply(billBoardMatrix, translateMatrix));
 
 			//最大値を超えて描画しないようにする
 			if (numInstance_ < MAX_INSTANCE_NUMBER_) {
@@ -336,15 +335,15 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			billBoardMatrix.m[3][0] = 0.0f;
 			billBoardMatrix.m[3][1] = 0.0f;
 			billBoardMatrix.m[3][2] = 0.0f;
-			billBoardMatrix = Matrix4x4Calculation::Inverse(billBoardMatrix);
+			billBoardMatrix = Matrix4x4::Inverse(billBoardMatrix);
 			//行列を作っていくよ
-			scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(particleIterator->transform.scale);
-			translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(particleIterator->transform.translate);
+			scaleMatrix = Matrix4x4::MakeScaleMatrix(particleIterator->transform.scale);
+			translateMatrix = Matrix4x4::MakeTranslateMatrix(particleIterator->transform.translate);
 
 
 			//パーティクル個別のRotateは関係ないよ
 			//その代わりにさっき作ったbillBoardMatrixを入れるよ
-			worldMatrix = Matrix4x4Calculation::Multiply(scaleMatrix, Matrix4x4Calculation::Multiply(billBoardMatrix, translateMatrix));
+			worldMatrix = Matrix4x4::Multiply(scaleMatrix, Matrix4x4::Multiply(billBoardMatrix, translateMatrix));
 
 			//最大値を超えないようにする
 			//そして生成停止までの処理
@@ -370,7 +369,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			particleIterator->absorbT += T_INCREASE_VALUE_;
 			
 			//線形補間でやって綺麗に集まるようにする
-			absorbPosition = VectorCalculation::Lerp(VectorCalculation::Add(releasePositionForAbsorb_, particleIterator->transform.translate), absorbPosition_, particleIterator->absorbT);
+			absorbPosition = Vector3::Lerp(releasePositionForAbsorb_+ particleIterator->transform.translate, absorbPosition_, particleIterator->absorbT);
 
 			//カメラの回転を適用する
 			billBoardMatrix = camera.viewMatrix;
@@ -379,14 +378,14 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			billBoardMatrix.m[3][0] = 0.0f;
 			billBoardMatrix.m[3][1] = 0.0f;
 			billBoardMatrix.m[3][2] = 0.0f;
-			billBoardMatrix = Matrix4x4Calculation::Inverse(billBoardMatrix);
+			billBoardMatrix = Matrix4x4::Inverse(billBoardMatrix);
 			//行列を作っていくよ
-			scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(particleIterator->transform.scale);
-			translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(absorbPosition);
+			scaleMatrix = Matrix4x4::MakeScaleMatrix(particleIterator->transform.scale);
+			translateMatrix = Matrix4x4::MakeTranslateMatrix(absorbPosition);
 
 			//パーティクル個別のRotateは関係ないよ
 			//その代わりにさっき作ったbillBoardMatrixを入れるよ
-			worldMatrix = Matrix4x4Calculation::Multiply(scaleMatrix, Matrix4x4Calculation::Multiply(billBoardMatrix, translateMatrix));
+			worldMatrix = Matrix4x4::Multiply(scaleMatrix, Matrix4x4::Multiply(billBoardMatrix, translateMatrix));
 
 			//最大値を超えないようにする
 			//そして生成停止までの処理
@@ -401,7 +400,6 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 					particleIterator->color.w = alpha;
 					particleForGpuData_[numInstance_].color.w = alpha;
 				}
-
 			}
 
 #pragma endregion
@@ -416,15 +414,15 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			billBoardMatrix.m[3][0] = 0.0f;
 			billBoardMatrix.m[3][1] = 0.0f;
 			billBoardMatrix.m[3][2] = 0.0f;
-			billBoardMatrix = Matrix4x4Calculation::Inverse(billBoardMatrix);
+			billBoardMatrix = Matrix4x4::Inverse(billBoardMatrix);
 			//行列を作っていくよ
 			//拡縮
-			scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(particleIterator->transform.scale);
+			scaleMatrix = Matrix4x4::MakeScaleMatrix(particleIterator->transform.scale);
 			//座標
-			translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(VectorCalculation::Add(particleIterator->transform.translate,trackingPosition_));
+			translateMatrix = Matrix4x4::MakeTranslateMatrix(particleIterator->transform.translate+trackingPosition_);
 			//パーティクル個別のRotateは関係ないよ
 			//その代わりにさっき作ったbillBoardMatrixを入れるよ
-			worldMatrix = Matrix4x4Calculation::Multiply(Matrix4x4Calculation::Multiply(scaleMatrix, billBoardMatrix), translateMatrix);
+			worldMatrix = Matrix4x4::Multiply(Matrix4x4::Multiply(scaleMatrix, billBoardMatrix), translateMatrix);
 
 			//最大値を超えないようにする
 			//そして生成停止までの処理

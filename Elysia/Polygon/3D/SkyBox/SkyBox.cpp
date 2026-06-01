@@ -1,9 +1,7 @@
 #include "SkyBox.h"
 
-#include "VectorCalculation.h"
 #include "WorldTransform.h"
 #include "Camera.h"
-
 #include "DirectXSetup.h"
 #include "PipelineManager.h"
 #include "TextureManager.h"
@@ -91,14 +89,14 @@ void Elysia::SkyBox::Create() {
 
 
 
-void Elysia::SkyBox::Draw(const uint32_t& texturehandle, const WorldTransform& worldTransform, const Camera& camera) {
+void Elysia::SkyBox::Draw(const uint32_t& textureHandle, const WorldTransform& worldTransform, const Camera& camera) {
 
 	//マテリアルにデータを書き込む
 	//書き込むためのアドレスを取得
 	//reinterpret_cast...char* から int* へ、One_class* から Unrelated_class* へなどの変換に使用
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f};
-	materialData_->uvTransform = Matrix4x4Calculation::MakeIdentity4x4();
+	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 	materialResource_->Unmap(0u, nullptr);
 	
 	//パイプラインの設定
@@ -114,8 +112,8 @@ void Elysia::SkyBox::Draw(const uint32_t& texturehandle, const WorldTransform& w
 	//カメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, camera.resource->GetGPUVirtualAddress());
 	//テクスチャ
-	if (texturehandle != 0u) {
-		TextureManager::GetInstance()->GraphicsCommand(2u, texturehandle);
+	if (textureHandle != 0u) {
+		TextureManager::GetInstance()->GraphicsCommand(2u, textureHandle);
 	}
 	//マテリアル
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, materialResource_->GetGPUVirtualAddress());

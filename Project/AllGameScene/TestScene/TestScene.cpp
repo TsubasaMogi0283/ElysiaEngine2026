@@ -6,7 +6,6 @@
 #include "Input.h"
 #include "ModelManager.h"
 #include "LevelDataManager.h"
-#include "VectorCalculation.h"
 #include "CollisionCalculation.h"
 #include "PushBackCalculation.h"
 
@@ -121,12 +120,11 @@ void TestScene::Update(Elysia::GameManager* gameManager){
 	}
 
 	//座標の加算
-	playerCenterPosition_= VectorCalculation::Add(playerCenterPosition_, direction);
+	playerCenterPosition_= playerCenterPosition_+ direction;
 	//プレイヤーのAABBを計算
-	playerAABB_.max = VectorCalculation::Add(playerCenterPosition_, playerWorldTransform_.scale);
-	playerAABB_.min = VectorCalculation::Subtract(playerCenterPosition_, playerWorldTransform_.scale);
+	playerAABB_.max = playerCenterPosition_+ playerWorldTransform_.scale;
+	playerAABB_.min = playerCenterPosition_- playerWorldTransform_.scale;
 	
-
 	for (size_t i = 0; i < objects.size(); i++) {
 		PushBackCalculation::FixPosition(playerCenterPosition_,playerAABB_, objects[i]);
 	}

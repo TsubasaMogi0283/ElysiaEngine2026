@@ -7,8 +7,7 @@
 #include <assimp/postprocess.h>
 #include <ReadNode.h>
 
-#include "Matrix4x4Calculation.h"
-#include <Calculation/QuaternionCalculation.h>
+#include "Matrix4x4.h"
 #include <StringOption.h>
 
 
@@ -87,31 +86,25 @@ ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileName
 			aiQuaternion rotate;
 
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
-
+			//オリジナルの型へ
 			Vector3 scaleAfter = { scale.x,scale.y,scale.z };
 			Vector3 translateAfter = { -translate.x,translate.y,translate.z };
 			Quaternion rotateQuaternion = { rotate.x,-rotate.y,-rotate.z,rotate.w };
 
-			Matrix4x4 scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(scaleAfter);
-			Matrix4x4 rotateMatrix = QuaternionCalculation::MakeRotateMatrix(rotateQuaternion);
-			Matrix4x4 translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(translateAfter);
+			//SRTから行列を作る
+			Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scaleAfter);
+			Matrix4x4 rotateMatrix = Matrix4x4::MakeRotateMatrix(rotateQuaternion);
+			Matrix4x4 translateMatrix = Matrix4x4::MakeTranslateMatrix(translateAfter);
 
-
-
-			Matrix4x4 bindPoseMatrix = Matrix4x4Calculation::Multiply(scaleMatrix, Matrix4x4Calculation::Multiply(rotateMatrix, translateMatrix));
-			jointWeightData.inverseBindPoseMatrix = Matrix4x4Calculation::Inverse(bindPoseMatrix);
+			Matrix4x4 bindPoseMatrix = Matrix4x4::Multiply(scaleMatrix, Matrix4x4::Multiply(rotateMatrix, translateMatrix));
+			jointWeightData.inverseBindPoseMatrix = Matrix4x4::Inverse(bindPoseMatrix);
 
 			//Weight情報を取り出す
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
 				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId });
 			}
-
-
 		}
-
 	}
-
-
 
 	//Materialを解析する
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
@@ -237,11 +230,11 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 			Quaternion rotateQuaternion = { rotate.x,-rotate.y,-rotate.z,rotate.w };
 			
 			//行列を作る
-			Matrix4x4 scaleMatrix = Matrix4x4Calculation::MakeScaleMatrix(scaleAfter);
-			Matrix4x4 rotateMatrix = QuaternionCalculation::MakeRotateMatrix(rotateQuaternion);
-			Matrix4x4 translateMatrix = Matrix4x4Calculation::MakeTranslateMatrix(translateAfter);
-			Matrix4x4 bindPoseMatrix = Matrix4x4Calculation::Multiply(scaleMatrix, Matrix4x4Calculation::Multiply(rotateMatrix, translateMatrix));
-			jointWeightData.inverseBindPoseMatrix = Matrix4x4Calculation::Inverse(bindPoseMatrix);
+			Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scaleAfter);
+			Matrix4x4 rotateMatrix = Matrix4x4::MakeRotateMatrix(rotateQuaternion);
+			Matrix4x4 translateMatrix = Matrix4x4::MakeTranslateMatrix(translateAfter);
+			Matrix4x4 bindPoseMatrix = Matrix4x4::Multiply(scaleMatrix, Matrix4x4::Multiply(rotateMatrix, translateMatrix));
+			jointWeightData.inverseBindPoseMatrix = Matrix4x4::Inverse(bindPoseMatrix);
 
 			//Weight情報を取り出す
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {

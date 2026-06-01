@@ -1,5 +1,5 @@
 #include "Material.h"
-#include "Matrix4x4Calculation.h"
+#include "Matrix4x4.h"
 
 void Material::Initialize(){
 	//色
@@ -7,7 +7,7 @@ void Material::Initialize(){
 	//ライティングの種類
 	lightingKinds = DirectionalLighting;
 	//UV行列
-	uvTransform= Matrix4x4Calculation::MakeIdentity4x4();
+	uvTransform= Matrix4x4::MakeIdentity4x4();
 	//輝度
 	shininess=1000.0f;
 	//環境光

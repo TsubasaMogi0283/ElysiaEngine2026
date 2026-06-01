@@ -23,7 +23,7 @@ void Triangle::Initialize() {
 
 	//ここでBufferResourceを作る
 	//頂点を6に増やす
-	vertexResouce_ = directXSetup_->CreateBufferResource(sizeof(VertexData) * 6);
+	vertexResource_ = directXSetup_->CreateBufferResource(sizeof(VertexData) * 6);
 	////マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
 	materialResource_= directXSetup_->CreateBufferResource(sizeof(MaterialData));
 
@@ -34,7 +34,7 @@ void Triangle::Initialize() {
 
 	//頂点バッファビューを作成する
 	//リソースの先頭のアドレスから使う
-	vertexBufferView_.BufferLocation = vertexResouce_->GetGPUVirtualAddress();
+	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースのサイズは頂点３つ分のサイズ
 	vertexBufferView_.SizeInBytes = sizeof(VertexData) * 6;
 	//１頂点あたりのサイズ
@@ -59,7 +59,7 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 	//U(x)V(y)
 
 	//書き込むためのアドレスを取得
-	vertexResouce_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 
 	//左下
 	vertexData_[0].position = { -0.5f,-0.5f,0.0f,1.0f };
@@ -83,7 +83,7 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 	vertexData_[5].position = {0.5f,-0.5f,-0.5f,1.0f} ;
 	vertexData_[5].texCoord = { 1.0f,1.0f };
 
-	vertexResouce_->Unmap(0u, nullptr);
+	vertexResource_->Unmap(0u, nullptr);
 
 	//マテリアルにデータを書き込む
 	
@@ -94,7 +94,7 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 
 	materialData_->color = color;
 	materialData_->lightingKinds = 0;
-	materialData_->uvTransform = Matrix4x4Calculation::MakeIdentity4x4();
+	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 	
 	materialResource_->Unmap(0u, nullptr);
 	
@@ -102,15 +102,15 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 	//どれだけのサイズが必要なのか考えよう
 
 	//新しく引数作った方が良いかも
-	Matrix4x4 worldMatrix = Matrix4x4Calculation::MakeAffineMatrix(transform.scale,transform.rotate,transform.translate);
+	Matrix4x4 worldMatrix = Matrix4x4::MakeAffineMatrix(transform.scale,transform.rotate,transform.translate);
 	//遠視投影行列
-	Matrix4x4 viewMatrixSprite = Matrix4x4Calculation::MakeIdentity4x4();
+	Matrix4x4 viewMatrixSprite = Matrix4x4::MakeIdentity4x4();
 	
-	Matrix4x4 projectionMatrixSprite = Matrix4x4Calculation::MakeOrthographicMatrix(0.0f, 0.0f, float(windowsSetup_->GetClientWidth()), float(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrixSprite = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, float(windowsSetup_->GetClientWidth()), float(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
 	
 
 	//WVP行列を作成
-	Matrix4x4 worldViewProjectionMatrix = Matrix4x4Calculation::Multiply(worldMatrix, Matrix4x4Calculation::Multiply(viewMatrixSprite, projectionMatrixSprite));
+	Matrix4x4 worldViewProjectionMatrix = Matrix4x4::Multiply(worldMatrix, Matrix4x4::Multiply(viewMatrixSprite, projectionMatrixSprite));
 
 	//書き込む為のアドレスを取得
 	wvpResource_->Map(0u, nullptr, reinterpret_cast<void**>(&wvpData_));
@@ -119,7 +119,7 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 	
 	//さっき作ったworldMatrixの情報をここに入れる
 	wvpData_->WVP = worldViewProjectionMatrix;
-	wvpData_->World = Matrix4x4Calculation::MakeIdentity4x4();
+	wvpData_->World = Matrix4x4::MakeIdentity4x4();
 	
 
 	wvpResource_->Unmap(0u, nullptr);

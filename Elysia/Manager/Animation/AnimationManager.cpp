@@ -6,9 +6,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "VectorCalculation.h"
 #include "ModelManager.h"
-#include "Calculation/QuaternionCalculation.h"
 
 Elysia::AnimationManager* Elysia::AnimationManager::GetInstance(){
     static AnimationManager instance;
@@ -31,7 +29,7 @@ Vector3 Elysia::AnimationManager::CalculationValue(const std::vector<KeyFrameVec
             //範囲内を補間する
             float_t t = (time - keyFrames[index].time) / (keyFrames[nextIndex].time - keyFrames[index].time);
             //Vector3 だと線形補間
-            return VectorCalculation::Lerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
+            return Vector3::Lerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
         }
     }
 
@@ -56,7 +54,7 @@ Quaternion Elysia::AnimationManager::CalculationValue(const std::vector<KeyFrame
             //範囲内を補間する
             float_t t = (time - keyFrames[index].time) / (keyFrames[nextIndex].time - keyFrames[index].time);
             //QuaternionだとSlerp
-            return QuaternionCalculation::QuaternionSlerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
+            return Quaternion::Slerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
         }
     }
     //ここまで来た場合は一番後ろの時刻よりも後ろなので最後の値を返すことにする
@@ -98,7 +96,7 @@ Animation Elysia::AnimationManager::LoadAnimationFile(const std::string& directo
             nodeAnimation.translate.keyFrames.push_back(keyFrame);
         }
 
-        //RotateはmNunRotateionKeys/mRotateKeys
+        //RotateはmNunRotationKeys/mRotateKeys
         //RotateはQuaternionで、右手->左手に変換するために、YとZを反転させる必要がある。
         //Rotate
         for (uint32_t keyIndex = 0u; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {

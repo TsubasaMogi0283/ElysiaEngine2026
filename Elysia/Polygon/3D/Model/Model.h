@@ -10,7 +10,6 @@
 #include "Matrix4x4.h"
 #include "Vector4.h"
 #include "TransformationMatrix.h"
-#include "Matrix4x4Calculation.h"
 #include "VertexData.h"
 #include "LightingType.h"
 #include "ModelData.h"

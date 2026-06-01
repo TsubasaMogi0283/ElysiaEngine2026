@@ -98,7 +98,6 @@ public:
 		return plane_;
 	}
 
-
 	/// <summary>
 	/// 衝突判定で使う形の種類の値を取得
 	/// </summary>
@@ -107,47 +106,40 @@ public:
 		return collisionType_;
 	}
 
-
 public:
 	//衝突属性(自分)を取得
-	uint32_t GetCollisionAttribute() {
+	inline uint32_t GetCollisionAttribute() const{
 		return collisionAttribute_;
 	}
 	//衝突属性(自分)を設定
-	void SetCollisionAttribute(const uint32_t& collisionAttribute) {
+	inline void SetCollisionAttribute(const uint32_t& collisionAttribute) {
 		this->collisionAttribute_ = collisionAttribute;
 	}
 
 	//衝突マスク(相手)を取得
-	uint32_t GetCollisionMask() const {
+	inline uint32_t GetCollisionMask() const {
 		return collisionMask_;
 	}
 	//衝突マスク(相手)を設定
-	void SetCollisionMask(const uint32_t& collisionMask) {
+	inline void SetCollisionMask(const uint32_t& collisionMask) {
 		this->collisionMask_ = collisionMask;
 	}
 
 protected:
 	//名前
 	std::string name_ = "";
-
-
 	//当たり判定の種類
 	//デフォルトで球にしておく
 	uint32_t collisionType_ = ColliderType::SphereType;
 
 	//衝突半径
 	float_t radius_ = 1.0f;
-
 	//AABB
 	AABB aabb_ = {};
-
 	//3D
 	Fan3D fan3D_ = {};
-
 	//2D
 	Fan2D fan2D_ = {};
-
 	//平面
 	Plane plane_ = {};
 
@@ -155,7 +147,6 @@ private:
 	
 	//衝突判定(自分)
 	uint32_t collisionAttribute_  = 0xffffffff;
-
 	//衝突判定(相手)
 	uint32_t collisionMask_ = 0xffffffff;
 

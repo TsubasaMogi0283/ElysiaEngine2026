@@ -5,7 +5,6 @@
 #include "TextureManager.h"
 #include "PipelineManager.h"
 #include "Matrix4x4.h"
-#include "Matrix4x4Calculation.h"
 
 Elysia::Sprite::Sprite() {
 	//ウィンドウクラス
@@ -196,16 +195,16 @@ void Elysia::Sprite::Draw() {
 
 
 	//アフィン行列を計算
-	Matrix4x4 affineMatrix = Matrix4x4Calculation::MakeAffineMatrix({ scale_.x,scale_.y,1.0f }, { 0.0f,0.0f,rotate_ }, newPosition);
+	Matrix4x4 affineMatrix = Matrix4x4::MakeAffineMatrix({ scale_.x,scale_.y,1.0f }, { 0.0f,0.0f,rotate_ }, newPosition);
 	//遠視投影行列を計算
-	Matrix4x4 viewMatrix = Matrix4x4Calculation::MakeIdentity4x4();
+	Matrix4x4 viewMatrix = Matrix4x4::MakeIdentity4x4();
 	//プロジェクション行列を計算
-	Matrix4x4 projectionMatrix = Matrix4x4Calculation::MakeOrthographicMatrix(0.0f, 0.0f, float(windowsSetup_->GetClientWidth()), float(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, float(windowsSetup_->GetClientWidth()), float(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
 	
 	//WVP行列を作成
-	Matrix4x4 worldViewProjectionMatrixSprite = Matrix4x4Calculation::Multiply(affineMatrix, Matrix4x4Calculation::Multiply(viewMatrix, projectionMatrix));
+	Matrix4x4 worldViewProjectionMatrixSprite = Matrix4x4::Multiply(affineMatrix, Matrix4x4::Multiply(viewMatrix, projectionMatrix));
 	transformationMatrixData_->WVP = worldViewProjectionMatrixSprite;
-	transformationMatrixData_->World = Matrix4x4Calculation::MakeIdentity4x4();
+	transformationMatrixData_->World = Matrix4x4::MakeIdentity4x4();
 
 	transformationMatrixResource_->Unmap(0u, nullptr);
 
@@ -219,9 +218,9 @@ void Elysia::Sprite::Draw() {
 	materialData_->lightingKinds = NoneLighting;
 	materialData_->shininess = 0.0f;
 
-	Matrix4x4 uvTransformMatrix = Matrix4x4Calculation::MakeScaleMatrix(uvTransform_.scale);
-	uvTransformMatrix = Matrix4x4Calculation::Multiply(uvTransformMatrix, Matrix4x4Calculation::MakeRotateZMatrix(uvTransform_.rotate.z));
-	uvTransformMatrix = Matrix4x4Calculation::Multiply(uvTransformMatrix, Matrix4x4Calculation::MakeTranslateMatrix(uvTransform_.translate));
+	Matrix4x4 uvTransformMatrix = Matrix4x4::MakeScaleMatrix(uvTransform_.scale);
+	uvTransformMatrix = Matrix4x4::Multiply(uvTransformMatrix, Matrix4x4::MakeRotateZMatrix(uvTransform_.rotate.z));
+	uvTransformMatrix = Matrix4x4::Multiply(uvTransformMatrix, Matrix4x4::MakeTranslateMatrix(uvTransform_.translate));
 	materialData_->uvTransform = uvTransformMatrix;
 	materialResource_->Unmap(0u, nullptr);
 
@@ -370,17 +369,16 @@ void Elysia::Sprite::Draw(const uint32_t& texturehandle){
 
 
 	//アフィン行列を計算
-	Matrix4x4 affineMatrix = Matrix4x4Calculation::MakeAffineMatrix({ scale_.x,scale_.y,1.0f }, { 0.0f,0.0f,rotate_ }, newPosition);
+	Matrix4x4 affineMatrix = Matrix4x4::MakeAffineMatrix({ scale_.x,scale_.y,1.0f }, { 0.0f,0.0f,rotate_ }, newPosition);
 	//遠視投影行列を計算
-	Matrix4x4 viewMatrix = Matrix4x4Calculation::MakeIdentity4x4();
+	Matrix4x4 viewMatrix = Matrix4x4::MakeIdentity4x4();
 	//プロジェクション行列を計算
-	Matrix4x4 projectionMatrix = Matrix4x4Calculation::MakeOrthographicMatrix(0.0f, 0.0f, float(windowsSetup_->GetClientWidth()), float(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
-
+	Matrix4x4 projectionMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(windowsSetup_->GetClientWidth()), static_cast<float_t>(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
 	//WVP行列を作成
-	Matrix4x4 worldViewProjectionMatrixSprite = Matrix4x4Calculation::Multiply(affineMatrix, Matrix4x4Calculation::Multiply(viewMatrix, projectionMatrix));
+	Matrix4x4 worldViewProjectionMatrixSprite = Matrix4x4::Multiply(affineMatrix, Matrix4x4::Multiply(viewMatrix, projectionMatrix));
 
 	transformationMatrixData_->WVP = worldViewProjectionMatrixSprite;
-	transformationMatrixData_->World = Matrix4x4Calculation::MakeIdentity4x4();
+	transformationMatrixData_->World = Matrix4x4::MakeIdentity4x4();
 
 	transformationMatrixResource_->Unmap(0u, nullptr);
 
@@ -394,9 +392,9 @@ void Elysia::Sprite::Draw(const uint32_t& texturehandle){
 	materialData_->lightingKinds = NoneLighting;
 	materialData_->shininess = 0.0f;
 
-	Matrix4x4 uvTransformMatrix = Matrix4x4Calculation::MakeScaleMatrix(uvTransform_.scale);
-	uvTransformMatrix = Matrix4x4Calculation::Multiply(uvTransformMatrix, Matrix4x4Calculation::MakeRotateZMatrix(uvTransform_.rotate.z));
-	uvTransformMatrix = Matrix4x4Calculation::Multiply(uvTransformMatrix, Matrix4x4Calculation::MakeTranslateMatrix(uvTransform_.translate));
+	Matrix4x4 uvTransformMatrix = Matrix4x4::MakeScaleMatrix(uvTransform_.scale);
+	uvTransformMatrix = Matrix4x4::Multiply(uvTransformMatrix, Matrix4x4::MakeRotateZMatrix(uvTransform_.rotate.z));
+	uvTransformMatrix = Matrix4x4::Multiply(uvTransformMatrix, Matrix4x4::MakeTranslateMatrix(uvTransform_.translate));
 	materialData_->uvTransform = uvTransformMatrix;
 	materialResource_->Unmap(0u, nullptr);
 

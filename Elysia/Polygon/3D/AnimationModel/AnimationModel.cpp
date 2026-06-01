@@ -10,7 +10,7 @@
 
 #include "WorldTransform.h"
 #include "Material.h"
-#include "Matrix4x4Calculation.h"
+#include "Matrix4x4.h"
 #include "SkinCluster.h"
 #include "Camera.h"
 #include "SpotLight.h"
@@ -181,7 +181,6 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//Material
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//資料見返してみたがhlsl(GPU)に計算を任せているわけだった
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
@@ -248,7 +247,6 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//Material
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//資料見返してみたがhlsl(GPU)に計算を任せているわけだった
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である

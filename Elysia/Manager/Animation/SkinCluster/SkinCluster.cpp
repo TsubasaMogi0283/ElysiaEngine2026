@@ -1,6 +1,6 @@
 #include "SkinCluster.h"
 #include <SrvManager.h>
-#include <Matrix4x4Calculation.h>
+#include "Matrix4x4.h"
 #include <algorithm>
 #include <PipelineManager.h>
 #include "ModelManager.h"
@@ -50,9 +50,8 @@ void  SkinCluster::Create(const Skeleton& newSkeleton, const ModelData& modelDat
     inverseBindPoseMatrices.resize(skeleton.joints.size());
     //最後の所は「関数ポインタ」
     //()を付けないでね。ここ重要。
-    std::generate(inverseBindPoseMatrices.begin(), inverseBindPoseMatrices.end(), Matrix4x4Calculation::MakeIdentity4x4);
-
-
+    std::generate(inverseBindPoseMatrices.begin(), inverseBindPoseMatrices.end(), Matrix4x4::MakeIdentity4x4);
+    
     ////std::generate...初期化するときに便利！
     ////for文と似ているのでそっちでやっても◎
     ////実際はこんな感じ
@@ -93,9 +92,9 @@ void SkinCluster::Update(const Skeleton& newSkeleton){
         assert(jointIndex < inverseBindPoseMatrices.size());
         //それぞれの行列を計算
         mappedPalette[jointIndex].skeletonSpaceMatrix =
-            Matrix4x4Calculation::Multiply(inverseBindPoseMatrices[jointIndex], newSkeleton.joints[jointIndex].skeletonSpaceMatrix);
+            Matrix4x4::Multiply(inverseBindPoseMatrices[jointIndex], newSkeleton.joints[jointIndex].skeletonSpaceMatrix);
         mappedPalette[jointIndex].skeletonSpaceIncerseTransposeMatrix = 
-            Matrix4x4Calculation::MakeTransposeMatrix(Matrix4x4Calculation::Inverse(mappedPalette[jointIndex].skeletonSpaceMatrix));
+            Matrix4x4::MakeTransposeMatrix(Matrix4x4::Inverse(mappedPalette[jointIndex].skeletonSpaceMatrix));
     }
 
 

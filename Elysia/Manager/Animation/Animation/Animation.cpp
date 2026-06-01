@@ -1,11 +1,10 @@
 #include "Animation.h"
+
 #include <cassert>
 #include <vector>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <VectorCalculation.h>
-#include <Calculation/QuaternionCalculation.h>
 
 Animation LoadAnimationFile(const std::string& directoryPath, const std::string& fileName){
     Animation animation = {};
@@ -40,7 +39,7 @@ Animation LoadAnimationFile(const std::string& directoryPath, const std::string&
             nodeAnimation.translate.keyFrames.push_back(keyFrame);
         }
 
-        //RotateはmNunRotateionKeys/mRotateKeys
+        //RotateはmNunRotationKeys/mRotateKeys
         //RotateはQuaternionで、右手->左手に変換するために、YとZを反転させる必要がある。
         //Rotate
         for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
@@ -89,7 +88,7 @@ Vector3 CalculationValue(const std::vector<KeyFrameVector3>& keyFrames, float ti
             //範囲内を補間する
             float t = (time - keyFrames[index].time) / (keyFrames[nextIndex].time - keyFrames[index].time);
             //Vector3 だと線形補間
-            return VectorCalculation::Lerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
+            return Vector3::Lerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
         }
     }
 
@@ -114,7 +113,7 @@ Quaternion CalculationValue(const std::vector<KeyFrameQuaternion>& keyFrames, fl
             //範囲内を補間する
             float t = (time - keyFrames[index].time) / (keyFrames[nextIndex].time - keyFrames[index].time);
             //QuaternionだとSlerp
-            return QuaternionCalculation::QuaternionSlerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
+            return Quaternion::Slerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
         }
     }
     //ここまで来た場合は一番後ろの時刻よりも後ろなので最後の値を返すことにする

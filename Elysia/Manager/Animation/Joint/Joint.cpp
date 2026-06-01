@@ -1,11 +1,11 @@
 #include "Joint.h"
-#include "Matrix4x4Calculation.h"
+#include "Matrix4x4.h"
 
 int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints){
     Joint joint = {};
     joint.name = node.name;
     joint.localMatrix = node.localMatrix;
-    joint.skeletonSpaceMatrix = Matrix4x4Calculation::MakeIdentity4x4();
+    joint.skeletonSpaceMatrix = Matrix4x4::MakeIdentity4x4();
     joint.transform = node.transform;
     //現在登録されている数をIndexに
     joint.index = int32_t(joints.size());

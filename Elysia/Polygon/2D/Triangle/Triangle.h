@@ -12,7 +12,6 @@
 
 #include "Vector4.h"
 #include "Matrix4x4.h"
-#include "Matrix4x4Calculation.h"
 #include "Transform.h"
 #include "VertexData.h"
 #include "Material.h"
@@ -74,7 +73,7 @@ private:
 	//頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_ = {};
 	//リソース
-	ComPtr<ID3D12Resource> vertexResouce_;
+	ComPtr<ID3D12Resource> vertexResource_=nullptr;
 	//頂点データ
 	VertexData* vertexData_;
 	

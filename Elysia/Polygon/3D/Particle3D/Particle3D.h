@@ -15,7 +15,7 @@
 #include "Camera.h"
 #include "Particle.h"
 #include "TransformationMatrix.h"
-#include "Matrix4x4Calculation.h"
+#include "Matrix4x4.h"
 #include "VertexData.h"
 #include "DirectXSetup.h"
 #include "Emitter.h"

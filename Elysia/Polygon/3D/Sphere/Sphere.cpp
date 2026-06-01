@@ -5,9 +5,6 @@
 #include <numbers>
 
 #include "WindowsSetup.h"
-#include "VectorCalculation.h"
-
-
 
 
 Elysia::Sphere::Sphere(){
@@ -24,9 +21,9 @@ void Elysia::Sphere::Initialize() {
 
 	//ここでBufferResourceを作る
 	//頂点を6に増やす
-	vertexResourceSphere_ = directXSetup_->CreateBufferResource(sizeof(VertexData) * SUBDIVISION_ *SUBDIVISION_ * 6);
+	vertexResource_ = directXSetup_->CreateBufferResource(sizeof(VertexData) * SUBDIVISION_ *SUBDIVISION_ * 6);
 	////マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-	materialResourceSphere_= directXSetup_->CreateBufferResource(sizeof(MaterialData));
+	materialResource_= directXSetup_->CreateBufferResource(sizeof(MaterialData));
 
 	//Lighting
 	directionalLightResource_ = directXSetup_->CreateBufferResource(sizeof(DirectionalLightData));
@@ -37,13 +34,13 @@ void Elysia::Sphere::Initialize() {
 
 	//Sphere用のTransformationMatrix用のリソースを作る。
 	//Matrix4x4 1つ分サイズを用意する
-	transformationMatrixResourceSphere_ = directXSetup_->CreateBufferResource(sizeof(TransformationMatrix));
+	transformationMatrixResource_ = directXSetup_->CreateBufferResource(sizeof(TransformationMatrix));
 
 
 
 	//頂点バッファビューを作成する
 	//リソースの先頭のアドレスから使う
-	vertexBufferViewSphere_.BufferLocation = vertexResourceSphere_->GetGPUVirtualAddress();
+	vertexBufferViewSphere_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースのサイズは頂点３つ分のサイズ
 	vertexBufferViewSphere_.SizeInBytes = sizeof(VertexData) * SUBDIVISION_ * SUBDIVISION_ * 6;
 	//１頂点あたりのサイズ
@@ -64,7 +61,7 @@ void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix
 
 	
 	//書き込み用のアドレスを取得
-	vertexResourceSphere_->Map(0, nullptr, reinterpret_cast<void**>(&vertexDataSphere_));
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 
 	//経度分割1つ分の角度φd
 	//円周率使いたいとき「std::numbers::pi」こうするらしい
@@ -101,81 +98,81 @@ void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix
 			//左上(点B)が原点
 			//abc
 			//資料通りだとここは点a(左下)
-			vertexDataSphere_[start].position.x = sphereCondtion.radius*(cos(lat) * cos(lon));
-			vertexDataSphere_[start].position.y = sphereCondtion.radius*(sin(lat));
-			vertexDataSphere_[start].position.z = sphereCondtion.radius*(cos(lat) * sin(lon)) ;
-			vertexDataSphere_[start].position.w = 1.0f;
+			vertexData_[start].position.x = sphereCondtion.radius*(cos(lat) * cos(lon));
+			vertexData_[start].position.y = sphereCondtion.radius*(sin(lat));
+			vertexData_[start].position.z = sphereCondtion.radius*(cos(lat) * sin(lon)) ;
+			vertexData_[start].position.w = 1.0f;
 			//分割分移動
-			vertexDataSphere_[start].texCoord.x = u;
-			vertexDataSphere_[start].texCoord.y = v + length;
+			vertexData_[start].texCoord.x = u;
+			vertexData_[start].texCoord.y = v + length;
 			//法線情報を追加
-			vertexDataSphere_[start].normal.x = vertexDataSphere_[start].position.x;
-			vertexDataSphere_[start].normal.y = vertexDataSphere_[start].position.y;
-			vertexDataSphere_[start].normal.z = vertexDataSphere_[start].position.z;
+			vertexData_[start].normal.x = vertexData_[start].position.x;
+			vertexData_[start].normal.y = vertexData_[start].position.y;
+			vertexData_[start].normal.z = vertexData_[start].position.z;
 
 			//普通にstart+1していけばいいのかな
 			//点b(左上)
-			vertexDataSphere_[start + 1].position.x = sphereCondtion.radius*(cos(lat + LAT_EVERY)) * cos(lon);
-			vertexDataSphere_[start + 1].position.y = sphereCondtion.radius*(sin(lat + LAT_EVERY)) ;
-			vertexDataSphere_[start + 1].position.z = sphereCondtion.radius*(cos(lat + LAT_EVERY)) * sin(lon);
-			vertexDataSphere_[start + 1].position.w = 1.0f;
-			vertexDataSphere_[start + 1].texCoord.x = u;
-			vertexDataSphere_[start + 1].texCoord.y = v;
-			vertexDataSphere_[start + 1].normal.x = vertexDataSphere_[start + 1].position.x;
-			vertexDataSphere_[start + 1].normal.y = vertexDataSphere_[start + 1].position.y;
-			vertexDataSphere_[start + 1].normal.z = vertexDataSphere_[start + 1].position.z;
+			vertexData_[start + 1].position.x = sphereCondtion.radius*(cos(lat + LAT_EVERY)) * cos(lon);
+			vertexData_[start + 1].position.y = sphereCondtion.radius*(sin(lat + LAT_EVERY)) ;
+			vertexData_[start + 1].position.z = sphereCondtion.radius*(cos(lat + LAT_EVERY)) * sin(lon);
+			vertexData_[start + 1].position.w = 1.0f;
+			vertexData_[start + 1].texCoord.x = u;
+			vertexData_[start + 1].texCoord.y = v;
+			vertexData_[start + 1].normal.x = vertexData_[start + 1].position.x;
+			vertexData_[start + 1].normal.y = vertexData_[start + 1].position.y;
+			vertexData_[start + 1].normal.z = vertexData_[start + 1].position.z;
 
 
 			//点c(右下)
-			vertexDataSphere_[start + 2].position.x = sphereCondtion.radius*(cos(lat) * cos(lon + LON_EVERY)) ;
-			vertexDataSphere_[start + 2].position.y = sphereCondtion.radius*(sin(lat));
-			vertexDataSphere_[start + 2].position.z = sphereCondtion.radius*(cos(lat) * sin(lon + LON_EVERY));
-			vertexDataSphere_[start + 2].position.w = 1.0f;
-			vertexDataSphere_[start + 2].texCoord.x = u + length;
-			vertexDataSphere_[start + 2].texCoord.y = v + length;
-			vertexDataSphere_[start + 2].normal.x = vertexDataSphere_[start + 2].position.x;
-			vertexDataSphere_[start + 2].normal.y = vertexDataSphere_[start + 2].position.y;
-			vertexDataSphere_[start + 2].normal.z = vertexDataSphere_[start + 2].position.z;
+			vertexData_[start + 2].position.x = sphereCondtion.radius*(cos(lat) * cos(lon + LON_EVERY)) ;
+			vertexData_[start + 2].position.y = sphereCondtion.radius*(sin(lat));
+			vertexData_[start + 2].position.z = sphereCondtion.radius*(cos(lat) * sin(lon + LON_EVERY));
+			vertexData_[start + 2].position.w = 1.0f;
+			vertexData_[start + 2].texCoord.x = u + length;
+			vertexData_[start + 2].texCoord.y = v + length;
+			vertexData_[start + 2].normal.x = vertexData_[start + 2].position.x;
+			vertexData_[start + 2].normal.y = vertexData_[start + 2].position.y;
+			vertexData_[start + 2].normal.z = vertexData_[start + 2].position.z;
 
 #pragma endregion
 
 #pragma region 三角形２枚目
 			//bcd
 			//点d(右上)
-			vertexDataSphere_[start + 3].position.x = sphereCondtion.radius*(cos(lat + LAT_EVERY) * cos(lon + LON_EVERY));
-			vertexDataSphere_[start + 3].position.y = sphereCondtion.radius*(sin(lat + LAT_EVERY));
-			vertexDataSphere_[start + 3].position.z = sphereCondtion.radius*(cos(lat + LAT_EVERY) * sin(lon + LON_EVERY));
-			vertexDataSphere_[start + 3].position.w = 1.0f;
-			vertexDataSphere_[start + 3].texCoord.x = u + length;
-			vertexDataSphere_[start + 3].texCoord.y = v;
-			vertexDataSphere_[start + 3].normal.x = vertexDataSphere_[start + 3].position.x;
-			vertexDataSphere_[start + 3].normal.y = vertexDataSphere_[start + 3].position.y;
-			vertexDataSphere_[start + 3].normal.z = vertexDataSphere_[start + 3].position.z;
+			vertexData_[start + 3].position.x = sphereCondtion.radius*(cos(lat + LAT_EVERY) * cos(lon + LON_EVERY));
+			vertexData_[start + 3].position.y = sphereCondtion.radius*(sin(lat + LAT_EVERY));
+			vertexData_[start + 3].position.z = sphereCondtion.radius*(cos(lat + LAT_EVERY) * sin(lon + LON_EVERY));
+			vertexData_[start + 3].position.w = 1.0f;
+			vertexData_[start + 3].texCoord.x = u + length;
+			vertexData_[start + 3].texCoord.y = v;
+			vertexData_[start + 3].normal.x = vertexData_[start + 3].position.x;
+			vertexData_[start + 3].normal.y = vertexData_[start + 3].position.y;
+			vertexData_[start + 3].normal.z = vertexData_[start + 3].position.z;
 
 
 			//点c(右下)
-			vertexDataSphere_[start + 4].position.x = sphereCondtion.radius*(cos(lat) * cos(lon + LON_EVERY));
-			vertexDataSphere_[start + 4].position.y = sphereCondtion.radius*(sin(lat));
-			vertexDataSphere_[start + 4].position.z = sphereCondtion.radius*(cos(lat) * sin(lon + LON_EVERY));
-			vertexDataSphere_[start + 4].position.w = 1.0f;
-			vertexDataSphere_[start + 4].texCoord.x = u + length;
-			vertexDataSphere_[start + 4].texCoord.y = v + length;
-			vertexDataSphere_[start + 4].normal.x = vertexDataSphere_[start + 4].position.x;
-			vertexDataSphere_[start + 4].normal.y = vertexDataSphere_[start + 4].position.y;
-			vertexDataSphere_[start + 4].normal.z = vertexDataSphere_[start + 4].position.z;
+			vertexData_[start + 4].position.x = sphereCondtion.radius*(cos(lat) * cos(lon + LON_EVERY));
+			vertexData_[start + 4].position.y = sphereCondtion.radius*(sin(lat));
+			vertexData_[start + 4].position.z = sphereCondtion.radius*(cos(lat) * sin(lon + LON_EVERY));
+			vertexData_[start + 4].position.w = 1.0f;
+			vertexData_[start + 4].texCoord.x = u + length;
+			vertexData_[start + 4].texCoord.y = v + length;
+			vertexData_[start + 4].normal.x = vertexData_[start + 4].position.x;
+			vertexData_[start + 4].normal.y = vertexData_[start + 4].position.y;
+			vertexData_[start + 4].normal.z = vertexData_[start + 4].position.z;
 
 
 
 			//点b(左上)
-			vertexDataSphere_[start + 5].position.x = sphereCondtion.radius*(cos(lat + LAT_EVERY) * cos(lon)) ;
-			vertexDataSphere_[start + 5].position.y = sphereCondtion.radius*(sin(lat + LAT_EVERY));
-			vertexDataSphere_[start + 5].position.z = sphereCondtion.radius*(cos(lat + LAT_EVERY) * sin(lon));
-			vertexDataSphere_[start + 5].position.w = 1.0f;
-			vertexDataSphere_[start + 5].texCoord.x = u;
-			vertexDataSphere_[start + 5].texCoord.y = v;
-			vertexDataSphere_[start + 5].normal.x = vertexDataSphere_[start + 5].position.x;
-			vertexDataSphere_[start + 5].normal.y = vertexDataSphere_[start + 5].position.y;
-			vertexDataSphere_[start + 5].normal.z = vertexDataSphere_[start + 5].position.z;
+			vertexData_[start + 5].position.x = sphereCondtion.radius*(cos(lat + LAT_EVERY) * cos(lon)) ;
+			vertexData_[start + 5].position.y = sphereCondtion.radius*(sin(lat + LAT_EVERY));
+			vertexData_[start + 5].position.z = sphereCondtion.radius*(cos(lat + LAT_EVERY) * sin(lon));
+			vertexData_[start + 5].position.w = 1.0f;
+			vertexData_[start + 5].texCoord.x = u;
+			vertexData_[start + 5].texCoord.y = v;
+			vertexData_[start + 5].normal.x = vertexData_[start + 5].position.x;
+			vertexData_[start + 5].normal.y = vertexData_[start + 5].position.y;
+			vertexData_[start + 5].normal.z = vertexData_[start + 5].position.z;
 
 			
 			
@@ -194,29 +191,29 @@ void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix
 	//マテリアルにデータを書き込む
 	//書き込むためのアドレスを取得
 	//reinterpret_cast...char* から int* へ、One_class* から Unrelated_class* へなどの変換に使用
-	materialResourceSphere_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = color;
 	materialData_->lightingKinds=0;
 
-	materialData_->uvTransform = Matrix4x4Calculation::MakeIdentity4x4();
+	materialData_->uvTransform = Matrix4x4	::MakeIdentity4x4();
 
 	//サイズに注意を払ってね！！！！！
 	//どれだけのサイズが必要なのか考えよう
 
-	transformationMatrixResourceSphere_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixDataSphere_));
+	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 	
 
 	//新しく引数作った方が良いかも
-	Matrix4x4 worldMatrixSphere = Matrix4x4Calculation::MakeAffineMatrix(transform.scale,transform.rotate, VectorCalculation::Add(transform.translate,sphereCondtion.center));
+	Matrix4x4 worldMatrixSphere = Matrix4x4::MakeAffineMatrix(transform.scale,transform.rotate, transform.translate+sphereCondtion.center);
 	//遠視投影行列
-	Matrix4x4 viewMatrixSphere = Matrix4x4Calculation::MakeIdentity4x4();
+	Matrix4x4 viewMatrixSphere = Matrix4x4::MakeIdentity4x4();
 	
-	Matrix4x4 projectionMatrixSphere = Matrix4x4Calculation::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float>(windowsSetup_->GetClientWidth()), static_cast<float>(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrixSphere = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float>(windowsSetup_->GetClientWidth()), static_cast<float>(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
 	
 	//WVP行列を作成
-	Matrix4x4 worldViewProjectionMatrixSphere = Matrix4x4Calculation::Multiply(worldMatrixSphere, Matrix4x4Calculation::Multiply(viewMatrix, projectionMatrix));
-	transformationMatrixDataSphere_->WVP = worldViewProjectionMatrixSphere;
-	transformationMatrixDataSphere_->World =Matrix4x4Calculation::MakeIdentity4x4();
+	Matrix4x4 worldViewProjectionMatrixSphere = Matrix4x4::Multiply(worldMatrixSphere, Matrix4x4::Multiply(viewMatrix, projectionMatrix));
+	transformationMatrixData_->WVP = worldViewProjectionMatrixSphere;
+	transformationMatrixData_->World =Matrix4x4::MakeIdentity4x4();
 
 
 	//コマンドを積む
@@ -224,12 +221,12 @@ void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//CBVを設定する
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, materialResourceSphere_->GetGPUVirtualAddress());
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, materialResource_->GetGPUVirtualAddress());
 
 	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
 	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferViewSphere_);
 
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, transformationMatrixResourceSphere_->GetGPUVirtualAddress());
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, transformationMatrixResource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
 	//trueだったらtextureSrvHandleGPU2_
 	//directXSetup_->GetCommandList()->SetGraphicsRootDescriptorTable(2,useMonsterBall_?textureSrvHandleGPU2_:textureSrvHandleGPU_);

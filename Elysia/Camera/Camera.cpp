@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Matrix4x4Calculation.h"
+#include "Matrix4x4.h"
 #include "WindowsSetup.h"
 
 void Camera::Initialize() {
@@ -15,25 +15,25 @@ void Camera::Initialize() {
 	translate = {.x= 0.0f,.y= 0.0f,.z= -9.8f };
 
 	//ワールド行列を計算
-	worldMatrix = Matrix4x4Calculation::MakeAffineMatrix(scale, rotate, translate);
+	worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotate, translate);
 	//逆行列を計算
-	viewMatrix = Matrix4x4Calculation::Inverse(worldMatrix);
+	viewMatrix = Matrix4x4::Inverse(worldMatrix);
 	//射影を計算
-	projectionMatrix = Matrix4x4Calculation::MakePerspectiveFovMatrix(fov_, aspectRatio, nearClip, farClip);
+	projectionMatrix = Matrix4x4::MakePerspectiveFovMatrix(fov_, aspectRatio, nearClip, farClip);
 	//正射影行列(正規化)を計算
-	orthographicMatrix = Matrix4x4Calculation::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight()), 0.0f, 100.0f);
+	orthographicMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight()), 0.0f, 100.0f);
 }
 
 
 void Camera::Update() {
 	//ワールド行列を計算
-	worldMatrix = Matrix4x4Calculation::MakeAffineMatrix(scale, rotate, translate);
+	worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotate, translate);
 	//逆行列を計算
-	viewMatrix = Matrix4x4Calculation::Inverse(worldMatrix);
+	viewMatrix = Matrix4x4::Inverse(worldMatrix);
 	//射影を計算
-	projectionMatrix = Matrix4x4Calculation::MakePerspectiveFovMatrix(fov_, aspectRatio, nearClip, farClip);
+	projectionMatrix = Matrix4x4::MakePerspectiveFovMatrix(fov_, aspectRatio, nearClip, farClip);
 	//正射影行列(正規化)を計算
-	orthographicMatrix = Matrix4x4Calculation::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight()), 0.0f, 100.0f);
+	orthographicMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight()), 0.0f, 100.0f);
 
 	//転送
 	Transfer();
