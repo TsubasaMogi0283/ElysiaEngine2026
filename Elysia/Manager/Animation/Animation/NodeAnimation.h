@@ -29,6 +29,4 @@ struct NodeAnimation {
 	AnimationCurve<Quaternion> rotate;
 	//座標
 	AnimationCurve<Vector3> translate;
-	
-	
 };

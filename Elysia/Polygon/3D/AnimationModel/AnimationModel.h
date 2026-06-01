@@ -7,14 +7,15 @@
  */
 
 #include <cstdint>
-
+#include <memory>
 #include "ModelData.h"
 #include "LightingType.h"
 #include "Material.h"
+#include "SkinCluster.h"
 
-/// <summary>
-/// ワールドトランスフォーム
-/// </summary>
+ /// <summary>
+ /// ワールドトランスフォーム
+ /// </summary>
 struct WorldTransform;
 
 /// <summary>
@@ -66,7 +67,7 @@ namespace Elysia {
 	/// パイプライン管理クラス
 	/// </summary>
 	class PipelineManager;
-	
+
 	/// <summary>
 	/// SRV管理クラス
 	/// </summary>
@@ -83,6 +84,11 @@ namespace Elysia {
 	class ModelManager;
 
 	/// <summary>
+	/// アニメーション管理クラス
+	/// </summary>
+	class AnimationManager;
+
+	/// <summary>
 	/// アニメーションモデル
 	/// </summary>
 	class AnimationModel {
@@ -95,40 +101,46 @@ namespace Elysia {
 		/// <summary>
 		/// 生成
 		/// </summary>
-		/// <param name="modelHandle">ハンドル</param>
+		/// <param name="modelHandle">モデルハンドル</param>
+		/// <param name="animationHandle">アニメーションハンドル</param>
 		/// <returns></returns>
-		static AnimationModel* Create(const uint32_t& modelHandle);
+		static std::unique_ptr<AnimationModel> Create(const uint32_t& modelHandle, const uint32_t& animationHandle);
 
+		/// <summary>
+		/// 更新
+		/// </summary>
+		/// <param name="animationTime">アニメーションの時間</param>
+		void Update(const float& animationTime);
 
 		/// <summary>
 		/// 描画(平行光源)
 		/// </summary>
 		/// <param name="worldTransform">ワールドトランスフォーム</param>
 		/// <param name="camera">カメラ</param>
-		/// <param name="skinCluster">スキンクラスター</param>
+		/// <param name="animationTime">アニメーションの時間</param>
 		/// <param name="material">マテリアル</param>
 		/// <param name="directionalLight">平行光源</param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const DirectionalLight& directionalLight);
+		void Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const DirectionalLight& directionalLight);
 
 		/// <summary>
 		/// 描画(点光源)
 		/// </summary>
 		/// <param name="worldTransform">ワールドトランスフォーム</param>
 		/// <param name="camera">カメラ</param>
-		/// <param name="skinCluster">スキンクラスター</param>
+		/// <param name="animationTime">アニメーションの時間</param>
 		/// <param name="material">マテリアル</param>
 		/// <param name="pointLight">点光源</param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const PointLight& pointLight);
+		void Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const PointLight& pointLight);
 
 		/// <summary>
 		/// 描画(スポットライト)
 		/// </summary>
 		/// <param name="worldTransform">ワールドトランスフォーム</param>
 		/// <param name="camera">カメラ</param>
-		/// <param name="skinCluster">スキンクラスター</param>
+		/// <param name="animationTime">アニメーションの時間</param>
 		/// <param name="material">マテリアル</param>
 		/// <param name="spotLight">スポットライト</param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const SkinCluster& skinCluster, const Material& material, const SpotLight& spotLight);
+		void Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const SpotLight& spotLight);
 
 		/// <summary>
 		/// デストラクタ
@@ -141,13 +153,12 @@ namespace Elysia {
 		/// 環境マップで使うテクスチャのの設定
 		/// </summary>
 		/// <param name="textureHandle"></param>
-		void SetEviromentTexture(const uint32_t& textureHandle) {
-			this->eviromentTextureHandle_ = textureHandle;
+		void SetEnvironmentTexture(const uint32_t& textureHandle) {
+			this->environmentTextureHandle_ = textureHandle;
 		}
 
 
 	private:
-
 		//DirectXのクラス
 		Elysia::DirectXSetup* directXSetup_ = nullptr;
 		//パイプライン管理クラス
@@ -158,10 +169,12 @@ namespace Elysia {
 		Elysia::TextureManager* textureManager_ = nullptr;
 		//モデル管理クラス
 		Elysia::ModelManager* modelManager_ = nullptr;
+		//アニメーション管理クラス
+		Elysia::AnimationManager* animationManager_ = nullptr;
 
-
-
-
+	private:
+		//時間変化の量
+		const float_t DELTA_TIME_ = 1.0f / 60.0f;
 	private:
 		//頂点リソースを作る
 		ComPtr<ID3D12Resource> vertexResource_ = nullptr;
@@ -172,37 +185,30 @@ namespace Elysia {
 		ComPtr<ID3D12Resource> indexResource_ = nullptr;
 		D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
 
-
 		//PixelShaderにカメラの座標を送る為の変数
 		ComPtr<ID3D12Resource> cameraResource_ = nullptr;
 		CameraForGPU* cameraForGPU_ = {};
 
 
-		//アニメーションを再生するときに使う時間
-		float_t animationTime_ = 0.0f;
-
 		//テクスチャハンドル
 		uint32_t textureHandle_ = 0u;
-
 		//環境マップ
-		uint32_t eviromentTextureHandle_ = 0;
-
+		uint32_t environmentTextureHandle_ = 0;
 		//モデルハンドル
 		uint32_t modelHandle_ = 0u;
 		ModelData modelData_ = {};
 
+		//アニメーションハンドル
+		uint32_t animationHandle_ = 0u;
 		//アニメーションのローカル座標
-		//後々シェーダーで渡す
 		Matrix4x4 animationLocalMatrix_ = {};
-
-
-		//アニメーションをするかどうか
-		bool isAnimation_ = false;
+		//スケルトン
+		Skeleton humanSkeleton_ = {};
+		//スキンクラスター
+		SkinCluster skinCluster_ = {};
 
 
 	};
-
-
 };
 
 

@@ -8,7 +8,7 @@
 
 #include "ModelManager.h"
 
-Elysia::AnimationManager* Elysia::AnimationManager::GetInstance(){
+Elysia::AnimationManager* Elysia::AnimationManager::GetInstance() {
     static AnimationManager instance;
     return &instance;
 }
@@ -96,7 +96,7 @@ Animation Elysia::AnimationManager::LoadAnimationFile(const std::string& directo
             nodeAnimation.translate.keyFrames.push_back(keyFrame);
         }
 
-        //RotateはmNunRotationKeys/mRotateKeys
+        //RotateはmNunRotateionKeys/mRotateKeys
         //RotateはQuaternionで、右手->左手に変換するために、YとZを反転させる必要がある。
         //Rotate
         for (uint32_t keyIndex = 0u; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
@@ -128,7 +128,7 @@ Animation Elysia::AnimationManager::LoadAnimationFile(const std::string& directo
     return animation;
 }
 
-uint32_t Elysia::AnimationManager::LoadFile(const std::string& directoryPath, const std::string& fileName){
+uint32_t Elysia::AnimationManager::Load(const std::string& directoryPath, const std::string& fileName) {
 
     for (uint32_t i = 0u; i < ANIMATION_MAX_AMOUNT_; ++i) {
         if (AnimationManager::GetInstance()->animationInfromtion_[i].directoryPath == directoryPath &&
@@ -136,7 +136,7 @@ uint32_t Elysia::AnimationManager::LoadFile(const std::string& directoryPath, co
             return AnimationManager::GetInstance()->animationInfromtion_[i].handle;
         }
     }
-    
+
 
     ///読み込み
     Animation animation = AnimationManager::GetInstance()->LoadAnimationFile(directoryPath, fileName);
@@ -157,7 +157,7 @@ uint32_t Elysia::AnimationManager::LoadFile(const std::string& directoryPath, co
 
 }
 
-void Elysia::AnimationManager::ApplyAnimation(Skeleton& skeleton,const uint32_t& animationHandle, float_t animationTime){
+void Elysia::AnimationManager::ApplyAnimation(Skeleton& skeleton, const uint32_t& animationHandle, float_t animationTime) {
 
 
     Animation animationData = AnimationManager::GetInstance()->animationInfromtion_[animationHandle].animationData;

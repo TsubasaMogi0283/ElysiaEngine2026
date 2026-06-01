@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "Material.h"
 #include "DirectionalLight.h"
+#include <AnimationModel.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -38,6 +39,11 @@ namespace Elysia {
 	class ModelManager;
 
 	/// <summary>
+	/// アニメーション管理クラス
+	/// </summary>
+	class AnimationManager;
+
+	/// <summary>
 	/// 入力クラス
 	/// </summary>
 	class Input;
@@ -48,7 +54,9 @@ namespace Elysia {
 	class GlobalVariables;
 }
 
-
+/// <summary>
+/// テストシーン
+/// </summary>
 class TestScene : public Elysia::IGameScene{
 public:
 
@@ -102,6 +110,8 @@ private:
 	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル
 	uint32_t levelHandle_ = 0u;
+	//アニメーション管理クラス
+	Elysia::AnimationManager* animationManager_ = nullptr;
 
 
 private:
@@ -109,7 +119,8 @@ private:
 	const float_t SPEED = 0.1f;
 	//斜め補正
 	const float_t DIAGONAL_SCALE_ = 0.7f;
-
+	const float_t SIZE = 1.0f;
+	const Vector3 CUBE_SIZE = { .x = SIZE ,.y = SIZE ,.z = SIZE };
 private:
 
 	//背景
@@ -118,8 +129,9 @@ private:
 	//仮プレイヤー
 	std::unique_ptr<Elysia::Model>playerModel_ = nullptr;
 	WorldTransform playerWorldTransform_ = {};
-	const float_t SIZE = 1.0f;
-	const Vector3 CUBE_SIZE = { .x = SIZE ,.y = SIZE ,.z = SIZE };
+	std::unique_ptr<Elysia::AnimationModel>playerAnimationModel_ = nullptr;
+	WorldTransform playerAnimationWorldTransform_ = {};
+	float_t animationTime_ = 0.0f;
 	AABB playerAABB_ = {};
 	Vector3 playerCenterPosition_ = {};
 

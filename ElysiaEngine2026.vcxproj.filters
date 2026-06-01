@@ -366,13 +366,7 @@
     <ClCompile Include="Elysia\Manager\Animation\AnimationManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Manager\Animation\Animation\Animation.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Manager\Animation\Joint\Joint.cpp">
-      <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Elysia\Manager\Animation\Node\ReadNode.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Manager\Animation\Skeleton\Skeleton.cpp">
@@ -430,6 +424,9 @@
       <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Math\Quaternion\Quaternion.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Manager\Animation\Node\Node.cpp">
       <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -656,9 +653,6 @@
       <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Manager\Animation\Node\Node.h">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\Animation\Node\ReadNode.h">
       <Filter>Elysia\ヘッダー ファイル\Manager\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Manager\Animation\Skeleton\Skeleton.h">

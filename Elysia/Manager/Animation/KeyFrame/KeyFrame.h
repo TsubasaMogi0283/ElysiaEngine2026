@@ -17,7 +17,7 @@ struct KeyFrame {
 	//キーフレームの値
 	tValue value;
 	//キーフレームの時刻(秒)
-	float time;
+	float_t time;
 };
 
 

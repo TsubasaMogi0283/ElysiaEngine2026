@@ -125,9 +125,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\Line\Line.cpp" />
     <ClCompile Include="Elysia\main.cpp" />
     <ClCompile Include="Elysia\Manager\Animation\AnimationManager.cpp" />
-    <ClCompile Include="Elysia\Manager\Animation\Animation\Animation.cpp" />
     <ClCompile Include="Elysia\Manager\Animation\Joint\Joint.cpp" />
-    <ClCompile Include="Elysia\Manager\Animation\Node\ReadNode.cpp" />
+    <ClCompile Include="Elysia\Manager\Animation\Node\Node.cpp" />
     <ClCompile Include="Elysia\Manager\Animation\Skeleton\Skeleton.cpp" />
     <ClCompile Include="Elysia\Manager\Animation\SkinCluster\SkinCluster.cpp" />
     <ClCompile Include="Elysia\Manager\Collision\CollisionManager.cpp" />
@@ -210,7 +209,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\Manager\Animation\Joint\JoinWeightData.h" />
     <ClInclude Include="Elysia\Manager\Animation\KeyFrame\KeyFrame.h" />
     <ClInclude Include="Elysia\Manager\Animation\Node\Node.h" />
-    <ClInclude Include="Elysia\Manager\Animation\Node\ReadNode.h" />
     <ClInclude Include="Elysia\Manager\Animation\Skeleton\Skeleton.h" />
     <ClInclude Include="Elysia\Manager\Animation\SkinCluster\SkinCluster.h" />
     <ClInclude Include="Elysia\Manager\Animation\Vertex\VertexInfluence.h" />

@@ -5,11 +5,10 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <ReadNode.h>
 
 #include "Matrix4x4.h"
 #include <StringOption.h>
-
+#include <AnimationManager.h>
 
 
 Elysia::ModelManager* Elysia::ModelManager::GetInstance() {
@@ -116,7 +115,7 @@ ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileName
 		}
 	}
 	//ノードの読み込み
-	modelData.rootNode = ReadNode::GetInstance()->Read(scene->mRootNode);
+	modelData.rootNode = Node::Read(scene->mRootNode);
 
 	//ModelDataを返す
 	return modelData;
@@ -259,7 +258,7 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 	}
 
 	//ノードの読み込み
-	modelData.rootNode = ReadNode::GetInstance()->Read(scene->mRootNode);
+	modelData.rootNode = Node::Read(scene->mRootNode);
 	//ModelDataを返す
 	return modelData;
 }
@@ -315,7 +314,7 @@ uint32_t Elysia::ModelManager::Load(const std::string& directoryPath, const std:
 	Animation newAnimation = {};
 	if (isAnimationLoad) {
 		//アニメーションの読み込み
-		newAnimation = LoadAnimationFile(directoryPath, fileName);
+		newAnimation = AnimationManager::LoadAnimationFile(directoryPath, fileName);
 	}
 
 	//モデルの読み込み

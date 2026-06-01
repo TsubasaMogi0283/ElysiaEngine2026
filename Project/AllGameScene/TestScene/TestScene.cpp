@@ -8,6 +8,7 @@
 #include "LevelDataManager.h"
 #include "CollisionCalculation.h"
 #include "PushBackCalculation.h"
+#include <AnimationManager.h>
 
 TestScene::TestScene(){
 	//インスタンスの取得	
@@ -17,6 +18,8 @@ TestScene::TestScene(){
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//レベルエディタ管理クラス
 	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
+	//アニメーション管理クラス
+	animationManager_ = Elysia::AnimationManager::GetInstance();
 }
 
 void TestScene::Initialize(){
@@ -32,6 +35,14 @@ void TestScene::Initialize(){
 	playerCenterPosition_ = { .x = 0.0f,.y = 0.0f,.z = -5.0f };
 	playerWorldTransform_.translate = playerCenterPosition_;
 
+
+	uint32_t humanModelHandle = modelManager_->Load("Resources/Model/Sample/human", "walk.gltf");
+	uint32_t humanAnimationHandle = animationManager_->Load("Resources/Model/Sample/human", "walk.gltf");
+
+	playerAnimationModel_=Elysia::AnimationModel::Create(humanModelHandle, humanAnimationHandle);
+	playerAnimationWorldTransform_.Initialize();
+	playerAnimationWorldTransform_.translate.x = -20.0f;
+	playerAnimationWorldTransform_.translate.z = 20.0f;
 
 	//球モデル
 	uint32_t sphereModelHandle = modelManager_->Load("Resources/Model/Sample/Sphere", "Sphere.obj");
@@ -134,8 +145,11 @@ void TestScene::Update(Elysia::GameManager* gameManager){
 		playerCornerWorldTransform_[i].Update();
 	}
 
+	animationTime_ += 0.1f;
+
 	//プレイヤー更新
 	playerWorldTransform_.translate = playerCenterPosition_;
+	playerAnimationWorldTransform_.Update();
 	playerWorldTransform_.Update();
 	camera_.Update();
 	directionalLight_.Update();
@@ -169,7 +183,7 @@ void TestScene::DrawObject3D(){
 	//仮プレイヤー
 	playerModel_->Draw(playerWorldTransform_,camera_, playerMaterial_, directionalLight_);
 
-	
+	playerAnimationModel_->Draw(playerAnimationWorldTransform_, camera_, animationTime_, playerMaterial_,directionalLight_);
 	//パーティクル
 	deadParticle_->Draw(camera_, playerMaterial_, directionalLight_);
 	particle2_->Draw(camera_, playerMaterial_, directionalLight_);
