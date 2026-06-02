@@ -163,6 +163,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\Polygon\3D\SkyBox\SkyBox.cpp" />
     <ClCompile Include="Elysia\Polygon\3D\Sphere\Sphere.cpp" />
     <ClCompile Include="Elysia\Polygon\PostEffect\BackTexture\BackTexture.cpp" />
+    <ClCompile Include="Elysia\Polygon\PostEffect\BasePostEffect.cpp" />
     <ClCompile Include="Elysia\Polygon\PostEffect\BoxFilter\BoxFilter.cpp" />
     <ClCompile Include="Elysia\Polygon\PostEffect\Dissolve\DissolveEffect.cpp" />
     <ClCompile Include="Elysia\Polygon\PostEffect\GaussianFilter\GaussianFilter.cpp" />
@@ -274,6 +275,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\Polygon\Particle\Emitter.h" />
     <ClInclude Include="Elysia\Polygon\Particle\ParticleMoveType.h" />
     <ClInclude Include="Elysia\Polygon\PostEffect\BackTexture\BackTexture.h" />
+    <ClInclude Include="Elysia\Polygon\PostEffect\BasePostEffect.h" />
     <ClInclude Include="Elysia\Polygon\PostEffect\BoxFilter\BoxFilter.h" />
     <ClInclude Include="Elysia\Polygon\PostEffect\Dissolve\DissolveEffect.h" />
     <ClInclude Include="Elysia\Polygon\PostEffect\GaussianFilter\GaussianFilter.h" />

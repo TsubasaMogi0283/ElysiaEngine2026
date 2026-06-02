@@ -21,21 +21,7 @@ Elysia::BackTexture::BackTexture() {
 }
 
 void Elysia::BackTexture::Initialize(){
-
-	//エフェクトの種類を設定
-	effectType_ = NoneEffect;
-	//Effect
 	effectResource_ = directXSetup_->CreateBufferResource(sizeof(int32_t));
-	
-	//Vignette
-	vignetteResource_ = directXSetup_->CreateBufferResource(sizeof(VignetteInformation));
-	vignetteInformation_.pow = 0.8f;
-	vignetteInformation_.scale = 16.0f;
-
-	//GaussianFilter
-	gaussianFilterResource_ = directXSetup_->CreateBufferResource(sizeof(GaussianFilterInformation));
-	gaussianFilterInformation_.sigma = 2.0f;
-
 
 	//リソース作成
 	rtvResource_ = rtvManager_->CreateRenderTextureResource(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, color_);
@@ -44,11 +30,11 @@ void Elysia::BackTexture::Initialize(){
 	//RTV作成
 	rtvManager_->GenarateRenderTargetView(rtvResource_, rtvHandle_);
 
-
 	//SRV
+	//ハンドルの取得
 	srvHandle_ = srvManager_->Allocate();
+	//SRV作成
 	srvManager_->CreateSRVForRenderTexture(rtvResource_.Get(), srvHandle_);
-
 }
 
 void Elysia::BackTexture::PreDraw(){
@@ -84,19 +70,10 @@ void Elysia::BackTexture::Draw(){
 	directXSetup_->SetResourceBarrier(
 		rtvResource_.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-
-
-#ifdef _DEBUG
-	ImGui::Begin("Effect");
-	ImGui::SliderInt("Type",&effectType_,0,7);
-	ImGui::End();
-#endif
-
 	//書き込むためのアドレスを取得
 	//reinterpret_cast...char* から int* へ、One_class* から Unrelated_class* へなどの変換に使用
 	effectResource_->Map(0u, nullptr, reinterpret_cast<void**>(&effectTypeData_));
 	//選択したEffectTypeを書き込み
-	*effectTypeData_ = effectType_;
 	effectResource_->Unmap(0u, nullptr);
 
 	//パイプラインの設定
@@ -106,17 +83,8 @@ void Elysia::BackTexture::Draw(){
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//Effect
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, effectResource_->GetGPUVirtualAddress());
-	//Vignette
-	if (effectType_ == VignetteEffect) {
-		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, vignetteResource_->GetGPUVirtualAddress());
-	}
 	//Texture
 	TextureManager::GetInstance()->GraphicsCommand(2u, srvHandle_);
-	//GaussianFilter
-	if (effectType_ == GaussianFilter3x3a ||
-		effectType_ == GaussianFilter5x5a) {
-		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, gaussianFilterResource_->GetGPUVirtualAddress());
-	}
 	//描画(DrawCall)３頂点で１つのインスタンス。
 	directXSetup_->GetCommandList()->DrawInstanced(3u, 1u, 0u, 0u);
 

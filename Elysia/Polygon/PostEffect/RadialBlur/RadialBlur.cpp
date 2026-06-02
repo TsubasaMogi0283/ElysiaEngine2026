@@ -9,7 +9,7 @@
 
 Elysia::RadialBlur::RadialBlur(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Elysia::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
@@ -40,7 +40,7 @@ void Elysia::RadialBlur::Initialize(){
 void Elysia::RadialBlur::PreDraw(){
 	
 	//RT
-	const float RENDER_TARGET_CLEAR_VALUE[] = { color_.x,color_.y,color_.z,color_.w };
+	const float_t RENDER_TARGET_CLEAR_VALUE[] = { color_.x,color_.y,color_.z,color_.w };
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
 		1, &rtvManager_->GetRtvHandle(rtvHandle_), false, &directXSetup_->GetDsvHandle());
 	//クリア
@@ -51,8 +51,8 @@ void Elysia::RadialBlur::PreDraw(){
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//縦横のサイズ
-	uint32_t width = windowSetup_->GetClientWidth();
-	uint32_t height = windowSetup_->GetClientHeight();
+	uint32_t width = windowsSetup_->GetClientWidth();
+	uint32_t height = windowsSetup_->GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width, height);

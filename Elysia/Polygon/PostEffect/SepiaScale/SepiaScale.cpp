@@ -9,7 +9,7 @@
 
 Elysia::SepiaScale::SepiaScale(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Elysia::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
@@ -21,9 +21,9 @@ Elysia::SepiaScale::SepiaScale(){
 }
 
 void Elysia::SepiaScale::Initialize() {
-	const Vector4 RENDER_TARGET_CLEAR_VALUE = {.x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
+
 	//リソースの生成
-	rtvResource_ = rtvManager_->CreateRenderTextureResource(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, RENDER_TARGET_CLEAR_VALUE);
+	rtvResource_ = rtvManager_->CreateRenderTextureResource(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, color_);
 
 	//ハンドルの取得
 	rtvHandle_ = rtvManager_->Allocate("SepiaScale");
@@ -38,7 +38,7 @@ void Elysia::SepiaScale::Initialize() {
 
 void Elysia::SepiaScale::PreDraw() {
 
-	const float RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
+	const float_t RENDER_TARGET_CLEAR_VALUE[] = { color_.x, color_.y, color_.z, color_.w };
 	//RT
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
 		1u, &rtvManager_->GetRtvHandle(rtvHandle_), false, &directXSetup_->GetDsvHandle());
@@ -50,8 +50,8 @@ void Elysia::SepiaScale::PreDraw() {
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//縦横
-	uint32_t width = windowSetup_->GetClientWidth();
-	uint32_t height = windowSetup_->GetClientHeight();
+	uint32_t width = windowsSetup_->GetClientWidth();
+	uint32_t height = windowsSetup_->GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width, height);

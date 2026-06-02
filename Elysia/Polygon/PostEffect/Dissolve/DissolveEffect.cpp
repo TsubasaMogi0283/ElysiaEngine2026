@@ -9,7 +9,7 @@
 
 Elysia::DissolvePostEffect::DissolvePostEffect(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Elysia::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
@@ -20,12 +20,10 @@ Elysia::DissolvePostEffect::DissolvePostEffect(){
 	srvManager_ = Elysia::SrvManager::GetInstance();
 }
 
-void Elysia::DissolvePostEffect::Initialize(const Vector4& clearColor){
+void Elysia::DissolvePostEffect::Initialize(){
 	
-	
-	renderTargetClearColor_ = clearColor;
 	//リソースの作成
-	rtvResource_ = rtvManager_->CreateRenderTextureResource(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, renderTargetClearColor_);
+	rtvResource_ = rtvManager_->CreateRenderTextureResource(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, color_);
 	//ハンドルの取得
 	rtvHandle_ = rtvManager_->Allocate("Dissolve");
 	//作成
@@ -41,7 +39,7 @@ void Elysia::DissolvePostEffect::Initialize(const Vector4& clearColor){
 
 void Elysia::DissolvePostEffect::PreDraw(){
 	
-	const float CLEAR_COLOR[] = { renderTargetClearColor_.x,renderTargetClearColor_.y,renderTargetClearColor_.z,renderTargetClearColor_.w };
+	const float_t CLEAR_COLOR[] = { color_.x,color_.y,color_.z,color_.w };
 	//RT
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
 		1u, &rtvManager_->GetRtvHandle(rtvHandle_), false, &directXSetup_->GetDsvHandle());
@@ -53,24 +51,21 @@ void Elysia::DissolvePostEffect::PreDraw(){
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//縦横のサイズ
-	uint32_t width = windowSetup_->GetClientWidth();
-	uint32_t height = windowSetup_->GetClientHeight();
+	uint32_t width = windowsSetup_->GetClientWidth();
+	uint32_t height = windowsSetup_->GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width, height);
 	//シザー矩形 
 	directXSetup_->GenerateScissor(width, height);
-
-
 }
 
-void Elysia::DissolvePostEffect::Draw(const Dissolve& dissolve){
+void Elysia::DissolvePostEffect::Draw(){
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(
 		rtvResource_,
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-
 
 	//パイプラインの設定
 	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetDissolveRootSignature().Get());
@@ -80,9 +75,9 @@ void Elysia::DissolvePostEffect::Draw(const Dissolve& dissolve){
 	//SRV
 	srvManager_->SetGraphicsRootDescriptorTable(0u, srvHandle_);
 	//マスクテクスチャ
-	srvManager_->SetGraphicsRootDescriptorTable(1u, dissolve.maskTextureHandle);
+	srvManager_->SetGraphicsRootDescriptorTable(1u, dissolve_.maskTextureHandle);
 	//ディゾルブ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(2u, dissolve.resource->GetGPUVirtualAddress());
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(2u, dissolve_.resource->GetGPUVirtualAddress());
 	//描画(DrawCall)３頂点で１つのインスタンス。
 	directXSetup_->GetCommandList()->DrawInstanced(3u, 1u, 0u, 0u);
 	
@@ -90,6 +85,4 @@ void Elysia::DissolvePostEffect::Draw(const Dissolve& dissolve){
 	directXSetup_->SetResourceBarrier(
 		rtvResource_,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
-
 }

@@ -11,11 +11,8 @@
 #include "Vector4.h"
 #include "Vector3.h"
 #include "VertexData.h"
-
-/// <summary>
-/// ディゾルブ
-/// </summary>
-struct Dissolve;
+#include "Dissolve.h"
+#include "BasePostEffect.h"
 
 
 /// <summary>
@@ -23,34 +20,9 @@ struct Dissolve;
 /// </summary>
 namespace Elysia {
 	/// <summary>
-	/// ウィンドウクラス
-	/// </summary>
-	class WindowsSetup;
-
-	/// <summary>
-	/// DirectXクラス
-	/// </summary>
-	class DirectXSetup;
-
-	/// <summary>
-	/// パイプライン管理クラス
-	/// </summary>
-	class PipelineManager;
-
-	/// <summary>
-	/// RTV管理クラス
-	/// </summary>
-	class RtvManager;
-
-	/// <summary>
-	/// SRV管理クラス
-	/// </summary>
-	class SrvManager;
-
-	/// <summary>
 	/// ディゾルブ(ポストエフェクト)
 	/// </summary>
-	class DissolvePostEffect {
+	class DissolvePostEffect : public BasePostEffect {
 	public:
 		/// <summary>
 		/// コンストラクタ
@@ -60,55 +32,35 @@ namespace Elysia {
 		/// <summary>
 		/// 初期化
 		/// </summary>
-		/// <param name="clearColor"></param>
-		void Initialize(const Vector4& clearColor);
+		void Initialize()override;
 
 		/// <summary>
 		/// 描画前処理
 		/// </summary>
-		void PreDraw();
+		void PreDraw()override;
 
 		/// <summary>
 		/// 描画
 		/// </summary>
-		/// <param name="dissolve">ディゾルブ</param>
-		void Draw(const Dissolve& dissolve);
+		void Draw()override;
 
 		/// <summary>
-		/// デストラク
+		/// デストラクタ
 		/// </summary>
 		~DissolvePostEffect() = default;
+	
+	public:
+		/// <summary>
+		/// ディゾルブのデータを設定
+		/// </summary>
+		/// <param name="dissolve"></param>
+		inline void SetDissolveData(const Dissolve& dissolve) {
+			this->dissolve_ = dissolve;
+		}
 
 	private:
-		//Windowクラス
-		Elysia::WindowsSetup* windowSetup_ = nullptr;
-		//DirectXクラス
-		Elysia::DirectXSetup* directXSetup_ = nullptr;
-		//パイプライン管理クラス
-		Elysia::PipelineManager* pipelineManager_ = nullptr;
-		//RTV管理クラス
-		Elysia::RtvManager* rtvManager_ = nullptr;
-		//SRV管理クラス
-		Elysia::SrvManager* srvManager_ = nullptr;
+		//ディゾルブ
+		Dissolve dissolve_ = {};
 
-	private:
-
-		
-
-		//RTV
-		ComPtr<ID3D12Resource> rtvResource_ = nullptr;
-		//RTVハンドル
-		uint32_t rtvHandle_ = 0;
-		//レンダーの色
-		Vector4 renderTargetClearColor_ = {};
-		//SRVハンドル
-		uint32_t srvHandle_ = 0;
-		//マスクテクスチャハンドル
-		uint32_t maskTextureHandle = 0u;
-
-		//バリア
-		D3D12_RESOURCE_BARRIER barrier = {};
 	};
-
-
 }

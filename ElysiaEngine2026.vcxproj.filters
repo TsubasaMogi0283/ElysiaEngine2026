@@ -154,9 +154,6 @@
     <Filter Include="Elysia\ソース ファイル\StringOption">
       <UniqueIdentifier>{bb676d31-fda4-4e24-9913-b6afc0c6b808}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Elysia\ソース ファイル\Polygone\3D\PostEffct">
-      <UniqueIdentifier>{651686b2-090a-4838-8c6e-6aa69d7778a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Elysia\ソース ファイル\Convert">
       <UniqueIdentifier>{a018753d-38bc-4b5f-a86c-6a9be8fcbc9c}</UniqueIdentifier>
     </Filter>
@@ -234,6 +231,9 @@
     </Filter>
     <Filter Include="Elysia\ソース ファイル\Manager\Texture">
       <UniqueIdentifier>{0a783e46-1515-4e6f-98ac-8e668d926bea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\ソース ファイル\Polygone\PostEffct">
+      <UniqueIdentifier>{651686b2-090a-4838-8c6e-6aa69d7778a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -328,34 +328,34 @@
       <Filter>Elysia\ソース ファイル\StringOption</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\BackTexture\BackTexture.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\BoxFilter\BoxFilter.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\Dissolve\DissolveEffect.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\GaussianFilter\GaussianFilter.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\GrayScale\GrayScale.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\LuminanceBasedOutline\LuminanceBasedOutline.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\RadialBlur\RadialBlur.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\RandomNoise\RandomNoisePostEffect.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\SepiaScale\SepiaScale.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\Vignette\VignettePostEffect.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\PostEffct</Filter>
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Convert\Convert.cpp">
       <Filter>Elysia\ソース ファイル\Convert</Filter>
@@ -417,17 +417,20 @@
     <ClCompile Include="Elysia\Manager\Texture\TextureManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Math\Matrix\Matrix4x4.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Math\Vector\Vector3.cpp">
       <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Math\Quaternion\Quaternion.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
+    <ClCompile Include="Elysia\Math\Matrix\Matrix4x4.cpp">
+      <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Manager\Animation\Node\Node.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
+      <Filter>Elysia\ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Math\Quaternion\Quaternion.cpp">
+      <Filter>Elysia\ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Polygon\PostEffect\BasePostEffect.cpp">
+      <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -732,6 +735,9 @@
     </ClInclude>
     <ClInclude Include="Elysia\Manager\Texture\TextureManager.h">
       <Filter>Elysia\ヘッダー ファイル\Manager\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Polygon\PostEffect\BasePostEffect.h">
+      <Filter>Elysia\ヘッダー ファイル\Polygone\PostEffct</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

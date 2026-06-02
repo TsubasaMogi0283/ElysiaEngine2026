@@ -12,7 +12,7 @@
 
 Elysia::GaussianFilter::GaussianFilter(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Elysia::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
@@ -27,7 +27,7 @@ void Elysia::GaussianFilter::Initialize(){
 
 	//Effect
 	//リソースの生成
-	boxFilterTypeResource_ = directXSetup_->CreateBufferResource(sizeof(GaussianFilterData));
+	gaussianFilterTypeResource_ = directXSetup_->CreateBufferResource(sizeof(GaussianFilterData));
 	sigma_ = 2.0f;
 	boxFilterType_ = GaussianFilter3x3;
 
@@ -51,7 +51,7 @@ void Elysia::GaussianFilter::Initialize(){
 
 void Elysia::GaussianFilter::PreDraw(){
 	
-	const float RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
+	const float_t RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
 		1, &rtvManager_->GetRtvHandle(rtvHandle_), false, &directXSetup_->GetDsvHandle());
 
@@ -63,8 +63,8 @@ void Elysia::GaussianFilter::PreDraw(){
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	//縦横のサイズ
-	uint32_t width = windowSetup_->GetClientWidth();
-	uint32_t height = windowSetup_->GetClientHeight();
+	uint32_t width = windowsSetup_->GetClientWidth();
+	uint32_t height = windowsSetup_->GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width,height);
@@ -81,10 +81,10 @@ void Elysia::GaussianFilter::Draw(){
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
 
-	boxFilterTypeResource_->Map(0u, nullptr, reinterpret_cast<void**>(&boxFilterTypeData_));
-	boxFilterTypeData_->sigma = sigma_;
-	boxFilterTypeData_->type = boxFilterType_;
-	boxFilterTypeResource_->Unmap(0u, nullptr);
+	gaussianFilterTypeResource_->Map(0u, nullptr, reinterpret_cast<void**>(&gaussianFilterTypeData_));
+	gaussianFilterTypeData_->sigma = sigma_;
+	gaussianFilterTypeData_->type = boxFilterType_;
+	gaussianFilterTypeResource_->Unmap(0u, nullptr);
 
 	//パイプラインの設定
 	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetGaussianFilterRootSignature().Get());
@@ -95,7 +95,7 @@ void Elysia::GaussianFilter::Draw(){
 	//SRV
 	srvManager_->SetGraphicsRootDescriptorTable(0u, srvHandle_);
 	//Effect
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, boxFilterTypeResource_->GetGPUVirtualAddress());
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, gaussianFilterTypeResource_->GetGPUVirtualAddress());
 	//描画(DrawCall)３頂点で１つのインスタンス。
 	directXSetup_->GetCommandList()->DrawInstanced(3u, 1u, 0u, 0u);
 

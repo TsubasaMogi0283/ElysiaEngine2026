@@ -6,7 +6,7 @@
  */
 
 #include "DirectXSetup.h"
-
+#include "BasePostEffect.h"
 
  /// <summary>
  /// ElysiaEngine
@@ -14,35 +14,9 @@
 namespace Elysia {
 
 	/// <summary>
-	/// ウィンドウクラス
-	/// </summary>
-	class WindowsSetup;
-
-	/// <summary>
-	/// DirectXクラス
-	/// </summary>
-	class DirectXSetup;
-
-	/// <summary>
-	/// パイプライン管理クラス
-	/// </summary>
-	class PipelineManager;
-
-	/// <summary>
-	/// RTV管理クラス
-	/// </summary>
-	class RtvManager;
-
-	/// <summary>
-	/// SRV管理クラス
-	/// </summary>
-	class SrvManager;
-
-
-	/// <summary>
 	/// セピア
 	/// </summary>
-	class SepiaScale {
+	class SepiaScale : public BasePostEffect {
 	public:
 		/// <summary>
 		/// コンストラクタ
@@ -52,50 +26,22 @@ namespace Elysia {
 		/// <summary>
 		/// 初期化
 		/// </summary>
-		void Initialize();
+		void Initialize()override;
 
 		/// <summary>
 		/// 描画前処理
 		/// </summary>
-		void PreDraw();
+		void PreDraw()override;
 
 		/// <summary>
 		/// 描画
 		/// </summary>
-		void Draw();
+		void Draw()override;
 
 		/// <summary>
 		/// デストラクタ
 		/// </summary>
 		~SepiaScale() = default;
 
-	private:
-		//Windowクラス
-		Elysia::WindowsSetup* windowSetup_ = nullptr;
-		//DirectXクラス
-		Elysia::DirectXSetup* directXSetup_ = nullptr;
-		//パイプライン管理クラス
-		Elysia::PipelineManager* pipelineManager_ = nullptr;
-		//RTV管理クラス
-		Elysia::RtvManager* rtvManager_ = nullptr;
-		//SRV管理クラス
-		Elysia::SrvManager* srvManager_ = nullptr;
-
-
-	private:
-		//RTV
-		//リソース
-		ComPtr<ID3D12Resource> rtvResource_ = nullptr;
-		//ハンドル
-		uint32_t rtvHandle_ = 0;
-
-		//SRVハンドル
-		uint32_t srvHandle_ = 0;
-
-		//バリア
-		D3D12_RESOURCE_BARRIER barrier = {};
-
-
 	};
-
 };

@@ -11,7 +11,7 @@
 
 Elysia::GrayScale::GrayScale(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Elysia::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
@@ -43,7 +43,7 @@ void Elysia::GrayScale::Initialize() {
 
 void Elysia::GrayScale::PreDraw() {
 
-	const float RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
+	const float_t RENDER_TARGET_CLEAR_VALUE[] = { 1.0f,0.0f,0.0f,1.0f };
 	//RT
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
 		1u, &rtvManager_->GetRtvHandle(rtvHandle_), false, &directXSetup_->GetDsvHandle());
@@ -55,8 +55,8 @@ void Elysia::GrayScale::PreDraw() {
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//縦横
-	uint32_t width = windowSetup_->GetClientWidth();
-	uint32_t height = windowSetup_->GetClientHeight();
+	uint32_t width = windowsSetup_->GetClientWidth();
+	uint32_t height = windowsSetup_->GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width, height);
@@ -73,8 +73,8 @@ void Elysia::GrayScale::Draw() {
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
 	//パイプラインの設定
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(PipelineManager::GetInstance()->GetGrayScaleRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(PipelineManager::GetInstance()->GetGrayScaleGraphicsPipelineState().Get());
+	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetGrayScaleRootSignature().Get());
+	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetGrayScaleGraphicsPipelineState().Get());
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//SRV

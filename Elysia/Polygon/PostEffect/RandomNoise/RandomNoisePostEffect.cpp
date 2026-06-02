@@ -11,7 +11,7 @@
 
 Elysia::RandomNoisePostEffect::RandomNoisePostEffect(){
 	//ウィンドウクラスの取得
-	windowSetup_ = Elysia::WindowsSetup::GetInstance();
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
@@ -38,10 +38,16 @@ void Elysia::RandomNoisePostEffect::Initialize() {
 	srvHandle_ = srvManager_->Allocate();
 	//生成
 	srvManager_->CreateSRVForRenderTexture(rtvResource_.Get(), srvHandle_);
+	
+	//初期化
+	randomNoise_.Initialize();
 }
 
 void Elysia::RandomNoisePostEffect::PreDraw() {
 	
+	//更新
+	randomNoise_.Update();
+
 	//RTVの設定
 	const float_t RENDER_TARGET_CLEAR_VALUE[] = { 0.0f,0.0f,0.0f,1.0f };
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
@@ -53,8 +59,8 @@ void Elysia::RandomNoisePostEffect::PreDraw() {
 	directXSetup_->GetCommandList()->ClearDepthStencilView(
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 	//縦横のサイズを取得
-	uint32_t width = windowSetup_->GetClientWidth();
-	uint32_t height = windowSetup_->GetClientHeight();
+	uint32_t width = windowsSetup_->GetClientWidth();
+	uint32_t height = windowsSetup_->GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width, height);
@@ -63,7 +69,7 @@ void Elysia::RandomNoisePostEffect::PreDraw() {
 
 }
 
-void Elysia::RandomNoisePostEffect::Draw(const RandomNoise& randomNoise) {
+void Elysia::RandomNoisePostEffect::Draw() {
 
 	//ResourceBarrierを張る
 	directXSetup_->SetResourceBarrier(
@@ -79,7 +85,7 @@ void Elysia::RandomNoisePostEffect::Draw(const RandomNoise& randomNoise) {
 	//SRV
 	srvManager_->SetGraphicsRootDescriptorTable(0u, srvHandle_);
 	//ランダム
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, randomNoise.resource->GetGPUVirtualAddress());
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, randomNoise_.resource->GetGPUVirtualAddress());
 	//描画(DrawCall)３頂点で１つのインスタンス。
 	directXSetup_->GetCommandList()->DrawInstanced(3u, 1u, 0u, 0u);
 	

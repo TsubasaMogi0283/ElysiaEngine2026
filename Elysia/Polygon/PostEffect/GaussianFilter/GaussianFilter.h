@@ -10,18 +10,16 @@
 #include "Vector4.h"
 #include "Vector3.h"
 #include "VertexData.h"
+#include "BasePostEffect.h"
 
-/// <summary>
-/// 種類
-/// </summary>
+ /// <summary>
+ /// 種類
+ /// </summary>
 enum GaussianFilterSelection {
 	//GaussianFilter
 	//BoxFilterよりこっちの方良い感じらしい
 	GaussianFilter3x3,
 	GaussianFilter5x5,
-
-
-
 };
 
 /// <summary>
@@ -30,10 +28,10 @@ enum GaussianFilterSelection {
 struct GaussianFilterData {
 	//種類
 	int32_t type;
-	
+
 	//標準偏差
 	//StandardDivision。一般的にσ(シグマ)が使われる
-	float sigma;
+	float_t sigma;
 
 };
 
@@ -41,94 +39,58 @@ struct GaussianFilterData {
 /// ElysiaEngine
 /// </summary>
 namespace Elysia {
-
-	/// <summary>
-	/// ウィンドウクラス
-	/// </summary>
-	class WindowsSetup;
-
-	/// <summary>
-	/// DirectXクラス
-	/// </summary>
-	class DirectXSetup;
-
-	/// <summary>
-	/// パイプライン管理クラス
-	/// </summary>
-	class PipelineManager;
-
-	/// <summary>
-	/// RTV管理クラス
-	/// </summary>
-	class RtvManager;
-
-	/// <summary>
-	/// SRV管理クラス
-	/// </summary>
-	class SrvManager;
-
-
 	/// <summary>
 	/// ガウシアンフィルタ
 	/// </summary>
-	class GaussianFilter {
+	class GaussianFilter : public BasePostEffect {
 	public:
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
 		GaussianFilter();
 
-
 		/// <summary>
 		/// 初期化
 		/// </summary>
-		void Initialize();
+		void Initialize()override;
 
 		/// <summary>
 		/// 描画前処理
 		/// </summary>
-		void PreDraw();
+		void PreDraw()override;
 
 		/// <summary>
 		/// 描画
 		/// </summary>
-		void Draw();
+		void Draw()override;
 
 		/// <summary>
 		/// デストラクタ
 		/// </summary>
 		~GaussianFilter() = default;
+	public:
+		/// <summary>
+		/// タイプの設定
+		/// </summary>
+		/// <param name="type"></param>
+		inline void SetType(int32_t type) {
+			this->boxFilterType_ = type;
+		}
 
-
-	private:
-		//Windowクラス
-		Elysia::WindowsSetup* windowSetup_ = nullptr;
-		//DirectXクラス
-		Elysia::DirectXSetup* directXSetup_ = nullptr;
-		//パイプライン管理クラス
-		Elysia::PipelineManager* pipelineManager_ = nullptr;
-		//RTV管理クラス
-		Elysia::RtvManager* rtvManager_ = nullptr;
-		//SRV管理クラス
-		Elysia::SrvManager* srvManager_ = nullptr;
+		/// <summary>
+		/// シグマの設定
+		/// </summary>
+		/// <param name="sigma"></param>
+		inline void SetSigma(float_t sigma) {
+			this->sigma_ = sigma;
+		}
 
 	private:
 		//リソース
-		ComPtr<ID3D12Resource> boxFilterTypeResource_ = nullptr;
-		GaussianFilterData* boxFilterTypeData_ = nullptr;
+		ComPtr<ID3D12Resource> gaussianFilterTypeResource_ = nullptr;
+		GaussianFilterData* gaussianFilterTypeData_ = nullptr;
 		int32_t boxFilterType_ = GaussianFilter3x3;
-		float sigma_ = 0.0f;
+		float_t sigma_ = 0.0f;
 
-		//RTV
-		//ハンドル
-		uint32_t rtvHandle_ = 0;
-		//リソース
-		ComPtr<ID3D12Resource> rtvResource_ = nullptr;
-		
-		//SRVハンドル
-		uint32_t srvHandle_ = 0;
-
-		//バリア
-		D3D12_RESOURCE_BARRIER barrier = {};
 	};
 }
