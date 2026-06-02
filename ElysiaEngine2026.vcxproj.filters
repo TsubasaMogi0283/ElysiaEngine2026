@@ -739,5 +739,8 @@
     <ClInclude Include="Elysia\Polygon\PostEffect\BasePostEffect.h">
       <Filter>Elysia\ヘッダー ファイル\Polygone\PostEffct</Filter>
     </ClInclude>
+    <ClInclude Include="Elysia\Manager\EngineManagers.h">
+      <Filter>Elysia\ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

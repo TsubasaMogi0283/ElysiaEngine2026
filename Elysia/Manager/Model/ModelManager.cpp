@@ -10,13 +10,6 @@
 #include <StringOption.h>
 #include <AnimationManager.h>
 
-
-Elysia::ModelManager* Elysia::ModelManager::GetInstance() {
-	//関数内static変数として宣言する
-	static Elysia::ModelManager instance;
-	return &instance;
-}
-
 #pragma region レベルエディタ用
 
 ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileNameFolder, const std::string& fileName) {
@@ -127,14 +120,14 @@ uint32_t Elysia::ModelManager::LoadModelFileForLevelData(const std::string& dire
 	//一度読み込んだものはその値を返す
 	//新規は勿論読み込みをする
 	std::string filePath = directoryPath + "/" + fileName + "/" + fileName;
-	if (Elysia::ModelManager::GetInstance()->modelInformation_.find(filePath) != Elysia::ModelManager::GetInstance()->modelInformation_.end()) {
-		return Elysia::ModelManager::GetInstance()->modelInformation_[filePath].handle;
+	if (modelInformation_.find(filePath) != modelInformation_.end()) {
+		return modelInformation_[filePath].handle;
 	}
 
-	++modelHandle_;
+	modelHandle_++;
 
 	//モデルの読み込み
-	ModelData newModelData = Elysia::ModelManager::GetInstance()->LoadFileForLevelData(directoryPath, fileName);
+	ModelData newModelData = LoadFileForLevelData(directoryPath, fileName);
 	//ハンドル
 	uint32_t handle = modelHandle_;
 	//パス
@@ -152,7 +145,7 @@ uint32_t Elysia::ModelManager::LoadModelFileForLevelData(const std::string& dire
 	};
 
 	//登録
-	Elysia::ModelManager::GetInstance()->modelInformation_[filePath] = modelInformation;
+	modelInformation_[filePath] = modelInformation;
 
 	//値を返す
 	return modelHandle_;
@@ -272,7 +265,7 @@ uint32_t Elysia::ModelManager::Load(const std::string& directoryPath, const std:
 		return modelInformation_[filePath].handle;
 	}
 
-	++modelHandle_;
+	modelHandle_++;
 
 	//モデルの読み込み
 	ModelData newModelData = LoadFile(directoryPath, fileName);
@@ -309,7 +302,7 @@ uint32_t Elysia::ModelManager::Load(const std::string& directoryPath, const std:
 	}
 
 	//ハンドルを増やす
-	++modelHandle_;
+	modelHandle_++;
 
 	Animation newAnimation = {};
 	if (isAnimationLoad) {

@@ -37,11 +37,6 @@ namespace Elysia {
 		~ModelManager() = default;
 
 	public:
-		/// <summary>
-		/// インスタンスの取得
-		/// </summary>
-		/// <returns></returns>
-		static ModelManager* GetInstance();
 
 		//コピーコンストラクタ禁止
 		ModelManager(const ModelManager& modelManager) = delete;

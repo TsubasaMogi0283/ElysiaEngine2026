@@ -217,6 +217,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\Manager\Animation\Well\WellForGPU.h" />
     <ClInclude Include="Elysia\Manager\Collision\Collider.h" />
     <ClInclude Include="Elysia\Manager\Collision\CollisionManager.h" />
+    <ClInclude Include="Elysia\Manager\EngineManagers.h" />
     <ClInclude Include="Elysia\Manager\Game\GameManager.h" />
     <ClInclude Include="Elysia\Manager\Game\IAbstractSceneFactory.h" />
     <ClInclude Include="Elysia\Manager\Game\IGameScene.h" />
