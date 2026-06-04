@@ -27,7 +27,7 @@ void Elysia::DissolvePostEffect::Initialize(){
 	//ハンドルの取得
 	rtvHandle_ = rtvManager_->Allocate("Dissolve");
 	//作成
-	rtvManager_->GenarateRenderTargetView(rtvResource_, rtvHandle_);
+	rtvManager_->GenerateRenderTargetView(rtvResource_, rtvHandle_);
 
 	//SRV
 	//ハンドルの取得

@@ -28,7 +28,7 @@ void Elysia::RadialBlur::Initialize(){
 	//ハンドルの取得
 	rtvHandle_ = rtvManager_->Allocate("RadialBlur");
 	//RTVの生成
-	rtvManager_->GenarateRenderTargetView(rtvResource_, rtvHandle_);
+	rtvManager_->GenerateRenderTargetView(rtvResource_, rtvHandle_);
 
 	//SRV
 	//ハンドル

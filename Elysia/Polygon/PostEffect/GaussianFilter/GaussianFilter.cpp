@@ -39,7 +39,7 @@ void Elysia::GaussianFilter::Initialize(){
 	//ハンドル
 	rtvHandle_= rtvManager_->Allocate("GaussianFilter");
 	//生成
-	rtvManager_->GenarateRenderTargetView(rtvResource_, rtvHandle_);
+	rtvManager_->GenerateRenderTargetView(rtvResource_, rtvHandle_);
 
 
 	//SRV

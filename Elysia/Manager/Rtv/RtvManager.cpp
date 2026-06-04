@@ -157,14 +157,14 @@ uint32_t  Elysia::RtvManager::Allocate(const std::string& name){
 
 }
 
-void  Elysia::RtvManager::GenarateRenderTargetView(const ComPtr<ID3D12Resource>& resource,const uint32_t& handle){
+void  Elysia::RtvManager::GenerateRenderTargetView(const ComPtr<ID3D12Resource>& resource,const uint32_t& handle){
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				//出力結果をSRGBに変換して書き込む
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	
 	
-	//handleはAllowcateで返された値を使ってね
+	//handleはAllocateで返された値を使ってね
 
 	//0の時だけ少し違うので専用のものを作成
 	if (handle == 0) {

@@ -7,6 +7,7 @@
  * @author 茂木翼
  */
 
+#include <memory>
 #include <WindowsSetup.h>
 #include <DirectXSetup.h>
 #include <SrvManager.h>
@@ -23,23 +24,23 @@
 /// </summary>
 struct EngineManagers {
 	//ウィンドウクラス
-	Elysia::WindowsSetup* windowsSetup_ = nullptr;
+	std::unique_ptr<Elysia::WindowsSetup> windowsSetup_ = nullptr;
 	//DirectXクラス
-	Elysia::DirectXSetup* directXSetup_ = nullptr;
+	std::unique_ptr<Elysia::DirectXSetup> directXSetup_ = nullptr;
 	//SRV管理クラス
-	Elysia::SrvManager* srvManager_ = nullptr;
+	std::unique_ptr<Elysia::SrvManager> srvManager_ = nullptr;
 	//RTV管理クラス
-	Elysia::RtvManager* rtvManager_ = nullptr;
+	std::unique_ptr<Elysia::RtvManager> rtvManager_ = nullptr;
 	//ImGui管理クラス
-	Elysia::ImGuiManager* imGuiManager_ = nullptr;
+	std::unique_ptr<Elysia::ImGuiManager> imGuiManager_ = nullptr;
 	//パイプライン管理クラス
-	Elysia::PipelineManager* pipelineManager_ = nullptr;
+	std::unique_ptr<Elysia::PipelineManager> pipelineManager_ = nullptr;
 	//Inputクラス
-	Elysia::Input* input_ = nullptr;
+	std::unique_ptr<Elysia::Input> input_ = nullptr;
 	//オーディオクラス
-	Elysia::Audio* audio_ = nullptr;
+	std::unique_ptr<Elysia::Audio> audio_ = nullptr;
 	//JSON読み込み(グローバル変数)
-	Elysia::GlobalVariables* globalVariables_ = nullptr;
+	std::unique_ptr<Elysia::GlobalVariables> globalVariables_ = nullptr;
 	//レベルデータ管理クラス
-	Elysia::LevelDataManager* levelDataManager_ = nullptr;
+	std::unique_ptr<Elysia::LevelDataManager> levelDataManager_ = nullptr;
 };

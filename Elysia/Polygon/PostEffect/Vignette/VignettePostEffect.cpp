@@ -31,7 +31,7 @@ void Elysia::VignettePostEffect::Initialize() {
 	//ハンドルの取得
 	rtvHandle_ = rtvManager_->Allocate("Vignette");
 	//RTVの生成
-	rtvManager_->GenarateRenderTargetView(rtvResource_, rtvHandle_);
+	rtvManager_->GenerateRenderTargetView(rtvResource_, rtvHandle_);
 
 	//ハンドルの取得
 	srvHandle_ = srvManager_->Allocate();

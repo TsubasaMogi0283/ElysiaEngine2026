@@ -119,6 +119,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\Audio\Audio.cpp" />
     <ClCompile Include="Elysia\Camera\Camera.cpp" />
     <ClCompile Include="Elysia\Convert\Convert.cpp" />
+    <ClCompile Include="Elysia\DirectX\BufferResource.cpp" />
     <ClCompile Include="Elysia\DirectX\DirectXSetup.cpp" />
     <ClCompile Include="Elysia\Framework\Framework.cpp" />
     <ClCompile Include="Elysia\GlobalVariables\GlobalVariables.cpp" />
@@ -199,6 +200,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\Audio\AudioScale.h" />
     <ClInclude Include="Elysia\Camera\Camera.h" />
     <ClInclude Include="Elysia\Convert\Convert.h" />
+    <ClInclude Include="Elysia\DirectX\BufferResource.h" />
     <ClInclude Include="Elysia\DirectX\DirectXSetup.h" />
     <ClInclude Include="Elysia\Framework\Framework.h" />
     <ClInclude Include="Elysia\GlobalVariables\GlobalVariables.h" />

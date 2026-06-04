@@ -587,9 +587,9 @@ void Elysia::DirectXSetup::SecondInitialize() {
 	DirectXSetup::GetInstance()->rtvHandle_[1] = RtvManager::GetInstance()->Allocate(DirectXSetup::GetInstance()->swapChainName_[1]);
 	
 	//スワップチェーン1枚目
-	RtvManager::GetInstance()->GenarateRenderTargetView(DirectXSetup::GetInstance()->GetSwapChain().resource[0].Get(), DirectXSetup::GetInstance()->rtvHandle_[0]);
+	RtvManager::GetInstance()->GenerateRenderTargetView(DirectXSetup::GetInstance()->GetSwapChain().resource[0].Get(), DirectXSetup::GetInstance()->rtvHandle_[0]);
 	//スワップチェーン2枚目
-	RtvManager::GetInstance()->GenarateRenderTargetView(DirectXSetup::GetInstance()->GetSwapChain().resource[1].Get(), DirectXSetup::GetInstance()->rtvHandle_[1]);
+	RtvManager::GetInstance()->GenerateRenderTargetView(DirectXSetup::GetInstance()->GetSwapChain().resource[1].Get(), DirectXSetup::GetInstance()->rtvHandle_[1]);
 
 
 	//フェンスを生成
@@ -690,7 +690,7 @@ IDxcBlob* Elysia::DirectXSetup::CompileShader(const std::wstring& filePath, cons
 
 
 	//4.Compile結果を受け取って返す
-	//BLOB・・・BinaryLargeOBject
+	//BLOB・・・BinaryLargeObject
 	IDxcBlob* shaderBlob = nullptr;
 	hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
 	assert(SUCCEEDED(hr));
@@ -778,7 +778,7 @@ void Elysia::DirectXSetup::EndDraw() {
 
 	////GPUにSignalを送る
 	//GPUの実行完了が目的
-	//1.GPUに実行が完了したタイミングでFEnceに指定した値を書き込んでもらう
+	//1.GPUに実行が完了したタイミングでFenceに指定した値を書き込んでもらう
 	//  GPUに対してSignalを発行する
 	//	Signal・・・GPUの指定の場所までたどり着いたら、指定の値を書き込んでもらうお願いのこと
 	//2.CPUではFenceに指定した値が書き込まれているかを確認する

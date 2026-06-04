@@ -28,7 +28,7 @@ void Elysia::SepiaScale::Initialize() {
 	//ハンドルの取得
 	rtvHandle_ = rtvManager_->Allocate("SepiaScale");
 	//生成
-	rtvManager_->GenarateRenderTargetView(rtvResource_, rtvHandle_);
+	rtvManager_->GenerateRenderTargetView(rtvResource_, rtvHandle_);
 
 	//SRV
 	srvHandle_ = srvManager_->Allocate();

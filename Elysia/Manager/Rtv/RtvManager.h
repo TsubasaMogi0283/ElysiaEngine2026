@@ -114,7 +114,7 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="resource">リソース</param>
 		/// <param name="handle">ハンドル</param>
-		void GenarateRenderTargetView(const ComPtr<ID3D12Resource>& resource, const uint32_t& handle);
+		void GenerateRenderTargetView(const ComPtr<ID3D12Resource>& resource, const uint32_t& handle);
 
 
 

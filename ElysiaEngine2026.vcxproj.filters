@@ -417,9 +417,6 @@
     <ClCompile Include="Elysia\Manager\Texture\TextureManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Math\Vector\Vector3.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Math\Matrix\Matrix4x4.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
@@ -431,6 +428,12 @@
     </ClCompile>
     <ClCompile Include="Elysia\Polygon\PostEffect\BasePostEffect.cpp">
       <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\DirectX\BufferResource.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Elysia\Math\Vector\Vector3.cpp">
+      <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -741,6 +744,9 @@
     </ClInclude>
     <ClInclude Include="Elysia\Manager\EngineManagers.h">
       <Filter>Elysia\ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\DirectX\BufferResource.h">
+      <Filter>Elysia\ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
