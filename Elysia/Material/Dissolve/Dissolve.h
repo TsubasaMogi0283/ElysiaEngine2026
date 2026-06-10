@@ -36,7 +36,7 @@ private:
 		//Edgeの色
 		Vector3 edgeColor;
 		//Edgeの厚さ
-		float_t edgeThinkness;
+		float_t edgeThickness;
 		//閾値
 		float_t threshold;
 	};
@@ -49,18 +49,14 @@ public:
 	ComPtr<ID3D12Resource> resource = nullptr;
 
 	//Edgeを使うかどうか
-	bool isUseEdge;
+	bool isUseEdge = false;
 	//Edgeの色
-	Vector3 edgeColor;
+	Vector3 edgeColor = {};
 	//Edgeの厚さ
-	float_t edgeThinkness;
+	float_t edgeThinkness=0.0f;
 	//閾値
-	float_t threshold;
+	float_t threshold = 0.0f;;
 	//マスクのテクスチャハンドル
 	uint32_t maskTextureHandle = 0u;
-
-	
-
-
 };
 

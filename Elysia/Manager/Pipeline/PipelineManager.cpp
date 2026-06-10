@@ -13,7 +13,7 @@ Elysia::PipelineManager* Elysia::PipelineManager::GetInstance() {
 	return &instance;
 }
 
-void Elysia::PipelineManager::GenaratePSO(PSOInformation& psoInformation,const D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc,const D3D12_BLEND_DESC& blendDesc,const D3D12_RASTERIZER_DESC& rasterizerDesc){
+void Elysia::PipelineManager::GeneratePSO(PSOInformation& psoInformation,const D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc,const D3D12_BLEND_DESC& blendDesc,const D3D12_RASTERIZER_DESC& rasterizerDesc){
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	graphicsPipelineStateDesc.pRootSignature = psoInformation.rootSignature_.Get();
@@ -86,43 +86,43 @@ void Elysia::PipelineManager::Initialize(){
 	GenerateParticle3DPSO();
 
 	// CopyImage用のPSOを生成
-	GenarateFullScreenPSO();
+	GenerateFullScreenPSO();
 
 	// GrayScale用のPSOを生成
-	GenarateGrayScalePSO();
+	GenerateGrayScalePSO();
 
 	// SepiaScale用のPSOを生成
-	GenarateSepiaScalePSO();
+	GenerateSepiaScalePSO();
 
 	// Vignette用のPSOを生成
-	GenarateVignettePSO();
+	GenerateVignettePSO();
 
 	// BoxFilter用のPSOを生成
-	GenarateBoxFilterPSO();
+	GenerateBoxFilterPSO();
 
 	// GaussianFilter用のPSOを生成
-	GenarateGaussianFilterPSO();
+	GenerateGaussianFilterPSO();
 
 	//OutLine用のPSOを生成
-	GenarateLuminanceBasedOutlinePSO();
+	GenerateLuminanceBasedOutlinePSO();
 
 	//DepthBasedOutline用
-	GenarateDepthBasedOutlinePSO();
+	GenerateDepthBasedOutlinePSO();
 
 	//RadialBlur用のPSOを生成
 	GenerateRadialBlurPSO();
 
 	//Dissolve用のPSOを生成
-	GenarateDissolvePSO();
+	GenerateDissolvePSO();
 
 	//RandomEffect用のPSOを生成
-	GenarateRandomEffectPSO();
+	GenerateRandomEffectPSO();
 
 	//SkyBoxのPSOの生成
-	GenarateSkyBoxPSO();
+	GenerateSkyBoxPSO();
 }
 
-void Elysia::PipelineManager::GenaratedLinePSO() {
+void Elysia::PipelineManager::GeneratedLinePSO() {
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように間レンズけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -171,8 +171,6 @@ void Elysia::PipelineManager::GenaratedLinePSO() {
 	rootParameters[2].Descriptor.ShaderRegister = 0;
 
 
-
-
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	//バイリニアフィルタ
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -197,7 +195,7 @@ void Elysia::PipelineManager::GenaratedLinePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->linePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -414,7 +412,7 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->spritePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -424,13 +422,6 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 	assert(SUCCEEDED(hResult));
 
 
-
-
-
-
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
 	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
@@ -783,7 +774,7 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 	HRESULT hrResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->modelPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hrResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -908,7 +899,7 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 	assert(PipelineManager::GetInstance()->modelPSO_.pixelShaderBlob_ != nullptr);
 
 	//PSOの生成
-	GenaratePSO(PipelineManager::GetInstance()->modelPSO_, inputLayoutDesc, blendDesc, rasterizerDesc);
+	GeneratePSO(PipelineManager::GetInstance()->modelPSO_, inputLayoutDesc, blendDesc, rasterizerDesc);
 
 }
 
@@ -1093,7 +1084,7 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 	HRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->animationModelPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -1163,7 +1154,7 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 
 	//ブレンドモードの選択
 	//switchでやった方が楽でしょう
-	switch (PipelineManager::GetInstance()->selectAnimiationModelBlendMode_) {
+	switch (PipelineManager::GetInstance()->selectAnimationModelBlendMode_) {
 
 	case BlendModeNone:
 		//ブレンド無し
@@ -1452,7 +1443,7 @@ void Elysia::PipelineManager::GenerateParticle3DPSO() {
 	HRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->particle3DPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -1561,7 +1552,7 @@ void Elysia::PipelineManager::GenerateParticle3DPSO() {
 
 }
 
-void Elysia::PipelineManager::GenarateFullScreenPSO() {
+void Elysia::PipelineManager::GenerateFullScreenPSO() {
 
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
@@ -1656,7 +1647,7 @@ void Elysia::PipelineManager::GenarateFullScreenPSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->fullScreenPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -1716,11 +1707,11 @@ void Elysia::PipelineManager::GenarateFullScreenPSO() {
 
 
 	//PSOの生成
-	GenaratePSO(PipelineManager::GetInstance()->fullScreenPSO_, inputLayoutDesc, blendDesc, rasterizerDesc);
+	GeneratePSO(PipelineManager::GetInstance()->fullScreenPSO_, inputLayoutDesc, blendDesc, rasterizerDesc);
 
 }
 
-void Elysia::PipelineManager::GenarateGrayScalePSO(){
+void Elysia::PipelineManager::GenerateGrayScalePSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -1782,7 +1773,7 @@ void Elysia::PipelineManager::GenarateGrayScalePSO(){
 	HRESULT hr_ = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->grayScalePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr_)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -1889,7 +1880,7 @@ void Elysia::PipelineManager::GenarateGrayScalePSO(){
 
 }
 
-void Elysia::PipelineManager::GenarateSepiaScalePSO(){
+void Elysia::PipelineManager::GenerateSepiaScalePSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -1940,18 +1931,12 @@ void Elysia::PipelineManager::GenarateSepiaScalePSO(){
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->sepiaScalePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2057,7 +2042,7 @@ void Elysia::PipelineManager::GenarateSepiaScalePSO(){
 
 }
 
-void Elysia::PipelineManager::GenarateVignettePSO(){
+void Elysia::PipelineManager::GenerateVignettePSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2118,18 +2103,12 @@ void Elysia::PipelineManager::GenarateVignettePSO(){
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->vignettePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2188,11 +2167,11 @@ void Elysia::PipelineManager::GenarateVignettePSO(){
 	assert(PipelineManager::GetInstance()->vignettePSO_.pixelShaderBlob_ != nullptr);
 
 
-	GenaratePSO(PipelineManager::GetInstance()->vignettePSO_, inputLayoutDesc, blendDesc, rasterizerDesc);
+	GeneratePSO(PipelineManager::GetInstance()->vignettePSO_, inputLayoutDesc, blendDesc, rasterizerDesc);
 
 }
 
-void Elysia::PipelineManager::GenarateBoxFilterPSO(){
+void Elysia::PipelineManager::GenerateBoxFilterPSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2253,18 +2232,12 @@ void Elysia::PipelineManager::GenarateBoxFilterPSO(){
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->boxFilterPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2374,7 +2347,7 @@ void Elysia::PipelineManager::GenarateBoxFilterPSO(){
 
 }
 
-void Elysia::PipelineManager::GenarateGaussianFilterPSO(){
+void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
 	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2446,7 +2419,7 @@ void Elysia::PipelineManager::GenarateGaussianFilterPSO(){
 	HRESULT hResult  = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->gaussianFilterPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2551,7 +2524,7 @@ void Elysia::PipelineManager::GenarateGaussianFilterPSO(){
 	assert(SUCCEEDED(hResult));
 }
 
-void Elysia::PipelineManager::GenarateLuminanceBasedOutlinePSO() {
+void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
@@ -2619,7 +2592,7 @@ void Elysia::PipelineManager::GenarateLuminanceBasedOutlinePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->luminanceBasedOutlinePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -2730,7 +2703,7 @@ void Elysia::PipelineManager::GenarateLuminanceBasedOutlinePSO() {
 
 }
 
-void Elysia::PipelineManager::GenarateDepthBasedOutlinePSO() {
+void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -2836,7 +2809,7 @@ void Elysia::PipelineManager::GenarateDepthBasedOutlinePSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->depthBasedOutlinePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -3000,18 +2973,12 @@ void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult= D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->radialBlurPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -3119,7 +3086,7 @@ void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 
 }
 
-void Elysia::PipelineManager::GenarateDissolvePSO() {
+void Elysia::PipelineManager::GenerateDissolvePSO() {
 
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
@@ -3199,18 +3166,12 @@ void Elysia::PipelineManager::GenarateDissolvePSO() {
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult= D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->dissolvePSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -3316,7 +3277,7 @@ void Elysia::PipelineManager::GenarateDissolvePSO() {
 
 }
 
-void Elysia::PipelineManager::GenarateRandomEffectPSO() {
+void Elysia::PipelineManager::GenerateRandomEffectPSO() {
 	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
@@ -3385,7 +3346,7 @@ void Elysia::PipelineManager::GenarateRandomEffectPSO() {
 	HRESULT hr_= D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->randomEffectPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hr_)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 	//バイナリを元に生成
@@ -3491,7 +3452,7 @@ void Elysia::PipelineManager::GenarateRandomEffectPSO() {
 
 }
 
-void Elysia::PipelineManager::GenarateSkyBoxPSO() {
+void Elysia::PipelineManager::GenerateSkyBoxPSO() {
 
 	//PSO
 	////RootSignatureを作成
@@ -3592,7 +3553,7 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
 		D3D_ROOT_SIGNATURE_VERSION_1, &PipelineManager::GetInstance()->skyBoxPSO_.signatureBlob_, &errorBlob);
 	if (FAILED(hResult)) {
-		Elysia::WindowsSetup::GetInstance()->OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		Elysia::WindowsSetup::OutPutStringA(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
 		assert(false);
 	}
 
@@ -3620,12 +3581,6 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
-
-
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
@@ -3639,7 +3594,7 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 
 	//ブレンドモードの選択
 	//switchでやった方が楽でしょう
-	switch (PipelineManager::GetInstance()->selectAnimiationModelBlendMode_) {
+	switch (PipelineManager::GetInstance()->selectAnimationModelBlendMode_) {
 
 	case BlendModeNone:
 		//ブレンド無し
@@ -3653,12 +3608,7 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
-
-
-
 		break;
-
 
 	case BlendModeAdd:
 		//加算ブレンド
@@ -3666,12 +3616,6 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-
-
-
-
-
-
 		break;
 
 
@@ -3702,8 +3646,6 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 
 		break;
 	}
-
-
 
 
 	//RasterizerState・・・Rasterizerに対する設定
@@ -3745,8 +3687,6 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 	graphicsPipelineStateDesc.PrimitiveTopologyType =
 		D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-
-
 	//どのように画面に色を打ち込むのか設定
 	graphicsPipelineStateDesc.SampleDesc.Count = 1;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
@@ -3762,10 +3702,6 @@ void Elysia::PipelineManager::GenarateSkyBoxPSO() {
 	//DepthStencilの設定
 	graphicsPipelineStateDesc.DepthStencilState = depthStencilDesc;
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-
-
-
 
 	//実際に生成
 	hResult = DirectXSetup::GetInstance()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,

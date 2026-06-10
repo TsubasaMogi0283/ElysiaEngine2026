@@ -44,9 +44,8 @@ struct D3DResourceLeakChecker {
 /// ElysiaEngine
 /// </summary>
 namespace Elysia{
-
 	/// <summary>
-	/// ウィンドウクラス
+	/// ウィンドウズの設定クラス
 	/// </summary>
 	class WindowsSetup;
 
@@ -58,7 +57,7 @@ namespace Elysia{
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		DirectXSetup();
+		DirectXSetup(WindowsSetup* windowsSetup);
 
 		/// <summary>
 		/// デストラクタ
@@ -238,7 +237,10 @@ namespace Elysia{
 		/// <summary>
 		/// 解放
 		/// </summary>
-		void Release();
+		inline void Release() const {
+			//解放処理
+			CloseHandle(fenceEvent_);
+		};
 
 
 		/// <summary>
@@ -305,9 +307,8 @@ namespace Elysia{
 		}
 
 	private:
-		//ウィンドウクラス
+		//ウィンドウズの設定クラス
 		WindowsSetup* windowsSetup_ = nullptr;
-
 	private:
 
 		//ファクトリー

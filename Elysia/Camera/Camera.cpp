@@ -7,7 +7,7 @@ void Camera::Initialize() {
 	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(CameraMatrixData)).Get();
 
 	//アスペクト比
-	aspectRatio = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth()) / static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight());
+	aspectRatio = static_cast<float_t>(Elysia::WindowsSetup::GetClientWidth()) / static_cast<float_t>(Elysia::WindowsSetup::GetClientHeight());
 	
 	//初期
 	scale = {.x= 1.0f,.y= 1.0f,.z= 1.0f };
@@ -21,7 +21,7 @@ void Camera::Initialize() {
 	//射影を計算
 	projectionMatrix = Matrix4x4::MakePerspectiveFovMatrix(fov_, aspectRatio, nearClip, farClip);
 	//正射影行列(正規化)を計算
-	orthographicMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight()), 0.0f, 100.0f);
+	orthographicMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetClientHeight()), 0.0f, 100.0f);
 }
 
 
@@ -33,7 +33,7 @@ void Camera::Update() {
 	//射影を計算
 	projectionMatrix = Matrix4x4::MakePerspectiveFovMatrix(fov_, aspectRatio, nearClip, farClip);
 	//正射影行列(正規化)を計算
-	orthographicMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight()), 0.0f, 100.0f);
+	orthographicMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(Elysia::WindowsSetup::GetClientWidth()), static_cast<float_t>(Elysia::WindowsSetup::GetClientHeight()), 0.0f, 100.0f);
 
 	//転送
 	Transfer();

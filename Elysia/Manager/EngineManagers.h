@@ -24,23 +24,23 @@
 /// </summary>
 struct EngineManagers {
 	//ウィンドウクラス
-	std::unique_ptr<Elysia::WindowsSetup> windowsSetup_ = nullptr;
+	std::unique_ptr <Elysia::WindowsSetup> windowsSetup_ = nullptr;
 	//DirectXクラス
-	std::unique_ptr<Elysia::DirectXSetup> directXSetup_ = nullptr;
+	Elysia::DirectXSetup* directXSetup_ = nullptr;
 	//SRV管理クラス
-	std::unique_ptr<Elysia::SrvManager> srvManager_ = nullptr;
+	Elysia::SrvManager* srvManager_ = nullptr;
 	//RTV管理クラス
-	std::unique_ptr<Elysia::RtvManager> rtvManager_ = nullptr;
+	Elysia::RtvManager* rtvManager_ = nullptr;
 	//ImGui管理クラス
 	std::unique_ptr<Elysia::ImGuiManager> imGuiManager_ = nullptr;
 	//パイプライン管理クラス
-	std::unique_ptr<Elysia::PipelineManager> pipelineManager_ = nullptr;
+	Elysia::PipelineManager* pipelineManager_ = nullptr;
 	//Inputクラス
-	std::unique_ptr<Elysia::Input> input_ = nullptr;
+	Elysia::Input* input_ = nullptr;
 	//オーディオクラス
-	std::unique_ptr<Elysia::Audio> audio_ = nullptr;
+	Elysia::Audio* audio_ = nullptr;
 	//JSON読み込み(グローバル変数)
-	std::unique_ptr<Elysia::GlobalVariables> globalVariables_ = nullptr;
+	Elysia::GlobalVariables* globalVariables_ = nullptr;
 	//レベルデータ管理クラス
-	std::unique_ptr<Elysia::LevelDataManager> levelDataManager_ = nullptr;
+	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 };

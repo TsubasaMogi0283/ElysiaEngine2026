@@ -65,7 +65,6 @@ namespace Elysia {
 		/// <returns>リソース</returns>
 		static ComPtr<ID3D12Resource> CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4& clearColor);
 
-
 		/// <summary>
 		/// RenderTextureを作る(Depth版)
 		/// </summary>
@@ -73,7 +72,6 @@ namespace Elysia {
 		/// <param name="clearColor">クリアカラー</param>
 		/// <returns>リソース</returns>
 		static ComPtr<ID3D12Resource> CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4& clearColor);
-
 
 		/// <summary>
 		/// ディスクリプタヒープの取得
@@ -83,7 +81,6 @@ namespace Elysia {
 			return  rtvDescriptorHeap_;
 		}
 
-
 		// <summary>
 		// ハンドルの取得
 		// </summary>
@@ -92,9 +89,6 @@ namespace Elysia {
 		inline D3D12_CPU_DESCRIPTOR_HANDLE& GetRtvHandle(const uint32_t& number) const {
 			return rtvHandles_[number];
 		}
-
-
-
 
 	public:
 		/// <summary>
@@ -116,12 +110,10 @@ namespace Elysia {
 		/// <param name="handle">ハンドル</param>
 		void GenerateRenderTargetView(const ComPtr<ID3D12Resource>& resource, const uint32_t& handle);
 
-
-
 	private:
 
 		//最大のサイズ
-		static const uint32_t RTV_DESCRIPTOR_SIZE_ = 1024u;
+		static const uint32_t RTV_DESCRIPTOR_SIZE_ = 32u;
 		//インデックス
 		uint32_t index_ = 0;
 
@@ -140,13 +132,7 @@ namespace Elysia {
 			uint32_t index;
 
 		};
-
 		std::array<RTVInformation, RTV_DESCRIPTOR_SIZE_ > rtvInformation_={};
 
-
 	};
-
-
-
-
 };

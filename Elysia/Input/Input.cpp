@@ -63,7 +63,7 @@ void Elysia::Input::Initialize() {
 	hr = mouseDevice_->SetCooperativeLevel(windowsSetup_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 	assert(SUCCEEDED(hr));
 	if (SUCCEEDED(joyStickDeviceHR) == true) {
-		joyStickDeviceHR = joyStickDevice_->SetCooperativeLevel(WindowsSetup::GetInstance()->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+		joyStickDeviceHR = joyStickDevice_->SetCooperativeLevel(windowsSetup_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 		assert(SUCCEEDED(joyStickDeviceHR));
 
 	}

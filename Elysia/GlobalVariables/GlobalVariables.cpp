@@ -325,9 +325,6 @@ void Elysia::GlobalVariables::LoadAllFile(){
         LoadFile(filePath.stem().string());
 
     }
-
-
-
 }
 
 void Elysia::GlobalVariables::LoadFile(const std::string& groupName){
@@ -382,13 +379,13 @@ void Elysia::GlobalVariables::LoadFile(const std::string& groupName){
         }
         //要素数2の配列であれば
         else if (itItem->is_array() && itItem->size() == 2) {
-            //float型のison配列登録
+            //float型のJson配列登録
             Vector2 value = {.x = itItem->at(0).get<float>(),.y = itItem->at(1).get<float>()};
             SetValue(groupName, itemName, value);
         }
         //要素数3の配列であれば
         else if (itItem->is_array() && itItem->size() == 3) {
-            //float型のison配列登録
+            //float型のJson配列登録
             Vector3 value = {.x = itItem->at(0).get<float>(),.y = itItem->at(1).get<float>(),.z = itItem->at(2).get<float>() };
             SetValue(groupName, itemName, value);
         }

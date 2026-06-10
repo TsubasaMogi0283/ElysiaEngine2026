@@ -10,12 +10,10 @@
 #include "Vignette.h"
 
 Elysia::VignettePostEffect::VignettePostEffect(){
-	//ウィンドウクラスの取得
-	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
-	pipelinemanager_ = Elysia::PipelineManager::GetInstance();
+	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//RTV管理クラスの取得
 	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//SRV管理クラスの取得
@@ -25,7 +23,7 @@ Elysia::VignettePostEffect::VignettePostEffect(){
 void Elysia::VignettePostEffect::Initialize() {
 
 	//RTV用のリソースを生成
-	const Vector4 RENDER_TARGET_CLEAR_VALUE = { .x = 0.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
+	const Vector4 RENDER_TARGET_CLEAR_VALUE = { .x = color_.x,.y = color_.y,.z = color_.z,.w = color_.w };
 	//リソースの生成
 	rtvResource_ = rtvManager_->CreateRenderTextureResource(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, RENDER_TARGET_CLEAR_VALUE);
 	//ハンドルの取得
@@ -42,7 +40,7 @@ void Elysia::VignettePostEffect::Initialize() {
 
 void Elysia::VignettePostEffect::PreDraw() {
 	//RT
-	const float RENDER_TARGET_CLEAR_VALUE[] = {0.0f, 0.0f,0.0f,1.0f };
+	const float_t RENDER_TARGET_CLEAR_VALUE[] = {0.0f, 0.0f,0.0f,1.0f };
 	directXSetup_->GetCommandList()->OMSetRenderTargets(
 		1u, &rtvManager_->GetRtvHandle(rtvHandle_), false, &directXSetup_->GetDsvHandle());
 	//クリア
@@ -53,8 +51,8 @@ void Elysia::VignettePostEffect::PreDraw() {
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//縦横
-	uint32_t width = windowsSetup_->GetClientWidth();
-	uint32_t height = windowsSetup_->GetClientHeight();
+	uint32_t width = WindowsSetup::GetClientWidth();
+	uint32_t height = WindowsSetup::GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width, height);
@@ -70,8 +68,8 @@ void Elysia::VignettePostEffect::Draw(const Vignette& vignette) {
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
 	//PSOの設定
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelinemanager_->GetVignetteRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(pipelinemanager_->GetVignetteGraphicsPipelineState().Get());
+	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetVignetteRootSignature().Get());
+	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetVignetteGraphicsPipelineState().Get());
 
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

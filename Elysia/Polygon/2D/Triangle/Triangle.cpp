@@ -106,7 +106,7 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 	//遠視投影行列
 	Matrix4x4 viewMatrixSprite = Matrix4x4::MakeIdentity4x4();
 	
-	Matrix4x4 projectionMatrixSprite = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, float(windowsSetup_->GetClientWidth()), float(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrixSprite = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(windowsSetup_->GetClientWidth()), static_cast<float_t>(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
 	
 
 	//WVP行列を作成

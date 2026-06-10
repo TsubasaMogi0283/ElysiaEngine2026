@@ -55,51 +55,51 @@ namespace Elysia {
 #pragma region アクセッサ
 
 		//コマンドに積むためのGetter(Line)
-		ComPtr<ID3D12RootSignature> GetLineRootSignature() {
+		ComPtr<ID3D12RootSignature> GetLineRootSignature() const {
 			return linePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetLineGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetLineGraphicsPipelineState() const {
 			return linePSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積むためのGetter(Sprite)
-		ComPtr<ID3D12RootSignature> GetSpriteRootSignature() {
+		ComPtr<ID3D12RootSignature> GetSpriteRootSignature() const {
 			return spritePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetSpriteGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetSpriteGraphicsPipelineState() const {
 			return spritePSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積むためのGetter(Model)
-		ComPtr<ID3D12RootSignature> GetModelRootSignature() {
+		ComPtr<ID3D12RootSignature> GetModelRootSignature() const {
 			return modelPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetModelGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetModelGraphicsPipelineState() const{
 			return modelPSO_.graphicsPipelineState_;
 		}
 
 
 		//コマンドに積む用のGetter(Skinning)
-		ComPtr<ID3D12RootSignature> GetAnimationModelRootSignature() {
+		ComPtr<ID3D12RootSignature> GetAnimationModelRootSignature() const {
 			return animationModelPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetAnimationModelGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetAnimationModelGraphicsPipelineState() const {
 			return animationModelPSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積むためのGetter(Particle3D)
-		ComPtr<ID3D12RootSignature> GetParticle3DRootSignature() {
+		ComPtr<ID3D12RootSignature> GetParticle3DRootSignature() const{
 			return particle3DPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetParticle3DGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetParticle3DGraphicsPipelineState() const {
 			return particle3DPSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積む用のGetter(SkyBox)
-		ComPtr<ID3D12RootSignature> GetSkyBoxRootSignature() {
+		ComPtr<ID3D12RootSignature> GetSkyBoxRootSignature() const {
 			return skyBoxPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetSkyBoxGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetSkyBoxGraphicsPipelineState() const {
 			return skyBoxPSO_.graphicsPipelineState_;
 		}
 
@@ -107,105 +107,103 @@ namespace Elysia {
 
 
 		//コマンドに積むためのGetter(CopyImage)
-		ComPtr<ID3D12RootSignature> GetFullScreenRootSignature() {
+		ComPtr<ID3D12RootSignature> GetFullScreenRootSignature() const {
 			return fullScreenPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetFullScreenGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetFullScreenGraphicsPipelineState() const {
 			return fullScreenPSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積むためのGetter(GrayScale)
-		ComPtr<ID3D12RootSignature> GetGrayScaleRootSignature() {
+		ComPtr<ID3D12RootSignature> GetGrayScaleRootSignature() const {
 			return grayScalePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetGrayScaleGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetGrayScaleGraphicsPipelineState() const {
 			return grayScalePSO_.graphicsPipelineState_;
 		}
 		//コマンドに積むためのGetter(SepiaScale)
-		ComPtr<ID3D12RootSignature> GetSepiaScaleRootSignature() {
+		ComPtr<ID3D12RootSignature> GetSepiaScaleRootSignature() const {
 			return sepiaScalePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetSepiaScaleGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetSepiaScaleGraphicsPipelineState() const {
 			return sepiaScalePSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積むためのGetter(Vignette)
-		ComPtr<ID3D12RootSignature> GetVignetteRootSignature() {
+		ComPtr<ID3D12RootSignature> GetVignetteRootSignature() const {
 			return vignettePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetVignetteGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetVignetteGraphicsPipelineState() const {
 			return vignettePSO_.graphicsPipelineState_;
 		}
 		//コマンドに積むためのGetter(BoxFilter)
-		ComPtr<ID3D12RootSignature> GetBoxFilterRootSignature() {
+		ComPtr<ID3D12RootSignature> GetBoxFilterRootSignature() const {
 			return boxFilterPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetBoxFilterGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetBoxFilterGraphicsPipelineState() const {
 			return boxFilterPSO_.graphicsPipelineState_;
 		}
 		//コマンドに積むためのGetter(GaussianFilter)
-		ComPtr<ID3D12RootSignature> GetGaussianFilterRootSignature() {
+		ComPtr<ID3D12RootSignature> GetGaussianFilterRootSignature() const {
 			return gaussianFilterPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetGaussianFilterGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetGaussianFilterGraphicsPipelineState() const {
 			return gaussianFilterPSO_.graphicsPipelineState_;
 		}
 
 
 		//コマンドに積むためのGetter(LuminanceBasedOutline)
-		ComPtr<ID3D12RootSignature> GetLuminanceBasedOutlineRootSignature() {
+		ComPtr<ID3D12RootSignature> GetLuminanceBasedOutlineRootSignature() const{
 			return luminanceBasedOutlinePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetLuminanceBasedOutlineGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetLuminanceBasedOutlineGraphicsPipelineState() const	{
 			return luminanceBasedOutlinePSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積むためのGetter(DepthBasedOutline)
-		ComPtr<ID3D12RootSignature> GetDepthBasedOutlineRootSignature() {
+		ComPtr<ID3D12RootSignature> GetDepthBasedOutlineRootSignature() const{
 			return depthBasedOutlinePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetDepthBasedOutlineGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetDepthBasedOutlineGraphicsPipelineState() const {
 			return depthBasedOutlinePSO_.graphicsPipelineState_;
 		}
 		//コマンドに積むためのGetter(RadialBlur)
-		ComPtr<ID3D12RootSignature> GetRadialBlurRootSignature() {
+		ComPtr<ID3D12RootSignature> GetRadialBlurRootSignature() const {
 			return radialBlurPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetRadialBlurGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetRadialBlurGraphicsPipelineState() const {
 			return radialBlurPSO_.graphicsPipelineState_;
 		}
 
 		//コマンドに積むためのGetter(Dissolve)
-		ComPtr<ID3D12RootSignature> GetDissolveRootSignature() {
+		ComPtr<ID3D12RootSignature> GetDissolveRootSignature() const {
 			return dissolvePSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetDissolveGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetDissolveGraphicsPipelineState() const {
 			return dissolvePSO_.graphicsPipelineState_;
 		}
 		//コマンドに積むためのGetter(RandomEffect)
-		ComPtr<ID3D12RootSignature> GetRandomEffectRootSignature() {
+		ComPtr<ID3D12RootSignature> GetRandomEffectRootSignature() const {
 			return randomEffectPSO_.rootSignature_;
 		}
-		ComPtr<ID3D12PipelineState> GetRandomEffectGraphicsPipelineState() {
+		ComPtr<ID3D12PipelineState> GetRandomEffectGraphicsPipelineState() const {
 			return randomEffectPSO_.graphicsPipelineState_;
 		}
-
-
 
 
 		/// <summary>
 		/// スプライトのブレンドモードの設定
 		/// </summary>
-		/// <param name="blendmode"></param>
-		void SetSpriteBlendMode(uint32_t blendmode) {
-			selectSpriteBlendMode_ = blendmode;
+		/// <param name="blendMode"></param>
+		void SetSpriteBlendMode(uint32_t blendMode) {
+			selectSpriteBlendMode_ = blendMode;
 		}
 		/// <summary>
 		/// モデルのブレンドモードの設定
 		/// </summary>
-		/// <param name="blendmode"></param>
-		void SetModelBlendMode(uint32_t blendmode) {
-			selectModelBlendMode_ = blendmode;
+		/// <param name="blendMode"></param>
+		void SetModelBlendMode(uint32_t blendMode) {
+			selectModelBlendMode_ = blendMode;
 		}
 
 
@@ -236,7 +234,7 @@ namespace Elysia {
 		/// <param name="inputLayoutDesc"></param>
 		/// <param name="blendDesc"></param>
 		/// <param name="rasterizerDesc"></param>
-		static void GenaratePSO(PSOInformation& psoInformation,const D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc,const D3D12_BLEND_DESC& blendDesc,const D3D12_RASTERIZER_DESC& rasterizerDesc);
+		static void GeneratePSO(PSOInformation& psoInformation,const D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc,const D3D12_BLEND_DESC& blendDesc,const D3D12_RASTERIZER_DESC& rasterizerDesc);
 
 	public:
 		/// <summary>
@@ -249,7 +247,7 @@ namespace Elysia {
 		/// <summary>
 		/// ライン用のPSOを生成
 		/// </summary>
-		static void GenaratedLinePSO();
+		static void GeneratedLinePSO();
 
 		/// <summary>
 		/// スプライト用のPSOを生成
@@ -274,42 +272,42 @@ namespace Elysia {
 		/// <summary>
 		/// CopyImage用のPSOを生成
 		/// </summary>
-		static void GenarateFullScreenPSO();
+		static void GenerateFullScreenPSO();
 
 		/// <summary>
 		/// GrayScale用のPSOを生成
 		/// </summary>
-		static void GenarateGrayScalePSO();
+		static void GenerateGrayScalePSO();
 
 		/// <summary>
 		/// SepiaScale用のPSOを生成
 		/// </summary>
-		static void GenarateSepiaScalePSO();
+		static void GenerateSepiaScalePSO();
 
 		/// <summary>
 		/// Vignette用のPSOを生成
 		/// </summary>
-		static void GenarateVignettePSO();
+		static void GenerateVignettePSO();
 
 		/// <summary>
 		/// BoxFilter用のPSOを生成
 		/// </summary>
-		static void GenarateBoxFilterPSO();
+		static void GenerateBoxFilterPSO();
 
 		/// <summary>
 		/// GaussianFilter用のPSOを生成
 		/// </summary>
-		static void GenarateGaussianFilterPSO();
+		static void GenerateGaussianFilterPSO();
 
 		/// <summary>
 		/// OutLine用のPSOを生成
 		/// </summary>
-		static void GenarateLuminanceBasedOutlinePSO();
+		static void GenerateLuminanceBasedOutlinePSO();
 
 		/// <summary>
 		/// DepthBasedOutline用
 		/// </summary>
-		static void GenarateDepthBasedOutlinePSO();
+		static void GenerateDepthBasedOutlinePSO();
 
 		/// <summary>
 		/// RadialBlur用のPSOを生成
@@ -319,18 +317,18 @@ namespace Elysia {
 		/// <summary>
 		/// Dissolve用のPSOを生成
 		/// </summary>
-		static void GenarateDissolvePSO();
+		static void GenerateDissolvePSO();
 
 		/// <summary>
 		/// RandomEffect用のPSOを生成
 		/// </summary>
-		static void GenarateRandomEffectPSO();
+		static void GenerateRandomEffectPSO();
 
 
 		/// <summary>
 		/// SkyBoxのPSOの生成
 		/// </summary>
-		static void GenarateSkyBoxPSO();
+		static void GenerateSkyBoxPSO();
 
 	private:
 
@@ -370,18 +368,11 @@ namespace Elysia {
 		//スカイボックス用の変数
 		PSOInformation skyBoxPSO_ = {};
 
-
-
 		//スプライト用
 		int32_t selectSpriteBlendMode_ = 1;
-
 		//モデル用の
 		int32_t selectModelBlendMode_ = 1;
-
 		//モデル用の
-		int32_t selectAnimiationModelBlendMode_ = 1;
-
-
+		int32_t selectAnimationModelBlendMode_ = 1;
 	};
-
 };

@@ -9,7 +9,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	std::unique_ptr<Elysia::Framework> elysia = std::make_unique<Elysia::Framework>();
 
 	//実行
-	elysia->Run();
+	elysia->Execute();
 
 	//終了
 	return 0;

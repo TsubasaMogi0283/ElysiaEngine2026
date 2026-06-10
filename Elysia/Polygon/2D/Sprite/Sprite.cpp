@@ -11,10 +11,8 @@ Elysia::Sprite::Sprite() {
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスを取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
-
 	//パイプライン管理クラスを取得
 	pipelineManager_ = Elysia::PipelineManager::GetInstance();
-
 }
 
 

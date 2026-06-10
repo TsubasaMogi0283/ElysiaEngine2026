@@ -10,6 +10,7 @@
 #include "DirectXSetup.h"
 #include "GameManager.h"
 #include "IAbstractSceneFactory.h"
+#include "EngineManagers.h"
 
 /// <summary>
 /// ElysiaEngine
@@ -35,11 +36,6 @@ namespace Elysia {
 	/// RTV管理クラス
 	/// </summary>
 	class RtvManager;
-
-	/// <summary>
-	/// ImGui管理クラス
-	/// </summary>
-	class ImGuiManager;
 
 	/// <summary>
 	/// パイプライン管理クラス
@@ -80,7 +76,7 @@ namespace Elysia {
 		/// <summary>
 		/// 実行
 		/// </summary>
-		void Run();
+		void Execute();
 
 		/// <summary>
 		/// デストラクタ
@@ -119,17 +115,15 @@ namespace Elysia {
 		void Finalize();
 
 	private:
+		//エンジンにある管理クラス
+		EngineManagers engineManagers_ = {};
 
-		//ウィンドウクラス
-		WindowsSetup* windowsSetup_ = nullptr;
 		//DirectXクラス
 		DirectXSetup* directXSetup_ = nullptr;
 		//SRV管理クラス
 		SrvManager* srvManager_ = nullptr;
 		//RTV管理クラス
 		RtvManager* rtvManager_ = nullptr;
-		//ImGui管理クラス
-		ImGuiManager* imGuiManager_ = nullptr;
 		//パイプライン管理クラス
 		PipelineManager* pipelineManager_ = nullptr;
 		//Inputクラス

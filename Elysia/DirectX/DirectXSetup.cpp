@@ -10,10 +10,7 @@
 
 
 
-Elysia::DirectXSetup::DirectXSetup() {
-	//ウィンドウクラスのインスタンスを取得
-	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
-}
+
 
 Elysia::DirectXSetup* Elysia::DirectXSetup::GetInstance() {
 	//関数内static変数として宣言する
@@ -21,6 +18,10 @@ Elysia::DirectXSetup* Elysia::DirectXSetup::GetInstance() {
 	return &instance;
 }
 
+Elysia::DirectXSetup::DirectXSetup(WindowsSetup* windowsSetup) {
+	//ウィンドウクラスのインスタンスを取得
+	windowsSetup_ = windowsSetup;
+}
 
 ComPtr<ID3D12DescriptorHeap> Elysia::DirectXSetup::GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType,UINT numDescriptors, bool shaderVisible) {
 
@@ -310,7 +311,7 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 	//60fpsそのまま映すと大変なので2枚用意して
 	//描画(フロントバッファ)と表示(バックバッファ、プライマリバッファ)に分ける。
 	//このことをダブルバッファリングという。
-	HWND hwnd = WindowsSetup::GetInstance()->GetHwnd();
+	HWND hwnd = windowsSetup_->GetHwnd();
 
 
 
@@ -321,10 +322,10 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc={
 		//画面の幅。ウィンドウのクライアント領域を同じものにしておく
-		.Width = WindowsSetup::GetInstance()->GetClientWidth(),
+		.Width = windowsSetup_->GetClientWidth(),
 		
 		//画面の高さ。ウィンドウのクライアント領域を同じものにしておく
-		.Height = WindowsSetup::GetInstance()->GetClientHeight(),
+		.Height = windowsSetup_->GetClientHeight(),
 		
 		//色の形式
 		.Format = DXGI_FORMAT_R8G8B8A8_UNORM,
@@ -362,8 +363,8 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 void Elysia::DirectXSetup::GenerateDescriptorHeap() {
 	
 	ComPtr<ID3D12Resource> depthStencilResource = GenerateDepthStencilTextureResource(
-		WindowsSetup::GetInstance()->GetClientWidth(),
-		WindowsSetup::GetInstance()->GetClientHeight());
+		windowsSetup_->GetClientWidth(),
+		windowsSetup_->GetClientHeight());
 
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
 
@@ -736,24 +737,18 @@ void Elysia::DirectXSetup::StartDraw() {
 	//描画先のRTVを設定する
 	DirectXSetup::GetInstance()->GetCommandList()->OMSetRenderTargets(1, &RtvManager::GetInstance()->GetRtvHandle(backBufferIndex_), false, &DirectXSetup::GetInstance()->dsvHandle_);
 	//指定した色で画面全体をクリアする
-	float clearColor[] = { 0.0f,0.0f,0.0f,1.0f };
+	float_t clearColor[] = { 0.0f,0.0f,0.0f,1.0f };
 	DirectXSetup::GetInstance()->GetCommandList()->ClearRenderTargetView(RtvManager::GetInstance()->GetRtvHandle(backBufferIndex_), clearColor, 0, nullptr);
 
 
-	uint32_t width = WindowsSetup::GetInstance()->GetClientWidth();
-	uint32_t height = WindowsSetup::GetInstance()->GetClientHeight();
+	uint32_t width = WindowsSetup::GetClientWidth();
+	uint32_t height = WindowsSetup::GetClientHeight();
 
 	//ビューポートの生成
 	GenerateViewport(width, height);
-	
 	//シザーを生成
 	GenerateScissor(width, height);
-	
 }
-
-
-
-
 
 void Elysia::DirectXSetup::EndDraw() {
 	////画面表示出来るようにする
@@ -808,11 +803,7 @@ void Elysia::DirectXSetup::EndDraw() {
 	assert(SUCCEEDED(hr));
 }
 
-void Elysia::DirectXSetup::Release() {
 
-	//解放処理
-	CloseHandle(fenceEvent_);
-}
 
 
 

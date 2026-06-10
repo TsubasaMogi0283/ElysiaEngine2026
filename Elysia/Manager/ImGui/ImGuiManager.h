@@ -16,7 +16,7 @@ namespace Elysia {
 	/// ImGui管理クラス
 	/// </summary>
 	class ImGuiManager final {
-	private:
+	public:
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
@@ -28,25 +28,11 @@ namespace Elysia {
 		~ImGuiManager() = default;
 
 	public:
-
-		/// <summary>
-		/// インスタンスを取得
-		/// </summary>
-		/// <returns>インスタンス</returns>
-		static ImGuiManager* GetInstance();
-
 		/// <summary>
 		/// コピーコンストラクタ禁止
 		/// </summary>
 		/// <param name="imGui"></param>
 		ImGuiManager(const ImGuiManager& imGui) = delete;
-
-		/// <summary>
-		/// 代入演算子を無効にする
-		/// </summary>
-		/// <param name="imGui"></param>
-		/// <returns></returns>
-		ImGuiManager& operator=(const ImGuiManager& imGui) = delete;
 
 	public:
 

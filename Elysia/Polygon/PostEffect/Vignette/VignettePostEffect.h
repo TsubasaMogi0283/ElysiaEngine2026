@@ -7,7 +7,7 @@
 
 #include "DirectXSetup.h"
 #include "Vector3.h"
-
+#include <BasePostEffect.h>
 
 /// <summary>
 /// ベクトル(4次元)
@@ -54,7 +54,7 @@ namespace Elysia {
 	/// <summary>
 	/// ビネットポストエフェクト
 	/// </summary>
-	class VignettePostEffect {
+	class VignettePostEffect : public BasePostEffect{
 	public:
 		/// <summary>
 		/// コンストラクタ
@@ -64,12 +64,12 @@ namespace Elysia {
 		/// <summary>
 		/// 初期化
 		/// </summary>
-		void Initialize();
+		void Initialize()override;
 
 		/// <summary>
 		/// 描画前処理
 		/// </summary>
-		void PreDraw();
+		void PreDraw()override;
 
 		/// <summary>
 		/// 描画
@@ -81,31 +81,5 @@ namespace Elysia {
 		/// デストラクタ
 		/// </summary>
 		~VignettePostEffect() = default;
-
-
-	private:
-		//ウィンドウクラス
-		Elysia::WindowsSetup* windowsSetup_ = nullptr;
-		//DirectXクラス
-		Elysia::DirectXSetup* directXSetup_ = nullptr;
-		//パイプライン管理クラス
-		Elysia::PipelineManager* pipelinemanager_ = nullptr;
-		//RTV管理クラス
-		Elysia::RtvManager* rtvManager_ = nullptr;
-		//SRV管理クラス
-		Elysia::SrvManager* srvManager_ = nullptr;
-
-	private:
-		//ハンドル
-		uint32_t rtvHandle_ = 0;
-		//RTV
-		ComPtr<ID3D12Resource> rtvResource_ = nullptr;
-
-		//SRV
-		uint32_t srvHandle_ = 0;
-		//リソースバリア
-		D3D12_RESOURCE_BARRIER barrier = {};
-
 	};
-
 };

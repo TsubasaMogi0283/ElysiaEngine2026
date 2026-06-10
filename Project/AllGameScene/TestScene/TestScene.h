@@ -13,6 +13,7 @@
 #include "Material.h"
 #include "DirectionalLight.h"
 #include <AnimationModel.h>
+#include <Dissolve.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -48,10 +49,6 @@ namespace Elysia {
 	/// </summary>
 	class Input;
 
-	/// <summary>
-	/// 調整項目クラス
-	/// </summary>
-	class GlobalVariables;
 }
 
 /// <summary>

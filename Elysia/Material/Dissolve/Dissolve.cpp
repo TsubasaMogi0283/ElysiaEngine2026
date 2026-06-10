@@ -20,7 +20,7 @@ void Dissolve::Update(){
 	//エッジを使うかどうか
 	dissolveData->isUseEdge = isUseEdge;
 	//エッジの厚さ
-	dissolveData->edgeThinkness = edgeThinkness;
+	dissolveData->edgeThickness = edgeThinkness;
 	//エッジの色
 	dissolveData->edgeColor = edgeColor;
 	//閾値

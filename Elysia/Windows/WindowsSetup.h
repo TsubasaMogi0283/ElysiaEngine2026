@@ -55,8 +55,6 @@ namespace Elysia {
 
 	public:
 
-#pragma region 禁止事項
-
 		/// <summary>
 		/// コピーコンストラクタ禁止
 		/// </summary>
@@ -69,15 +67,6 @@ namespace Elysia {
 		/// <param name="winApp"></param>
 		/// <returns></returns>
 		WindowsSetup& operator=(const WindowsSetup& winApp) = delete;
-
-#pragma endregion
-
-		/// <summary>
-		/// インスタンスの取得
-		/// </summary>
-		/// <returns></returns>
-		static WindowsSetup* GetInstance();
-
 
 		/// <summary>
 		/// ウィンドウプロシージャ
@@ -93,13 +82,13 @@ namespace Elysia {
 		/// ログ
 		/// </summary>
 		/// <param name="stringText"></param>
-		void OutputStringW(std::string& stringText);
+		static void OutputStringW(std::string& stringText);
 
 		/// <summary>
 		/// ログ
 		/// </summary>
 		/// <param name="text"></param>
-		void OutPutStringA(const std::string& text);
+		static void OutPutStringA(const std::string& text);
 
 	private:
 
@@ -134,7 +123,10 @@ namespace Elysia {
 		/// <summary>
 		/// 閉じる
 		/// </summary>
-		void Close();
+		inline void Close() {
+			//ウィンドウを閉じる
+			CloseWindow(hwnd_);
+		};
 
 	public:
 
@@ -142,7 +134,7 @@ namespace Elysia {
 		/// クライアントの横幅
 		/// </summary>
 		/// <returns></returns>
-		uint32_t GetClientWidth() const {
+		static inline uint32_t GetClientWidth() {
 			return clientWidth_;
 		}
 
@@ -150,7 +142,7 @@ namespace Elysia {
 		/// クライアントの縦幅
 		/// </summary>
 		/// <returns></returns>
-		inline uint32_t GetClientHeight() const {
+		static inline uint32_t GetClientHeight() {
 			return clientHeight_;
 		}
 
@@ -172,11 +164,13 @@ namespace Elysia {
 
 
 
-	private:
+	public:
 		//クライアントのサイズ
-		uint32_t clientWidth_ = 0;
-		uint32_t clientHeight_ = 0;
+		static uint32_t clientWidth_;
+		static uint32_t clientHeight_;
 
+
+	private:
 		//ウィンドウハンドル
 		HWND hwnd_ = 0;
 

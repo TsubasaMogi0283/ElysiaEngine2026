@@ -13,8 +13,8 @@ Elysia::RtvManager* Elysia::RtvManager::GetInstance(){
 
 ComPtr<ID3D12Resource> Elysia::RtvManager::CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4& clearColor) {
 
-	uint32_t width = WindowsSetup::GetInstance()->GetClientWidth();
-	uint32_t height= WindowsSetup::GetInstance()->GetClientHeight();
+	uint32_t width = WindowsSetup::GetClientWidth();
+	uint32_t height= WindowsSetup::GetClientHeight();
 
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//Textureの幅
@@ -97,9 +97,6 @@ ComPtr<ID3D12Resource>  Elysia::RtvManager::CreateRenderTextureResourceForDepth(
 	//VRAM上に作る
 	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT;
 
-
-
-
 	//クリア設定
 	D3D12_CLEAR_VALUE clearValue{};
 	clearValue.Format = format;
@@ -130,31 +127,24 @@ uint32_t  Elysia::RtvManager::Allocate(const std::string& name){
 	assert(index_ < RTV_DESCRIPTOR_SIZE_);
 
 	//既存だったらindexを返す
-	for (uint32_t i = 0u; i < RTV_DESCRIPTOR_SIZE_; ++i) {
-		if (RtvManager::GetInstance()->rtvInformation_[i].name == name) {
-			uint32_t index = RtvManager::GetInstance()->rtvInformation_[i].index;
+	for (uint32_t i = 0u; i < RTV_DESCRIPTOR_SIZE_; i++) {
+		if (rtvInformation_[i].name == name) {
+			uint32_t index = rtvInformation_[i].index;
 			return index;
 		}
-
 	}
 
-	
-	
 	//return する番号を一旦記録しておく
 	int index = index_;
 	
 	//次のために番号を1進める
-	++index_;
+	index_++;
 
-	RtvManager::GetInstance()->rtvInformation_[index].name = name;
-	RtvManager::GetInstance()->rtvInformation_[index].index =index;
-
-
+	rtvInformation_[index].name = name;
+	rtvInformation_[index].index =index;
 
 	//上で記録した番号をreturn
 	return index;
-
-
 }
 
 void  Elysia::RtvManager::GenerateRenderTargetView(const ComPtr<ID3D12Resource>& resource,const uint32_t& handle){
@@ -162,7 +152,6 @@ void  Elysia::RtvManager::GenerateRenderTargetView(const ComPtr<ID3D12Resource>&
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				//出力結果をSRGBに変換して書き込む
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-	
 	
 	//handleはAllocateで返された値を使ってね
 
@@ -179,16 +168,10 @@ void  Elysia::RtvManager::GenerateRenderTargetView(const ComPtr<ID3D12Resource>&
 
 	}
 
-	
 	//RTVの作成(本体)
 	DirectXSetup::GetInstance()->GetDevice()->CreateRenderTargetView(
 		resource.Get(), &rtvDesc, rtvHandles_[handle]);
-
-
 }
-
-
-
 
 void Elysia::RtvManager::Initialize(){
 	//Resourceに対して作業を行うにはViewが必要
@@ -197,7 +180,6 @@ void Elysia::RtvManager::Initialize(){
 	//DescriptorHeapを作る
 	rtvDescriptorHeap_ = DirectXSetup::GetInstance()->GenerateDescriptorHeap(
 		D3D12_DESCRIPTOR_HEAP_TYPE_RTV, RTV_DESCRIPTOR_SIZE_, false);
-
 
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};

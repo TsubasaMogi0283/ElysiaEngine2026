@@ -10,8 +10,6 @@
 #include "RandomNoise.h"
 
 Elysia::RandomNoisePostEffect::RandomNoisePostEffect(){
-	//ウィンドウクラスの取得
-	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectXクラスの取得
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//パイプライン管理クラスの取得
@@ -59,8 +57,8 @@ void Elysia::RandomNoisePostEffect::PreDraw() {
 	directXSetup_->GetCommandList()->ClearDepthStencilView(
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 	//縦横のサイズを取得
-	uint32_t width = windowsSetup_->GetClientWidth();
-	uint32_t height = windowsSetup_->GetClientHeight();
+	uint32_t width = WindowsSetup::GetClientWidth();
+	uint32_t height = WindowsSetup::GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width, height);

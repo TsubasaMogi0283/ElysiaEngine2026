@@ -71,8 +71,6 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 			objectData.initialTransform.scale.y = static_cast<float>(transform["scaling"][2]);
 			objectData.initialTransform.scale.z = static_cast<float>(transform["scaling"][1]);
 
-
-
 			//回転角
 			//そういえばBlenderは度数法だったね
 			//弧度法に直そう
@@ -84,8 +82,6 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 			objectData.initialTransform.rotate.x = -static_cast<float>(transform["rotation"][0]) * DEREES_TO_RADIUS_;
 			objectData.initialTransform.rotate.y = -static_cast<float>(transform["rotation"][2]) * DEREES_TO_RADIUS_;
 			objectData.initialTransform.rotate.z = -static_cast<float>(transform["rotation"][1]) * DEREES_TO_RADIUS_;
-
-
 
 			//Blenderと軸の方向が違うので注意！
 			//座標
@@ -209,10 +205,8 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 					}
 				}
 			}
-
 		}
 	}
-
 }
 
 void Elysia::LevelDataManager::Generate(LevelData& levelData) {
@@ -364,7 +358,7 @@ uint32_t Elysia::LevelDataManager::Load(const std::string& filePath) {
 	}
 
 	//ハンドルの加算
-	++handle_;
+	handle_++;
 
 	//インスタンスを生成
 	levelData_[fullFilePath] = std::make_unique<LevelData>();
@@ -375,18 +369,12 @@ uint32_t Elysia::LevelDataManager::Load(const std::string& filePath) {
 	levelData_[fullFilePath]->handle = handle_;
 	levelData_[fullFilePath]->fullPath = fullFilePath;
 
-
-
 	//指定したファイルパスのレベルデータを持ってくる
 	LevelData& levelData = *levelData_[fullFilePath];
-
 	//配置
 	Place(deserialized["objects"], levelData);
-
 	//生成
 	Generate(levelData);
-
-
 
 	//番号を返す
 	return levelData_[fullFilePath]->handle;

@@ -16,7 +16,7 @@ Elysia::Framework::Framework(){
 
 	//インスタンスの取得
 	//ウィンドウ
-	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
+	engineManagers_.windowsSetup_=std::make_unique<Elysia::WindowsSetup>();
 	//DirectX
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//SRV
@@ -24,7 +24,7 @@ Elysia::Framework::Framework(){
 	//RTV
 	rtvManager_ = Elysia::RtvManager::GetInstance();
 	//ImGui管理クラス
-	imGuiManager_ = Elysia::ImGuiManager::GetInstance();
+	engineManagers_.imGuiManager_ = std::make_unique<Elysia::ImGuiManager>();
 	//パイプライン
 	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//入力
@@ -47,7 +47,7 @@ void Elysia::Framework::Initialize(){
 
 	//初期化
 	//ウィンドウ
-	windowsSetup_->Initialize(TITLE_BAR_NAME,WINDOW_SIZE_WIDTH,WINDOW_SIZE_HEIGHT);
+	engineManagers_.windowsSetup_->Initialize(TITLE_BAR_NAME,WINDOW_SIZE_WIDTH,WINDOW_SIZE_HEIGHT);
 	
 	//COMの初期化
 	//COM...ComponentObjectModel、Microsoftの提唱する設計技術の１つ
@@ -71,7 +71,7 @@ void Elysia::Framework::Initialize(){
 
 #ifdef _DEBUG
 	//ImGuiManagerの初期化
-	imGuiManager_->Initialize();
+	engineManagers_.imGuiManager_->Initialize();
 #endif
 
 	//パイプラインの初期化
@@ -103,7 +103,7 @@ void Elysia::Framework::BeginFrame(){
 
 #ifdef _DEBUG
 	//ImGuiの開始
-	imGuiManager_->BeginFrame();
+	engineManagers_.imGuiManager_->BeginFrame();
 #endif
 }
 
@@ -138,7 +138,7 @@ void Elysia::Framework::Draw(){
 	
 #ifdef _DEBUG
 	//ImGuiの描画
-	imGuiManager_->Draw();
+	engineManagers_.imGuiManager_->Draw();
 	
 #endif
 }
@@ -148,7 +148,7 @@ void Elysia::Framework::EndFrame() {
 
 #ifdef _DEBUG
 	////ImGuiのフレーム終わり
-	imGuiManager_->EndDraw();
+	engineManagers_.imGuiManager_->EndDraw();
 #endif
 	//最後で切り替える
 	directXSetup_->EndDraw();
@@ -167,14 +167,14 @@ void Elysia::Framework::Finalize() {
 
 #ifdef _DEBUG
 	//ImGuiの解放	
-	imGuiManager_->Finalize();
+	engineManagers_.imGuiManager_->Finalize();
 #endif
 
 	//DirectXの解放
 	directXSetup_->Release();
 	
 	//Windowsの解放
-	windowsSetup_->Close();
+	engineManagers_.windowsSetup_->Close();
 
 	//ゲーム終了時にはCOMの終了処理を行っておく
 	CoUninitialize();
@@ -184,7 +184,7 @@ void Elysia::Framework::Finalize() {
 
 
 
-void Elysia::Framework::Run(){
+void Elysia::Framework::Execute(){
 	//初期化
 	Initialize();
 	
@@ -196,7 +196,7 @@ void Elysia::Framework::Run(){
 		//Windowにメッセージが来てたら最優先で処理させる
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			//メッセージを送る
-			windowsSetup_->WindowsMSG(msg);
+			engineManagers_.windowsSetup_->WindowsMSG(msg);
 
 		}
 		else {

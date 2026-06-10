@@ -8,11 +8,6 @@
 #include "RtvManager.h"
 
 
-Elysia::ImGuiManager* Elysia::ImGuiManager::GetInstance() {
-	static ImGuiManager instance;
-	return &instance;
-}
-
 void Elysia::ImGuiManager::Initialize() {
 
 	IMGUI_CHECKVERSION();

@@ -4,11 +4,9 @@
 
 #include "Convert.h"
 
+uint32_t Elysia::WindowsSetup::clientWidth_ = 0;
+uint32_t Elysia::WindowsSetup::clientHeight_ = 0;
 
-Elysia::WindowsSetup* Elysia::WindowsSetup::GetInstance() {
-	static Elysia::WindowsSetup instance;
-	return &instance;
-}
 
 
 
@@ -40,6 +38,7 @@ void Elysia::WindowsSetup::OutPutStringA(const std::string& text){
 	//出力
 	OutputDebugStringA(text.c_str());
 }
+
 
 
 #pragma region Initializeに入れる関数
@@ -88,9 +87,6 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 		//オプション
 		nullptr					
 	);
-
-		
-	
 }
 
 void Elysia::WindowsSetup::DisplayWindow() {
@@ -118,11 +114,6 @@ void Elysia::WindowsSetup::Initialize(const wchar_t* title, const int32_t& clien
 void Elysia::WindowsSetup::WindowsMSG(MSG& msg) {
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
-}
-
-void Elysia::WindowsSetup::Close() {
-	//ウィンドウを閉じる
-	CloseWindow(hwnd_);
 }
 
 
