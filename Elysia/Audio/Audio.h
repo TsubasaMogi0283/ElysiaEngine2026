@@ -446,9 +446,7 @@ namespace Elysia {
 		//サブミックスボイス
 		static const uint32_t SUBMIXVOICE_AMOUNT_ = 64u;
 		std::array<IXAudio2SubmixVoice*, SUBMIXVOICE_AMOUNT_> submixVoice_{};
-
 	};
-
 }
 
 
