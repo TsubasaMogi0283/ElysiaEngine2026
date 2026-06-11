@@ -8,20 +8,16 @@
 #include "RtvManager.h"
 #include "Vector4.h"
 
-
-
-
+Elysia::DirectXSetup::DirectXSetup() {
+	windowsSetup_ = WindowsSetup::GetInstance();
+}
 
 Elysia::DirectXSetup* Elysia::DirectXSetup::GetInstance() {
 	//関数内static変数として宣言する
-	static DirectXSetup instance;
+	static Elysia::DirectXSetup instance;
 	return &instance;
 }
 
-Elysia::DirectXSetup::DirectXSetup(WindowsSetup* windowsSetup) {
-	//ウィンドウクラスのインスタンスを取得
-	windowsSetup_ = windowsSetup;
-}
 
 ComPtr<ID3D12DescriptorHeap> Elysia::DirectXSetup::GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType,UINT numDescriptors, bool shaderVisible) {
 

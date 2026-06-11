@@ -7,8 +7,10 @@
 uint32_t Elysia::WindowsSetup::clientWidth_ = 0;
 uint32_t Elysia::WindowsSetup::clientHeight_ = 0;
 
-
-
+Elysia::WindowsSetup* Elysia::WindowsSetup::GetInstance(){
+	static WindowsSetup instance;
+	return &instance;
+}
 
 LRESULT Elysia::WindowsSetup::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam){
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
@@ -89,10 +91,6 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 	);
 }
 
-void Elysia::WindowsSetup::DisplayWindow() {
-	//ウィンドウを表示
-	ShowWindow(hwnd_, SW_SHOW);
-}
 
 #pragma endregion
 

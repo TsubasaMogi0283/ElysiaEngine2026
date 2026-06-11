@@ -118,6 +118,8 @@ namespace Elysia {
 		//エンジンにある管理クラス
 		EngineManagers engineManagers_ = {};
 
+		//ウィンドウクラス
+		WindowsSetup* windowSetup_ = nullptr;
 		//DirectXクラス
 		DirectXSetup* directXSetup_ = nullptr;
 		//SRV管理クラス

@@ -57,7 +57,7 @@ namespace Elysia{
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		DirectXSetup(WindowsSetup* windowsSetup);
+		DirectXSetup();
 
 		/// <summary>
 		/// デストラクタ

@@ -235,12 +235,24 @@
     <Filter Include="Elysia\ソース ファイル\Polygone\PostEffct">
       <UniqueIdentifier>{651686b2-090a-4838-8c6e-6aa69d7778a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\AllGameScene\Title">
+      <UniqueIdentifier>{f3ef983f-02d4-4c91-b7d5-d5ef2297b5c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\AllGameScene\Test">
+      <UniqueIdentifier>{01460683-b958-4bdb-a31e-fa2def280545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\AllGameScene\Select">
+      <UniqueIdentifier>{9a3213da-3711-4f17-b412-5e545b46ce47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\AllGameScene\Result">
+      <UniqueIdentifier>{31b20574-7b15-4359-9d9b-8467a9cd8108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\AllGameScene\Main">
+      <UniqueIdentifier>{7fc58e19-5db5-45c9-9ec3-d94102977edc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
-      <Filter>Project\AllGameScene</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\TestScene\TestScene.cpp">
       <Filter>Project\AllGameScene</Filter>
     </ClCompile>
     <ClCompile Include="Elysia\Audio\Audio.cpp">
@@ -435,6 +447,21 @@
     <ClCompile Include="Elysia\Math\Vector\Vector3.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Project\AllGameScene\TestScene\TestScene.cpp">
+      <Filter>Project\AllGameScene\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\TitleScene\TitleScene.cpp">
+      <Filter>Project\AllGameScene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\SelectScene\SelectScene.cpp">
+      <Filter>Project\AllGameScene\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\ResultScene\ResultScene.cpp">
+      <Filter>Project\AllGameScene\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\MainScene\MainScene.cpp">
+      <Filter>Project\AllGameScene\Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig">
@@ -446,9 +473,6 @@
       <Filter>Project</Filter>
     </ClInclude>
     <ClInclude Include="Project\AllGameScene\GameSceneFactory.h">
-      <Filter>Project\AllGameScene</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\TestScene\TestScene.h">
       <Filter>Project\AllGameScene</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Audio\Audio.h">
@@ -747,6 +771,21 @@
     </ClInclude>
     <ClInclude Include="Elysia\DirectX\BufferResource.h">
       <Filter>Elysia\ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\TestScene\TestScene.h">
+      <Filter>Project\AllGameScene\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\TitleScene\TitleScene.h">
+      <Filter>Project\AllGameScene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\SelectScene\SelectScene.h">
+      <Filter>Project\AllGameScene\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\ResultScene\ResultScene.h">
+      <Filter>Project\AllGameScene\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\MainScene\MainScene.h">
+      <Filter>Project\AllGameScene\Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

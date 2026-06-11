@@ -181,7 +181,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\StringOption\StringOption.cpp" />
     <ClCompile Include="Elysia\Windows\WindowsSetup.cpp" />
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp" />
+    <ClCompile Include="Project\AllGameScene\MainScene\MainScene.cpp" />
+    <ClCompile Include="Project\AllGameScene\ResultScene\ResultScene.cpp" />
+    <ClCompile Include="Project\AllGameScene\SelectScene\SelectScene.cpp" />
     <ClCompile Include="Project\AllGameScene\TestScene\TestScene.cpp" />
+    <ClCompile Include="Project\AllGameScene\TitleScene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -295,7 +299,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\StringOption\StringOption.h" />
     <ClInclude Include="Elysia\Windows\WindowsSetup.h" />
     <ClInclude Include="Project\AllGameScene\GameSceneFactory.h" />
+    <ClInclude Include="Project\AllGameScene\MainScene\MainScene.h" />
+    <ClInclude Include="Project\AllGameScene\ResultScene\ResultScene.h" />
+    <ClInclude Include="Project\AllGameScene\SelectScene\SelectScene.h" />
     <ClInclude Include="Project\AllGameScene\TestScene\TestScene.h" />
+    <ClInclude Include="Project\AllGameScene\TitleScene\TitleScene.h" />
     <ClInclude Include="Project\CollisionConfig\CollisionConfig.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
