@@ -118,24 +118,6 @@ namespace Elysia {
 		//エンジンにある管理クラス
 		EngineManagers engineManagers_ = {};
 
-		//ウィンドウクラス
-		WindowsSetup* windowSetup_ = nullptr;
-		//DirectXクラス
-		DirectXSetup* directXSetup_ = nullptr;
-		//SRV管理クラス
-		SrvManager* srvManager_ = nullptr;
-		//RTV管理クラス
-		RtvManager* rtvManager_ = nullptr;
-		//パイプライン管理クラス
-		PipelineManager* pipelineManager_ = nullptr;
-		//Inputクラス
-		Input* input_ = nullptr;
-		//オーディオクラス
-		Audio* audio_ = nullptr;
-		//JSON読み込み(グローバル変数)
-		GlobalVariables* globalVariables_ = nullptr;
-		//レベルデータ管理クラス
-		LevelDataManager* levelDataManager_ = nullptr;
 
 	private:
 		//ゲームの管理クラス

@@ -16,26 +16,25 @@ Elysia::Framework::Framework(){
 
 	//インスタンスの取得
 	//ウィンドウ
-	windowSetup_ =Elysia::WindowsSetup::GetInstance();
+	engineManagers_.windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//DirectX
-	directXSetup_ = Elysia::DirectXSetup::GetInstance();
+	engineManagers_.directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//SRV
-	srvManager_ = Elysia::SrvManager::GetInstance();
+	engineManagers_.srvManager_ = Elysia::SrvManager::GetInstance();
 	//RTV
-	rtvManager_ = Elysia::RtvManager::GetInstance();
+	engineManagers_.rtvManager_ = Elysia::RtvManager::GetInstance();
 	//ImGui管理クラス
 	engineManagers_.imGuiManager_ = std::make_unique<Elysia::ImGuiManager>();
 	//パイプライン
-	pipelineManager_ = Elysia::PipelineManager::GetInstance();
+	engineManagers_.pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//入力
-	input_ = Elysia::Input::GetInstance();
+	engineManagers_.input_ = Elysia::Input::GetInstance();
 	//Audio
-	audio_ = Elysia::Audio::GetInstance();
+	engineManagers_.audio_ = Elysia::Audio::GetInstance();
 	//JSON読み込み
-	globalVariables_ = Elysia::GlobalVariables::GetInstance();
+	engineManagers_.globalVariables_ = Elysia::GlobalVariables::GetInstance();
 	//レベルデータ管理クラス
-	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
-
+	engineManagers_.levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 }
 
 void Elysia::Framework::Initialize(){
@@ -47,7 +46,7 @@ void Elysia::Framework::Initialize(){
 
 	//初期化
 	//ウィンドウ
-	windowSetup_->Initialize(TITLE_BAR_NAME,WINDOW_SIZE_WIDTH,WINDOW_SIZE_HEIGHT);
+	engineManagers_.windowsSetup_->Initialize(TITLE_BAR_NAME,WINDOW_SIZE_WIDTH,WINDOW_SIZE_HEIGHT);
 	
 	//COMの初期化
 	//COM...ComponentObjectModel、Microsoftの提唱する設計技術の１つ
@@ -58,16 +57,16 @@ void Elysia::Framework::Initialize(){
 	assert(SUCCEEDED(hResult));
 
 	//DirectX第1初期化
-	directXSetup_->FirstInitialize();
+	engineManagers_.directXSetup_->FirstInitialize();
 	
 	//SRV初期化
-	srvManager_->Initialize();
+	engineManagers_.srvManager_->Initialize();
 
 	//RTVの初期化
-	rtvManager_->Initialize();
+	engineManagers_.rtvManager_->Initialize();
 
 	///DirectX第2の初期化
-	directXSetup_->SecondInitialize();
+	engineManagers_.directXSetup_->SecondInitialize();
 
 #ifdef _DEBUG
 	//ImGuiManagerの初期化
@@ -75,16 +74,16 @@ void Elysia::Framework::Initialize(){
 #endif
 
 	//パイプラインの初期化
-	pipelineManager_->Initialize();
+	engineManagers_.pipelineManager_->Initialize();
 
 	//Inputの初期化
-	input_->Initialize();
+	engineManagers_.input_->Initialize();
 	
 	//Audioの初期化
-	audio_->Initialize();
+	engineManagers_.audio_->Initialize();
 
 	//JSON読み込みの初期化
-	globalVariables_->LoadAllFile();
+	engineManagers_.globalVariables_->LoadAllFile();
 
 	//ゲームシーン管理クラスの生成
 	gameManager_ = std::make_unique<GameManager>();
@@ -99,7 +98,7 @@ void Elysia::Framework::Initialize(){
 void Elysia::Framework::BeginFrame(){
 	
 	//SRVの更新
-	srvManager_->PreDraw();
+	engineManagers_.srvManager_->PreDraw();
 
 #ifdef _DEBUG
 	//ImGuiの開始
@@ -110,10 +109,10 @@ void Elysia::Framework::BeginFrame(){
 void Elysia::Framework::Update(){
 
 	//グローバル変数の更新
-	globalVariables_->Update();
+	engineManagers_.globalVariables_->Update();
 
 	//入力の更新
-	input_->Update();
+	engineManagers_.input_->Update();
 	
 	//ゲームシーンの更新
 	gameManager_->Update();
@@ -128,7 +127,7 @@ void Elysia::Framework::Draw(){
 	gameManager_->DrawObject3D();
 	
 	//描画始め(スワップチェイン)
-	directXSetup_->StartDraw();
+	engineManagers_.directXSetup_->StartDraw();
 
 	//PostEffectの描画
 	gameManager_->DrawPostEffect();
@@ -151,7 +150,7 @@ void Elysia::Framework::EndFrame() {
 	engineManagers_.imGuiManager_->EndDraw();
 #endif
 	//最後で切り替える
-	directXSetup_->EndDraw();
+	engineManagers_.directXSetup_->EndDraw();
 
 }
 #pragma endregion
@@ -160,10 +159,10 @@ void Elysia::Framework::EndFrame() {
 void Elysia::Framework::Finalize() {
 
 	//レベルエディタの解放
-	levelDataManager_->Finalize();
+	engineManagers_.levelDataManager_->Finalize();
 
 	//オーディオの解放
-	audio_->Finalize();
+	engineManagers_.audio_->Finalize();
 
 #ifdef _DEBUG
 	//ImGuiの解放	
@@ -171,18 +170,15 @@ void Elysia::Framework::Finalize() {
 #endif
 
 	//DirectXの解放
-	directXSetup_->Release();
+	engineManagers_.directXSetup_->Release();
 	
 	//Windowsの解放
-	windowSetup_->Close();
+	engineManagers_.windowsSetup_->Close();
 
 	//ゲーム終了時にはCOMの終了処理を行っておく
 	CoUninitialize();
 
 }
-
-
-
 
 void Elysia::Framework::Execute(){
 	//初期化
@@ -196,7 +192,7 @@ void Elysia::Framework::Execute(){
 		//Windowにメッセージが来てたら最優先で処理させる
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			//メッセージを送る
-			windowSetup_->WindowsMSG(msg);
+			engineManagers_.windowsSetup_->WindowsMSG(msg);
 
 		}
 		else {
@@ -208,7 +204,7 @@ void Elysia::Framework::Execute(){
 			Update();
 
 			//ESCAPE押されたら終了
-			if (input_->IsTriggerKey(DIK_ESCAPE)==true) {
+			if (engineManagers_.input_->IsTriggerKey(DIK_ESCAPE)==true) {
 				break;
 			}
 
@@ -219,10 +215,7 @@ void Elysia::Framework::Execute(){
 			EndFrame();
 		}
 	}
-
 	//解放
 	Finalize();
 
 }
-
-
