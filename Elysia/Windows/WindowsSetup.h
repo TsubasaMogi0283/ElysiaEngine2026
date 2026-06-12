@@ -56,6 +56,13 @@ namespace Elysia {
 	public:
 
 		/// <summary>
+		/// インスタンスの取得
+		/// </summary>
+		/// <returns>インスタンス</returns>
+		static WindowsSetup* GetInstance();
+
+
+		/// <summary>
 		/// コピーコンストラクタ禁止
 		/// </summary>
 		/// <param name="winApp"></param>
@@ -101,7 +108,10 @@ namespace Elysia {
 		/// <summary>
 		/// Windowを表示
 		/// </summary>
-		void DisplayWindow();
+		inline void DisplayWindow() const {
+			//ウィンドウを表示
+			ShowWindow(hwnd_, SW_SHOW);
+		};
 
 
 	public:
@@ -123,7 +133,7 @@ namespace Elysia {
 		/// <summary>
 		/// 閉じる
 		/// </summary>
-		inline void Close() {
+		inline void Close() const {
 			//ウィンドウを閉じる
 			CloseWindow(hwnd_);
 		};

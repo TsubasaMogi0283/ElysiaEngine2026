@@ -16,7 +16,7 @@ Elysia::Framework::Framework(){
 
 	//インスタンスの取得
 	//ウィンドウ
-	engineManagers_.windowsSetup_=std::make_unique<Elysia::WindowsSetup>();
+	windowSetup_ =Elysia::WindowsSetup::GetInstance();
 	//DirectX
 	directXSetup_ = Elysia::DirectXSetup::GetInstance();
 	//SRV
@@ -47,7 +47,7 @@ void Elysia::Framework::Initialize(){
 
 	//初期化
 	//ウィンドウ
-	engineManagers_.windowsSetup_->Initialize(TITLE_BAR_NAME,WINDOW_SIZE_WIDTH,WINDOW_SIZE_HEIGHT);
+	windowSetup_->Initialize(TITLE_BAR_NAME,WINDOW_SIZE_WIDTH,WINDOW_SIZE_HEIGHT);
 	
 	//COMの初期化
 	//COM...ComponentObjectModel、Microsoftの提唱する設計技術の１つ
@@ -174,7 +174,7 @@ void Elysia::Framework::Finalize() {
 	directXSetup_->Release();
 	
 	//Windowsの解放
-	engineManagers_.windowsSetup_->Close();
+	windowSetup_->Close();
 
 	//ゲーム終了時にはCOMの終了処理を行っておく
 	CoUninitialize();
@@ -196,7 +196,7 @@ void Elysia::Framework::Execute(){
 		//Windowにメッセージが来てたら最優先で処理させる
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			//メッセージを送る
-			engineManagers_.windowsSetup_->WindowsMSG(msg);
+			windowSetup_->WindowsMSG(msg);
 
 		}
 		else {

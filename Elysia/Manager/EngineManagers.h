@@ -24,7 +24,7 @@
 /// </summary>
 struct EngineManagers {
 	//ウィンドウクラス
-	std::unique_ptr <Elysia::WindowsSetup> windowsSetup_ = nullptr;
+	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 	//DirectXクラス
 	Elysia::DirectXSetup* directXSetup_ = nullptr;
 	//SRV管理クラス
