@@ -9,9 +9,9 @@ void StageObjectForLevelEditorCollider::Initialize() {
 
 	
 	//自分
-	SetCollisionAttribute(COLLISION_ATTRIBUTE_STAGE_OBJECT);
+	SetCollisionAttribute(CollisionConfig::COLLISION_ATTRIBUTE_STAGE_OBJECT);
 	//相手
-	SetCollisionMask(COLLISION_ATTRIBUTE_PLAYER4);
+	SetCollisionMask(CollisionConfig::COLLISION_ATTRIBUTE_PLAYER);
 
 }
 

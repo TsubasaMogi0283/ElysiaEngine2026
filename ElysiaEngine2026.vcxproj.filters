@@ -250,6 +250,24 @@
     <Filter Include="Project\AllGameScene\Main">
       <UniqueIdentifier>{7fc58e19-5db5-45c9-9ec3-d94102977edc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\AllGameScene\Main\Start">
+      <UniqueIdentifier>{4b745dfe-98f5-4fe9-be80-45e1e2418db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\AllGameScene\Main\Play">
+      <UniqueIdentifier>{a14e81c6-b79a-42a3-b241-e9c21316efdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\AllGameScene\Main\End">
+      <UniqueIdentifier>{dcf25551-9061-4235-a56d-8cb045c67449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note">
+      <UniqueIdentifier>{b1b75ae0-58c8-4a39-95a3-926d1e2010a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\NormalTapNote">
+      <UniqueIdentifier>{bffca117-055a-42f3-8917-9ef25276e84f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\LongNote">
+      <UniqueIdentifier>{2c797b04-e53f-4f84-bded-de34cec0b094}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -461,6 +479,24 @@
     </ClCompile>
     <ClCompile Include="Project\AllGameScene\MainScene\MainScene.cpp">
       <Filter>Project\AllGameScene\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\MainScene\Start\StartMainScene.cpp">
+      <Filter>Project\AllGameScene\Main\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\MainScene\BaseMainScene.cpp">
+      <Filter>Project\AllGameScene\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Note\BaseNote.cpp">
+      <Filter>Project\Note</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\MainScene\Play\PlayMainScene.cpp">
+      <Filter>Project\AllGameScene\Main\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\AllGameScene\MainScene\End\EndMainScene.cpp">
+      <Filter>Project\AllGameScene\Main\End</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp">
+      <Filter>Project\Note\NormalTapNote</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -786,6 +822,24 @@
     </ClInclude>
     <ClInclude Include="Project\AllGameScene\MainScene\MainScene.h">
       <Filter>Project\AllGameScene\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\MainScene\Start\StartMainScene.h">
+      <Filter>Project\AllGameScene\Main\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\MainScene\BaseMainScene.h">
+      <Filter>Project\AllGameScene\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\BaseNote.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\MainScene\Play\PlayMainScene.h">
+      <Filter>Project\AllGameScene\Main\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\AllGameScene\MainScene\End\EndMainScene.h">
+      <Filter>Project\AllGameScene\Main\End</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h">
+      <Filter>Project\Note\NormalTapNote</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

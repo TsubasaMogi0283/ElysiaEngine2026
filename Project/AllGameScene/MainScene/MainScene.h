@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file MainScene.h
+ * @brief メインシーンのクラス
+ * @author 茂木翼
+ */
+
 #include <memory>
 #include <array>
 
@@ -14,6 +20,7 @@
 #include "DirectionalLight.h"
 #include <AnimationModel.h>
 #include <Dissolve.h>
+#include "BaseMainScene.h"
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -98,54 +105,36 @@ public:
 	/// </summary>
 	~MainScene() = default;
 
+
+public:
+	/// <summary>
+	/// メインシーンを変更する
+	/// </summary>
+	/// <param name="newMainScene">新しいメインシーン</param>
+	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene) {
+		//新しいシーンをセット
+		baseMainScene_ = std::move(newMainScene);
+		//初期化
+		baseMainScene_->Initialize();
+	}
+	
 private:
-	//入力
-	Elysia::Input* input_ = nullptr;
-	//モデル管理クラス
-	Elysia::ModelManager* modelManager_ = nullptr;
 	//レベルエディタ
 	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル
 	uint32_t levelHandle_ = 0u;
-	//アニメーション管理クラス
-	Elysia::AnimationManager* animationManager_ = nullptr;
 
 
 private:
-	//スピード
-	const float_t SPEED = 0.1f;
-	//斜め補正
-	const float_t DIAGONAL_SCALE_ = 0.7f;
-	const float_t SIZE = 1.0f;
-	const Vector3 CUBE_SIZE = { .x = SIZE ,.y = SIZE ,.z = SIZE };
-private:
-
 	//背景
 	std::unique_ptr<Elysia::BackTexture>backTexture_ = nullptr;
-
-	//仮プレイヤー
-	std::unique_ptr<Elysia::Model>playerModel_ = nullptr;
-	WorldTransform playerWorldTransform_ = {};
-	std::unique_ptr<Elysia::AnimationModel>playerAnimationModel_ = nullptr;
-	WorldTransform playerAnimationWorldTransform_ = {};
-	float_t animationTime_ = 0.0f;
-	AABB playerAABB_ = {};
-	Vector3 playerCenterPosition_ = {};
-
-	//パーティクル
-	std::unique_ptr<Elysia::Particle3D>deadParticle_ = nullptr;
-	std::unique_ptr<Elysia::Particle3D>particle2_ = nullptr;
-
-	//四隅
-	static const uint32_t COUNER_QUANTITY_ = 4u;
-	std::array<std::unique_ptr<Elysia::Model>, COUNER_QUANTITY_>playerCornerModel_ = {};
-	std::array<WorldTransform, COUNER_QUANTITY_>playerCornerWorldTransform_ = {};
-
 	//カメラ
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
-	//マテリアル
-	Material playerMaterial_ = {};
+	
+
+	//メインシーンの中で細かく分けるための変数
+	std::unique_ptr<BaseMainScene> baseMainScene_ = nullptr;
 
 };

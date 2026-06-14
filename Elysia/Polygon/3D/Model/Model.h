@@ -103,7 +103,7 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="modelHandle">モデルハンドル</param>
 		/// <returns></returns>
-		static Model* Create(const uint32_t& modelHandle);
+		static std::unique_ptr<Model> Create(const uint32_t& modelHandle);
 
 
 		/// <summary>

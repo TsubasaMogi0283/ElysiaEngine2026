@@ -27,11 +27,10 @@ Elysia::Model::Model() {
 	//SRV管理クラスも取得
 	srvManager_ = Elysia::SrvManager::GetInstance();
 }
-
-Elysia::Model* Elysia::Model::Create(const uint32_t& modelHandle) {
+std::unique_ptr<Elysia::Model> Elysia::Model::Create(const uint32_t& modelHandle) {
 
 	//生成
-	Elysia::Model* model = new Elysia::Model();
+	std::unique_ptr<Elysia::Model> model = std::make_unique<Elysia::Model>();
 
 	//テクスチャの読み込み
 	model->textureHandle_ = model->textureManager_->Load(model->modelManager_->GetModelData(modelHandle).textureFilePath);
