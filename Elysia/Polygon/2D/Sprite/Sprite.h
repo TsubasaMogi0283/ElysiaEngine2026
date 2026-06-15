@@ -51,19 +51,13 @@ namespace Elysia {
 		/// 生成
 		/// </summary>
 		/// <param name="textureHandle">ハンドル</param>
-		/// <param name="position">座標</param>
 		/// <returns>スプライト</returns>
-		static Sprite* Create(const uint32_t& textureHandle, const Vector2& position);
+		static std::unique_ptr<Sprite> Create(const uint32_t& textureHandle);
 
 		/// <summary>
 		/// 描画
 		/// </summary>
-		void Draw();
-
-		/// <summary>
-		/// 描画
-		/// </summary>
-		/// <param name="texturehandle">ハンドル</param>
+		/// <param name="textureHandle">ハンドル</param>
 		void Draw(const uint32_t& texturehandle);
 
 		/// <summary>
@@ -193,14 +187,6 @@ namespace Elysia {
 			this->isUVSetting_ = isUVMode;
 		}
 
-	private:
-		/// <summary>
-		/// 初期化
-		/// </summary>
-		/// <param name="textureHandle">ハンドル</param>
-		/// <param name="position">座標</param>
-		void Initialize(const uint32_t& textureHandle, const Vector2& position);
-
 
 	private:
 		//ウィンドウクラス
@@ -293,9 +279,6 @@ namespace Elysia {
 
 		//UVの設定をするかどうか
 		bool isUVSetting_ = false;
-
-		//テクスチャハンドル
-		uint32_t textureHandle_ = 0u;
 
 	};
 }
