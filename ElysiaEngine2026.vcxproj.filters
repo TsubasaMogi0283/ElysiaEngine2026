@@ -498,6 +498,9 @@
     <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp">
       <Filter>Project\Note\NormalTapNote</Filter>
     </ClCompile>
+    <ClCompile Include="Project\Note\Long\LongNote.cpp">
+      <Filter>Project\Note\LongNote</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig">
@@ -840,6 +843,9 @@
     </ClInclude>
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h">
       <Filter>Project\Note\NormalTapNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\Long\LongNote.h">
+      <Filter>Project\Note\LongNote</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
