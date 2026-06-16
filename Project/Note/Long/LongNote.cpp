@@ -4,23 +4,22 @@ LongNote::LongNote(){
 
 }
 
-void LongNote::Initialize(const uint32_t modelHandle){
+void LongNote::Initialize(const uint32_t& modelHandle){
 	//モデルの生成
-	model_=Elysia::Model::Create(modelHandle);
+	model_ = Elysia::Model::Create(modelHandle);
 
 	worldTransform_.Initialize();
-	material_.Update();
+	material_.Initialize();
+	material_.lightingKinds = LightingType::DirectionalLighting;
 }
 
-void LongNote::Update()
-{
+void LongNote::Update(){
+
 	//更新
 	worldTransform_.Update();
 	material_.Update();
 }
 
-void LongNote::DrawObject3D(const Camera& camera)
-{
-	camera;
-	//model_->Draw()
+void LongNote::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
+	model_->Draw(worldTransform_, camera, material_, baseLight);
 }

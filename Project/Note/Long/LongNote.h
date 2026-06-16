@@ -22,7 +22,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="modelHandle">モデルハンドル</param>
-	void Initialize(const uint32_t modelHandle)override;
+	void Initialize(const uint32_t& modelHandle)override;
 
 	/// <summary>
 	/// 更新
@@ -33,7 +33,8 @@ public:
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	void DrawObject3D(const Camera& camera) override;
+	/// <param name="baseLight"></param>
+	void DrawObject3D(const Camera& camera, const BaseLight& baseLight) override;
 
 	/// <summary>
 	/// デストラクタ

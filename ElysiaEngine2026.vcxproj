@@ -212,6 +212,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\Note\BaseNote.cpp" />
     <ClCompile Include="Project\Note\Long\LongNote.cpp" />
     <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp" />
+    <ClCompile Include="Project\Note\NoteManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -339,6 +340,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\Note\BaseNote.h" />
     <ClInclude Include="Project\Note\Long\LongNote.h" />
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h" />
+    <ClInclude Include="Project\Note\NoteInformation.h" />
+    <ClInclude Include="Project\Note\NoteManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\AnimationObject3D\AnimationObject3D.PS.hlsl">

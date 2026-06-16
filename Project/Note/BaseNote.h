@@ -26,7 +26,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="modelHandle">モデルハンドル</param>
-	virtual void Initialize(const uint32_t modelHandle) = 0;
+	virtual void Initialize(const uint32_t& modelHandle) = 0;
 
 	/// <summary>
 	/// 更新
@@ -37,7 +37,8 @@ public:
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	virtual void DrawObject3D(const Camera& camera) = 0;
+	/// <param name="baseLight"></param>
+	virtual void DrawObject3D(const Camera& camera,const BaseLight& baseLight) = 0;
 
 	/// <summary>
 	/// デストラクタ
