@@ -143,7 +143,7 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 	//paletteSrvHandle
 	directXSetup_->GetCommandList()->SetGraphicsRootDescriptorTable(8u, skinCluster_.paletteSrvHandle.second);
 	//環境マップを使う場合
-	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+	if (material.isEnvironmentMap == true && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(9u, environmentTextureHandle_);
 	}
 	//DrawCall
@@ -213,7 +213,7 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 	//paletteSrvHandle
 	directXSetup_->GetCommandList()->SetGraphicsRootDescriptorTable(8u, skinCluster_.paletteSrvHandle.second);
 	//環境マップを使う場合
-	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+	if (material.isEnvironmentMap == true && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(9u, environmentTextureHandle_);
 	}
 
@@ -280,7 +280,7 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
 	//paletteSrvHandle
 	directXSetup_->GetCommandList()->SetGraphicsRootDescriptorTable(8u, skinCluster_.paletteSrvHandle.second);
-	if (material.isEnviromentMap == true && environmentTextureHandle_ != 0u) {
+	if (material.isEnvironmentMap == true && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(9u, environmentTextureHandle_);
 	}
 

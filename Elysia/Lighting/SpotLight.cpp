@@ -6,6 +6,8 @@ void SpotLight::Initialize(){
 	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(SpotLightData)).Get();
 
 	//初期値
+	//種類
+	lightingType = LightingType::SpotLighting;
 	//色
 	color = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 	//座標

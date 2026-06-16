@@ -18,6 +18,8 @@
 #include "Camera.h"
 #include "Material.h"
 #include "DirectionalLight.h"
+#include <PointLight.h>
+#include <SpotLight.h>
 #include <AnimationModel.h>
 #include <Dissolve.h>
 #include "BaseMainScene.h"
@@ -132,8 +134,8 @@ private:
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
-	
-
+	PointLight pointLight={};
+	SpotLight spotLight = {};
 	//メインシーンの中で細かく分けるための変数
 	std::unique_ptr<BaseMainScene> baseMainScene_ = nullptr;
 

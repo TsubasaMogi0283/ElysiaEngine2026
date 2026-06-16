@@ -28,6 +28,7 @@ void MainScene::Initialize(){
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
+	spotLight.Initialize();
 
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
@@ -52,13 +53,14 @@ void MainScene::Update(Elysia::GameManager* gameManager){
 	//更新
 	baseMainScene_->Update(this);
 	directionalLight_.Update();
+	spotLight.Update();
 	camera_.Update();
 }
 
 void MainScene::DrawObject3D(){
 	//オブジェクトの描画
 	//レベルエディタ  
-	levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
+	levelDataManager_->Draw(levelHandle_, camera_, spotLight);
 	baseMainScene_->DrawObject3D();
 
 }

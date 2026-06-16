@@ -5,9 +5,11 @@ void DirectionalLight::Initialize(){
 	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(DirectionalLightData)).Get();
 
 	//初期値
-	//ライトの色
+	//種類
+	lightingType = LightingType::DirectionalLighting;
+	//色
 	color = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f};
-	//ライトの向き
+	//向き
 	direction= { 0.0f,-1.0f,0.0f };
 	//輝度
 	intensity= 1.0f;

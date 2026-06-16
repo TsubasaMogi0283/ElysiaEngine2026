@@ -13,7 +13,7 @@ void Material::Initialize(){
 	//環境光
 	ambientIntensity = 0.1f;
 	//環境マップ
-	isEnviromentMap = false;
+	isEnvironmentMap = false;
 	//リソースを生成
 	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(MaterialData));
 
@@ -35,7 +35,7 @@ void Material::Update(){
 	materialData_->ambientIntensity = ambientIntensity;
 
 	//環境マップ
-	materialData_->isEnviromentMap = isEnviromentMap;
+	materialData_->isEnviromentMap = isEnvironmentMap;
 	//書き込み終了
 	resource->Unmap(0u, nullptr);
 }

@@ -178,7 +178,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	
 	//環境マッピングの設定
-	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
+	if (material.isEnvironmentMap && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 

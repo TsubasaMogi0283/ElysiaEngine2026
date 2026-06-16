@@ -5,6 +5,8 @@ void PointLight::Initialize(){
 	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(PointLightData)).Get();
 
 	//初期値
+	//種類
+	lightingType = LightingType::PointLighting;
 	//色
 	color= { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 	//位置
