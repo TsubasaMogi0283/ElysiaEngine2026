@@ -9,7 +9,7 @@ void StageObjectForLevelEditor::Initialize(const uint32_t& modelHandle, const Tr
 	objectType_ = LevelEditorObjectType::StageObject;
 
 	//モデルの生成
-	model_.reset(Elysia::Model::Create(modelHandle));
+	model_ = Elysia::Model::Create(modelHandle);
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();

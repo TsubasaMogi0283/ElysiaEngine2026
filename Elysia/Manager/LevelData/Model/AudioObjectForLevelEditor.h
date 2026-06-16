@@ -86,9 +86,9 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="modelhandle"></param>
+	/// <param name="modelHandle"></param>
 	/// <param name="transform"></param>
-	void Initialize(const uint32_t& modelhandle, const Transform& transform) override;
+	void Initialize(const uint32_t& modelHandle, const Transform& transform) override;
 
 	/// <summary>
 	/// 更新

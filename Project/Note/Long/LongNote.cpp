@@ -15,6 +15,6 @@ void LongNote::Update()
 
 void LongNote::DrawObject3D(const Camera& camera)
 {
-
+	camera;
 	//model_->Draw()
 }

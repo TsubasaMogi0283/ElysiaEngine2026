@@ -49,7 +49,7 @@ public:
 	/// </summary>
 	/// <param name="position"></param>
 	void SetPosition(const Vector3& position) {
-		this->worldTransform_.translate;
+		this->worldTransform_.translate = position;
 	}
 
 protected:

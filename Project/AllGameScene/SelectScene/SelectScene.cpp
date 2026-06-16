@@ -29,7 +29,7 @@ void SelectScene::Initialize(){
 
 	//仮プレイヤー
 	uint32_t playerModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "cube.obj");
-	playerModel_.reset(Elysia::Model::Create(playerModelHandle));
+	playerModel_=Elysia::Model::Create(playerModelHandle);
 	playerWorldTransform_.Initialize();
 	playerWorldTransform_.scale = { .x = 0.5f,.y = 1.0f,.z=2.0f };
 	playerCenterPosition_ = { .x = 0.0f,.y = 0.0f,.z = -5.0f };
@@ -48,7 +48,7 @@ void SelectScene::Initialize(){
 	uint32_t sphereModelHandle = modelManager_->Load("Resources/Model/Sample/Sphere", "Sphere.obj");
 	//四隅
 	for (uint32_t i = 0; i < COUNER_QUANTITY_; i++) {
-		playerCornerModel_[i].reset(Elysia::Model::Create(sphereModelHandle));
+		playerCornerModel_[i] = Elysia::Model::Create(sphereModelHandle);
 		playerCornerWorldTransform_[i].Initialize();
 
 	}

@@ -15,6 +15,6 @@ void NormalTapNote::Update()
 
 void NormalTapNote::DrawObject3D(const Camera& camera)
 {
-
+	camera;
 	//model_->Draw()
 }
