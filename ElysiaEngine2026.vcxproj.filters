@@ -520,7 +520,7 @@
       <Filter>Project\Note\LongNote</Filter>
     </ClCompile>
     <ClCompile Include="Project\Note\NoteManager.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
+      <Filter>Project\Note</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -886,10 +886,22 @@
     <ClInclude Include="Elysia\Lighting\BaseLight.h">
       <Filter>Elysia\ソース ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\NoteManager.h">
-      <Filter>Elysia\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Project\Note\NoteInformation.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\NoteManager.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\MusicScoreData.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\MusicInformation.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\NoteBarInformation.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\NoteLane.h">
       <Filter>Project\Note</Filter>
     </ClInclude>
   </ItemGroup>

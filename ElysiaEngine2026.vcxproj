@@ -340,8 +340,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\CollisionConfig\CollisionConfig.h" />
     <ClInclude Include="Project\Note\BaseNote.h" />
     <ClInclude Include="Project\Note\Long\LongNote.h" />
+    <ClInclude Include="Project\Note\MusicInformation.h" />
+    <ClInclude Include="Project\Note\MusicScoreData.h" />
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h" />
+    <ClInclude Include="Project\Note\NoteBarInformation.h" />
     <ClInclude Include="Project\Note\NoteInformation.h" />
+    <ClInclude Include="Project\Note\NoteLane.h" />
     <ClInclude Include="Project\Note\NoteManager.h" />
   </ItemGroup>
   <ItemGroup>

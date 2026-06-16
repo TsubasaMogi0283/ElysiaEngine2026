@@ -3,7 +3,7 @@
 
 /**
  * @file Model.h
- * @brief モデル
+ * @brief ノーツの情報
  * @author 茂木翼
  */
 
@@ -12,7 +12,7 @@
 #include <Note/BaseNote.h>
 
 /// <summary>
-/// ノーツの除法
+/// ノーツの情報
 /// </summary>
 struct NoteInformation {
 	//上下のレーン
