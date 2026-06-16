@@ -19,8 +19,7 @@ struct Camera{
 };
 
 
-struct VertexShaderInput
-{
+struct VertexShaderInput{
     float4 position : POSITION0;
     float2 texcoord : TEXCOORD0;
     float3 normal : NORMAL0;
@@ -36,7 +35,6 @@ VertexShaderOutput main(VertexShaderInput input) {
 	
     float4x4 world = gTransformationMatrix.world;
     float4x4 viewProjection = mul(gCamera.viewMatrix_, gCamera.projectionMatrix_);
-	
     float4x4 wvp = mul(world, viewProjection);
 	
 	//mul...組み込み関数
@@ -46,12 +44,6 @@ VertexShaderOutput main(VertexShaderInput input) {
 	//左上3x3だけを取り出す
 	//法線と言えば正規化をなのでそれを忘れないようにする
     output.normal = normalize(mul(input.normal, (float3x3) gTransformationMatrix.worldInverseTranspose));
-	
-	//CameraWorldPosition
     output.worldPosition = mul(input.position, gTransformationMatrix.world).xyz;
     return output;
-    
-    
-    
-    
 }

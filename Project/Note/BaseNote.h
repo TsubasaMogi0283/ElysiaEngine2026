@@ -6,8 +6,10 @@
  * @author 茂木翼
  */
 
-#include <WorldTransform.h>
 #include <Model.h>
+#include <WorldTransform.h>
+#include <Material.h>
+
 
 /// <summary>
 /// カメラ
@@ -19,6 +21,7 @@ struct Camera;
 /// </summary>
 class BaseNote{
 public:
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -41,8 +44,6 @@ public:
 	/// </summary>
 	virtual ~BaseNote() = default;
 
-
-
 public:
 	/// <summary>
 	/// 座標の設定
@@ -53,11 +54,12 @@ public:
 	}
 
 protected:
-	//ワールドトランスフォーム
-	WorldTransform worldTransform_ = {};
-
 	//モデル
 	std::unique_ptr<Elysia::Model>model_ = nullptr;
 
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_ = {};
+	//マテリアル
+	Material material_ = {};
 };
 

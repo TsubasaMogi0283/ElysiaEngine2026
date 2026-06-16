@@ -19,26 +19,23 @@ void Elysia::PipelineManager::GeneratePSO(PSOInformation& psoInformation,const D
 	graphicsPipelineStateDesc.pRootSignature = psoInformation.rootSignature_.Get();
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;
 	graphicsPipelineStateDesc.VS = { psoInformation.vertexShaderBlob_->GetBufferPointer(),psoInformation.vertexShaderBlob_->GetBufferSize() };
-	//vertexShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.PS = { psoInformation.pixelShaderBlob_->GetBufferPointer(),psoInformation.pixelShaderBlob_->GetBufferSize() };
-	//pixelShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.BlendState = blendDesc;
 	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;
 
 	//書き込むRTVの情報
-	graphicsPipelineStateDesc.NumRenderTargets = 1;
+	graphicsPipelineStateDesc.NumRenderTargets = 1u;
 	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 
 	//利用するトポロジ(形状)のタイプ三角形
-	graphicsPipelineStateDesc.PrimitiveTopologyType =
-		D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	//どのように画面に色を打ち込むのか設定
-	graphicsPipelineStateDesc.SampleDesc.Count = 1;
+	graphicsPipelineStateDesc.SampleDesc.Count = 1u;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
 	//DepthStencilStateの設定
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc = {};
 	//Depthの機能を有効化する
 	depthStencilDesc.DepthEnable = true;
 	//書き込みします
@@ -54,29 +51,18 @@ void Elysia::PipelineManager::GeneratePSO(PSOInformation& psoInformation,const D
 		IID_PPV_ARGS(&psoInformation.graphicsPipelineState_));
 	assert(SUCCEEDED(hResult));
 
-
-
-
-
 }
 
 void Elysia::PipelineManager::Initialize(){
 	
 	//ブレンドモード
 	const uint32_t BLEND_MODE = BlemdMode::BlendModeNormal;
-
-	//モデル
-	SetModelBlendMode(BLEND_MODE);
-	GenerateModelPSO();
-
-	//スプライト
-	SetSpriteBlendMode(BLEND_MODE);
-	GenerateSpritePSO();
-	
 	// スプライト用のPSOを生成
+	SetSpriteBlendMode(BLEND_MODE);
 	GenerateSpritePSO();
 
 	// モデル用のPSOを生成
+	SetModelBlendMode(BLEND_MODE);
 	GenerateModelPSO();
 
 	// SkinningModel用のPSOを生成
@@ -622,7 +608,7 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 void Elysia::PipelineManager::GenerateModelPSO() {
 
 	//PSO
-	////RootSignatureを作成
+	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように間レンズけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
@@ -645,7 +631,7 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 
 	//CBVを使う
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	//VertwxShaderで使う
+	//VertexShaderで使う
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
 	//register...Shader上のResource配置情報
 	rootParameters[1].Descriptor.ShaderRegister = 0;
@@ -654,8 +640,6 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-	//rootParameterは今後必要あるたびに追加していく
 
 	//DescriptorRangle
 	//複数枚のTexture(SRV)を扱う場合1つづつ設定すると効率低下に繋がる
@@ -687,16 +671,13 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 	//レジスタ番号1を使う
 	rootParameters[3].Descriptor.ShaderRegister = 1;
 
-
 	//CBVを使う
 	//カメラ用
 	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	//VertwxShaderで使う
+	//VertexShaderで使う
 	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
 	//register...Shader上のResource配置情報
 	rootParameters[4].Descriptor.ShaderRegister = 1;
-
-
 
 	//PixelShaderに送る方のカメラ
 	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -809,7 +790,6 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 		.NumElements= static_cast<UINT>(inputElementDescs.size()),
 	};
 
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む

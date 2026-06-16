@@ -116,141 +116,12 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 
 }
 
-void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const DirectionalLight& directionalLight) {
+void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const BaseLight& baseLight){
 	//非表示設定がtrueになっていた場合は描画しない
 	if (isInvisible_) {
 		return;
 	}
 
-	//平行光源だけ
-	assert(material.lightingKinds == LightingType::DirectionalLighting);
-
-
-	//頂点バッファにデータを書き込む
-	VertexData* vertexData = nullptr;
-	vertexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&vertexData));//書き込むためのアドレスを取得
-	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
-	vertexResource_->Unmap(0u, nullptr);
-
-	//インデックス
-	uint32_t* index = nullptr;
-	indexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&index));
-	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
-	indexResource_->Unmap(0u, nullptr);
-
-	//PixelShaderに送る方のカメラ
-	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraForGPU_));
-	cameraForGPU_->worldPosition = camera.GetWorldPosition();
-	cameraResource_->Unmap(0u, nullptr);
-
-	//コマンドを積む
-	//パイプラインの設定
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetModelRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetModelGraphicsPipelineState().Get());
-	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
-	//IBVを設定
-	directXSetup_->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
-	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
-	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//Material
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//コマンド送ってGPUで計算
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
-	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
-	//DirectionalLight
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, directionalLight.resource->GetGPUVirtualAddress());
-	//カメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, camera.resource->GetGPUVirtualAddress());
-	//PixelShaderに送る方のカメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-	//環境マップ用のテクスチャ
-	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
-	}
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
-
-}
-
-void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const PointLight& pointLight) {
-	//非表示設定がtrueになっていた場合は描画しない
-	if (isInvisible_) {
-		return;
-	}
-	
-	//点光源だけ
-	assert(material.lightingKinds == LightingType::PointLighting);
-
-	//頂点バッファにデータを書き込む
-	VertexData* vertexData = nullptr;
-	vertexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&vertexData));//書き込むためのアドレスを取得
-	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
-	vertexResource_->Unmap(0u, nullptr);
-
-	//インデックス
-	uint32_t* index = nullptr;
-	indexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&index));
-	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
-	indexResource_->Unmap(0u, nullptr);
-
-
-	//PixelShaderに送る方のカメラ
-	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraForGPU_));
-	cameraForGPU_->worldPosition = camera.GetWorldPosition();
-	cameraResource_->Unmap(0u, nullptr);
-
-	//コマンドを積む
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetModelRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetModelGraphicsPipelineState().Get());
-	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
-	//IBVを設定
-	directXSetup_->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
-	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
-	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//Material
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//コマンド送ってGPUで計算
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
-	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
-	//カメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, camera.resource->GetGPUVirtualAddress());
-
-	//PixelShaderに送る方のカメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-	//PointLight
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, pointLight.resource->GetGPUVirtualAddress());
-
-	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
-		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
-	}
-
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
-
-}
-
-void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const SpotLight& spotLight) {
-	//非表示設定がtrueになっていた場合は描画しない
-	if (isInvisible_) {
-		return;
-	}
-
-	//スケール0の時は見えないので早期リターンさせたい
-	if (worldTransform.scale.x == 0.0f && 
-		worldTransform.scale.y == 0.0f && 
-		worldTransform.scale.z == 0.0f) {
-		return;
-	}
-
-	
 
 	//頂点バッファ
 	VertexData* vertexData = nullptr;
@@ -288,13 +159,24 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	if (textureHandle_ != 0u) {
 		textureManager_->GraphicsCommand(2u, textureHandle_);
 	}
+	//DirectionalLight
+	if (material.lightingKinds == LightingType::DirectionalLighting) {
+		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, baseLight.resource->GetGPUVirtualAddress());
+	}
+	//PointLight
+	else if (material.lightingKinds == LightingType::PointLighting) {
+		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, baseLight.resource->GetGPUVirtualAddress());
+	}
+	//SpotLight
+	else if (material.lightingKinds == LightingType::SpotLighting) {
+		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, baseLight.resource->GetGPUVirtualAddress());
+	}
+	
 	//カメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, camera.resource->GetGPUVirtualAddress());
 	//PixelShaderに送る方のカメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-	//SpotLight
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
-
+	
 	//環境マッピングの設定
 	if (material.isEnviromentMap && environmentTextureHandle_ != 0u) {
 		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);

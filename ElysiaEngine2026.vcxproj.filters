@@ -268,6 +268,24 @@
     <Filter Include="Project\Note\LongNote">
       <UniqueIdentifier>{2c797b04-e53f-4f84-bded-de34cec0b094}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Elysia\リソース ファイル\PostEffect">
+      <UniqueIdentifier>{2b0f1932-9869-4547-8202-84c47d750a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\リソース ファイル\Object2D">
+      <UniqueIdentifier>{a5cd1da0-7e75-488c-9270-f94b56fdc48d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\リソース ファイル\3D">
+      <UniqueIdentifier>{cb118932-980c-4293-a70f-af631bf7d02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\リソース ファイル\3D\Object3D">
+      <UniqueIdentifier>{31c936bb-0692-4265-9bf7-7f20cebd8976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\リソース ファイル\3D\AnimationObject">
+      <UniqueIdentifier>{337cb6bf-dbb8-4b0b-9286-098e985e51bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\リソース ファイル\3D\Particle">
+      <UniqueIdentifier>{ef45ff8c-7cb5-4105-b7ec-7142991574f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -505,6 +523,18 @@
   <ItemGroup>
     <None Include=".editorconfig">
       <Filter>Elysia</Filter>
+    </None>
+    <None Include="Resources\Shader\Object2D\Object2d.hlsli">
+      <Filter>Elysia\リソース ファイル\Object2D</Filter>
+    </None>
+    <None Include="Resources\Shader\Object3D\Object3d.hlsli">
+      <Filter>Elysia\リソース ファイル\3D\Object3D</Filter>
+    </None>
+    <None Include="Resources\Shader\AnimationObject3D\AnimationObject3D.hlsli">
+      <Filter>Elysia\リソース ファイル\3D\AnimationObject</Filter>
+    </None>
+    <None Include="Resources\Shader\Particle3D\Particle3D.hlsli">
+      <Filter>Elysia\リソース ファイル\3D\Particle</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -847,5 +877,37 @@
     <ClInclude Include="Project\Note\Long\LongNote.h">
       <Filter>Project\Note\LongNote</Filter>
     </ClInclude>
+    <ClInclude Include="Elysia\Lighting\BaseLight.h">
+      <Filter>Elysia\ソース ファイル\Light</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shader\Object2D\Object2d.PS.hlsl">
+      <Filter>Elysia\リソース ファイル\Object2D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object2D\Object2d.VS.hlsl">
+      <Filter>Elysia\リソース ファイル\Object2D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object3D\Object3d.PS.hlsl">
+      <Filter>Elysia\リソース ファイル\3D\Object3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object3D\Object3d.VS.hlsl">
+      <Filter>Elysia\リソース ファイル\3D\Object3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object3D\SkinningObject3D.VS.hlsl">
+      <Filter>Elysia\リソース ファイル\3D\Object3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\AnimationObject3D\AnimationObject3D.PS.hlsl">
+      <Filter>Elysia\リソース ファイル\3D\AnimationObject</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\AnimationObject3D\AnimationObject3D.VS.hlsl">
+      <Filter>Elysia\リソース ファイル\3D\AnimationObject</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Particle3D\Particle3d.PS.hlsl">
+      <Filter>Elysia\リソース ファイル\3D\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Particle3D\Particle3d.VS.hlsl">
+      <Filter>Elysia\リソース ファイル\3D\Particle</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

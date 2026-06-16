@@ -537,7 +537,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 }
 
 
-void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const DirectionalLight& directionalLight) {
+void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const BaseLight& baseLight) {
 
 	//指定したハンドルのデータだけを描画
 	for (auto& [key, levelData] : levelData_) {
@@ -546,7 +546,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 			//描画
 			for (const auto& object : levelData->objectData) {
 				if (!object.isInvisible && object.isModelGenerate) {
-					object.objectForLeveEditor->Draw(camera, directionalLight);
+					object.objectForLeveEditor->Draw(camera, baseLight);
 				}
 			}
 
@@ -558,44 +558,6 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 	}
 }
 
-void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const PointLight& pointLight) {
-	//指定したハンドルのデータだけを描画
-	for (auto& [key, levelData] : levelData_) {
-		if (levelData->handle == levelDataHandle) {
-
-			//描画
-			for (const auto& object : levelData->objectData) {
-				if (!object.isInvisible && object.isModelGenerate) {
-					object.objectForLeveEditor->Draw(camera, pointLight);
-				}
-			}
-
-			//無駄なループ処理を防ぐよ
-			break;
-
-		}
-
-	}
-}
-
-void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const SpotLight& spotLight) {
-
-	//指定したハンドルのデータだけを描画
-	for (auto& [key, levelData] : levelData_) {
-		if (levelData->handle == levelDataHandle) {
-
-			//描画
-			for (const auto& object : levelData->objectData) {
-				//描画
-				if (!object.isInvisible && object.isModelGenerate ) {
-					object.objectForLeveEditor->Draw(camera, spotLight);
-				}
-			}
-			//無駄なループ処理を防ぐよ
-			break;
-		}
-	}
-}
 
 #pragma endregion
 
