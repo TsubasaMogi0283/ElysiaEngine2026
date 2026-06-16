@@ -539,6 +539,9 @@
     <None Include="Resources\Shader\Particle3D\Particle3D.hlsli">
       <Filter>Elysia\リソース ファイル\3D\Particle</Filter>
     </None>
+    <None Include=".gitignore">
+      <Filter>Elysia</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Project\CollisionConfig\CollisionConfig.h">
