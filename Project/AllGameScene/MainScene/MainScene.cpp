@@ -60,8 +60,8 @@ void MainScene::Update(Elysia::GameManager* gameManager){
 void MainScene::DrawObject3D(){
 	//オブジェクトの描画
 	//レベルエディタ  
-	levelDataManager_->Draw(levelHandle_, camera_, spotLight);
-	baseMainScene_->DrawObject3D();
+	levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
+	baseMainScene_->DrawObject3D(directionalLight_);
 
 }
 

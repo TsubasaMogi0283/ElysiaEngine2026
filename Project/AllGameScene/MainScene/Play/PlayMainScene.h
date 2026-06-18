@@ -16,33 +16,35 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="mainScene">メインシーン</param>
-	void Update(MainScene* mainScene);
+	void Update(MainScene* mainScene)override;
 
 	/// <summary>
-	/// 3Dオブジェクト
+	/// 3Dオブジェクトの描画
 	/// </summary>
-	void DrawObject3D();
+	/// <param name="camera"></param>
+	/// <param name="baseLight"></param>
+	virtual void DrawObject3D(const Camera& camera, const BaseLight& baseLight) = 0;
 
 	/// <summary>
 	/// ポストエフェクト描画前
 	/// </summary>
-	void PreDrawPostEffect();
+	void PreDrawPostEffect()override;
 
 	/// <summary>
 	/// ポストエフェクトの描画
 	/// </summary>
-	void DrawPostEffect();
+	void DrawPostEffect()override;
 
 	/// <summary>
 	/// スプライト
 	/// </summary>
-	void DrawSprite();
+	void DrawSprite()override;
 
 	/// <summary>
 	/// デストラクタ

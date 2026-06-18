@@ -25,7 +25,7 @@ void StartMainScene::Update(MainScene* mainScene){
 #endif // _DEBUG
 }
 
-void StartMainScene::DrawObject3D(){
+void StartMainScene::DrawObject3D(const BaseLight& baseLight){
 
 }
 

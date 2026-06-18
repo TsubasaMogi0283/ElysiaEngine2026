@@ -67,9 +67,11 @@ public:
 	virtual void Update(MainScene* mainScene) = 0;
 
 	/// <summary>
-	/// 3Dオブジェクト
+	/// 3Dオブジェクトの描画
 	/// </summary>
-	virtual void DrawObject3D()=0;
+	/// <param name="camera"></param>
+	/// <param name="baseLight"></param>
+	virtual void DrawObject3D(const Camera& camera,const BaseLight& baseLight)=0;
 
 	/// <summary>
 	/// ポストエフェクト描画前

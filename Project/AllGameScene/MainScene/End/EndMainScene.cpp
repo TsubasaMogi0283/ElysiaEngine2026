@@ -19,8 +19,8 @@ void EndMainScene::Update(MainScene* mainScene){
 #endif // _DEBUG
 }
 
-void EndMainScene::DrawObject3D(){
-
+void EndMainScene::DrawObject3D(const BaseLight& baseLight){
+	baseLight;
 }
 
 void EndMainScene::PreDrawPostEffect(){
