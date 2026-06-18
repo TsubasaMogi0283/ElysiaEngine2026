@@ -114,10 +114,12 @@ public:
 	/// </summary>
 	/// <param name="newMainScene">新しいメインシーン</param>
 	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene) {
-		//新しいシーンをセット
-		baseMainScene_ = std::move(newMainScene);
-		//初期化
-		baseMainScene_->Initialize();
+		if (baseMainScene_ != newMainScene) {
+			//新しいシーンをセット
+			baseMainScene_ = std::move(newMainScene);
+			//初期化
+			baseMainScene_->Initialize();
+		}
 	}
 	
 private:

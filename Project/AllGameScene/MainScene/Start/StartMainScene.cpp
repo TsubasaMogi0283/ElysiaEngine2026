@@ -6,9 +6,13 @@
 #include <MainScene/MainScene.h>
 #include <MainScene/Play/PlayMainScene.h>
 
-void StartMainScene::Initialize(){
+StartMainScene::StartMainScene(){
 	//インスタンスの取得
 	input_ = Elysia::Input::GetInstance();
+}
+
+void StartMainScene::Initialize(){
+	
 }
 
 void StartMainScene::Update(MainScene* mainScene){
@@ -25,8 +29,9 @@ void StartMainScene::Update(MainScene* mainScene){
 #endif // _DEBUG
 }
 
-void StartMainScene::DrawObject3D(const BaseLight& baseLight){
-
+void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
+	camera;
+	baseLight;
 }
 
 void StartMainScene::PreDrawPostEffect(){

@@ -61,7 +61,7 @@ void MainScene::DrawObject3D(){
 	//オブジェクトの描画
 	//レベルエディタ  
 	levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
-	baseMainScene_->DrawObject3D(directionalLight_);
+	baseMainScene_->DrawObject3D(camera_,directionalLight_);
 
 }
 

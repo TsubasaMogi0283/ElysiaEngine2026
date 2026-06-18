@@ -51,6 +51,16 @@ namespace Elysia {
 class MainScene;
 
 /// <summary>
+/// カメラ
+/// </summary>
+struct Camera;
+
+/// <summary>
+/// カメラ基底クラス
+/// </summary>
+struct BaseLight;
+
+/// <summary>
 /// メインシーンの基底クラス
 /// </summary>
 class BaseMainScene{
@@ -81,17 +91,17 @@ public:
 	/// <summary>
 	/// ポストエフェクトの描画
 	/// </summary>
-	virtual void DrawPostEffect()=0;
+	virtual void DrawPostEffect() = 0;
 
 	/// <summary>
 	/// スプライト
 	/// </summary>
-	virtual void DrawSprite()=0;
+	virtual void DrawSprite() = 0;
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~BaseMainScene() = default;
+	virtual ~BaseMainScene()=default;
 public:
 
 	//処理が終わったかどうかを返す

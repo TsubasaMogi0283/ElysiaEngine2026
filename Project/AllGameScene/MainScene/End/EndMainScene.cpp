@@ -4,6 +4,12 @@
 
 #include <Input.h>
 #include <MainScene/MainScene.h>
+#include <Camera.h>
+#include <DirectionalLight.h>
+
+EndMainScene::EndMainScene() {
+	input_ = Elysia::Input::GetInstance();
+}
 
 void EndMainScene::Initialize(){
 	
@@ -19,8 +25,9 @@ void EndMainScene::Update(MainScene* mainScene){
 #endif // _DEBUG
 }
 
-void EndMainScene::DrawObject3D(const BaseLight& baseLight){
+void EndMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	baseLight;
+	camera;
 }
 
 void EndMainScene::PreDrawPostEffect(){

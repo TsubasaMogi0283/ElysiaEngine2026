@@ -14,6 +14,11 @@
 class PlayMainScene :public BaseMainScene{
 public:
 	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	PlayMainScene();
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize()override;
@@ -29,7 +34,7 @@ public:
 	/// </summary>
 	/// <param name="camera"></param>
 	/// <param name="baseLight"></param>
-	virtual void DrawObject3D(const Camera& camera, const BaseLight& baseLight) = 0;
+	void DrawObject3D(const Camera& camera, const BaseLight& baseLight)override;
 
 	/// <summary>
 	/// ポストエフェクト描画前
@@ -49,7 +54,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PlayMainScene() = default;
+	~PlayMainScene()override = default;
 
 private:
 

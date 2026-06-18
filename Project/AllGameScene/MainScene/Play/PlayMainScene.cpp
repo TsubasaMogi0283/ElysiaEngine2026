@@ -6,8 +6,12 @@
 #include <MainScene/MainScene.h>
 #include <MainScene/End/EndMainScene.h>
 
-void PlayMainScene::Initialize(){
+PlayMainScene::PlayMainScene(){
 	input_ = Elysia::Input::GetInstance();
+}
+
+void PlayMainScene::Initialize(){
+	
 }
 
 void PlayMainScene::Update(MainScene* mainScene){
@@ -17,15 +21,15 @@ void PlayMainScene::Update(MainScene* mainScene){
 
 	//デバッグ用でNを押したらプレイシーンへ
 	if (input_->IsTriggerKey(DIK_N)) {
-		mainScene;
 		mainScene->ChangeMainScene(std::make_unique<EndMainScene>());
 	}
 
 #endif // _DEBUG
 }
 
-void PlayMainScene::DrawObject3D(const BaseLight& baseLight){
-
+void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
+	camera;
+	baseLight;
 }
 
 void PlayMainScene::PreDrawPostEffect(){

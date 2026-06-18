@@ -15,6 +15,11 @@
 class StartMainScene :public BaseMainScene{
 public:
 	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	StartMainScene();
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize()override;
@@ -28,8 +33,9 @@ public:
 	/// <summary>
 	/// 3Dオブジェクトの描画
 	/// </summary>
+	/// <param name="camera"></param>
 	/// <param name="baseLight"></param>
-	void DrawObject3D(const BaseLight& baseLight)override;
+	void DrawObject3D(const Camera& camera, const BaseLight& baseLight)override;
 
 	/// <summary>
 	/// ポストエフェクト描画前
@@ -49,7 +55,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~StartMainScene() = default;
+	~StartMainScene()override = default;
 
 private:
 
