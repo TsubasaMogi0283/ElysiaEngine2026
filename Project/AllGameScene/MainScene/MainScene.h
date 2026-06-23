@@ -123,6 +123,25 @@ public:
 	}
 	
 private:
+
+	/// <summary>
+	/// レーンの位置
+	/// </summary>
+	enum LanePlace {
+		UpLane,
+		DownLane,
+		LanePlaceSize
+	};
+private:
+
+	//流れに関するのはX・Y軸しかないのでZは無し
+	const float_t JUDGEENT_POSITION_Y_ = -10.0f;
+	const std::array<Vector2, LanePlace::LanePlaceSize> JUDGEENT_POSITION_ = {};
+
+	//動き始める時間のオフセット
+	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
+
+private:
 	//レベルエディタ
 	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル

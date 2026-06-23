@@ -139,7 +139,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\Audio\Audio.cpp" />
     <ClCompile Include="Elysia\Camera\Camera.cpp" />
     <ClCompile Include="Elysia\Convert\Convert.cpp" />
-    <ClCompile Include="Elysia\DirectX\BufferResource.cpp" />
     <ClCompile Include="Elysia\DirectX\DirectXSetup.cpp" />
     <ClCompile Include="Elysia\Framework\Framework.cpp" />
     <ClCompile Include="Elysia\GlobalVariables\GlobalVariables.cpp" />
@@ -213,7 +212,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\Note\BaseNote.cpp" />
     <ClCompile Include="Project\Note\Long\LongNote.cpp" />
     <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp" />
-    <ClCompile Include="Project\Note\NoteManager.cpp" />
+    <ClCompile Include="Project\Result\JudgementResultManager.cpp" />
+    <ClCompile Include="Project\ScoreData\Manager\ScoreDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -340,13 +340,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\CollisionConfig\CollisionConfig.h" />
     <ClInclude Include="Project\Note\BaseNote.h" />
     <ClInclude Include="Project\Note\Long\LongNote.h" />
-    <ClInclude Include="Project\Note\MusicInformation.h" />
-    <ClInclude Include="Project\Note\MusicScoreData.h" />
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h" />
-    <ClInclude Include="Project\Note\NoteBarInformation.h" />
-    <ClInclude Include="Project\Note\NoteInformation.h" />
-    <ClInclude Include="Project\Note\NoteLane.h" />
-    <ClInclude Include="Project\Note\NoteManager.h" />
+    <ClInclude Include="Project\Result\JudgementResultManager.h" />
+    <ClInclude Include="Project\Result\NotesJudgementResult.h" />
+    <ClInclude Include="Project\ScoreData\Manager\ScoreDataManager.h" />
+    <ClInclude Include="Project\ScoreData\MusicInformation.h" />
+    <ClInclude Include="Project\ScoreData\MusicScoreData.h" />
+    <ClInclude Include="Project\ScoreData\NoteBarInformation.h" />
+    <ClInclude Include="Project\ScoreData\NoteInformation.h" />
+    <ClInclude Include="Project\ScoreData\NoteLane.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\AnimationObject3D\AnimationObject3D.PS.hlsl">

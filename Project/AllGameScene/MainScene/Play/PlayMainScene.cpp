@@ -5,6 +5,8 @@
 #include <Input.h>
 #include <MainScene/MainScene.h>
 #include <MainScene/End/EndMainScene.h>
+#include <Note/NormalTap/NormalTapNote.h>
+#include <Note/Long/LongNote.h>
 
 PlayMainScene::PlayMainScene(){
 	input_ = Elysia::Input::GetInstance();
@@ -15,6 +17,13 @@ void PlayMainScene::Initialize(){
 }
 
 void PlayMainScene::Update(MainScene* mainScene){
+
+
+	//流れ終わったら終了シーンへ
+	if (isNoteFlowEnd_) {
+		mainScene->ChangeMainScene(std::make_unique<EndMainScene>());
+	}
+
 #ifdef _DEBUG
 	ImGui::Begin("PlayScene");
 	ImGui::End();
@@ -43,3 +52,4 @@ void PlayMainScene::DrawPostEffect(){
 void PlayMainScene::DrawSprite(){
 
 }
+

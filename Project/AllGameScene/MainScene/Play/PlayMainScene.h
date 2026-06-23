@@ -6,7 +6,10 @@
  * @author 茂木翼
  */
 
+#include <vector>
+
 #include <MainScene/BaseMainScene.h>
+#include <Note/BaseNote.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -57,6 +60,9 @@ public:
 	~PlayMainScene()override = default;
 
 private:
+	
+	//ノーツの処理が終了したかどうか
+	bool isNoteFlowEnd_ = false;
 
 };
 

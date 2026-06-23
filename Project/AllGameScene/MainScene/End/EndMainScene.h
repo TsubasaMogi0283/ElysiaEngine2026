@@ -55,8 +55,5 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~EndMainScene()override = default;
-
-private:
-
 };
 

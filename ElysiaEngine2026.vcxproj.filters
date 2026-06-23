@@ -286,6 +286,21 @@
     <Filter Include="Elysia\リソース ファイル\3D\Particle">
       <UniqueIdentifier>{ef45ff8c-7cb5-4105-b7ec-7142991574f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\ScoreData">
+      <UniqueIdentifier>{7eb62728-f981-478e-b777-704af6758f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\ScoreData\Manager">
+      <UniqueIdentifier>{1703e743-c5f7-4569-a6ad-df4d7648d30c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\ScoreData\Information">
+      <UniqueIdentifier>{75410972-c8d2-4109-bbaf-82a0060f6dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Reult">
+      <UniqueIdentifier>{2781eaa7-4811-4520-b8ee-6b5e3f8e9877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\JudgementResult">
+      <UniqueIdentifier>{f505dbd1-5554-4b9b-90a5-e2ad27a6dde9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -477,9 +492,6 @@
     <ClCompile Include="Elysia\Polygon\PostEffect\BasePostEffect.cpp">
       <Filter>Elysia\ソース ファイル\Polygone\PostEffct</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\DirectX\BufferResource.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Math\Vector\Vector3.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
@@ -519,8 +531,11 @@
     <ClCompile Include="Project\Note\Long\LongNote.cpp">
       <Filter>Project\Note\LongNote</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Note\NoteManager.cpp">
-      <Filter>Project\Note</Filter>
+    <ClCompile Include="Project\ScoreData\Manager\ScoreDataManager.cpp">
+      <Filter>Project\ScoreData\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Result\JudgementResultManager.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -886,23 +901,29 @@
     <ClInclude Include="Elysia\Lighting\BaseLight.h">
       <Filter>Elysia\ソース ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\NoteInformation.h">
-      <Filter>Project\Note</Filter>
+    <ClInclude Include="Project\ScoreData\Manager\ScoreDataManager.h">
+      <Filter>Project\ScoreData\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\NoteManager.h">
-      <Filter>Project\Note</Filter>
+    <ClInclude Include="Project\ScoreData\MusicScoreData.h">
+      <Filter>Project\ScoreData</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\MusicScoreData.h">
-      <Filter>Project\Note</Filter>
+    <ClInclude Include="Project\ScoreData\MusicInformation.h">
+      <Filter>Project\ScoreData\Information</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\MusicInformation.h">
-      <Filter>Project\Note</Filter>
+    <ClInclude Include="Project\ScoreData\NoteBarInformation.h">
+      <Filter>Project\ScoreData\Information</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\NoteBarInformation.h">
-      <Filter>Project\Note</Filter>
+    <ClInclude Include="Project\ScoreData\NoteInformation.h">
+      <Filter>Project\ScoreData\Information</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\NoteLane.h">
-      <Filter>Project\Note</Filter>
+    <ClInclude Include="Project\ScoreData\NoteLane.h">
+      <Filter>Project\ScoreData\Information</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Result\NotesJudgementResult.h">
+      <Filter>Project\JudgementResult</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Result\JudgementResultManager.h">
+      <Filter>Elysia\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

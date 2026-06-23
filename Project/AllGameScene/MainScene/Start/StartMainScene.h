@@ -57,7 +57,6 @@ public:
 	/// </summary>
 	~StartMainScene()override = default;
 
-private:
 
 };
 
