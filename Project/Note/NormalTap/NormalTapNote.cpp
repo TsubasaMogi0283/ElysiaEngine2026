@@ -1,12 +1,10 @@
 #include "NormalTapNote.h"
 
-NormalTapNote::NormalTapNote(){
 
-}
 
 void NormalTapNote::Initialize(const uint32_t& modelHandle){
 	//モデルの生成
-	model_=Elysia::Model::Create(modelHandle);
+	model_= Elysia::Model::Create(modelHandle);
 }
 
 void NormalTapNote::Update(){

@@ -1,11 +1,11 @@
 {
  		"title": "Highway Sunset",
  		"produce": "無免許P feat.宮舞モカ",
- 		"level": "Master",
+ 		"level": "Hard",
  		"difficulty": "9",
  		"bpm": "170.0",
  		"offset": "0.0",
-		"id": "HighwaySunset_Master",
+		"id": "HighwaySunset_Hard",
 		"filename":"HighwaySunset",
 		"data":[
 		{

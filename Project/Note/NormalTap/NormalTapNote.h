@@ -16,7 +16,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	NormalTapNote();
+	NormalTapNote() = default;
 
 	/// <summary>
 	/// 初期化
