@@ -10,6 +10,7 @@
 
 #include "IGameScene.h"
 #include "IAbstractSceneFactory.h"
+#include <ScoreData/Manager/ScoreDataManager.h>
 
 
 /// <summary>
@@ -69,6 +70,14 @@ namespace Elysia {
 		/// </summary>
 		~GameManager() = default;
 
+	public:
+		/// <summary>
+		/// 譜面管理クラスを取得
+		/// </summary>
+		/// <returns></returns>
+		ScoreDataManager* GetScoreDataManager()const {
+			return scoreDataManager_.get();
+		}
 
 	private:
 		//シーンファクトリー
@@ -81,6 +90,9 @@ namespace Elysia {
 
 		//現在のシーンの数
 		uint32_t currentSceneNumber_ = 0;
-	};
 
+		//ノーツ管理クラス
+		std::unique_ptr<ScoreDataManager> scoreDataManager_ = nullptr;
+
+	};
 }

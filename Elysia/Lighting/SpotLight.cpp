@@ -6,6 +6,8 @@ void SpotLight::Initialize(){
 	resource = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(SpotLightData)).Get();
 
 	//初期値
+	//種類
+	lightingType = LightingType::SpotLighting;
 	//色
 	color = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 	//座標
@@ -19,7 +21,7 @@ void SpotLight::Initialize(){
 	//減衰率
 	decay = 2.0f;
 	//Fallowoffを制御する
-	cosFallowoffStart = 0.3f;
+	cosFallowOffStart = 0.3f;
 	//余弦
 	cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
 	//ライトに当たっていないところの明るさ
@@ -43,7 +45,7 @@ void SpotLight::Update(){
 	//減衰率
 	data_->decay = decay;
 	//Fallowoffを制御する
-	data_->cosFallowoffStart = cosFallowoffStart;
+	data_->cosFallowOffStart = cosFallowOffStart;
 	//余弦
 	data_->cosAngle = cosAngle;
 	//ライトに当たっていないところの明るさ

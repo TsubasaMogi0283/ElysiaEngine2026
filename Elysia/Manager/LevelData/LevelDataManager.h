@@ -29,19 +29,9 @@
 struct Camera;
 
 /// <summary>
-/// 平行光源
+/// 基底ライト
 /// </summary>
-struct DirectionalLight;
-
-/// <summary>
-/// 点光源
-/// </summary>
-struct PointLight;
-
-/// <summary>
-/// スポットライト
-/// </summary>
-struct SpotLight;
+struct BaseLight;
 
 #pragma endregion
 
@@ -121,28 +111,12 @@ namespace Elysia {
 		void Draw(const uint32_t& levelDataHandle, const Camera& camera);
 
 		/// <summary>
-		/// 描画(平行光源)
+		/// 描画
 		/// </summary>
 		/// <param name="levelDataHandle">ハンドル</param>
 		/// <param name="camera">カメラ</param>
-		/// <param name="directionalLight">平行光源</param>
-		void Draw(const uint32_t& levelDataHandle, const Camera& camera, const DirectionalLight& directionalLight);
-
-		/// <summary>
-		/// 描画(点光源)
-		/// </summary>
-		/// <param name="levelDataHandle">ハンドル</param>
-		/// <param name="camera">カメラ</param>
-		/// <param name="pointLight">点光源</param>
-		void Draw(const uint32_t& levelDataHandle, const Camera& camera, const PointLight& pointLight);
-
-		/// <summary>
-		/// 描画(スポットライト)
-		/// </summary>
-		/// <param name="levelDataHandle">ハンドル</param>
-		/// <param name="camera">カメラ</param>
-		/// <param name="spotLight">スポットライト</param>
-		void Draw(const uint32_t& levelDataHandle, const Camera& camera, const SpotLight& spotLight);
+		/// <param name="baseLight">ライト</param>
+		void Draw(const uint32_t& levelDataHandle, const Camera& camera, const BaseLight& baseLight);
 
 		/// <summary>
 		/// 解放

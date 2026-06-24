@@ -83,6 +83,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
+    <FxCompile>
+      <ShaderModel>6.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -111,15 +114,31 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
+    <FxCompile>
+      <ShaderModel>6.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include=".gitignore" />
+    <None Include="Resources\Shader\AnimationObject3D\AnimationObject3D.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Resources\Shader\Object2D\Object2d.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Resources\Shader\Object3D\Object3d.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Resources\Shader\Particle3D\Particle3D.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elysia\Audio\Audio.cpp" />
     <ClCompile Include="Elysia\Camera\Camera.cpp" />
     <ClCompile Include="Elysia\Convert\Convert.cpp" />
-    <ClCompile Include="Elysia\DirectX\BufferResource.cpp" />
     <ClCompile Include="Elysia\DirectX\DirectXSetup.cpp" />
     <ClCompile Include="Elysia\Framework\Framework.cpp" />
     <ClCompile Include="Elysia\GlobalVariables\GlobalVariables.cpp" />
@@ -181,11 +200,20 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\StringOption\StringOption.cpp" />
     <ClCompile Include="Elysia\Windows\WindowsSetup.cpp" />
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp" />
+    <ClCompile Include="Project\AllGameScene\MainScene\BaseMainScene.cpp" />
+    <ClCompile Include="Project\AllGameScene\MainScene\End\EndMainScene.cpp" />
     <ClCompile Include="Project\AllGameScene\MainScene\MainScene.cpp" />
+    <ClCompile Include="Project\AllGameScene\MainScene\Play\PlayMainScene.cpp" />
+    <ClCompile Include="Project\AllGameScene\MainScene\Start\StartMainScene.cpp" />
     <ClCompile Include="Project\AllGameScene\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Project\AllGameScene\SelectScene\SelectScene.cpp" />
     <ClCompile Include="Project\AllGameScene\TestScene\TestScene.cpp" />
     <ClCompile Include="Project\AllGameScene\TitleScene\TitleScene.cpp" />
+    <ClCompile Include="Project\Note\BaseNote.cpp" />
+    <ClCompile Include="Project\Note\Long\LongNote.cpp" />
+    <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp" />
+    <ClCompile Include="Project\Result\JudgementResultManager.cpp" />
+    <ClCompile Include="Project\ScoreData\Manager\ScoreDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -209,6 +237,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\Framework\Framework.h" />
     <ClInclude Include="Elysia\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Elysia\Input\Input.h" />
+    <ClInclude Include="Elysia\Lighting\BaseLight.h" />
     <ClInclude Include="Elysia\Lighting\DirectionalLight.h" />
     <ClInclude Include="Elysia\Lighting\LightingType.h" />
     <ClInclude Include="Elysia\Lighting\PointLight.h" />
@@ -299,12 +328,65 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\StringOption\StringOption.h" />
     <ClInclude Include="Elysia\Windows\WindowsSetup.h" />
     <ClInclude Include="Project\AllGameScene\GameSceneFactory.h" />
+    <ClInclude Include="Project\AllGameScene\MainScene\BaseMainScene.h" />
+    <ClInclude Include="Project\AllGameScene\MainScene\End\EndMainScene.h" />
     <ClInclude Include="Project\AllGameScene\MainScene\MainScene.h" />
+    <ClInclude Include="Project\AllGameScene\MainScene\Play\PlayMainScene.h" />
+    <ClInclude Include="Project\AllGameScene\MainScene\Start\StartMainScene.h" />
     <ClInclude Include="Project\AllGameScene\ResultScene\ResultScene.h" />
     <ClInclude Include="Project\AllGameScene\SelectScene\SelectScene.h" />
     <ClInclude Include="Project\AllGameScene\TestScene\TestScene.h" />
     <ClInclude Include="Project\AllGameScene\TitleScene\TitleScene.h" />
     <ClInclude Include="Project\CollisionConfig\CollisionConfig.h" />
+    <ClInclude Include="Project\Note\BaseNote.h" />
+    <ClInclude Include="Project\Note\Long\LongNote.h" />
+    <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h" />
+    <ClInclude Include="Project\Result\JudgementResultManager.h" />
+    <ClInclude Include="Project\Result\NotesJudgementResult.h" />
+    <ClInclude Include="Project\ScoreData\Manager\ScoreDataManager.h" />
+    <ClInclude Include="Project\ScoreData\MusicInformation.h" />
+    <ClInclude Include="Project\ScoreData\MusicScoreData.h" />
+    <ClInclude Include="Project\ScoreData\NoteBarInformation.h" />
+    <ClInclude Include="Project\ScoreData\NoteInformation.h" />
+    <ClInclude Include="Project\ScoreData\NoteLane.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shader\AnimationObject3D\AnimationObject3D.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\AnimationObject3D\AnimationObject3D.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object2D\Object2d.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object2D\Object2d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object3D\Object3d.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object3D\Object3d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Object3D\SkinningObject3D.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Particle3D\Particle3d.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Particle3D\Particle3d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

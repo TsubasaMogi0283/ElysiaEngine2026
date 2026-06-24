@@ -8,6 +8,7 @@
 #include "Vector4.h" 
 #include "Vector3.h"
 #include "DirectXSetup.h"
+#include <BaseLight.h>
 
 /// <summary>
 /// 平行光源データ
@@ -25,34 +26,29 @@ struct DirectionalLightData {
 /// <summary>
 /// 平行光源
 /// </summary>
-struct DirectionalLight {
-public:
+struct DirectionalLight : public BaseLight{
+#pragma region メンバ関数
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update()override;
 
+#pragma endregion
 
-public:
-	//ライトの色
-	Vector4 color = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f};
+#pragma region メンバ変数
+
 	//ライトの向き
 	Vector3 direction = {.x = 0.0f,.y = -1.0f,.z = 0.0f};
-	//輝度
-	float_t intensity=5.0f;
-
-	//定数バッファ
-	ComPtr<ID3D12Resource> resource = nullptr;
-
-
-private:
 
 	//書き込みデータ
 	DirectionalLightData* directionalLightData_ = nullptr;
+
+#pragma endregion
 
 };

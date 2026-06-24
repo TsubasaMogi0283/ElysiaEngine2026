@@ -21,7 +21,7 @@ void WorldTransform::Initialize() {
 void WorldTransform::Update() {
 
 	//クォータニオンを使う場合
-	if (isUseQuarternion_==true) {
+	if (isUseQuaternion_==true) {
 		//Scale
 		Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scale);
 		//Rotate。行列へ変換
@@ -59,13 +59,13 @@ void WorldTransform::Update() {
 void WorldTransform::Transfer() {
 
 	//書き込み書き込む
-	resource->Map(0u, nullptr, reinterpret_cast<void**>(&tranceformationData));
+	resource->Map(0u, nullptr, reinterpret_cast<void**>(&transformationData));
 	//ワールド
-	tranceformationData->world = worldMatrix;
+	transformationData->world = worldMatrix;
 	//ノーマル
-	tranceformationData->normal = Matrix4x4::MakeIdentity4x4();
+	transformationData->normal = Matrix4x4::MakeIdentity4x4();
 	//ワールド逆転置
-	tranceformationData->worldInverseTranspose = worldInverseTransposeMatrix;
+	transformationData->worldInverseTranspose = worldInverseTransposeMatrix;
 	//書き込み終了
 	resource->Unmap(0u, nullptr);
 }

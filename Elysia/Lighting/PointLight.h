@@ -8,6 +8,7 @@
 #include <Vector4.h>
 #include <Vector3.h>
 #include "DirectXSetup.h"
+#include <BaseLight.h>
 
 /// <summary>
 /// 点光源のデータ
@@ -29,40 +30,35 @@ struct PointLightData {
 
 };
 
-
 /// <summary>
 /// 点光源
 /// </summary>
-struct PointLight {
-public:
+struct PointLight : public BaseLight {
+#pragma region メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
-
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update()override;
 
+#pragma endregion
 
-public:
-	//色
-	Vector4 color= {.x =1.0f,.y = 1.0f,.z = 1.0f,.w =1.0f };
+#pragma region メンバ変数
+
 	//位置
-	Vector3 position = {.x =0.0f,.y = 0.0f,.z = 0.0f};
-	//輝度
-	float_t intensity=4.0f;
+	Vector3 position = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 	//ライトに届く最大距離
-	float_t radius=5.0f;
+	float_t radius = 5.0f;
 	//減衰率
-	float_t decay=5.0f;
+	float_t decay = 5.0f;
 
-	//定数バッファ
-	ComPtr<ID3D12Resource> resource=nullptr;
 	//書き込みデータ
-	PointLightData* pointLightdata = nullptr;
+	PointLightData* pointLightData = nullptr;
 
+#pragma endregion
 
 };

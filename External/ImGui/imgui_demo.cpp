@@ -3,7 +3,7 @@
 
 // Help:
 // - Read FAQ at http://dearimgui.org/faq
-// - Newcomers, read 'Programmer guide' in imgui.cpp for notes on how to setup Dear ImGui in your codebase.
+// - Newcomers, read 'Programmer guide' in imgui.cpp for notesLane on how to setup Dear ImGui in your codebase.
 // - Call and read ImGui::ShowDemoWindow() in imgui_demo.cpp. All applications in examples/ are doing that.
 // Read imgui.cpp for more details, documentation and comments.
 // Get the latest version at https://github.com/ocornut/imgui

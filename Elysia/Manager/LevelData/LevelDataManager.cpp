@@ -63,35 +63,35 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 			nlohmann::json& transform = object["transform"];
 
 			//スケール
-			objectData.transform.scale.x = static_cast<float>(transform["scaling"][0]);
-			objectData.transform.scale.y = static_cast<float>(transform["scaling"][2]);
-			objectData.transform.scale.z = static_cast<float>(transform["scaling"][1]);
+			objectData.transform.scale.x = static_cast<float_t>(transform["scaling"][0]);
+			objectData.transform.scale.y = static_cast<float_t>(transform["scaling"][2]);
+			objectData.transform.scale.z = static_cast<float_t>(transform["scaling"][1]);
 			//初期スケール
-			objectData.initialTransform.scale.x = static_cast<float>(transform["scaling"][0]);
-			objectData.initialTransform.scale.y = static_cast<float>(transform["scaling"][2]);
-			objectData.initialTransform.scale.z = static_cast<float>(transform["scaling"][1]);
+			objectData.initialTransform.scale.x = static_cast<float_t>(transform["scaling"][0]);
+			objectData.initialTransform.scale.y = static_cast<float_t>(transform["scaling"][2]);
+			objectData.initialTransform.scale.z = static_cast<float_t>(transform["scaling"][1]);
 
 			//回転角
 			//そういえばBlenderは度数法だったね
 			//弧度法に直そう
-			const float DEREES_TO_RADIUS_ = static_cast<float>(std::numbers::pi) / 180.0f;
-			objectData.transform.rotate.x = -static_cast<float>(transform["rotation"][0]) * DEREES_TO_RADIUS_;
-			objectData.transform.rotate.y = -static_cast<float>(transform["rotation"][2]) * DEREES_TO_RADIUS_;
-			objectData.transform.rotate.z = -static_cast<float>(transform["rotation"][1]) * DEREES_TO_RADIUS_;
+			const float_t DEREES_TO_RADIUS_ = static_cast<float_t>(std::numbers::pi) / 180.0f;
+			objectData.transform.rotate.x = -static_cast<float_t>(transform["rotation"][0]) * DEREES_TO_RADIUS_;
+			objectData.transform.rotate.y = -static_cast<float_t>(transform["rotation"][2]) * DEREES_TO_RADIUS_;
+			objectData.transform.rotate.z = -static_cast<float_t>(transform["rotation"][1]) * DEREES_TO_RADIUS_;
 			//初期回転
-			objectData.initialTransform.rotate.x = -static_cast<float>(transform["rotation"][0]) * DEREES_TO_RADIUS_;
-			objectData.initialTransform.rotate.y = -static_cast<float>(transform["rotation"][2]) * DEREES_TO_RADIUS_;
-			objectData.initialTransform.rotate.z = -static_cast<float>(transform["rotation"][1]) * DEREES_TO_RADIUS_;
+			objectData.initialTransform.rotate.x = -static_cast<float_t>(transform["rotation"][0]) * DEREES_TO_RADIUS_;
+			objectData.initialTransform.rotate.y = -static_cast<float_t>(transform["rotation"][2]) * DEREES_TO_RADIUS_;
+			objectData.initialTransform.rotate.z = -static_cast<float_t>(transform["rotation"][1]) * DEREES_TO_RADIUS_;
 
 			//Blenderと軸の方向が違うので注意！
 			//座標
-			objectData.transform.translate.x = static_cast<float>(transform["translation"][0]);
-			objectData.transform.translate.y = static_cast<float>(transform["translation"][2]);
-			objectData.transform.translate.z = static_cast<float>(transform["translation"][1]);
+			objectData.transform.translate.x = static_cast<float_t>(transform["translation"][0]);
+			objectData.transform.translate.y = static_cast<float_t>(transform["translation"][2]);
+			objectData.transform.translate.z = static_cast<float_t>(transform["translation"][1]);
 			//初期座標
-			objectData.initialTransform.translate.x = static_cast<float>(transform["translation"][0]);
-			objectData.initialTransform.translate.y = static_cast<float>(transform["translation"][2]);
-			objectData.initialTransform.translate.z = static_cast<float>(transform["translation"][1]);
+			objectData.initialTransform.translate.x = static_cast<float_t>(transform["translation"][0]);
+			objectData.initialTransform.translate.y = static_cast<float_t>(transform["translation"][2]);
+			objectData.initialTransform.translate.z = static_cast<float_t>(transform["translation"][1]);
 
 
 
@@ -117,32 +117,32 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 				//BOX
 				if (objectData.colliderType == "BOX") {
 					//中心座標
-					objectData.center.x = static_cast<float>(collider["center"][0]) + objectData.transform.translate.x;
-					objectData.center.y = static_cast<float>(collider["center"][2]) + objectData.transform.translate.y;
-					objectData.center.z = static_cast<float>(collider["center"][1]) + objectData.transform.translate.z;
+					objectData.center.x = static_cast<float_t>(collider["center"][0]) + objectData.transform.translate.x;
+					objectData.center.y = static_cast<float_t>(collider["center"][2]) + objectData.transform.translate.y;
+					objectData.center.z = static_cast<float_t>(collider["center"][1]) + objectData.transform.translate.z;
 					//サイズ
-					objectData.size.x = static_cast<float>(collider["size"][0]);
-					objectData.size.y = static_cast<float>(collider["size"][2]);
-					objectData.size.z = static_cast<float>(collider["size"][1]);
+					objectData.size.x = static_cast<float_t>(collider["size"][0]);
+					objectData.size.y = static_cast<float_t>(collider["size"][2]);
+					objectData.size.z = static_cast<float_t>(collider["size"][1]);
 
 				}
 				//AABB
 				else if (objectData.colliderType == "AABB") {
 
 					Vector3 center = {};
-					center.x = static_cast<float>(collider["center"][0]);
-					center.y = static_cast<float>(collider["center"][2]);
-					center.z = static_cast<float>(collider["center"][1]);
+					center.x = static_cast<float_t>(collider["center"][0]);
+					center.y = static_cast<float_t>(collider["center"][2]);
+					center.z = static_cast<float_t>(collider["center"][1]);
 
 
 					//中心座標
-					objectData.center.x = static_cast<float>(collider["center"][0]) + objectData.transform.translate.x;
-					objectData.center.y = static_cast<float>(collider["center"][2]) + objectData.transform.translate.y;
-					objectData.center.z = static_cast<float>(collider["center"][1]) + objectData.transform.translate.z;
+					objectData.center.x = static_cast<float_t>(collider["center"][0]) + objectData.transform.translate.x;
+					objectData.center.y = static_cast<float_t>(collider["center"][2]) + objectData.transform.translate.y;
+					objectData.center.z = static_cast<float_t>(collider["center"][1]) + objectData.transform.translate.z;
 					//サイズ
-					objectData.size.x = static_cast<float>(collider["size"][0]) / 2.0f;
-					objectData.size.y = static_cast<float>(collider["size"][2]) / 2.0f;
-					objectData.size.z = static_cast<float>(collider["size"][1]) / 2.0f;
+					objectData.size.x = static_cast<float_t>(collider["size"][0]) / 2.0f;
+					objectData.size.y = static_cast<float_t>(collider["size"][2]) / 2.0f;
+					objectData.size.z = static_cast<float_t>(collider["size"][1]) / 2.0f;
 
 					//右上奥
 					objectData.upSize.x = objectData.center.x + objectData.size.x;
@@ -154,13 +154,13 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 					objectData.downSize.z = objectData.center.z - objectData.size.z;
 				} else if (objectData.colliderType == "Plane") {
 					//中心座標
-					objectData.center.x = static_cast<float>(collider["center"][0]) + objectData.transform.translate.x;
-					objectData.center.y = static_cast<float>(collider["center"][2]) + objectData.transform.translate.y;
-					objectData.center.z = static_cast<float>(collider["center"][1]) + objectData.transform.translate.z;
+					objectData.center.x = static_cast<float_t>(collider["center"][0]) + objectData.transform.translate.x;
+					objectData.center.y = static_cast<float_t>(collider["center"][2]) + objectData.transform.translate.y;
+					objectData.center.z = static_cast<float_t>(collider["center"][1]) + objectData.transform.translate.z;
 					//サイズ
-					objectData.size.x = static_cast<float>(collider["size"][0]);
-					objectData.size.y = static_cast<float>(collider["size"][2]);
-					objectData.size.z = static_cast<float>(collider["size"][1]);
+					objectData.size.x = static_cast<float_t>(collider["size"][0]);
+					objectData.size.y = static_cast<float_t>(collider["size"][2]);
+					objectData.size.z = static_cast<float_t>(collider["size"][1]);
 
 				}
 
@@ -537,7 +537,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 }
 
 
-void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const DirectionalLight& directionalLight) {
+void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const BaseLight& baseLight) {
 
 	//指定したハンドルのデータだけを描画
 	for (auto& [key, levelData] : levelData_) {
@@ -546,49 +546,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 			//描画
 			for (const auto& object : levelData->objectData) {
 				if (!object.isInvisible && object.isModelGenerate) {
-					object.objectForLeveEditor->Draw(camera, directionalLight);
-				}
-			}
-
-			//無駄なループ処理を防ぐよ
-			break;
-
-		}
-
-	}
-}
-
-void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const PointLight& pointLight) {
-	//指定したハンドルのデータだけを描画
-	for (auto& [key, levelData] : levelData_) {
-		if (levelData->handle == levelDataHandle) {
-
-			//描画
-			for (const auto& object : levelData->objectData) {
-				if (!object.isInvisible && object.isModelGenerate) {
-					object.objectForLeveEditor->Draw(camera, pointLight);
-				}
-			}
-
-			//無駄なループ処理を防ぐよ
-			break;
-
-		}
-
-	}
-}
-
-void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camera& camera, const SpotLight& spotLight) {
-
-	//指定したハンドルのデータだけを描画
-	for (auto& [key, levelData] : levelData_) {
-		if (levelData->handle == levelDataHandle) {
-
-			//描画
-			for (const auto& object : levelData->objectData) {
-				//描画
-				if (!object.isInvisible && object.isModelGenerate ) {
-					object.objectForLeveEditor->Draw(camera, spotLight);
+					object.objectForLeveEditor->Draw(camera, baseLight);
 				}
 			}
 			//無駄なループ処理を防ぐよ
@@ -596,6 +554,7 @@ void Elysia::LevelDataManager::Draw(const uint32_t& levelDataHandle, const Camer
 		}
 	}
 }
+
 
 #pragma endregion
 

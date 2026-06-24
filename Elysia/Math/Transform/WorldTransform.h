@@ -10,7 +10,17 @@
 #include "Quaternion.h"
 #include "DirectXSetup.h"
 
-
+/// <summary>
+/// シェーダーに送るデータ
+/// </summary>
+struct WorldTransformData {
+	//ワールド
+	Matrix4x4 world;
+	//ノーマル
+	Matrix4x4 normal;
+	//逆転置
+	Matrix4x4 worldInverseTranspose;
+};
 
 /// <summary>
 /// ワールドトランスフォーム
@@ -56,20 +66,6 @@ private:
 	/// </summary>
 	void Transfer();
 
-private:
-	/// <summary>
-	/// シェーダーに送るデータ
-	/// </summary>
-	struct WorldTransformData {
-		//ワールド
-		Matrix4x4 world;
-		//ノーマル
-		Matrix4x4 normal;
-		//逆転置
-		Matrix4x4 worldInverseTranspose;
-	};
-
-
 public:
 
 	//スケール
@@ -80,7 +76,7 @@ public:
 	Vector3 translate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
 
 	//クォータニオンを使うかどうか
-	bool isUseQuarternion_ = false;
+	bool isUseQuaternion_ = false;
 	//クォータニオン
 	Quaternion quaternion_ = {};
 
@@ -88,7 +84,7 @@ public:
 	//定数バッファ
 	ComPtr<ID3D12Resource> resource = nullptr;
 	//送るデータ
-	WorldTransformData* tranceformationData = nullptr;
+	WorldTransformData* transformationData = nullptr;
 
 	//ワールド行列
 	Matrix4x4 worldMatrix = {};
@@ -98,6 +94,4 @@ public:
 	//親となるワールド変換へのポインタ
 	const WorldTransform* parent = nullptr;
 
-
 };
-

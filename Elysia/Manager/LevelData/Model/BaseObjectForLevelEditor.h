@@ -33,9 +33,9 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="modelhandle"></param>
+	/// <param name="modelHandle"></param>
 	/// <param name="position"></param>
-	virtual void Initialize(const uint32_t& modelhandle,const Transform& position)=0;
+	virtual void Initialize(const uint32_t& modelHandle,const Transform& position)=0;
 
 	/// <summary>
 	/// 更新
@@ -45,32 +45,15 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	/// <param name="camera"></param>
+	/// <param name="camera">カメラ</param>
 	virtual void Draw(const Camera& camera);
 
 	/// <summary>
 	/// 描画(平行光源)
 	/// </summary>
-	/// <param name="camera"></param>
-	/// <param name="material"></param>
-	/// <param name="directionalLight"></param>
-	virtual void Draw(const Camera& camera, const DirectionalLight& directionalLight);
-
-	/// <summary>
-	/// 描画(点光源)
-	/// </summary>
-	/// <param name="camera"></param>
-	/// <param name="material"></param>
-	/// <param name="pointLight"></param>
-	virtual void Draw(const Camera& camera, const PointLight& pointLight);
-
-	/// <summary>
-	/// 描画(スポットライト)
-	/// </summary>
-	/// <param name="camera"></param>
-	/// <param name="material"></param>
-	/// <param name="spotLight"></param>
-	virtual void Draw(const Camera& camera, const SpotLight& spotLight);
+	/// <param name="camera">カメラ</param>
+	/// <param name="baseLight">ライト</param>
+	virtual void Draw(const Camera& camera, const BaseLight& baseLight);
 
 	/// <summary>
 	/// デストラクタ

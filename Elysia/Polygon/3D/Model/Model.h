@@ -39,20 +39,9 @@ struct CameraForGPU;
 struct Material;
 
 /// <summary>
-/// 点光源
+/// 基底ライト
 /// </summary>
-struct DirectionalLight;
-
-/// <summary>
-/// 点光源
-/// </summary>
-struct PointLight;
-
-/// <summary>
-/// スポットライト
-/// </summary>
-struct SpotLight;
-
+struct BaseLight;
 #pragma endregion
 
 
@@ -103,7 +92,7 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="modelHandle">モデルハンドル</param>
 		/// <returns></returns>
-		static Model* Create(const uint32_t& modelHandle);
+		static std::unique_ptr<Model> Create(const uint32_t& modelHandle);
 
 
 		/// <summary>
@@ -119,25 +108,8 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="worldTransform">ワールドトランスフォーム</param>
 		/// <param name="camera">カメラ</param>
-		/// <param name="directionalLight">平行光源</param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const DirectionalLight& directionalLight);
-
-		/// <summary>
-		/// 描画
-		/// </summary>
-		/// <param name="worldTransform"></param>
-		/// <param name="camera"></param>
-		/// <param name="pointLight"></param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const PointLight& pointLight);
-
-		/// <summary>
-		/// 描画
-		/// </summary>
-		/// <param name="worldTransform"></param>
-		/// <param name="camera"></param>
-		/// <param name="spotLight"></param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const SpotLight& spotLight);
-
+		/// <param name="baseLight">ライト</param>
+		void Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const BaseLight& baseLight);
 
 		/// <summary>
 		/// デストラクタ

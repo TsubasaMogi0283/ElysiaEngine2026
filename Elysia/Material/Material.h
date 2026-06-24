@@ -15,9 +15,9 @@
 #include "DirectXSetup.h"
 #include "LightingType.h"
 
- /// <summary>
-	 /// データ
-	 /// </summary>
+/// <summary>
+/// データ
+/// </summary>
 struct MaterialData {
 	//色
 	Vector4 color;
@@ -63,17 +63,10 @@ public:
 	//環境光の強さ
 	float_t ambientIntensity=0.0f;
 	//環境マップ
-	bool isEnviromentMap = false;
+	bool isEnvironmentMap = false;
 
 	//定数バッファ
 	ComPtr<ID3D12Resource> resource = nullptr;
-
-
-
-
-private:
-
-	
 
 	//書き込みのデータ
 	MaterialData* materialData_ = nullptr;

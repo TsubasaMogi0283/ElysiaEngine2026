@@ -8,13 +8,13 @@ AudioObjectForLevelEditor::AudioObjectForLevelEditor(){
 	audio_ = Elysia::Audio::GetInstance();
 }
 
-void AudioObjectForLevelEditor::Initialize(const uint32_t& modelhandle, const Transform& transform){
+void AudioObjectForLevelEditor::Initialize(const uint32_t& modelHandle, const Transform& transform){
 	
 	//レベルエディタ用のオブジェクトのタイプ
 	objectType_ = LevelEditorObjectType::AudioObject;
 	
 	//モデルの生成
-	model_.reset(Elysia::Model::Create(modelhandle));
+	model_=Elysia::Model::Create(modelHandle);
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
