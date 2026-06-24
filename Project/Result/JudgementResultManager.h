@@ -28,9 +28,35 @@ public:
 	/// </summary>
 	~JudgementResultManager() = default;
 
+
 private:
 	//表示するランキングの数
 	static const uint8_t RANKING_NUMBER_ = 3u;
+
+public:
+	/// <summary>
+	/// 結果のランキングデータを取得
+	/// </summary>
+	/// <param name="musicName">楽曲名</param>
+	/// <param name="level">レベル</param>
+	/// <returns>結果のランキングデータ</returns>
+	std::array< NotesJudgementResult, RANKING_NUMBER_> GetRankingData(const std::string& musicName, const std::string& level) {
+		//まずは楽曲を探す
+		auto it = noteJudgementResultMap.find(musicName);
+		if (it != noteJudgementResultMap.end()) {
+
+			//レベルで探す
+			auto it2 = it->second.find(level);
+			if (it2 != it->second.end()) {
+				return it2->second.rankingArray;
+			}
+		}
+		else {
+			//見つからなかった場合空データを返す
+			return {};
+		}
+	}
+
 
 private:
 	/// <summary>
