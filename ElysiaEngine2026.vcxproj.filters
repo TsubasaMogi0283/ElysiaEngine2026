@@ -535,7 +535,7 @@
       <Filter>Project\ScoreData\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Project\Result\JudgementResultManager.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
+      <Filter>Project\JudgementResult</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -923,7 +923,7 @@
       <Filter>Project\JudgementResult</Filter>
     </ClInclude>
     <ClInclude Include="Project\Result\JudgementResultManager.h">
-      <Filter>Elysia\ヘッダー ファイル</Filter>
+      <Filter>Project\JudgementResult</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
