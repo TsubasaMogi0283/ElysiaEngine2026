@@ -41,7 +41,7 @@ void MainScene::Initialize(){
 	
 	//メインシーンの中
 	baseMainScene_ = std::make_unique<StartMainScene>();
-	baseMainScene_->SetGameManager(this);
+	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
 }
 
@@ -93,7 +93,7 @@ void MainScene::ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene){
 		//新しいシーンをセット
 		baseMainScene_ = std::move(newMainScene);
 		//初期化
-		baseMainScene_->SetGameManager(this);
+		baseMainScene_->SetMainScene(this);
 		baseMainScene_->Initialize();
 	}
 }

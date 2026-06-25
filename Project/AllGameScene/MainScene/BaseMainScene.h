@@ -111,7 +111,7 @@ public:
 	/// <summary>
 	/// メインシーンの設定を設定
 	/// </summary>
-	virtual void SetGameManager(MainScene* mainScene) {
+	virtual void SetMainScene(MainScene* mainScene) {
 		this->mainScene_ = mainScene;
 	}
 
