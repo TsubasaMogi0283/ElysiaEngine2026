@@ -24,7 +24,9 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize()override;
+	/// <param name="gameManager">ゲーム管理クラス</param>
+	/// <param name="mainScene">メインシーン</param>
+	void Initialize(Elysia::GameManager* gameManager, MainScene* mainScene)override;
 
 	/// <summary>
 	/// 更新
@@ -58,6 +60,25 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~PlayMainScene()override = default;
+
+private:
+
+	/// <summary>
+	/// レーンの位置
+	/// </summary>
+	enum LanePlace {
+		UpLane,
+		DownLane,
+		LanePlaceSize
+	};
+private:
+
+	//流れに関するのはX・Y軸しかないのでZは無し
+	const float_t JUDGEENT_POSITION_Y_ = -10.0f;
+	const std::array<Vector2, LanePlace::LanePlaceSize> JUDGEENT_POSITION_ = {};
+
+	//動き始める時間のオフセット
+	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 
 private:
 	

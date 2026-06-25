@@ -22,7 +22,9 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize()override;
+	/// <param name="gameManager">ゲーム管理クラス</param>
+	/// <param name="mainScene">メインシーン</param>
+	void Initialize(Elysia::GameManager* gameManager, MainScene* mainScene)override;
 
 	/// <summary>
 	/// 更新

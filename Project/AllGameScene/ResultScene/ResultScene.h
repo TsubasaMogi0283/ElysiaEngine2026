@@ -65,7 +65,8 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize()override;
+	/// <param name="">ゲーム管理クラス</param>
+	void Initialize(Elysia::GameManager* gameManager)override;
 
 	/// <summary>
 	/// 更新

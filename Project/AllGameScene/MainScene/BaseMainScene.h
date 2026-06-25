@@ -43,6 +43,11 @@ namespace Elysia {
 	/// </summary>
 	class Input;
 
+	/// <summary>
+	/// オーディオ
+	/// </summary>
+	class Audio;
+
 }
 
 /// <summary>
@@ -68,7 +73,9 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	virtual void Initialize() = 0;
+	/// <param name="gameManager"></param>
+	/// <param name="mainScene"></param>
+	virtual void Initialize(Elysia::GameManager* gameManager,MainScene* mainScene) = 0;
 	
 	/// <summary>
 	/// 更新
@@ -110,8 +117,12 @@ public:
 	}
 
 protected:
+	//ゲーム管理クラス
+	Elysia::GameManager* gameManager_ = nullptr;
 	//入力
 	Elysia::Input* input_ = nullptr;
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
 
 protected:
 	//処理が終わったかどうか

@@ -79,6 +79,22 @@ namespace Elysia {
 			return scoreDataManager_.get();
 		}
 
+		/// <summary>
+		/// 一時記録場所
+		/// </summary>
+		/// <param name="musicInformation"></param>
+		void SetMusicInformation(const MusicInformation& musicInformation) {
+			this->musicInformation_ = musicInformation;
+		}
+
+		/// <summary>
+		/// 一時保存の楽曲情報を取得
+		/// </summary>
+		/// <returns></returns>
+		MusicInformation GetMusicInformation()const {
+			return musicInformation_;
+		}
+
 	private:
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> abstractSceneFactory_ = nullptr;
@@ -93,6 +109,9 @@ namespace Elysia {
 
 		//ノーツ管理クラス
 		std::unique_ptr<ScoreDataManager> scoreDataManager_ = nullptr;
+
+		//一時保存場所
+		MusicInformation musicInformation_ = {};
 
 	};
 }

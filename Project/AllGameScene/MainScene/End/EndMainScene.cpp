@@ -11,8 +11,9 @@ EndMainScene::EndMainScene() {
 	input_ = Elysia::Input::GetInstance();
 }
 
-void EndMainScene::Initialize(){
-	
+void EndMainScene::Initialize(Elysia::GameManager* gameManager, MainScene* mainScene){
+	gameManager;
+	mainScene;
 }
 
 void EndMainScene::Update(MainScene* mainScene){

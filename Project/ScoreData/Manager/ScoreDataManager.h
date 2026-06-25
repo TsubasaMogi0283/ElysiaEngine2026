@@ -43,9 +43,26 @@ private:
 	/// </summary>
 	static nlohmann::json Deserialize(const std::string& fullFilePath);
 
+
+public:
+	MusicScoreData GetMusicScoreData(const std::string& id,const std::string& level) {
+		MusicScoreData musicScoreData = {};
+		//見つけたら代入
+		auto it = musicScoreData_.find(id);
+		if (it != musicScoreData_.end()) {
+			musicScoreData = it->second;
+		}
+		else {
+			//空データ
+			musicScoreData = {};
+		}
+
+		return musicScoreData;
+	}
+
 private:
 	//譜面が入っているフォルダパス
-	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore";
+	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore/";
 
 	//各譜面情報
 	std::map<std::string,MusicScoreData> musicScoreData_ = {};

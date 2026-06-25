@@ -23,6 +23,7 @@
 #include <AnimationModel.h>
 #include <Dissolve.h>
 #include "BaseMainScene.h"
+#include <Audio.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -74,12 +75,13 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize()override;
+	/// <param name="gameManager">ゲーム管理クラス</param>
+	void Initialize(Elysia::GameManager* gameManager)override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="gameManager"></param>
+	/// <param name="gameManager">ゲーム管理クラス</param>
 	void Update(Elysia::GameManager* gameManager)override;
 
 	/// <summary>
@@ -118,35 +120,18 @@ public:
 			//新しいシーンをセット
 			baseMainScene_ = std::move(newMainScene);
 			//初期化
-			baseMainScene_->Initialize();
+			baseMainScene_->Initialize(Elysia::GameManager * gameManager,this);
 		}
 	}
 	
-private:
 
-	/// <summary>
-	/// レーンの位置
-	/// </summary>
-	enum LanePlace {
-		UpLane,
-		DownLane,
-		LanePlaceSize
-	};
-private:
-
-	//流れに関するのはX・Y軸しかないのでZは無し
-	const float_t JUDGEENT_POSITION_Y_ = -10.0f;
-	const std::array<Vector2, LanePlace::LanePlaceSize> JUDGEENT_POSITION_ = {};
-
-	//動き始める時間のオフセット
-	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 
 private:
 	//レベルエディタ
 	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル
 	uint32_t levelHandle_ = 0u;
-
+	
 
 private:
 	//背景

@@ -11,8 +11,9 @@ StartMainScene::StartMainScene(){
 	input_ = Elysia::Input::GetInstance();
 }
 
-void StartMainScene::Initialize(){
-	
+void StartMainScene::Initialize(Elysia::GameManager* gameManager, MainScene* mainScene){
+	gameManager;
+	mainScene;
 }
 
 void StartMainScene::Update(MainScene* mainScene){

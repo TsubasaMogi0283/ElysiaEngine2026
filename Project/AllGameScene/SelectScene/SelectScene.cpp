@@ -22,8 +22,8 @@ SelectScene::SelectScene(){
 	animationManager_ = Elysia::AnimationManager::GetInstance();
 }
 
-void SelectScene::Initialize(){
-
+void SelectScene::Initialize(Elysia::GameManager* gameManager){
+	gameManager;
 	//ハンドルの取得
 	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
 

@@ -3,17 +3,23 @@
 #include <imgui.h>
 
 #include <Input.h>
+#include <Audio.h>
 #include <MainScene/MainScene.h>
+#include <GameManager.h>
 #include <MainScene/End/EndMainScene.h>
 #include <Note/NormalTap/NormalTapNote.h>
 #include <Note/Long/LongNote.h>
 
 PlayMainScene::PlayMainScene(){
 	input_ = Elysia::Input::GetInstance();
+	//オーディオ
+	audio_ = Elysia::Audio::GetInstance();
 }
 
-void PlayMainScene::Initialize(){
-	
+void PlayMainScene::Initialize(Elysia::GameManager* gameManager, MainScene* mainScene){
+	mainScene;
+	auto i = gameManager->GetScoreDataManager();
+	//audio_ = gameManager->GetScoreDataManager()->Initialize();
 }
 
 void PlayMainScene::Update(MainScene* mainScene){

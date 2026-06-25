@@ -29,12 +29,13 @@ namespace Elysia {
 		/// <summary>
 		/// 初期化
 		/// </summary>
-		virtual void Initialize() = 0;
+		/// <param name="gameManager">ゲーム管理クラス</param>
+		virtual void Initialize(Elysia::GameManager* gameManager) = 0;
 
 		/// <summary>
 		/// 更新
 		/// </summary>
-		/// <param name="gameManager"></param>
+		/// <param name="gameManager">ゲーム管理クラス</param>
 		virtual void Update(Elysia::GameManager* gameManager) = 0;
 
 

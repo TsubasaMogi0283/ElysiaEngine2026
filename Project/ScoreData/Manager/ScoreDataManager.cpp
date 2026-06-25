@@ -9,9 +9,9 @@ void ScoreDataManager::Initialize(){
 	//フォルダに楽曲名を入れる。楽曲名を全て探索し、数を数え、各難易度の譜面データを記録していく
 	
 	//基本的には譜面データはJSONでやる
-	Load("HighwaySunset");
-	Load("UnknownFunction");
-	Load("C0ns+ruct10n");
+	Load("HighwaySunset/HighwaySunset_Easy.json");
+	//Load("UnknownFunction");
+	//Load("C0ns+ruct10n");
 }
 
 void ScoreDataManager::Load(const std::string& path) {

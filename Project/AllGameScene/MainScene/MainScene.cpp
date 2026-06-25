@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "ModelManager.h"
 #include "LevelDataManager.h"
+#include <GameManager.h>
 #include "CollisionCalculation.h"
 #include "PushBackCalculation.h"
 #include <AnimationManager.h>
@@ -16,7 +17,11 @@ MainScene::MainScene(){
 	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 }
 
-void MainScene::Initialize(){
+void MainScene::Initialize(Elysia::GameManager* gameManager){
+	//楽曲譜面情報を取得
+	MusicInformation musicInformation = gameManager->GetMusicInformation();
+	auto scoreData = gameManager->GetScoreDataManager()->GetMusicScoreData(musicInformation.id, musicInformation.level);
+
 
 	//ハンドルの取得
 	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
@@ -36,7 +41,7 @@ void MainScene::Initialize(){
 	
 	//メインシーンの中
 	baseMainScene_ = std::make_unique<StartMainScene>();
-	baseMainScene_->Initialize();
+	baseMainScene_->Initialize(gameManager,this);
 }
 
 void MainScene::Update(Elysia::GameManager* gameManager){
