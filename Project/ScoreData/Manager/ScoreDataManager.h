@@ -7,6 +7,16 @@
 #include <ScoreData/MusicScoreData.h>
 
 /// <summary>
+/// ElysiaEngine(前方宣言)
+/// </summary>
+namespace Elysia{
+	/// <summary>
+	/// オーディオ
+	/// </summary>
+	class Audio;
+}
+
+/// <summary>
 /// 譜面管理クラス
 /// </summary>
 class ScoreDataManager {
@@ -60,6 +70,10 @@ public:
 
 		return musicScoreData;
 	}
+
+private:
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
 
 private:
 	//譜面が入っているフォルダパス

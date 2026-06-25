@@ -15,6 +15,8 @@
 MainScene::MainScene(){
 	//レベルエディタ管理クラス
 	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
+	//入力
+	input_ = Elysia::Input::GetInstance();
 }
 
 void MainScene::Initialize(){
@@ -43,6 +45,7 @@ void MainScene::Initialize(){
 	baseMainScene_ = std::make_unique<StartMainScene>();
 	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
+
 }
 
 void MainScene::Update(){
@@ -52,6 +55,10 @@ void MainScene::Update(){
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
 	ImGui::End();
+	//リザルトへ
+	if(input_)
+	gameManager_->ChangeScene("Result");
+
 #endif // _DEBUG
 
 

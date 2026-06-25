@@ -19,8 +19,7 @@ PlayMainScene::PlayMainScene(){
 void PlayMainScene::Initialize(){
 	//メインシーンを設定しているか
 	assert(mainScene_);
-	//auto i = gameManager->GetScoreDataManager();
-	//audio_ = gameManager->GetScoreDataManager()->Initialize();
+	
 }
 
 void PlayMainScene::Update(){

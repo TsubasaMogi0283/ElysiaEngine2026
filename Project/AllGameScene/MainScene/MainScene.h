@@ -114,8 +114,16 @@ public:
 	/// ゲーム管理クラスを設定
 	/// </summary>
 	/// <param name="gameManager"></param>
-	void SetGameManager(Elysia::GameManager* gameManager) override{
+	inline void SetGameManager(Elysia::GameManager* gameManager) override{
 		this->gameManager_ = gameManager;
+	}
+
+	/// <summary>
+	/// ゲーム管理クラスを取得
+	/// </summary>
+	/// <returns></returns>
+	inline Elysia::GameManager* GetGameManager()const {
+		return gameManager_;
 	}
 
 	/// <summary>
@@ -125,6 +133,8 @@ public:
 	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene);
 	
 private:
+	//入力
+	Elysia::Input* input_ = nullptr;
 	//レベルエディタ
 	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル
