@@ -21,15 +21,12 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="gameManager">ゲーム管理クラス</param>
-	/// <param name="mainScene">メインシーン</param>
-	void Initialize(Elysia::GameManager* gameManager, MainScene* mainScene);
+	void Initialize();
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="mainScene">メインシーン</param>
-	void Update(MainScene* mainScene)override;
+	void Update()override;
 
 	/// <summary>
 	/// 3Dオブジェクトの描画

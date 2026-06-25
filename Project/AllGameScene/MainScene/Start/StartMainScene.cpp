@@ -11,12 +11,11 @@ StartMainScene::StartMainScene(){
 	input_ = Elysia::Input::GetInstance();
 }
 
-void StartMainScene::Initialize(Elysia::GameManager* gameManager, MainScene* mainScene){
-	gameManager;
-	mainScene;
+void StartMainScene::Initialize(){
+	assert(mainScene_);
 }
 
-void StartMainScene::Update(MainScene* mainScene){
+void StartMainScene::Update(){
 
 #ifdef _DEBUG
 	ImGui::Begin("StartScene");
@@ -24,7 +23,7 @@ void StartMainScene::Update(MainScene* mainScene){
 
 	//デバッグ用でNを押したらプレイシーンへ
 	if (input_->IsTriggerKey(DIK_N)) {
-		mainScene->ChangeMainScene(std::make_unique<PlayMainScene>());
+		mainScene_->ChangeMainScene(std::make_unique<PlayMainScene>());
 	}
 
 #endif // _DEBUG

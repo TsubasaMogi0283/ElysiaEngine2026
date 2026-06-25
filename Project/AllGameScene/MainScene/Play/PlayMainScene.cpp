@@ -16,18 +16,18 @@ PlayMainScene::PlayMainScene(){
 	audio_ = Elysia::Audio::GetInstance();
 }
 
-void PlayMainScene::Initialize(Elysia::GameManager* gameManager, MainScene* mainScene){
-	mainScene;
-	auto i = gameManager->GetScoreDataManager();
+void PlayMainScene::Initialize(){
+	//メインシーンを設定しているか
+	assert(mainScene_);
+	//auto i = gameManager->GetScoreDataManager();
 	//audio_ = gameManager->GetScoreDataManager()->Initialize();
 }
 
-void PlayMainScene::Update(MainScene* mainScene){
-
+void PlayMainScene::Update(){
 
 	//流れ終わったら終了シーンへ
 	if (isNoteFlowEnd_) {
-		mainScene->ChangeMainScene(std::make_unique<EndMainScene>());
+		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 	}
 
 #ifdef _DEBUG
@@ -36,7 +36,7 @@ void PlayMainScene::Update(MainScene* mainScene){
 
 	//デバッグ用でNを押したらプレイシーンへ
 	if (input_->IsTriggerKey(DIK_N)) {
-		mainScene->ChangeMainScene(std::make_unique<EndMainScene>());
+		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 	}
 
 #endif // _DEBUG

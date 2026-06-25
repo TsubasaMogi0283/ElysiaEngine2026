@@ -22,8 +22,7 @@ TitleScene::TitleScene(){
 	animationManager_ = Elysia::AnimationManager::GetInstance();
 }
 
-void TitleScene::Initialize(Elysia::GameManager* gameManager){
-	gameManager;
+void TitleScene::Initialize(){
 	//ハンドルの取得
 	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
 
@@ -84,7 +83,7 @@ void TitleScene::Initialize(Elysia::GameManager* gameManager){
 	backTexture_->Initialize();
 }
 
-void TitleScene::Update(Elysia::GameManager* gameManager){
+void TitleScene::Update(){
 
 
 	//再読み込み
@@ -157,9 +156,6 @@ void TitleScene::Update(Elysia::GameManager* gameManager){
 
 	//吸収座標の設定
 	deadParticle_->SetAbsorbPosition(playerWorldTransform_.GetWorldPosition());
-
-
-	gameManager;
 
 #ifdef _DEBUG
 

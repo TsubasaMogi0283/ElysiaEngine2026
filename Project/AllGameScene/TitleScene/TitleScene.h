@@ -25,11 +25,6 @@ namespace Elysia {
 	class LevelDataManager;
 
 	/// <summary>
-	/// ゲーム管理クラス
-	/// </summary>
-	class GameManager;
-
-	/// <summary>
 	/// テクスチャ管理クラス
 	/// </summary>
 	class TextureManager;
@@ -65,14 +60,12 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="gameManager">ゲーム管理クラス</param>
-	void Initialize(Elysia::GameManager* gameManager)override;
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="gameManager">ゲーム管理クラス</param>
-	void Update(Elysia::GameManager* gameManager)override;
+	void Update()override;
 
 	/// <summary>
 	/// 3Dオブジェクト
@@ -99,6 +92,15 @@ public:
 	/// </summary>
 	~TitleScene() = default;
 
+public:
+	/// <summary>
+	/// ゲーム管理クラスを設定
+	/// </summary>
+	/// <param name="gameManager"></param>
+	void SetGameManager(Elysia::GameManager* gameManager) override {
+		this->gameManager_ = gameManager;
+	}
+
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -110,7 +112,8 @@ private:
 	uint32_t levelHandle_ = 0u;
 	//アニメーション管理クラス
 	Elysia::AnimationManager* animationManager_ = nullptr;
-
+	//ゲーム管理クラス
+	Elysia::GameManager* gameManager_ = nullptr;
 
 private:
 	//スピード

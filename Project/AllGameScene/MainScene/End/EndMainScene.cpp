@@ -11,17 +11,15 @@ EndMainScene::EndMainScene() {
 	input_ = Elysia::Input::GetInstance();
 }
 
-void EndMainScene::Initialize(Elysia::GameManager* gameManager, MainScene* mainScene){
-	gameManager;
-	mainScene;
+void EndMainScene::Initialize(){
+	assert(mainScene_);
 }
 
-void EndMainScene::Update(MainScene* mainScene){
+void EndMainScene::Update(){
 #ifdef _DEBUG
 	ImGui::Begin("EndScene");
 	ImGui::End();
 
-	mainScene;
 
 #endif // _DEBUG
 }

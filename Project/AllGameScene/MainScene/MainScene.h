@@ -75,14 +75,12 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="gameManager">ゲーム管理クラス</param>
-	void Initialize(Elysia::GameManager* gameManager)override;
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="gameManager">ゲーム管理クラス</param>
-	void Update(Elysia::GameManager* gameManager)override;
+	void Update()override;
 
 	/// <summary>
 	/// 3Dオブジェクト
@@ -111,27 +109,28 @@ public:
 
 
 public:
+	
+	/// <summary>
+	/// ゲーム管理クラスを設定
+	/// </summary>
+	/// <param name="gameManager"></param>
+	void SetGameManager(Elysia::GameManager* gameManager) override{
+		this->gameManager_ = gameManager;
+	}
+
 	/// <summary>
 	/// メインシーンを変更する
 	/// </summary>
 	/// <param name="newMainScene">新しいメインシーン</param>
-	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene) {
-		if (baseMainScene_ != newMainScene) {
-			//新しいシーンをセット
-			baseMainScene_ = std::move(newMainScene);
-			//初期化
-			baseMainScene_->Initialize(Elysia::GameManager * gameManager,this);
-		}
-	}
+	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene);
 	
-
-
 private:
 	//レベルエディタ
 	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル
 	uint32_t levelHandle_ = 0u;
-	
+	//ゲーム管理クラス
+	Elysia::GameManager* gameManager_ = nullptr;
 
 private:
 	//背景

@@ -46,6 +46,7 @@ private:
 
 public:
 	MusicScoreData GetMusicScoreData(const std::string& id,const std::string& level) {
+		level;
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
 		auto it = musicScoreData_.find(id);

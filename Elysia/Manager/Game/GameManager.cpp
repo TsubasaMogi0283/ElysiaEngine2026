@@ -16,13 +16,15 @@ void Elysia::GameManager::Initialize() {
 
 #ifdef _DEBUG
 	//デバッグ時はこっちに入れてね
+	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
 #endif // _DEBUG
 	//譜面データ生成と読み込み
 	scoreDataManager_ = std::make_unique<ScoreDataManager>();
 	scoreDataManager_->Initialize();
 	//初期化
-	currentGamaScene_->Initialize(this);
+	currentGamaScene_->SetGameManager(this);
+	currentGamaScene_->Initialize();
 }
 
 
@@ -44,13 +46,14 @@ void Elysia::GameManager::ChangeScene(const std::string& sceneName){
 	//空ではない時初期化処理に入る
 	assert(currentGamaScene_ != nullptr);
 	//初期化
-	currentGamaScene_->Initialize(this);
+	currentGamaScene_->SetGameManager(this);
+	currentGamaScene_->Initialize();
 	
 }
 
 void Elysia::GameManager::Update() {
 	//更新
-	currentGamaScene_->Update(this);
+	currentGamaScene_->Update();
 
 #ifdef _DEBUG
 	ImGui::Begin("ゲームシーンの管理");

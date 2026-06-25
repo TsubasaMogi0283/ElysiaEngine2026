@@ -73,15 +73,12 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="gameManager"></param>
-	/// <param name="mainScene"></param>
-	virtual void Initialize(Elysia::GameManager* gameManager,MainScene* mainScene) = 0;
+	virtual void Initialize() = 0;
 	
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="mainScene">メインシーン</param>
-	virtual void Update(MainScene* mainScene) = 0;
+	virtual void Update() = 0;
 
 	/// <summary>
 	/// 3Dオブジェクトの描画
@@ -109,6 +106,15 @@ public:
 	/// デストラクタ
 	/// </summary>
 	virtual ~BaseMainScene()=default;
+
+public:
+	/// <summary>
+	/// メインシーンの設定を設定
+	/// </summary>
+	virtual void SetGameManager(MainScene* mainScene) {
+		this->mainScene_ = mainScene;
+	}
+
 public:
 
 	//処理が終わったかどうかを返す
@@ -117,8 +123,8 @@ public:
 	}
 
 protected:
-	//ゲーム管理クラス
-	Elysia::GameManager* gameManager_ = nullptr;
+	//メインシーン
+	MainScene* mainScene_ = nullptr;
 	//入力
 	Elysia::Input* input_ = nullptr;
 	//オーディオ

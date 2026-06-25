@@ -17,10 +17,10 @@ MainScene::MainScene(){
 	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 }
 
-void MainScene::Initialize(Elysia::GameManager* gameManager){
+void MainScene::Initialize(){
 	//楽曲譜面情報を取得
-	MusicInformation musicInformation = gameManager->GetMusicInformation();
-	auto scoreData = gameManager->GetScoreDataManager()->GetMusicScoreData(musicInformation.id, musicInformation.level);
+	//MusicInformation musicInformation = gameManager->GetMusicInformation();
+	//auto scoreData = gameManager->GetScoreDataManager()->GetMusicScoreData(musicInformation.id, musicInformation.level);
 
 
 	//ハンドルの取得
@@ -41,12 +41,12 @@ void MainScene::Initialize(Elysia::GameManager* gameManager){
 	
 	//メインシーンの中
 	baseMainScene_ = std::make_unique<StartMainScene>();
-	baseMainScene_->Initialize(gameManager,this);
+	baseMainScene_->SetGameManager(this);
+	baseMainScene_->Initialize();
 }
 
-void MainScene::Update(Elysia::GameManager* gameManager){
+void MainScene::Update(){
 
-	gameManager;
 	levelDataManager_->Update(levelHandle_);
 
 #ifdef _DEBUG
@@ -56,7 +56,7 @@ void MainScene::Update(Elysia::GameManager* gameManager){
 
 
 	//更新
-	baseMainScene_->Update(this);
+	baseMainScene_->Update();
 	directionalLight_.Update();
 	spotLight.Update();
 	camera_.Update();
@@ -86,6 +86,16 @@ void MainScene::DrawPostEffect(){
 void MainScene::DrawSprite(){
 	//スプライトの描画
 	baseMainScene_->DrawSprite();
+}
+
+void MainScene::ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene){
+	if (baseMainScene_ != newMainScene) {
+		//新しいシーンをセット
+		baseMainScene_ = std::move(newMainScene);
+		//初期化
+		baseMainScene_->SetGameManager(this);
+		baseMainScene_->Initialize();
+	}
 }
 
 
