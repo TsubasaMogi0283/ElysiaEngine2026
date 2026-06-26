@@ -12,6 +12,7 @@ StartMainScene::StartMainScene(){
 }
 
 void StartMainScene::Initialize(){
+	//メインシーンの空チェック
 	assert(mainScene_);
 }
 

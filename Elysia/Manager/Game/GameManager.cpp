@@ -57,7 +57,7 @@ void Elysia::GameManager::Update() {
 
 #ifdef _DEBUG
 	ImGui::Begin("ゲームシーンの管理");
-	const char* SCENE_NAME[] = {"Title","Game","Win","Lose"};
+	const char* SCENE_NAME[] = {"Title","Main","Win","Lose"};
 	if (ImGui::BeginCombo("シーン", SCENE_NAME[currentSceneNumber_])) {
 		for (uint32_t i = 0u; i < IM_ARRAYSIZE(SCENE_NAME); i++) {
 			bool isSelected = (currentSceneNumber_ == i);

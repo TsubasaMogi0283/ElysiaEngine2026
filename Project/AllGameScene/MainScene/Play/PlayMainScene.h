@@ -80,8 +80,9 @@ private:
 
 private:
 	
-	//ノーツの処理が終了したかどうか
-	bool isNoteFlowEnd_ = false;
-
+	//演奏中
+	bool isPlay_ = true;
+	//ポーズ中
+	bool isPause_ = false;
 };
 

@@ -24,7 +24,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	ScoreDataManager() = default;
+	ScoreDataManager();
 
 	/// <summary>
 	/// ノーツが流れる処理

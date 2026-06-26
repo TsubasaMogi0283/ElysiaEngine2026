@@ -6,6 +6,11 @@
 #include <StringOption.h>
 
 
+ScoreDataManager::ScoreDataManager(){
+	//オーディオクラス
+	audio_ = Elysia::Audio::GetInstance();
+}
+
 void ScoreDataManager::Initialize(){
 	//ToDo
 	//Resourceフォルダに楽曲と譜面データを入れる
@@ -20,8 +25,6 @@ void ScoreDataManager::Initialize(){
 void ScoreDataManager::Load(const std::string& path) {
 	//パスの結合
 	std::string fullFilePath = MUSIC_SCORE_PATH_ + path;
-
-	
 
 	//JSON文字列から解凍したデータ
 	nlohmann::json deserialized = Deserialize(fullFilePath);
@@ -57,7 +60,7 @@ void ScoreDataManager::Load(const std::string& path) {
 	//拡張子を取得
 	std::string MUSIC_FULL_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_+MUSIC_FILE_NAME, MUSIC_FILE_NAME);
 	//楽曲ファイルパス
-	std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + MUSIC_FILE_NAME + MUSIC_FILE_NAME + MUSIC_FULL_EXTENSION;
+	std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + MUSIC_FILE_NAME +"/" + MUSIC_FILE_NAME + MUSIC_FULL_EXTENSION;
 
 	//ハンドルとパスを記録
 	MusicScoreData musicNotesData = {};

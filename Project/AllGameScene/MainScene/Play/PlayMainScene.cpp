@@ -11,23 +11,36 @@
 #include <Note/Long/LongNote.h>
 
 PlayMainScene::PlayMainScene(){
+	//入力
 	input_ = Elysia::Input::GetInstance();
 	//オーディオ
 	audio_ = Elysia::Audio::GetInstance();
+
 }
 
 void PlayMainScene::Initialize(){
-	//メインシーンを設定しているか
+	//メインシーンの空チェック
 	assert(mainScene_);
+
+	//楽曲情報を取得
+	MusicInformation i = mainScene_->GetMusicInformation();
 	
 }
 
 void PlayMainScene::Update(){
 
-	//流れ終わったら終了シーンへ
-	if (isNoteFlowEnd_) {
-		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
+	//プレイ中
+	if (isPlay_) {
+		//ポーズ
+		if (isPause_) {
+
+		}
 	}
+	else {
+
+	}
+
+	
 
 #ifdef _DEBUG
 	ImGui::Begin("PlayScene");

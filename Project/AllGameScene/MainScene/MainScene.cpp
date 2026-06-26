@@ -21,7 +21,7 @@ MainScene::MainScene(){
 
 void MainScene::Initialize(){
 	//楽曲譜面情報を取得
-	//MusicInformation musicInformation = gameManager->GetMusicInformation();
+	MusicInformation musicInformation = gameManager_->GetMusicInformation();
 	//auto scoreData = gameManager->GetScoreDataManager()->GetMusicScoreData(musicInformation.id, musicInformation.level);
 
 
@@ -56,9 +56,11 @@ void MainScene::Update(){
 	ImGui::Begin("メインシーン");
 	ImGui::End();
 	//リザルトへ
-	if(input_)
-	gameManager_->ChangeScene("Result");
+	if (input_->IsTriggerKey(DIK_N)) {
+		gameManager_->ChangeScene("Result");
 
+	}
+	
 #endif // _DEBUG
 
 

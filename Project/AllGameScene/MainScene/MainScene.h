@@ -111,6 +111,12 @@ public:
 public:
 	
 	/// <summary>
+	/// メインシーンを変更する
+	/// </summary>
+	/// <param name="newMainScene">新しいメインシーン</param>
+	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene);
+
+	/// <summary>
 	/// ゲーム管理クラスを設定
 	/// </summary>
 	/// <param name="gameManager"></param>
@@ -127,10 +133,13 @@ public:
 	}
 
 	/// <summary>
-	/// メインシーンを変更する
+	/// 楽曲情報を取得
 	/// </summary>
-	/// <param name="newMainScene">新しいメインシーン</param>
-	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene);
+	/// <returns></returns>
+	inline MusicInformation GetMusicInformation()const {
+		return musicInformation;
+	}
+
 	
 private:
 	//入力
@@ -153,5 +162,9 @@ private:
 	SpotLight spotLight = {};
 	//メインシーンの中で細かく分けるための変数
 	std::unique_ptr<BaseMainScene> baseMainScene_ = nullptr;
+
+
+	//楽曲情報
+	MusicInformation musicInformation = {};
 
 };

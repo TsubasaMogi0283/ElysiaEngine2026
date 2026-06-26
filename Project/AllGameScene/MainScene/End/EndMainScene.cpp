@@ -12,6 +12,7 @@ EndMainScene::EndMainScene() {
 }
 
 void EndMainScene::Initialize(){
+	//メインシーンの空チェック
 	assert(mainScene_);
 }
 
