@@ -21,7 +21,8 @@ MainScene::MainScene(){
 
 void MainScene::Initialize(){
 	//楽曲譜面情報を取得
-	MusicInformation musicInformation = gameManager_->GetMusicInformation();
+	musicInformation_ = gameManager_->GetMusicInformation();
+	//musicInformation;
 	//auto scoreData = gameManager->GetScoreDataManager()->GetMusicScoreData(musicInformation.id, musicInformation.level);
 
 
