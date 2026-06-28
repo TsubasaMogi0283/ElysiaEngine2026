@@ -24,7 +24,7 @@
 #include <Dissolve.h>
 #include "BaseMainScene.h"
 #include <Audio.h>
-#include <ScoreData/MusicInformation.h>
+#include <ScoreData/MusicScoreData.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -137,8 +137,8 @@ public:
 	/// 楽曲情報を取得
 	/// </summary>
 	/// <returns></returns>
-	inline MusicInformation GetMusicInformation()const {
-		return musicInformation_;
+	inline MusicScoreData GetScoreData()const {
+		return musicScoreData_;
 	}
 
 	
@@ -167,5 +167,7 @@ private:
 
 	//楽曲情報
 	MusicInformation musicInformation_ = {};
+	//譜面データ
+	MusicScoreData musicScoreData_ = {};
 
 };

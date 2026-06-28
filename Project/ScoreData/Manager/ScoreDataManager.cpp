@@ -77,7 +77,7 @@ void ScoreDataManager::Load(const std::string& path) {
 		.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH)
 	};
 	//挿入
-	musicNotesData.musicInformation_ = MUSIC_INFORMATION;
+	musicNotesData.musicScoreData_ = MUSIC_INFORMATION;
 	musicNotesData.fullFilePath_ = fullFilePath;
 	//ノーツの配置
 	Place(musicNotesData, deserialized);

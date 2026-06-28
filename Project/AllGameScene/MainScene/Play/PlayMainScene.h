@@ -10,6 +10,8 @@
 
 #include <MainScene/BaseMainScene.h>
 #include <Note/BaseNote.h>
+#include <ScoreData/MusicScoreData.h>
+#include <ScoreData/MusicInformation.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -79,10 +81,12 @@ private:
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 
 private:
-	
+	//楽曲情報
+	MusicInformation musicInformation_ = {};
+	//譜面情報
+	MusicScoreData musicScoreData_ = {};
 	//演奏中
 	bool isPlay_ = true;
 	//ポーズ中
 	bool isPause_ = false;
 };
-

@@ -23,8 +23,9 @@ void PlayMainScene::Initialize(){
 	assert(mainScene_);
 
 	//楽曲情報を取得
-	MusicInformation i = mainScene_->GetMusicInformation();
-	
+	musicInformation_ = mainScene_->GetGameManager()->GetMusicInformation();
+	musicScoreData_ = mainScene_->GetGameManager()->GetScoreDataManager()->GetSampleMusicScoreData();
+
 }
 
 void PlayMainScene::Update(){

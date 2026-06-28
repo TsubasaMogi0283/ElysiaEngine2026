@@ -20,8 +20,11 @@ MainScene::MainScene(){
 }
 
 void MainScene::Initialize(){
+
+
 	//楽曲譜面情報を取得
 	musicInformation_ = gameManager_->GetMusicInformation();
+	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 	//musicInformation;
 	//auto scoreData = gameManager->GetScoreDataManager()->GetMusicScoreData(musicInformation.id, musicInformation.level);
 

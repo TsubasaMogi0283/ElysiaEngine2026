@@ -71,6 +71,21 @@ public:
 		return musicScoreData;
 	}
 
+	MusicScoreData GetSampleMusicScoreData() {
+		MusicScoreData musicScoreData = {};
+		//見つけたら代入
+		auto it = musicScoreData_.find("HighwaySunset_Easy");
+		if (it != musicScoreData_.end()) {
+			musicScoreData = it->second;
+		}
+		else {
+			//空データ
+			musicScoreData = {};
+		}
+
+		return musicScoreData;
+	}
+
 private:
 	//オーディオ
 	Elysia::Audio* audio_ = nullptr;
