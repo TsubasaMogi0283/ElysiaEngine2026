@@ -27,8 +27,6 @@ void Elysia::GameManager::Initialize() {
 	currentGamaScene_->Initialize();
 }
 
-
-
 void Elysia::GameManager::ChangeScene(const std::string& sceneName){
 
 	//強制解放

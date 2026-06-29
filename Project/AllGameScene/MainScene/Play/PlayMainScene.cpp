@@ -26,9 +26,17 @@ void PlayMainScene::Initialize(){
 	musicInformation_ = mainScene_->GetGameManager()->GetMusicInformation();
 	musicScoreData_ = mainScene_->GetGameManager()->GetScoreDataManager()->GetSampleMusicScoreData();
 
+
+	
+
+
+	//楽曲の再生
+	audio_->Play(musicInformation_.musicHandle, false);
 }
 
 void PlayMainScene::Update(){
+	//再生時間を取得
+	musicTime_ = audio_->GetPlayCurrentTime(musicInformation_.musicHandle);
 
 	//プレイ中
 	if (isPlay_) {

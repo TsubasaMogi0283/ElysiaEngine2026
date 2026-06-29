@@ -111,11 +111,11 @@ void ScoreDataManager::Place(MusicScoreData& musicNotesData, const nlohmann::jso
 				continue;
 			};
 			//ノーツ情報を記録
-			NoteLane noteLane = {
+			NoteLaneInformation noteLane = {
 				//上
-				.up = row[0].get<uint8_t>(),
+				.upNote = row[0].get<uint8_t>(),
 				//下
-				.down = row[1].get<uint8_t>(),
+				.downNote = row[1].get<uint8_t>(),
 			};
 			//挿入
 			noteBar.notesLane.push_back(noteLane);

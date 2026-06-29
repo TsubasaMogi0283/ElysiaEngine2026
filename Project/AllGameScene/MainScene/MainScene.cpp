@@ -7,10 +7,8 @@
 #include "ModelManager.h"
 #include "LevelDataManager.h"
 #include <GameManager.h>
-#include "CollisionCalculation.h"
-#include "PushBackCalculation.h"
-#include <AnimationManager.h>
 #include <MainScene/Start/StartMainScene.h>
+#include <Result/NoteJudgement.h>
 
 MainScene::MainScene(){
 	//レベルエディタ管理クラス
@@ -25,10 +23,10 @@ void MainScene::Initialize(){
 	//楽曲譜面情報を取得
 	musicInformation_ = gameManager_->GetMusicInformation();
 	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
-	//musicInformation;
-	//auto scoreData = gameManager->GetScoreDataManager()->GetMusicScoreData(musicInformation.id, musicInformation.level);
-
-
+	
+	//この2つスレッドでできるんじゃない？
+	//ノーツの生成
+	GenerateNotes();
 	//ハンドルの取得
 	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
 
@@ -101,14 +99,151 @@ void MainScene::DrawSprite(){
 	baseMainScene_->DrawSprite();
 }
 
-void MainScene::ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene){
-	if (baseMainScene_ != newMainScene) {
-		//新しいシーンをセット
-		baseMainScene_ = std::move(newMainScene);
-		//初期化
-		baseMainScene_->SetMainScene(this);
-		baseMainScene_->Initialize();
+void MainScene::GenerateNotes(){
+	//合計の時間
+	float_t totalTime = 0.0f;
+	//開始時間の設定
+	float_t startTime = START_OFFSET_TIME_ - hiSpeed_;
+
+	//初期座標
+	Vector3 initialPosition = {};
+	initialPosition.x = INITIAL_POSITION_X_;
+	initialPosition.z = LANE_POSITION_Z_;
+
+	//判定座標
+	Vector3 judgementPosition = {};
+	judgementPosition.x = JUDGEMENT_POSITION_X_;
+	judgementPosition.z = LANE_POSITION_Z_;
+
+
+	for (const NoteBarInformation& bar : musicScoreData_.newNotesData) {
+		//1拍の秒数
+		float_t beatDuration = 60.0f / bar.bpm;
+		//ノーツ間隔(1小節4拍)
+		float_t noteInterval = (beatDuration * 4.0f) / bar.notesLane.size();
+		//長さ
+		int32_t noteLength = static_cast<int32_t>(bar.notesLane.size());
+
+		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
+			const auto& note = bar.notesLane[i];
+			
+#pragma region 通常タッチ
+			//上
+			if (note.upNote == NoteType::NormalTap) {
+				//初期Y座標を設定
+				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
+				//判定Y座標を設定
+				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
+
+				//ノーツの数を増やす
+				allResult_.TotalNoteNumber_++;
+				NoteInformation noteInformation = {
+					.place = NoteLane::Place::Up,
+					.noteLength = noteLength,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveTime = totalTime + i * noteInterval,
+					.initialPosition = initialPosition,
+					.currentPosition = initialPosition,
+					.moveRatio = 0.0f,
+					.isDisplay = true,
+					.isProcessEnd = false,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.note = nullptr
+				};
+				musicScoreData_.upInformation.push_back(noteInformation);
+
+			}
+			//下
+			if (note.downNote == NoteType::NormalTap) {
+				//初期Y座標を設定
+				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
+				//判定Y座標を設定
+				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
+
+				//ノーツの数を増やす
+				allResult_.TotalNoteNumber_++;
+				NoteInformation noteInformation = {
+					.place = NoteLane::Place::Up,
+					.noteLength = noteLength,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveTime = totalTime + i * noteInterval,
+					.initialPosition = initialPosition,
+					.currentPosition = initialPosition,
+					.moveRatio = 0.0f,
+					.isDisplay = true,
+					.isProcessEnd = false,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.note = nullptr
+				};
+
+				musicScoreData_.downInformation.push_back(NoteInstance);
+
+			}
+#pragma endregion
+
+#pragma region ロング終点
+			//上
+			if (note.upNote == NoteType::LongEnd) {
+				//初期Y座標を設定
+				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
+				//判定Y座標を設定
+				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
+
+				//ノーツの数を増やす
+				allResult_.TotalNoteNumber_++;
+				NoteInformation noteInformation = {
+					.place = NoteLane::Place::Up,
+					.noteLength = noteLength,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveTime = totalTime + i * noteInterval,
+					.initialPosition = initialPosition,
+					.currentPosition = initialPosition,
+					.moveRatio = 0.0f,
+					.isDisplay = true,
+					.isProcessEnd = false,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.note = nullptr
+				};
+
+				musicScoreData_.upInformation.push_back(NoteInstance);
+
+			}
+			
+			//下
+			if (note.downNote == NoteType::LongEnd) {
+				//初期Y座標を設定
+				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
+				//判定Y座標を設定
+				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
+
+				//ノーツの数を増やす
+				allResult_.TotalNoteNumber_++;
+				NoteInformation noteInformation = {
+					.place = NoteLane::Place::Up,
+					.noteLength = noteLength,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveTime = totalTime + i * noteInterval,
+					.initialPosition = initialPosition,
+					.currentPosition = initialPosition,
+					.moveRatio = 0.0f,
+					.isDisplay = true,
+					.isProcessEnd = false,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.note = nullptr
+				};
+
+				musicScoreData_.downInformation.push_back(NoteInstance);
+
+			}
+#pragma endregion
+
+		}
+		// 小節分進める
+		totalTime += 4.0f * beatDuration;
 	}
 }
-
 

@@ -341,8 +341,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\Note\BaseNote.h" />
     <ClInclude Include="Project\Note\Long\LongNote.h" />
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h" />
+    <ClInclude Include="Project\Note\NoteType.h" />
     <ClInclude Include="Project\Result\JudgementResultManager.h" />
-    <ClInclude Include="Project\Result\NotesJudgementResult.h" />
+    <ClInclude Include="Project\Result\NoteJudgement.h" />
     <ClInclude Include="Project\ScoreData\Manager\ScoreDataManager.h" />
     <ClInclude Include="Project\ScoreData\MusicInformation.h" />
     <ClInclude Include="Project\ScoreData\MusicScoreData.h" />

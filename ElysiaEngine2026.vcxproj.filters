@@ -919,11 +919,14 @@
     <ClInclude Include="Project\ScoreData\NoteLane.h">
       <Filter>Project\ScoreData\Information</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Result\NotesJudgementResult.h">
+    <ClInclude Include="Project\Result\NoteJudgement.h">
       <Filter>Project\JudgementResult</Filter>
     </ClInclude>
     <ClInclude Include="Project\Result\JudgementResultManager.h">
       <Filter>Project\JudgementResult</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\NoteType.h">
+      <Filter>Project\ScoreData\Information</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

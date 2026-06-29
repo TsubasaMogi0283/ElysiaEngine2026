@@ -6,13 +6,28 @@
  */
 
 #include <cstdint>
+#include <Note/NoteType.h>
 
 /// <summary>
-/// レーンのノーツ情報
+/// レーンのノーツ
 /// </summary>
-struct NoteLane {
-	//上
-	uint8_t up = 0;
-	//下
-	uint8_t down = 0;
-};
+namespace NoteLane {
+	/// <summary>
+	/// 情報
+	/// </summary>
+	struct Information {
+		//上
+		NoteType upNote = NoteType::None;
+		//下
+		NoteType downNote = NoteType::None;
+	};
+
+	/// <summary>
+	/// 位置
+	/// </summary>
+	enum Place {
+		Up,
+		Down,
+		Size
+	};
+}

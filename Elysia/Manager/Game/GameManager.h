@@ -11,6 +11,7 @@
 #include "IGameScene.h"
 #include "IAbstractSceneFactory.h"
 #include <ScoreData/Manager/ScoreDataManager.h>
+#include <Result/NotesJudgementResult.h>
 
 
 /// <summary>
@@ -95,6 +96,24 @@ namespace Elysia {
 			return musicInformation_;
 		}
 
+		/// <summary>
+		/// 判定結果の設定
+		/// </summary>
+		/// <param name="m"></param>
+		inline void SetNotesJudgementResult(const NotesJudgementResult& noteJudgementResult) {
+			this->noteJudgementResult_ = noteJudgementResult;
+		}
+
+		/// <summary>
+		/// 判定結果の取得
+		/// </summary>
+		/// <returns></returns>
+		inline NotesJudgementResult GetNoteJudgementResult()const {
+			return noteJudgementResult_;
+		}
+
+		
+
 	private:
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> abstractSceneFactory_ = nullptr;
@@ -112,6 +131,8 @@ namespace Elysia {
 
 		//一時保存場所
 		MusicInformation musicInformation_ = {};
+		//結果
+		NotesJudgementResult noteJudgementResult_ = {};
 
 	};
 }

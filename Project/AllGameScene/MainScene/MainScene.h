@@ -12,16 +12,10 @@
 #include "IGameScene.h"
 #include "BackTexture.h"
 #include "Model.h"
-#include "Particle3D.h"
 #include "WorldTransform.h"
-#include "AABB.h"
 #include "Camera.h"
 #include "Material.h"
 #include "DirectionalLight.h"
-#include <PointLight.h>
-#include <SpotLight.h>
-#include <AnimationModel.h>
-#include <Dissolve.h>
 #include "BaseMainScene.h"
 #include <Audio.h>
 #include <ScoreData/MusicScoreData.h>
@@ -115,7 +109,15 @@ public:
 	/// メインシーンを変更する
 	/// </summary>
 	/// <param name="newMainScene">新しいメインシーン</param>
-	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene);
+	inline void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene) {
+		if (baseMainScene_ != newMainScene) {
+			//新しいシーンをセット
+			baseMainScene_ = std::move(newMainScene);
+			//初期化
+			baseMainScene_->SetMainScene(this);
+			baseMainScene_->Initialize();
+		}
+	};
 
 	/// <summary>
 	/// ゲーム管理クラスを設定
@@ -141,6 +143,27 @@ public:
 		return musicScoreData_;
 	}
 
+	/// <summary>
+	/// ハイスピの設定
+	/// </summary>
+	/// <param name="hiSpeed"></param>
+	inline void SetHiSpeed(const float_t& hiSpeed) {
+		this->hiSpeed_ = hiSpeed;
+	}
+
+	/// <summary>
+	/// ハイスピの取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetHiSpeed()const {
+		return hiSpeed_;
+	}
+
+private:
+	/// <summary>
+	/// ノーツ生成クラス
+	/// </summary>
+	void GenerateNotes();
 	
 private:
 	//入力
@@ -153,21 +176,35 @@ private:
 	Elysia::GameManager* gameManager_ = nullptr;
 
 private:
+	//開始オフセット
+	const float_t START_OFFSET_TIME_ = 2.0f;
+	//判定のX座標
+	const float_t JUDGEMENT_POSITION_X_ = -10.0f;
+	//初期のX座標
+	const float_t INITIAL_POSITION_X_ = 40.0f;
+	//レーンのY座標
+	const std::array<float_t, NoteLane::Place::Size> LANE_POSITION_Y_ = { 10.0f,-10.0f };
+	//レーンのZ座標
+	const float_t LANE_POSITION_Z_ = 0.0f;
+
+private:
 	//背景
 	std::unique_ptr<Elysia::BackTexture>backTexture_ = nullptr;
 	//カメラ
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
-	PointLight pointLight={};
+	PointLight pointLight = {};
 	SpotLight spotLight = {};
 	//メインシーンの中で細かく分けるための変数
 	std::unique_ptr<BaseMainScene> baseMainScene_ = nullptr;
-
 
 	//楽曲情報
 	MusicInformation musicInformation_ = {};
 	//譜面データ
 	MusicScoreData musicScoreData_ = {};
+	//ハイスピ
+	float_t hiSpeed_ = 5.0f;
+
 
 };

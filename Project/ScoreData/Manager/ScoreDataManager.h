@@ -71,6 +71,10 @@ public:
 		return musicScoreData;
 	}
 
+	/// <summary>
+	/// サンプルの取得
+	/// </summary>
+	/// <returns></returns>
 	MusicScoreData GetSampleMusicScoreData() {
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
