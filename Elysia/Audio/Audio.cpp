@@ -214,7 +214,6 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 	//加算
 	index_++;
 
-
 	//記録
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].fileName = fileName;
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = handle;

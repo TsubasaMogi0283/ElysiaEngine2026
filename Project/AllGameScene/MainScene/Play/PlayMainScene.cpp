@@ -39,11 +39,19 @@ void PlayMainScene::Update(){
 	if (isPlay_) {
 		//ポーズ
 		PauseProcess();
+
+		//楽曲を再生し終わったとき
+		if (musicLength_ > musicTime_) {
+			isPlay_ = false;
+		}
 	}
 	else {
-
+		//楽曲停止
+		audio_->Stop(musicScoreData_.handle);
+		//終了シーンへ
+		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
+		return;
 	}
-
 	
 
 #ifdef _DEBUG
