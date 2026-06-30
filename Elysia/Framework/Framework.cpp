@@ -203,11 +203,6 @@ void Elysia::Framework::Execute(){
 			//更新処理
 			Update();
 
-			//ESCAPE押されたら終了
-			if (engineManagers_.input_->IsTriggerKey(DIK_ESCAPE)==true) {
-				break;
-			}
-
 			//描画
 			Draw();
 		

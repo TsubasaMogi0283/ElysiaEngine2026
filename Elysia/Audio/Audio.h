@@ -248,8 +248,6 @@ namespace Elysia {
 
 #pragma region フィルター
 
-		//単極は必要無いかな
-
 		/// <summary>
 		/// ローパスフィルター
 		/// </summary>
@@ -328,6 +326,13 @@ namespace Elysia {
 		float_t GetPlayCurrentTime(const uint32_t& audioHandle);
 
 		/// <summary>
+		/// 音の長さを取得
+		/// </summary>
+		/// <param name="audioHandle"></param>
+		/// <returns></returns>
+		float_t GetAudioLength(const uint32_t& audioHandle);
+
+		/// <summary>
 		/// サブミックスボイスの作成
 		/// </summary>
 		/// <param name="channel"></param>
@@ -381,7 +386,7 @@ namespace Elysia {
 		//自分のエンジンではA4は442Hz基準にする
 		//もちろん12段階で1オクターブ
 		static const int32_t SCALE_AMOUNT_ = 13;
-		const float_t SEMITONE_RATIO_[SCALE_AMOUNT_] = {
+		const std::array<float_t,SCALE_AMOUNT_> SEMITONE_RATIO_ = {
 			1.00000f, //C4
 			1.05946f, //C#4
 			1.12246f, //D4
@@ -398,7 +403,7 @@ namespace Elysia {
 		};
 
 		//低い方
-		const float_t MINUS_SEMITONE_RATION[SCALE_AMOUNT_] = {
+		const std::array < float_t, SCALE_AMOUNT_> MINUS_SEMITONE_RATION = {
 			1.00000f,	//C4
 			0.94387f,	//B3
 			0.89090f,	//A3#
@@ -423,8 +428,8 @@ namespace Elysia {
 		//最終的にここでまとめるよ(スピーカーみたいな感じだね)
 		IXAudio2MasteringVoice* masterVoice_ = nullptr;
 
-
-		static uint32_t index_;
+		//インデックス
+		uint32_t index_ = 0u;
 
 		//Panに必要な変数
 		DWORD dwChannelMask_ = {};

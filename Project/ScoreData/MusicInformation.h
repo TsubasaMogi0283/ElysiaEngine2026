@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- * @file Model.h
- * @brief モデル
+ * @file MusicInformation.h
+ * @brief 楽曲情報
  * @author 茂木翼
  */
 
@@ -29,6 +29,4 @@ struct MusicInformation {
 	std::string id = "";
 	//楽曲ファイル名
 	std::string fileName = "";
-	//楽曲ハンドル
-	uint32_t musicHandle = 0u;
 };

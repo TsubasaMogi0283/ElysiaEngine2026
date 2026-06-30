@@ -73,12 +73,11 @@ void ScoreDataManager::Load(const std::string& path) {
 		.offset = static_cast<float_t>(std::atof(OFFSET.c_str())),
 		.id = ID,
 		.fileName = MUSIC_FILE_NAME,
-		//読み込みはまだ出来ていない
-		.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH)
 	};
 	//挿入
 	musicNotesData.musicScoreData_ = MUSIC_INFORMATION;
 	musicNotesData.fullFilePath_ = fullFilePath;
+	musicNotesData.handle = audio_->Load(MUSIC_FULL_FILE_PATH);
 	//ノーツの配置
 	Place(musicNotesData, deserialized);
 	//挿入

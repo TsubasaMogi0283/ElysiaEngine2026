@@ -62,6 +62,12 @@ public:
 	~PlayMainScene()override = default;
 
 private:
+	/// <summary>
+	/// ポーズ処理
+	/// </summary>
+	void PauseProcess();
+
+private:
 
 	//流れに関するのはX・Y軸しかないのでZは無し
 	const float_t JUDGEENT_POSITION_Y_ = -10.0f;
@@ -82,4 +88,6 @@ private:
 	bool isPause_ = false;
 	//再生時間
 	float_t musicTime_ = 0.0f;
+	//局の長さ
+	float_t musicLength_ = 0.0f;
 };

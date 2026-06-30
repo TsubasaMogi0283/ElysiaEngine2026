@@ -8,6 +8,7 @@
 #include "LevelDataManager.h"
 #include <GameManager.h>
 #include <MainScene/Start/StartMainScene.h>
+#include <MainScene/Play/PlayMainScene.h>
 #include <Note/NoteJudgement.h>
 
 MainScene::MainScene(){
@@ -43,7 +44,7 @@ void MainScene::Initialize(){
 	backTexture_->Initialize();
 	
 	//メインシーンの中
-	baseMainScene_ = std::make_unique<StartMainScene>();
+	baseMainScene_ = std::make_unique<PlayMainScene>();
 	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
 

@@ -1,9 +1,6 @@
 #include "Audio.h"
 
 
-uint32_t Elysia::Audio::index_ = 0u;
-
-
 Elysia::Audio* Elysia::Audio::GetInstance() {
 	static Elysia::Audio instance;
 	return &instance;
@@ -18,9 +15,7 @@ void Elysia::Audio::CreateSubmixVoice(const uint32_t& channel) {
 	//サブミックスボイスの作成
 	HRESULT hResult = Elysia::Audio::GetInstance()->xAudio2_->CreateSubmixVoice(&Elysia::Audio::GetInstance()->submixVoice_[channel], channel, sampleRate);
 	assert(SUCCEEDED(hResult));
-
 }
-
 
 void Elysia::Audio::Initialize() {
 	// Media Foundation の初期化
@@ -109,7 +104,7 @@ uint32_t Elysia::Audio::LoadWave(const std::string& fileName) {
 	//indexを取得
 	uint32_t handle = index_;
 	//加算
-	++index_;
+	index_++;
 
 
 #pragma region １,ファイルオープン
@@ -227,9 +222,9 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 
 
 	//stringからLPCWCHARに変換する
-	int size_needed = MultiByteToWideChar(CP_UTF8, 0, fileName.c_str(), (int)fileName.size(), NULL, 0);
-	std::wstring wstr(size_needed, 0);
-	MultiByteToWideChar(CP_UTF8, 0, fileName.c_str(), (int)fileName.size(), &wstr[0], size_needed);
+	int sizeNeeded = MultiByteToWideChar(CP_UTF8, 0, fileName.c_str(), (int)fileName.size(), NULL, 0);
+	std::wstring wstr(sizeNeeded, 0);
+	MultiByteToWideChar(CP_UTF8, 0, fileName.c_str(), (int)fileName.size(), &wstr[0], sizeNeeded);
 	LPCWSTR lpcWString = wstr.c_str();
 
 
@@ -238,36 +233,37 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 	assert(SUCCEEDED(hResult));
 
 	//メディアタイプの取得
-	IMFMediaType* pMFMediaType{ nullptr };
-	MFCreateMediaType(&pMFMediaType);
-	pMFMediaType->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Audio);
-	pMFMediaType->SetGUID(MF_MT_SUBTYPE, MFAudioFormat_PCM);
-	Elysia::Audio::GetInstance()->audioInformation_[fileName].sourceReader->SetCurrentMediaType(DWORD(MF_SOURCE_READER_FIRST_AUDIO_STREAM), nullptr, pMFMediaType);
+	IMFMediaType* mfMediaType{ nullptr };
+	MFCreateMediaType(&mfMediaType);
+	mfMediaType->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Audio);
+	mfMediaType->SetGUID(MF_MT_SUBTYPE, MFAudioFormat_PCM);
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].sourceReader->SetCurrentMediaType(DWORD(MF_SOURCE_READER_FIRST_AUDIO_STREAM), nullptr, mfMediaType);
 
-	pMFMediaType->Release();
-	pMFMediaType = nullptr;
-	Elysia::Audio::GetInstance()->audioInformation_[fileName].sourceReader->GetCurrentMediaType(DWORD(MF_SOURCE_READER_FIRST_AUDIO_STREAM), &pMFMediaType);
+	mfMediaType->Release();
+	mfMediaType = nullptr;
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].sourceReader->GetCurrentMediaType(DWORD(MF_SOURCE_READER_FIRST_AUDIO_STREAM), &mfMediaType);
 
 	//オーディオデータ形式の作成
 	WAVEFORMATEX* waveFormat{};
-	MFCreateWaveFormatExFromMFMediaType(pMFMediaType, &waveFormat, nullptr);
+	MFCreateWaveFormatExFromMFMediaType(mfMediaType, &waveFormat, nullptr);
+	//記録
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].soundData.wfex.nSamplesPerSec = waveFormat->nSamplesPerSec;
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].soundData.wfex.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
 
-	while (true)
-	{
-		IMFSample* pMFSample{ nullptr };
-		DWORD dwStreamFlags{ 0 };
+	while (true){
+		IMFSample* pMFSample = nullptr;
+		DWORD dwStreamFlags = 0;
 		Audio::GetInstance()->audioInformation_[fileName].sourceReader->ReadSample(DWORD(MF_SOURCE_READER_FIRST_AUDIO_STREAM), 0, nullptr, &dwStreamFlags, nullptr, &pMFSample);
 
-		if (dwStreamFlags & MF_SOURCE_READERF_ENDOFSTREAM)
-		{
+		if (dwStreamFlags & MF_SOURCE_READERF_ENDOFSTREAM){
 			break;
 		}
 
-		IMFMediaBuffer* pMFMediaBuffer{ nullptr };
+		IMFMediaBuffer* pMFMediaBuffer = nullptr;
 		pMFSample->ConvertToContiguousBuffer(&pMFMediaBuffer);
 
-		BYTE* pBuffer{ nullptr };
-		DWORD cbCurrentLength{ 0 };
+		BYTE* pBuffer = nullptr;
+		DWORD cbCurrentLength = 0;
 		pMFMediaBuffer->Lock(&pBuffer, nullptr, &cbCurrentLength);
 
 		Elysia::Audio::GetInstance()->audioInformation_[fileName].mediaData.resize(Elysia::Audio::GetInstance()->audioInformation_[fileName].mediaData.size() + cbCurrentLength);
@@ -280,7 +276,6 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 	}
 
 	Elysia::Audio::GetInstance()->xAudio2_->CreateSourceVoice(&Elysia::Audio::GetInstance()->audioInformation_[fileName].sourceVoice, waveFormat);
-
 
 	return handle;
 }
@@ -847,7 +842,7 @@ void Elysia::Audio::SetNotchFilter(const uint32_t& audioHandle, float_t& cutOff,
 	cutOff = min(cutOff, 0.0f);
 
 
-	XAUDIO2_FILTER_PARAMETERS FilterParams;
+	XAUDIO2_FILTER_PARAMETERS FilterParams = {};
 	FilterParams.Type = XAUDIO2_FILTER_TYPE::BandPassFilter;
 	FilterParams.Frequency = cutOff;
 	FilterParams.OneOverQ = oneOverQ;
@@ -877,16 +872,32 @@ float_t Elysia::Audio::GetPlayCurrentTime(const uint32_t& audioHandle) {
 	audioInformation_[fileKey].sourceVoice->GetState(&state);
 
 	//サンプリングレートを取得
-	const uint32_t sampleRate = audioInformation_[fileKey].soundData.wfex.nSamplesPerSec;
+	const uint32_t SAMPLE_RATE = audioInformation_[fileKey].soundData.wfex.nSamplesPerSec;
 
 	// 0は✕
-	if (sampleRate == 0.0f) {
-		return 0.0f;
+	if (SAMPLE_RATE == 0u) {
+		return 0u;
 	}
 
 	//秒を計算し返す
-	return static_cast<float_t>(state.SamplesPlayed) / static_cast<float_t>(sampleRate);
+	return static_cast<float_t>(state.SamplesPlayed) / static_cast<float_t>(SAMPLE_RATE);
 
+}
+
+float_t Elysia::Audio::GetAudioLength(const uint32_t& audioHandle){
+	std::string fileKey = GetAudioInformationKey(audioHandle);
+
+	//1秒あたりのバイト数を取得
+	uint32_t avgBytesPerSec = audioInformation_[fileKey].soundData.wfex.nAvgBytesPerSec;
+	if (avgBytesPerSec == 0) {
+		return 0;
+	}
+
+	//総バイト数を取得
+	size_t totalBytes = audioInformation_[fileKey].mediaData.size();
+
+	//長さを計算し返す
+	return static_cast<float_t>(totalBytes) / static_cast<float_t>(avgBytesPerSec);
 }
 
 void Elysia::Audio::SendChannels(const uint32_t& audioHandle, const uint32_t& channelNumber) {
