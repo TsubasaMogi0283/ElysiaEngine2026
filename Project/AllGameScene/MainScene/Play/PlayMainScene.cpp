@@ -53,10 +53,11 @@ void PlayMainScene::Update(){
 
 #ifdef _DEBUG
 	ImGui::Begin("PlayScene");
+	ImGui::InputFloat("楽曲再生時間", &musicTime_);
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
-	if (input_->IsTriggerKey(DIK_N)) {
+	if (input_->IsTriggerKey(DIK_M)) {
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 	}
 

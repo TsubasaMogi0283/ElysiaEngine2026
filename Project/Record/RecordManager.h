@@ -3,17 +3,17 @@
 #include <string>
 #include <array>
 #include <map>
-#include "NotesJudgementResult.h"
+#include <Note/NoteJudgement.h>
 
 /// <summary>
-/// 判定結果管理クラス
+/// 記録クラス
 /// </summary>
-class JudgementResultManager{
+class RecordManager{
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	JudgementResultManager() = default;
+	RecordManager() = default;
 	
 	/// <summary>
 	/// 登録
@@ -21,12 +21,12 @@ public:
 	/// <param name="musicName">楽曲名</param>
 	/// <param name="level">難易度</param>
 	/// <param name="result">結果</param>
-	void Register(const std::string& musicName, const std::string& level ,const NotesJudgementResult& result);
+	void Register(const std::string& musicName, const std::string& level ,const NoteJudgement::Record& result);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~JudgementResultManager() = default;
+	~RecordManager() = default;
 
 
 private:
@@ -40,7 +40,7 @@ public:
 	/// <param name="musicName">楽曲名</param>
 	/// <param name="level">レベル</param>
 	/// <returns>結果のランキングデータ</returns>
-	std::array< NotesJudgementResult, RANKING_NUMBER_> GetRankingData(const std::string& musicName, const std::string& level) {
+	std::array<NoteJudgement::Record, RANKING_NUMBER_> GetRankingData(const std::string& musicName, const std::string& level) {
 		//まずは楽曲を探す
 		auto it = noteJudgementResultMap.find(musicName);
 		if (it != noteJudgementResultMap.end()) {
@@ -64,7 +64,7 @@ private:
 	/// </summary>
 	struct JudgementResultRanking {
 		//各譜面のランキング上位3位まで
-		std::array< NotesJudgementResult, RANKING_NUMBER_> rankingArray;
+		std::array< NoteJudgement::Record, RANKING_NUMBER_> rankingArray;
 	};
 
 private:

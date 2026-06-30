@@ -23,8 +23,9 @@ void StartMainScene::Update(){
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
-	if (input_->IsTriggerKey(DIK_N)) {
+	if (input_->IsTriggerKey(DIK_M)) {
 		mainScene_->ChangeMainScene(std::make_unique<PlayMainScene>());
+		return;
 	}
 
 #endif // _DEBUG

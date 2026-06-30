@@ -28,6 +28,8 @@ struct MusicScoreData {
 	int32_t handle = -1;
 	//譜面のパス
 	std::string fullFilePath_="";
+	//総ノーツ数
+	uint8_t totalNote_ = 0u;
 
 	//1小節ごとのデータ
 	std::vector<NoteBarInformation> newNotesData = {};

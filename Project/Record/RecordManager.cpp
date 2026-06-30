@@ -1,10 +1,10 @@
-#include "JudgementResultManager.h"
+#include "RecordManager.h"
 
 #include <cassert>
 #include <algorithm>
 
-void JudgementResultManager::Register(const std::string& musicName, const std::string& level, const NotesJudgementResult& result){
 
+void RecordManager::Register(const std::string& musicName, const std::string& level, const NoteJudgement::Record& result){
     //ToDo
     //BEの時の復習でランキングを実装していきたい
 
@@ -24,9 +24,9 @@ void JudgementResultManager::Register(const std::string& musicName, const std::s
                 ranking[RANKING_NUMBER_ - 1u] = result;
             }
             //並べ替え
-            std::sort(ranking.begin(), ranking.end(), [](const NotesJudgementResult& a, const NotesJudgementResult& b) {
+            std::sort(ranking.begin(), ranking.end(), [](const NoteJudgement::Record& a, const NoteJudgement::Record& b) {
                 return a.score > b.score;
-              }
+                }
             );
         }
     } else {

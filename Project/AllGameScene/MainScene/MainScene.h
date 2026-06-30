@@ -194,8 +194,6 @@ private:
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
-	PointLight pointLight = {};
-	SpotLight spotLight = {};
 	//メインシーンの中で細かく分けるための変数
 	std::unique_ptr<BaseMainScene> baseMainScene_ = nullptr;
 

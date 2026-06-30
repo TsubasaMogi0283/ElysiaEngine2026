@@ -22,8 +22,6 @@ enum class NoteType {
 	TranceGate8LongStart,
 	//開始16分トランスゲートロング
 	TranceGate16LongStart,
-	//開始ハイパスロング
-	LowPassLongStart,
 	//終了ロング
 	LongEnd,
 

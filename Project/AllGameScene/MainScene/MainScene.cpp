@@ -8,7 +8,7 @@
 #include "LevelDataManager.h"
 #include <GameManager.h>
 #include <MainScene/Start/StartMainScene.h>
-#include <Result/NoteJudgement.h>
+#include <Note/NoteJudgement.h>
 
 MainScene::MainScene(){
 	//レベルエディタ管理クラス
@@ -37,7 +37,6 @@ void MainScene::Initialize(){
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
-	spotLight.Initialize();
 
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
@@ -52,24 +51,25 @@ void MainScene::Initialize(){
 
 void MainScene::Update(){
 
-	levelDataManager_->Update(levelHandle_);
+	
 
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
+	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x,-1.0f,1.0f);
 	ImGui::End();
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
 		gameManager_->ChangeScene("Result");
-
+		return;
 	}
 	
 #endif // _DEBUG
 
 
 	//更新
+	levelDataManager_->Update(levelHandle_);
 	baseMainScene_->Update();
 	directionalLight_.Update();
-	spotLight.Update();
 	camera_.Update();
 }
 
@@ -106,23 +106,17 @@ void MainScene::GenerateNotes(){
 	float_t startTime = START_OFFSET_TIME_ - hiSpeed_;
 
 	//初期座標
-	Vector3 initialPosition = {};
-	initialPosition.x = INITIAL_POSITION_X_;
-	initialPosition.z = LANE_POSITION_Z_;
-
+	Vector3 initialPosition = { .x = INITIAL_POSITION_X_ ,.y = 0.0f,.z = LANE_POSITION_Z_ };
 	//判定座標
-	Vector3 judgementPosition = {};
-	judgementPosition.x = JUDGEMENT_POSITION_X_;
-	judgementPosition.z = LANE_POSITION_Z_;
-
-
+	Vector3 judgementPosition = { .x = JUDGEMENT_POSITION_X_ ,.y = 0.0f,.z = LANE_POSITION_Z_ };
+	//ノーツの配置
 	for (const NoteBarInformation& bar : musicScoreData_.newNotesData) {
 		//1拍の秒数
 		float_t beatDuration = 60.0f / bar.bpm;
 		//ノーツ間隔(1小節4拍)
 		float_t noteInterval = (beatDuration * 4.0f) / bar.notesLane.size();
 		//長さ
-		int32_t noteLength = static_cast<int32_t>(bar.notesLane.size());
+		uint8_t noteLength = static_cast<uint8_t>(bar.notesLane.size());
 
 		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
 			const auto& note = bar.notesLane[i];
@@ -136,7 +130,8 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
 
 				//ノーツの数を増やす
-				allResult_.TotalNoteNumber_++;
+				musicScoreData_.totalNote_++;
+				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
@@ -151,6 +146,7 @@ void MainScene::GenerateNotes(){
 					.isJudged = false,
 					.note = nullptr
 				};
+				//挿入
 				musicScoreData_.upInformation.push_back(noteInformation);
 
 			}
@@ -162,7 +158,8 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
 
 				//ノーツの数を増やす
-				allResult_.TotalNoteNumber_++;
+				musicScoreData_.totalNote_++;
+				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
@@ -177,8 +174,8 @@ void MainScene::GenerateNotes(){
 					.isJudged = false,
 					.note = nullptr
 				};
-
-				musicScoreData_.downInformation.push_back(NoteInstance);
+				//挿入
+				musicScoreData_.downInformation.push_back(noteInformation);
 
 			}
 #pragma endregion
@@ -192,7 +189,8 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
 
 				//ノーツの数を増やす
-				allResult_.TotalNoteNumber_++;
+				musicScoreData_.totalNote_++;
+				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
@@ -208,7 +206,7 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 
-				musicScoreData_.upInformation.push_back(NoteInstance);
+				musicScoreData_.upInformation.push_back(noteInformation);
 
 			}
 			
@@ -220,7 +218,8 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
 
 				//ノーツの数を増やす
-				allResult_.TotalNoteNumber_++;
+				musicScoreData_.totalNote_++;
+				//ノーツ情報を設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
@@ -235,9 +234,8 @@ void MainScene::GenerateNotes(){
 					.isJudged = false,
 					.note = nullptr
 				};
-
-				musicScoreData_.downInformation.push_back(NoteInstance);
-
+				//挿入
+				musicScoreData_.downInformation.push_back(noteInformation);
 			}
 #pragma endregion
 
