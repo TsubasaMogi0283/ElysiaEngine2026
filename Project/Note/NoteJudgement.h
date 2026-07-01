@@ -37,7 +37,9 @@ namespace NoteJudgement {
 
 	};
 
-	//判定の列挙
+	/// <summary>
+	/// 判定の選択
+	/// </summary>
 	enum Selection {
 		//無し
 		None,
@@ -50,8 +52,22 @@ namespace NoteJudgement {
 		//パーフェクト
 		Perfect,
 
-		//列挙体のサイズ
+		//サイズ
 		Size
 	};
+
+	/// <summary>
+	/// 時間
+	/// </summary>
+	namespace Time {
+		//パーフェクトの判定時間
+		const float_t PERFECT_TAP = 0.05f;
+		//グレートの判定時間
+		const float_t GREAT_TAP = 0.1f;
+		//グッドの判定時間
+		const float_t GOOD_TAP = 0.15f;
+		//ミスの判定時間
+		const float_t MISS_TAP = 0.2f;
+	}
 };
 

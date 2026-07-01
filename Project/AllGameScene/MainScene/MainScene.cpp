@@ -23,7 +23,7 @@ void MainScene::Initialize(){
 
 	//楽曲譜面情報を取得
 	musicInformation_ = gameManager_->GetMusicInformation();
-	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
+	musicInformation = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 	
 	//この2つスレッドでできるんじゃない？
 	//ノーツの生成
@@ -111,7 +111,7 @@ void MainScene::GenerateNotes(){
 	//判定座標
 	Vector3 judgementPosition = { .x = JUDGEMENT_POSITION_X_ ,.y = 0.0f,.z = LANE_POSITION_Z_ };
 	//ノーツの配置
-	for (const NoteBarInformation& bar : musicScoreData_.newNotesData) {
+	for (const NoteBarInformation& bar : musicInformation.newNotesData) {
 		//1拍の秒数
 		float_t beatDuration = 60.0f / bar.bpm;
 		//ノーツ間隔(1小節4拍)
@@ -131,13 +131,13 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
 
 				//ノーツの数を増やす
-				musicScoreData_.totalNote_++;
+				musicInformation.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
-					.arriveTime = totalTime + i * noteInterval,
+					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,
 					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
@@ -148,7 +148,7 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 				//挿入
-				musicScoreData_.upInformation.push_back(noteInformation);
+				musicInformation.upInformation.push_back(noteInformation);
 
 			}
 			//下
@@ -159,13 +159,13 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
 
 				//ノーツの数を増やす
-				musicScoreData_.totalNote_++;
+				musicInformation.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
-					.arriveTime = totalTime + i * noteInterval,
+					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,
 					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
@@ -176,7 +176,7 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 				//挿入
-				musicScoreData_.downInformation.push_back(noteInformation);
+				musicInformation.downInformation.push_back(noteInformation);
 
 			}
 #pragma endregion
@@ -190,13 +190,13 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
 
 				//ノーツの数を増やす
-				musicScoreData_.totalNote_++;
+				musicInformation.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
-					.arriveTime = totalTime + i * noteInterval,
+					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,
 					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
@@ -207,7 +207,7 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 
-				musicScoreData_.upInformation.push_back(noteInformation);
+				musicInformation.upInformation.push_back(noteInformation);
 
 			}
 			
@@ -219,13 +219,13 @@ void MainScene::GenerateNotes(){
 				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
 
 				//ノーツの数を増やす
-				musicScoreData_.totalNote_++;
+				musicInformation.totalNote_++;
 				//ノーツ情報を設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.noteLength = noteLength,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
-					.arriveTime = totalTime + i * noteInterval,
+					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,
 					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
@@ -236,7 +236,7 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 				//挿入
-				musicScoreData_.downInformation.push_back(noteInformation);
+				musicInformation.downInformation.push_back(noteInformation);
 			}
 #pragma endregion
 

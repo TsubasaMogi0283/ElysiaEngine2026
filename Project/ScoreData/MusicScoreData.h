@@ -23,7 +23,7 @@ struct MusicScoreData {
 	std::vector<NoteInformation> downInformation = {};
 
 	//楽曲情報
-	MusicInformation musicScoreData_ = {};
+	MusicInformation musicInformation = {};
 	//ハンドル
 	int32_t handle = -1;
 	//譜面のパス

@@ -21,7 +21,7 @@ struct NoteInformation {
 	//動き出す時間
 	float_t startMoveTime = 0.0f;
 	//到着時間
-	float_t arriveTime = 0.0f;
+	float_t arriveLineTime = 0.0f;
 	//初期の座標
 	Vector3 initialPosition = {};
 	//現在の座標

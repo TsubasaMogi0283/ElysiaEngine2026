@@ -59,8 +59,8 @@ public:
 		level;
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
-		auto it = musicScoreData_.find(id);
-		if (it != musicScoreData_.end()) {
+		auto it = musicInformation.find(id);
+		if (it != musicInformation.end()) {
 			musicScoreData = it->second;
 		}
 		else {
@@ -78,8 +78,8 @@ public:
 	MusicScoreData GetSampleMusicScoreData() {
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
-		auto it = musicScoreData_.find("HighwaySunset_Easy");
-		if (it != musicScoreData_.end()) {
+		auto it = musicInformation.find("HighwaySunset_Easy");
+		if (it != musicInformation.end()) {
 			musicScoreData = it->second;
 		}
 		else {
@@ -99,7 +99,7 @@ private:
 	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore/";
 
 	//各譜面情報
-	std::map<std::string,MusicScoreData> musicScoreData_ = {};
+	std::map<std::string,MusicScoreData> musicInformation = {};
 	
 };
 

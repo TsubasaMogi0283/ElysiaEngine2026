@@ -75,13 +75,13 @@ void ScoreDataManager::Load(const std::string& path) {
 		.fileName = MUSIC_FILE_NAME,
 	};
 	//挿入
-	musicNotesData.musicScoreData_ = MUSIC_INFORMATION;
+	musicNotesData.musicInformation = MUSIC_INFORMATION;
 	musicNotesData.fullFilePath_ = fullFilePath;
 	musicNotesData.handle = audio_->Load(MUSIC_FULL_FILE_PATH);
 	//ノーツの配置
 	Place(musicNotesData, deserialized);
 	//挿入
-	musicScoreData_.insert(make_pair(MUSIC_INFORMATION.id,musicNotesData));
+	musicInformation.insert(make_pair(MUSIC_INFORMATION.id,musicNotesData));
 
 }
 

@@ -63,6 +63,11 @@ public:
 
 private:
 	/// <summary>
+	/// ノーツの流れる処理
+	/// </summary>
+	void NoteFlowProcess();
+
+	/// <summary>
 	/// ポーズ処理
 	/// </summary>
 	void PauseProcess();
@@ -71,16 +76,18 @@ private:
 
 	//流れに関するのはX・Y軸しかないのでZは無し
 	const float_t JUDGEENT_POSITION_Y_ = -10.0f;
-	const std::array<Vector2, NoteLane::Place::Size> JUDGEENT_POSITION_ = {};
+	const std::array<Vector3, NoteLane::Place::Size> JUDGEENT_POSITION_ = {};
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
+	//初期位置
+	const float_t START_POSITION_X_ = 20.0f;
 
 private:
 	//楽曲情報
 	MusicInformation musicInformation_ = {};
 	//譜面情報
-	MusicScoreData musicScoreData_ = {};
+	MusicScoreData musicInformation = {};
 
 	//演奏中
 	bool isPlay_ = true;
