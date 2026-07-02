@@ -13,6 +13,7 @@
 #include <ScoreData/MusicScoreData.h>
 #include <ScoreData/MusicInformation.h>
 #include <Note/NoteJudgement.h>
+#include <Note/NormalTap/NormalTapNote.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -104,7 +105,10 @@ private:
 	//楽曲情報
 	MusicInformation musicInformation_ = {};
 	//譜面情報
-	MusicScoreData musicInformation = {};
+	MusicScoreData musicScoreData_ = {};
+
+	//オブジェクトプールで管理するための通常タップノーツのベクター
+	std::vector<std::shared_ptr<NormalTapNote>> normalTapNoteVector_ = {};
 
 	//演奏中
 	bool isPlay_ = true;
@@ -112,12 +116,11 @@ private:
 	bool isPause_ = false;
 	//再生時間
 	float_t musicTime_ = 0.0f;
-	//局の長さ
+	//楽曲の長さ
 	float_t musicLength_ = 0.0f;
 
 	//コンボのボーナス倍率
 	float_t comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
-
 
 	//ポーズから再開したときの時間
 	float_t pauseTime_ = PAUSE_TIME_;

@@ -27,17 +27,17 @@ void PlayMainScene::Initialize(){
 
 #ifdef _DEBUG
 	//譜面データを取得
-	musicInformation = mainScene_->GetGameManager()->GetScoreDataManager()->GetSampleMusicScoreData();
+	musicScoreData_ = mainScene_->GetGameManager()->GetScoreDataManager()->GetSampleMusicScoreData();
 #endif
 
 	//楽曲の再生
-	audio_->Play(musicInformation.handle, false);
-	musicLength_= audio_->GetAudioLength(musicInformation.handle);
+	audio_->Play(musicScoreData_.musicHandle, false);
+	musicLength_= audio_->GetAudioLength(musicScoreData_.musicHandle);
 }
 
 void PlayMainScene::Update(){
 	//再生時間を取得
-	musicTime_ = audio_->GetPlayCurrentTime(musicInformation.handle);
+	musicTime_ = audio_->GetPlayCurrentTime(musicScoreData_.musicHandle);
 
 	//プレイ中
 	if (isPlay_) {
@@ -54,7 +54,7 @@ void PlayMainScene::Update(){
 	}
 	else {
 		//楽曲停止
-		audio_->Stop(musicInformation.handle);
+		audio_->Stop(musicScoreData_.musicHandle);
 		//終了シーンへ
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;
@@ -77,8 +77,12 @@ void PlayMainScene::Update(){
 }
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
-	camera;
-	baseLight;
+	//通常ノーツの設定
+	for(const std::shared_ptr<NormalTapNote>& note : normalTapNoteVector_) {
+		if (note->GetIsUsed()) {
+			note->DrawObject3D(camera, baseLight);
+		}
+	}
 }
 
 void PlayMainScene::DrawSprite(){
@@ -90,8 +94,8 @@ void PlayMainScene::DrawSprite(){
 
 void PlayMainScene::NoteFlow(){
 	int32_t closestNoteIndex = -1;
-	for (size_t i = 0u; i < musicInformation.upInformation.size(); i++) {
-		NoteInformation& note = musicInformation.upInformation[i];
+	for (size_t i = 0u; i < musicScoreData_.upInformation.size(); i++) {
+		NoteInformation& note = musicScoreData_.upInformation[i];
 
 		//判定済みは処理せず次へ
 		if (note.isJudged && note.isProcessEnd) {
@@ -149,7 +153,7 @@ void PlayMainScene::NoteFlow(){
 	//近いノーツ判定
 	if (closestNoteIndex != -1) {
 		//近いノーツの情報を取得
-		NoteInformation& closestNote = musicInformation.upInformation[closestNoteIndex];
+		NoteInformation& closestNote = musicScoreData_.upInformation[closestNoteIndex];
 		//絶対値版
 		float_t absJudgementTime = std::abs(upLaneCondition.touchTime - closestNote.arriveLineTime);
 		//通常タップ専用
@@ -166,10 +170,8 @@ void PlayMainScene::NoteFlow(){
 				closestNote.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
-
 				//パーフェクトのスコアを加算
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
-
 			}
 			//Great用
 			else if (absJudgementTime >= NoteJudgement::Time::PERFECT &&
@@ -183,7 +185,7 @@ void PlayMainScene::NoteFlow(){
 				closestNote.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
-
+				//グレートのスコアを加算
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_ );
 			}
 			//Good用
@@ -198,7 +200,7 @@ void PlayMainScene::NoteFlow(){
 				closestNote.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
-				//グレートのスコアを加算
+				//グッドのスコアを加算
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 			}
 			//Miss用
@@ -223,12 +225,14 @@ void PlayMainScene::Pause(){
 			isRestart_ = true;
 		}
 		//再開処理
-		Restart();
+		if (isRestart_) {
+			Restart();
+		}
 	} 
 	else {
 		if (input_->IsTriggerKey(DIK_ESCAPE)) {
 			//ESCAPEでポーズ
-			audio_->Stop(musicInformation.handle);
+			audio_->Stop(musicScoreData_.musicHandle);
 			//ポーズ時間の設定
 			pauseTime_ = PAUSE_TIME_;
 			isPause_ = true;
@@ -237,21 +241,15 @@ void PlayMainScene::Pause(){
 }
 
 void PlayMainScene::Restart(){
+	//時間変化
+	pauseTime_ -= DELTA_TIME_;
 
-	if (isRestart_) {
-		//時間変化
-		pauseTime_ -= DELTA_TIME_;
-
-		//0になったら再開
-		if (pauseTime_ <= 0.0f) {
-			//解除
-			isPause_ = false;
-			isRestart_ = false;
-			//再開
-			audio_->Resume(musicInformation.handle);
-
-		}
+	//0になったら再開
+	if (pauseTime_ <= 0.0f) {
+		//解除
+		isPause_ = false;
+		isRestart_ = false;
+		//再開
+		audio_->Resume(musicScoreData_.musicHandle);
 	}
-	
 }
-

@@ -79,11 +79,11 @@ namespace Elysia {
 	private:
 
 		//関数用
-		D3D12_HEAP_PROPERTIES uploadHeapProperties_{};
-		D3D12_RESOURCE_DESC vertexResourceDesc_{};
+		D3D12_HEAP_PROPERTIES uploadHeapProperties_ = {};
+		D3D12_RESOURCE_DESC vertexResourceDesc_ = {};
 
 		//頂点バッファビューを作成する
-		D3D12_VERTEX_BUFFER_VIEW vertexBufferViewSphere_;
+		D3D12_VERTEX_BUFFER_VIEW vertexBufferView_ = {};
 
 		//初期化
 		//頂点データ

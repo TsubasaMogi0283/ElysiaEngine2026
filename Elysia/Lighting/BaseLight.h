@@ -29,7 +29,7 @@ struct BaseLight {
 
 #pragma region メンバ変数
 	//ライトの種類
-	uint8_t lightingType = LightingType::DirectionalLighting;
+	LightingType lightingType = LightingType::DirectionalLighting;
 	//ライトの色
 	Vector4 color = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 	//輝度

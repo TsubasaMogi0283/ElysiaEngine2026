@@ -5,6 +5,14 @@
 void NormalTapNote::Initialize(const uint32_t& modelHandle){
 	//モデルの生成
 	model_= Elysia::Model::Create(modelHandle);
+
+	//ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+	worldTransform_.scale.x = 0.4f;
+
+	//マテリアルの初期化
+	material_.Initialize();
+	material_.lightingKinds = LightingType::DirectionalLighting;
 }
 
 void NormalTapNote::Update(){

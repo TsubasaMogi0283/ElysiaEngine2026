@@ -197,7 +197,7 @@ void Elysia::Sprite::Draw(const uint32_t& textureHandle){
 	materialResource_->Map(0u, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = color_;
 	//ライティングしない
-	materialData_->lightingKinds = NoneLighting;
+	materialData_->lightingKinds = LightingType::NoneLighting;
 	materialData_->shininess = 0.0f;
 
 	Matrix4x4 uvTransformMatrix = Matrix4x4::MakeScaleMatrix(uvTransform_.scale);

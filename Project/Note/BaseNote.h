@@ -54,6 +54,19 @@ public:
 		this->worldTransform_.translate = position;
 	}
 
+	//使用状態を設定
+	inline void SetIsUsed(const bool& isUsed) {
+		this->isUsed_ = isUsed;
+	}
+
+	/// <summary>
+	/// 使用状態を取得
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsUsed()const {
+		return this->isUsed_;
+	}
+
 protected:
 	//モデル
 	std::unique_ptr<Elysia::Model>model_ = nullptr;
@@ -62,5 +75,7 @@ protected:
 	WorldTransform worldTransform_ = {};
 	//マテリアル
 	Material material_ = {};
+	//使用状態
+	bool isUsed_ = false;
 };
 

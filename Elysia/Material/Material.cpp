@@ -5,7 +5,7 @@ void Material::Initialize(){
 	//色
 	color = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f};
 	//ライティングの種類
-	lightingKinds = DirectionalLighting;
+	lightingKinds = LightingType::DirectionalLighting;
 	//UV行列
 	uvTransform= Matrix4x4::MakeIdentity4x4();
 	//輝度

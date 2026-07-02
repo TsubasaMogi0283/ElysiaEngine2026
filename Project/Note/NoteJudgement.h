@@ -61,13 +61,13 @@ namespace NoteJudgement {
 	/// </summary>
 	namespace Time {
 		//パーフェクトの判定時間
-		constexpr float_t PERFECT = 0.05f;
+		const float_t PERFECT = 0.05f;
 		//グレートの判定時間
-		constexpr float_t GREAT = 0.1f;
+		const float_t GREAT = 0.1f;
 		//グッドの判定時間
-		constexpr float_t GOOD = 0.15f;
+		const float_t GOOD = 0.15f;
 		//ミスの判定時間
-		constexpr float_t MISS = 0.2f;
+		const float_t MISS = 0.2f;
 	}
 
 	/// <summary>
@@ -75,11 +75,11 @@ namespace NoteJudgement {
 	/// </summary>
 	namespace BasicScore {
 		//パーフェクト
-		constexpr uint32_t PERFECT = 1000u;
+		const uint32_t PERFECT = 1000u;
 		//グレート
-		constexpr uint32_t GREAT = 500u;
+		const uint32_t GREAT = 500u;
 		//グッド
-		constexpr uint32_t GOOD = 200u;
+		const uint32_t GOOD = 200u;
 	}
 };
 
