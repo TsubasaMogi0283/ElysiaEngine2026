@@ -165,7 +165,7 @@ namespace Elysia {
 		/// 再開
 		/// </summary>
 		/// <param name="ハンドル名"></param>
-		void ResumeWave(const uint32_t& audioHandle);
+		void Resume(const uint32_t& audioHandle);
 
 
 		/// <summary>

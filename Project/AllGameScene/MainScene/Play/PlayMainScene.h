@@ -12,6 +12,7 @@
 #include <Note/BaseNote.h>
 #include <ScoreData/MusicScoreData.h>
 #include <ScoreData/MusicInformation.h>
+#include <Note/NoteJudgement.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -42,16 +43,6 @@ public:
 	void DrawObject3D(const Camera& camera, const BaseLight& baseLight)override;
 
 	/// <summary>
-	/// ポストエフェクト描画前
-	/// </summary>
-	void PreDrawPostEffect()override;
-
-	/// <summary>
-	/// ポストエフェクトの描画
-	/// </summary>
-	void DrawPostEffect()override;
-
-	/// <summary>
 	/// スプライト
 	/// </summary>
 	void DrawSprite()override;
@@ -65,12 +56,17 @@ private:
 	/// <summary>
 	/// ノーツの流れる処理
 	/// </summary>
-	void NoteFlowProcess();
+	void NoteFlow();
 
 	/// <summary>
 	/// ポーズ処理
 	/// </summary>
-	void PauseProcess();
+	void Pause();
+
+	/// <summary>
+	/// 再生の再開
+	/// </summary>
+	void Restart();
 
 private:
 
@@ -82,6 +78,27 @@ private:
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 	//初期位置
 	const float_t START_POSITION_X_ = 20.0f;
+	//初期のコンボボーナス倍率
+	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
+
+	//ポーズ時間
+	const float_t PAUSE_TIME_ = 3.0f;
+
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f/60.0f;
+private:
+
+	/// <summary>
+	/// レーンの状態
+	/// </summary>
+	struct LaneCondition{
+		//入力されたかどうか
+		bool isHit = false;
+		//ロングノーツが入力されたかどうか
+		bool isHitLongNote = false;
+		//タッチ時間
+		float_t touchTime = 0.0f;
+	};
 
 private:
 	//楽曲情報
@@ -97,4 +114,20 @@ private:
 	float_t musicTime_ = 0.0f;
 	//局の長さ
 	float_t musicLength_ = 0.0f;
+
+	//コンボのボーナス倍率
+	float_t comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
+
+
+	//ポーズから再開したときの時間
+	float_t pauseTime_ = PAUSE_TIME_;
+	//再開するかどうか
+	bool isRestart_ = false;
+
+	//レーンの状態
+	LaneCondition upLaneCondition = {};
+	LaneCondition downLaneCondition = {};
+
+	//記録
+	NoteJudgement::Record record_ = {};
 };

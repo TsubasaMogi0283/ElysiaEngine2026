@@ -33,7 +33,7 @@ namespace NoteJudgement {
 		uint8_t total = 0u;
 
 		//スコア
-		int32_t score = 0;
+		uint32_t score = 0u;
 
 	};
 
@@ -61,13 +61,25 @@ namespace NoteJudgement {
 	/// </summary>
 	namespace Time {
 		//パーフェクトの判定時間
-		const float_t PERFECT_TAP = 0.05f;
+		constexpr float_t PERFECT = 0.05f;
 		//グレートの判定時間
-		const float_t GREAT_TAP = 0.1f;
+		constexpr float_t GREAT = 0.1f;
 		//グッドの判定時間
-		const float_t GOOD_TAP = 0.15f;
+		constexpr float_t GOOD = 0.15f;
 		//ミスの判定時間
-		const float_t MISS_TAP = 0.2f;
+		constexpr float_t MISS = 0.2f;
+	}
+
+	/// <summary>
+	/// 基本スコア
+	/// </summary>
+	namespace BasicScore {
+		//パーフェクト
+		constexpr uint32_t PERFECT = 1000u;
+		//グレート
+		constexpr uint32_t GREAT = 500u;
+		//グッド
+		constexpr uint32_t GOOD = 200u;
 	}
 };
 

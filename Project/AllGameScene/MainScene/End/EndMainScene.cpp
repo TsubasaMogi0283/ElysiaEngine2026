@@ -30,14 +30,6 @@ void EndMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight
 	camera;
 }
 
-void EndMainScene::PreDrawPostEffect(){
-
-}
-
-void EndMainScene::DrawPostEffect(){
-
-}
-
 void EndMainScene::DrawSprite(){
 
 }

@@ -88,16 +88,6 @@ public:
 	virtual void DrawObject3D(const Camera& camera,const BaseLight& baseLight)=0;
 
 	/// <summary>
-	/// ポストエフェクト描画前
-	/// </summary>
-	virtual void PreDrawPostEffect() = 0;
-
-	/// <summary>
-	/// ポストエフェクトの描画
-	/// </summary>
-	virtual void DrawPostEffect() = 0;
-
-	/// <summary>
 	/// スプライト
 	/// </summary>
 	virtual void DrawSprite() = 0;

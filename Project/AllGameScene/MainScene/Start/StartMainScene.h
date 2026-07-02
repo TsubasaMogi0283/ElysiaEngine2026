@@ -37,16 +37,6 @@ public:
 	void DrawObject3D(const Camera& camera, const BaseLight& baseLight)override;
 
 	/// <summary>
-	/// ポストエフェクト描画前
-	/// </summary>
-	void PreDrawPostEffect()override;
-
-	/// <summary>
-	/// ポストエフェクトの描画
-	/// </summary>
-	void DrawPostEffect()override;
-
-	/// <summary>
 	/// スプライト
 	/// </summary>
 	void DrawSprite()override;

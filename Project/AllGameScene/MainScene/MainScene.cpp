@@ -85,13 +85,11 @@ void MainScene::DrawObject3D(){
 void MainScene::PreDrawPostEffect(){
 	
 	//ポストエフェクト描画前処理
-	baseMainScene_->PreDrawPostEffect();
 	backTexture_->PreDraw();
 }
 
 void MainScene::DrawPostEffect(){
 	//ポストエフェクト描画処理
-	baseMainScene_->DrawPostEffect();
 	backTexture_->Draw();
 }
 
@@ -117,7 +115,7 @@ void MainScene::GenerateNotes(){
 		//ノーツ間隔(1小節4拍)
 		float_t noteInterval = (beatDuration * 4.0f) / bar.notesLane.size();
 		//長さ
-		uint8_t noteLength = static_cast<uint8_t>(bar.notesLane.size());
+		uint8_t length = static_cast<uint8_t>(bar.notesLane.size());
 
 		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
 			const auto& note = bar.notesLane[i];
@@ -135,7 +133,7 @@ void MainScene::GenerateNotes(){
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
-					.noteLength = noteLength,
+					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,
@@ -163,7 +161,7 @@ void MainScene::GenerateNotes(){
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
-					.noteLength = noteLength,
+					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,
@@ -194,7 +192,7 @@ void MainScene::GenerateNotes(){
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
-					.noteLength = noteLength,
+					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,
@@ -223,7 +221,7 @@ void MainScene::GenerateNotes(){
 				//ノーツ情報を設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
-					.noteLength = noteLength,
+					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.initialPosition = initialPosition,

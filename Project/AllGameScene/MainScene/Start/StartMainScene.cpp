@@ -36,14 +36,6 @@ void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLig
 	baseLight;
 }
 
-void StartMainScene::PreDrawPostEffect(){
-
-}
-
-void StartMainScene::DrawPostEffect(){
-
-}
-
 void StartMainScene::DrawSprite(){
 
 }

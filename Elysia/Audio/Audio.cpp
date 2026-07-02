@@ -434,7 +434,7 @@ void Elysia::Audio::PauseWave(const uint32_t& audioHandle) {
 	assert(SUCCEEDED(hResult));
 }
 
-void Elysia::Audio::ResumeWave(const uint32_t& audioHandle) {
+void Elysia::Audio::Resume(const uint32_t& audioHandle) {
 	//ファイルキーの取得
 	std::string fileKey = GetAudioInformationKey(audioHandle);
 
