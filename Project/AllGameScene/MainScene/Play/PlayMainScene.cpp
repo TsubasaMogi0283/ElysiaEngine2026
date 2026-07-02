@@ -43,7 +43,9 @@ void PlayMainScene::Update(){
 	if (isPlay_) {
 
 		//譜面の流れる処理
-		NoteFlow();
+		NoteFlow(musicScoreData_.upInformation);
+		NoteFlow(musicScoreData_.downInformation);
+
 		//ポーズ処理
 		Pause();
 
@@ -92,10 +94,10 @@ void PlayMainScene::DrawSprite(){
 	}
 }
 
-void PlayMainScene::NoteFlow(){
+void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations){
 	int32_t closestNoteIndex = -1;
-	for (size_t i = 0u; i < musicScoreData_.upInformation.size(); i++) {
-		NoteInformation& note = musicScoreData_.upInformation[i];
+	for (size_t i = 0u; i < noteInformations.size(); i++) {
+		NoteInformation& note = noteInformations[i];
 
 		//判定済みは処理せず次へ
 		if (note.isJudged && note.isProcessEnd) {
@@ -153,7 +155,7 @@ void PlayMainScene::NoteFlow(){
 	//近いノーツ判定
 	if (closestNoteIndex != -1) {
 		//近いノーツの情報を取得
-		NoteInformation& closestNote = musicScoreData_.upInformation[closestNoteIndex];
+		NoteInformation& closestNote = noteInformations[closestNoteIndex];
 		//絶対値版
 		float_t absJudgementTime = std::abs(upLaneCondition.touchTime - closestNote.arriveLineTime);
 		//通常タップ専用

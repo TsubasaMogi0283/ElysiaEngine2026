@@ -57,7 +57,8 @@ private:
 	/// <summary>
 	/// ノーツの流れる処理
 	/// </summary>
-	void NoteFlow();
+	/// <param name="noteInformations"></param>
+	void NoteFlow(std::vector<NoteInformation>& noteInformations);
 
 	/// <summary>
 	/// ポーズ処理
