@@ -119,7 +119,8 @@ protected:
 	Elysia::Input* input_ = nullptr;
 	//オーディオ
 	Elysia::Audio* audio_ = nullptr;
-
+	//モデル管理クラス
+	Elysia::ModelManager* modelManager_ = nullptr;
 protected:
 	//処理が終わったかどうか
 	bool isEnd_ = false;

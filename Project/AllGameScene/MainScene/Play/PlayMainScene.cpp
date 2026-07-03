@@ -4,10 +4,11 @@
 
 #include <Input.h>
 #include <Audio.h>
+#include <ModelManager.h>
 #include <MainScene/MainScene.h>
 #include <GameManager.h>
 #include <MainScene/End/EndMainScene.h>
-#include <Note/NormalTap/NormalTapNote.h>
+
 #include <Note/Long/LongNote.h>
 
 PlayMainScene::PlayMainScene(){
@@ -15,7 +16,8 @@ PlayMainScene::PlayMainScene(){
 	input_ = Elysia::Input::GetInstance();
 	//オーディオ
 	audio_ = Elysia::Audio::GetInstance();
-
+	//モデル管理クラス
+	modelManager_ = Elysia::ModelManager::GetInstance();
 }
 
 void PlayMainScene::Initialize(){
@@ -29,7 +31,18 @@ void PlayMainScene::Initialize(){
 	//譜面データを取得
 	musicScoreData_ = mainScene_->GetGameManager()->GetScoreDataManager()->GetSampleMusicScoreData();
 #endif
+	//ノーマルタップノーツのモデルを読み込む
+	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube","Cube.obj");
 
+	//通常ノーツの生成
+	for (uint32_t i = 0u;i < NORMAL_NOTEMAX_SIZE_;i++) {
+		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
+		//初期化
+		normalTapNote->Initialize(normalNoteModelHandle);
+		//挿入
+		normalTapNoteVector_.push_back(std::move(normalTapNote));
+	}
+	
 	//楽曲の再生
 	audio_->Play(musicScoreData_.musicHandle, false);
 	musicLength_= audio_->GetAudioLength(musicScoreData_.musicHandle);
@@ -43,8 +56,8 @@ void PlayMainScene::Update(){
 	if (isPlay_) {
 
 		//譜面の流れる処理
-		NoteFlow(musicScoreData_.upInformation);
-		NoteFlow(musicScoreData_.downInformation);
+		NoteFlow(musicScoreData_.upInformation,upLaneCondition);
+		NoteFlow(musicScoreData_.downInformation,downLaneCondition);
 
 		//ポーズ処理
 		Pause();
@@ -80,7 +93,7 @@ void PlayMainScene::Update(){
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	//通常ノーツの設定
-	for(const std::shared_ptr<NormalTapNote>& note : normalTapNoteVector_) {
+	for(const std::unique_ptr<NormalTapNote>& note : normalTapNoteVector_) {
 		if (note->GetIsUsed()) {
 			note->DrawObject3D(camera, baseLight);
 		}
@@ -94,7 +107,7 @@ void PlayMainScene::DrawSprite(){
 	}
 }
 
-void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations){
+void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition){
 	int32_t closestNoteIndex = -1;
 	for (size_t i = 0u; i < noteInformations.size(); i++) {
 		NoteInformation& note = noteInformations[i];
@@ -111,12 +124,25 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations){
 			}
 			//動きの割合
 			note.moveRatio = SingleCalculation::InverseLerp(note.startMoveTime, note.arriveLineTime, musicTime_);
-			//座標の計算
-			note.currentPosition.x = SingleCalculation::Lerp(START_POSITION_X_, JUDGEENT_POSITION_[NoteLane::Place::Up].x, note.moveRatio);
-			note.currentPosition.y = note.initialPosition.y;
-			note.currentPosition.z = 0.0f;
-			//座標の設定
+			
 
+			//通常ノーツの設定
+			for (uint32_t i = 0u; i < normalTapNoteVector_.size(); i++) {
+				//未使用時
+				if (!normalTapNoteVector_[i]->GetIsUsed()) {
+					//使用中にする
+					if (note.moveRatio >= 0.0f ) {
+						normalTapNoteVector_[i]->SetIsUsed(true);
+					}
+				}
+				//使用時
+				else {
+					//比率の割合を設定
+					normalTapNoteVector_[i]->SetRatio(note.moveRatio);
+					//更新
+					normalTapNoteVector_[i]->Update();
+				}	
+			}
 		}
 		//タップ系
 		if (note.type == NoteType::NormalTap ||
@@ -125,7 +151,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations){
 			note.type == NoteType::TranceGate8LongStart ||
 			note.type == NoteType::TranceGate16LongStart) {
 			//入力されたとき
-			if (upLaneCondition.isHit) {
+			if (laneCondition.isHit) {
 				//最も近いノーツのインデックスを記録
 				closestNoteIndex = static_cast<int32_t>(i);
 				break;
@@ -145,7 +171,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations){
 		//ロング終点
 		else if (note.type == NoteType::LongEnd) {
 			if (note.moveRatio >= 1.0f) {
-				upLaneCondition.isHitLongNote = false;
+				laneCondition.isHitLongNote = false;
 				note.isJudged = true;
 				note.isProcessEnd = true;
 			}
@@ -157,7 +183,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations){
 		//近いノーツの情報を取得
 		NoteInformation& closestNote = noteInformations[closestNoteIndex];
 		//絶対値版
-		float_t absJudgementTime = std::abs(upLaneCondition.touchTime - closestNote.arriveLineTime);
+		float_t absJudgementTime = std::abs(laneCondition.touchTime - closestNote.arriveLineTime);
 		//通常タップ専用
 		if (closestNote.type == NoteType::NormalTap) {
 			//Perfect用

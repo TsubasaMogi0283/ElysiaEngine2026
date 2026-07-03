@@ -25,7 +25,6 @@ void MainScene::Initialize(){
 	musicInformation_ = gameManager_->GetMusicInformation();
 	musicInformation = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 	
-	//この2つスレッドでできるんじゃない？
 	//ノーツの生成
 	GenerateNotes();
 	//ハンドルの取得
@@ -51,8 +50,6 @@ void MainScene::Initialize(){
 }
 
 void MainScene::Update(){
-
-	
 
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
@@ -102,12 +99,7 @@ void MainScene::GenerateNotes(){
 	//合計の時間
 	float_t totalTime = 0.0f;
 	//開始時間の設定
-	float_t startTime = START_OFFSET_TIME_ - hiSpeed_;
-
-	//初期座標
-	Vector3 initialPosition = { .x = INITIAL_POSITION_X_ ,.y = 0.0f,.z = LANE_POSITION_Z_ };
-	//判定座標
-	Vector3 judgementPosition = { .x = JUDGEMENT_POSITION_X_ ,.y = 0.0f,.z = LANE_POSITION_Z_ };
+	float_t startTime = START_OFFSET_TIME_ * hiSpeed_;
 	//ノーツの配置
 	for (const NoteBarInformation& bar : musicInformation.newNotesData) {
 		//1拍の秒数
@@ -118,16 +110,11 @@ void MainScene::GenerateNotes(){
 		uint8_t length = static_cast<uint8_t>(bar.notesLane.size());
 
 		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
-			const auto& note = bar.notesLane[i];
+			const NoteLane::Information& note = bar.notesLane[i];
 			
 #pragma region 通常タッチ
 			//上
 			if (note.upNote == NoteType::NormalTap) {
-				//初期Y座標を設定
-				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
-				//判定Y座標を設定
-				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
-
 				//ノーツの数を増やす
 				musicInformation.totalNote_++;
 				//ノーツ情報の設定
@@ -136,10 +123,7 @@ void MainScene::GenerateNotes(){
 					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.initialPosition = initialPosition,
-					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
-					.isDisplay = true,
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
@@ -151,11 +135,6 @@ void MainScene::GenerateNotes(){
 			}
 			//下
 			if (note.downNote == NoteType::NormalTap) {
-				//初期Y座標を設定
-				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
-				//判定Y座標を設定
-				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
-
 				//ノーツの数を増やす
 				musicInformation.totalNote_++;
 				//ノーツ情報の設定
@@ -164,10 +143,7 @@ void MainScene::GenerateNotes(){
 					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.initialPosition = initialPosition,
-					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
-					.isDisplay = true,
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
@@ -182,11 +158,6 @@ void MainScene::GenerateNotes(){
 #pragma region ロング終点
 			//上
 			if (note.upNote == NoteType::LongEnd) {
-				//初期Y座標を設定
-				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
-				//判定Y座標を設定
-				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Up];
-
 				//ノーツの数を増やす
 				musicInformation.totalNote_++;
 				//ノーツ情報の設定
@@ -195,27 +166,19 @@ void MainScene::GenerateNotes(){
 					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.initialPosition = initialPosition,
-					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
-					.isDisplay = true,
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.note = nullptr
 				};
-
+				//挿入
 				musicInformation.upInformation.push_back(noteInformation);
 
 			}
 			
 			//下
 			if (note.downNote == NoteType::LongEnd) {
-				//初期Y座標を設定
-				initialPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
-				//判定Y座標を設定
-				judgementPosition.y = LANE_POSITION_Y_[NoteLane::Place::Down];
-
 				//ノーツの数を増やす
 				musicInformation.totalNote_++;
 				//ノーツ情報を設定
@@ -224,10 +187,7 @@ void MainScene::GenerateNotes(){
 					.length = length,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.initialPosition = initialPosition,
-					.currentPosition = initialPosition,
 					.moveRatio = 0.0f,
-					.isDisplay = true,
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,

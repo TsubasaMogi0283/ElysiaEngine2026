@@ -54,11 +54,26 @@ public:
 	~PlayMainScene()override = default;
 
 private:
+
+	/// <summary>
+	/// レーンの状態
+	/// </summary>
+	struct LaneCondition {
+		//入力されたかどうか
+		bool isHit = false;
+		//ロングノーツが入力されたかどうか
+		bool isHitLongNote = false;
+		//タッチ時間
+		float_t touchTime = 0.0f;
+	};
+
+private:
 	/// <summary>
 	/// ノーツの流れる処理
 	/// </summary>
 	/// <param name="noteInformations"></param>
-	void NoteFlow(std::vector<NoteInformation>& noteInformations);
+	/// <param name="laneCondition"></param>
+	void NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition);
 
 	/// <summary>
 	/// ポーズ処理
@@ -71,15 +86,21 @@ private:
 	void Restart();
 
 private:
+	
+	//判定のX座標
+	const float_t JUDGEMENT_POSITION_X_ = -10.0f;
+	//初期のX座標
+	const float_t INITIAL_POSITION_X_ = 20.0f;
+	//レーンのY座標
+	const std::array<float_t, NoteLane::Place::Size> LANE_POSITION_Y_ = { 5.0f,-5.0f };
+	//レーンのZ座標
+	const float_t LANE_POSITION_Z_ = 0.0f;
 
-	//流れに関するのはX・Y軸しかないのでZは無し
-	const float_t JUDGEENT_POSITION_Y_ = -10.0f;
-	const std::array<Vector3, NoteLane::Place::Size> JUDGEENT_POSITION_ = {};
+
+private:
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
-	//初期位置
-	const float_t START_POSITION_X_ = 20.0f;
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
@@ -88,19 +109,11 @@ private:
 
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f/60.0f;
-private:
 
-	/// <summary>
-	/// レーンの状態
-	/// </summary>
-	struct LaneCondition{
-		//入力されたかどうか
-		bool isHit = false;
-		//ロングノーツが入力されたかどうか
-		bool isHitLongNote = false;
-		//タッチ時間
-		float_t touchTime = 0.0f;
-	};
+	//ノーマルタップノーツ格納数の最大サイズ
+	const uint32_t NORMAL_NOTEMAX_SIZE_ = 64u;
+
+
 
 private:
 	//楽曲情報
@@ -109,7 +122,7 @@ private:
 	MusicScoreData musicScoreData_ = {};
 
 	//オブジェクトプールで管理するための通常タップノーツのベクター
-	std::vector<std::shared_ptr<NormalTapNote>> normalTapNoteVector_ = {};
+	std::vector<std::unique_ptr<NormalTapNote>> normalTapNoteVector_ = {};
 
 	//演奏中
 	bool isPlay_ = true;

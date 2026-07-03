@@ -178,14 +178,6 @@ private:
 private:
 	//開始オフセット
 	const float_t START_OFFSET_TIME_ = 2.0f;
-	//判定のX座標
-	const float_t JUDGEMENT_POSITION_X_ = -10.0f;
-	//初期のX座標
-	const float_t INITIAL_POSITION_X_ = 40.0f;
-	//レーンのY座標
-	const std::array<float_t, NoteLane::Place::Size> LANE_POSITION_Y_ = { 10.0f,-10.0f };
-	//レーンのZ座標
-	const float_t LANE_POSITION_Z_ = 0.0f;
 
 private:
 	//背景

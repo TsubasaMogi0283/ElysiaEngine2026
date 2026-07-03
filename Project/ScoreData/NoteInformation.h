@@ -25,15 +25,9 @@ struct NoteInformation {
 	float_t startMoveTime = 0.0f;
 	//到着時間
 	float_t arriveLineTime = 0.0f;
-	//初期の座標
-	Vector3 initialPosition = {};
-	//現在の座標
-	Vector3 currentPosition = {};
 	//動いているときの比率
 	float_t moveRatio = 0.0f;
 
-	//表示の設定
-	bool isDisplay = false;
 	//処理が終わったかどうか
 	bool isProcessEnd = false;;
 	//判定
@@ -42,7 +36,7 @@ struct NoteInformation {
 	bool isJudged = false;
 
 	//ノーツ
-	//オブジェクトプールでやるからいずれ消すかも
+	//オブジェクトプールでやるからいずれ消す
 	std::shared_ptr<BaseNote> note = nullptr;
 
 };

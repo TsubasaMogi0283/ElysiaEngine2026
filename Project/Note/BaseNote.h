@@ -50,7 +50,7 @@ public:
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position"></param>
-	void SetPosition(const Vector3& position) {
+	inline void SetPosition(const Vector3& position) {
 		this->worldTransform_.translate = position;
 	}
 
@@ -63,8 +63,40 @@ public:
 	/// 使用状態を取得
 	/// </summary>
 	/// <returns></returns>
-	bool GetIsUsed()const {
-		return this->isUsed_;
+	inline bool GetIsUsed()const {
+		return isUsed_;
+	}
+
+	/// <summary>
+	/// 移動の比率を設定
+	/// </summary>
+	/// <param name="ratio"></param>
+	inline void SetRatio(const float_t& ratio) {
+		this->ratio_ = ratio;
+	}
+
+	/// <summary>
+	/// 移動の比率を取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetRatio()const {
+		return ratio_;
+	}
+
+	/// <summary>
+	/// 初期座標
+	/// </summary>
+	/// <param name="position"></param>
+	inline void SetInitialPosition(const Vector3& position) {
+		this->initialPosition_ = position;
+	}
+
+	/// <summary>
+	/// 判定の座標を設定
+	/// </summary>
+	/// <param name="position"></param>
+	inline void SetJudgmentPosition(const Vector3& position) {
+		this->judgmentPosition_ = position;
 	}
 
 protected:
@@ -77,5 +109,13 @@ protected:
 	Material material_ = {};
 	//使用状態
 	bool isUsed_ = false;
+	//動きの比率
+	float_t ratio_ = 0.0f;
+
+	//初期座標
+	Vector3 initialPosition_ = {};
+	//判定座標
+	Vector3 judgmentPosition_ = {};
+
 };
 
