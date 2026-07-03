@@ -113,9 +113,9 @@ protected:
 	float_t ratio_ = 0.0f;
 
 	//初期座標
-	Vector3 initialPosition_ = {};
+	float_t initialPositionX_ = 0.0f;
 	//判定座標
-	Vector3 judgmentPosition_ = {};
+	float_t judgmentPositionX_ = 0.0f;
 
 };
 

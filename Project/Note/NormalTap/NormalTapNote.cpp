@@ -18,7 +18,7 @@ void NormalTapNote::Initialize(const uint32_t& modelHandle){
 void NormalTapNote::Update(){
 
 	//座標の計算
-	worldTransform_.translate.x = SingleCalculation::Lerp(INITIAL_POSITION_X_, JUDGEMENT_POSITION_X_, ratio_);
+	worldTransform_.translate.x = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
 	worldTransform_.translate.y = 0.0f;
 	worldTransform_.translate.z = 0.0f;
 	//更新
