@@ -24,8 +24,7 @@ void PlayMainScene::Initialize(){
 	//メインシーンの空チェック
 	assert(mainScene_);
 
-	//楽曲情報を取得
-	musicInformation_ = mainScene_->GetGameManager()->GetMusicInformation();
+	
 
 #ifdef _DEBUG
 	//譜面データを取得
@@ -40,7 +39,7 @@ void PlayMainScene::Initialize(){
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
 		//挿入
-		normalTapNoteVector_.push_back(std::move(normalTapNote));
+		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
 	
 	//楽曲の再生
@@ -55,12 +54,22 @@ void PlayMainScene::Update(){
 	//プレイ中
 	if (isPlay_) {
 
+		//上
+		if (input_->IsTriggerKey(DIK_R)||input_->IsTriggerKey(DIK_I)) {
+			upLaneCondition.isHit = true;
+		}
+		//下
+		if (input_->IsTriggerKey(DIK_F) || input_->IsTriggerKey(DIK_J)) {
+			downLaneCondition.isHit = true;
+		}
+
 		//譜面の流れる処理
 		NoteFlow(musicScoreData_.upInformation,upLaneCondition);
 		NoteFlow(musicScoreData_.downInformation,downLaneCondition);
 
 		//ポーズ処理
 		Pause();
+
 
 		//楽曲を再生し終わったとき
 		if (musicLength_ < musicTime_) {
@@ -93,10 +102,12 @@ void PlayMainScene::Update(){
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	//通常ノーツの設定
-	for(const std::unique_ptr<NormalTapNote>& note : normalTapNoteVector_) {
+	for(const std::unique_ptr<NormalTapNote>& note : normalTapNoteArray_) {
 		if (note->GetIsUsed()) {
-			note->DrawObject3D(camera, baseLight);
+			//note->DrawObject3D(camera, baseLight);
 		}
+
+		note->DrawObject3D(camera, baseLight);
 	}
 }
 
@@ -119,28 +130,32 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 		//タップ用
 		if (note.type == NoteType::NormalTap) {
+			//まだ動き始める時間になっていないので処理をしない
 			if (note.startMoveTime > musicTime_) {
 				break;
 			}
 			//動きの割合
 			note.moveRatio = SingleCalculation::InverseLerp(note.startMoveTime, note.arriveLineTime, musicTime_);
-			
-
 			//通常ノーツの設定
-			for (uint32_t i = 0u; i < normalTapNoteVector_.size(); i++) {
+			for (uint32_t j = 0u; j < normalTapNoteArray_.size(); j++) {
 				//未使用時
-				if (!normalTapNoteVector_[i]->GetIsUsed()) {
+				if (!normalTapNoteArray_[j]->GetIsUsed()) {
 					//使用中にする
 					if (note.moveRatio >= 0.0f ) {
-						normalTapNoteVector_[i]->SetIsUsed(true);
+						//開始時間を設定
+						normalTapNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						//到着時間を設定
+						normalTapNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						//使用中に設定
+						normalTapNoteArray_[j]->SetIsUsed(true);
 					}
 				}
 				//使用時
 				else {
 					//比率の割合を設定
-					normalTapNoteVector_[i]->SetRatio(note.moveRatio);
+					normalTapNoteArray_[j]->SetRatio(note.moveRatio);
 					//更新
-					normalTapNoteVector_[i]->Update();
+					normalTapNoteArray_[j]->Update();
 				}	
 			}
 		}

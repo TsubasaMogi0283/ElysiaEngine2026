@@ -23,7 +23,11 @@ void MainScene::Initialize(){
 
 	//楽曲譜面情報を取得
 	musicInformation_ = gameManager_->GetMusicInformation();
+#ifdef _DEBUG
 	musicInformation = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
+
+#endif // _DEBUG
+
 	
 	//ノーツの生成
 	GenerateNotes();
@@ -32,8 +36,7 @@ void MainScene::Initialize(){
 
 	//カメラの初期化
 	camera_.Initialize();
-	camera_.rotate.x = std::numbers::pi_v<float_t> / 6.0f;
-	camera_.translate = { .x = 0.0f,.y = 21.0f,.z = -40.0f };
+	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -60.0f };
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
@@ -74,7 +77,7 @@ void MainScene::Update(){
 void MainScene::DrawObject3D(){
 	//オブジェクトの描画
 	//レベルエディタ  
-	levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
+	//levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
 	baseMainScene_->DrawObject3D(camera_,directionalLight_);
 
 }
