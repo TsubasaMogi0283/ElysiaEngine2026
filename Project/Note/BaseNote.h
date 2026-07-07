@@ -117,6 +117,28 @@ public:
 	inline void SetArriveLineTime(const float_t& time) {
 		this->arriveLineTime_ = time;
 	}
+
+
+#ifdef _DEBUG
+	
+	/// <summary>
+	/// 移動開始時間の取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetStartMoveTime()const {
+		return startMoveTime_;
+	}
+
+	/// <summary>
+	/// 到達時間の取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetArriveLineTime()const {
+		return arriveLineTime_;
+	}
+#endif // _DEBUG
+
+
 protected:
 	//モデル
 	std::unique_ptr<Elysia::Model>model_ = nullptr;

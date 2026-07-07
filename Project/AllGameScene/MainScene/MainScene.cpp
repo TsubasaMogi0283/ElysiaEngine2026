@@ -124,6 +124,7 @@ void MainScene::GenerateNotes(){
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.length = length,
+					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
@@ -144,6 +145,7 @@ void MainScene::GenerateNotes(){
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.length = length,
+					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
@@ -167,6 +169,7 @@ void MainScene::GenerateNotes(){
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.length = length,
+					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
@@ -188,6 +191,7 @@ void MainScene::GenerateNotes(){
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
 					.length = length,
+					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,

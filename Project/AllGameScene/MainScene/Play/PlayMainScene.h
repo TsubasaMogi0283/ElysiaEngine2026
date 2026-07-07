@@ -81,7 +81,7 @@ private:
 	/// <param name="noteInformation"></param>
 	/// <param name="laneCondition"></param>
 	/// <param name="closestNoteIndex"></param>
-	void Judge(NoteInformation& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex = -1);
+	void Judge(std::vector<NoteInformation>& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex);
 
 	/// <summary>
 	/// ポーズ処理
@@ -119,7 +119,7 @@ private:
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 
 	//ノーマルタップノーツ格納数の最大サイズ
-	static const uint32_t NORMAL_NOTEMAX_SIZE_ = 32u;
+	static const uint32_t NORMAL_NOTEMAX_SIZE_ = 16u;
 
 
 
