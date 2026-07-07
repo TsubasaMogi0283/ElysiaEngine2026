@@ -32,5 +32,6 @@ struct MusicScoreData {
 	uint16_t totalNote_ = 0u;
 
 	//1小節ごとのデータ
+	//ScoreDataManagerで譜面を読み込むときに使用する
 	std::vector<NoteBarInformation> newNotesData = {};
 };

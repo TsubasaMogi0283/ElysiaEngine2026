@@ -140,7 +140,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	inline MusicScoreData GetScoreData()const {
-		return musicInformation;
+		return musicScoreData_;
 	}
 
 	/// <summary>
@@ -192,7 +192,7 @@ private:
 	//楽曲情報
 	MusicInformation musicInformation_ = {};
 	//譜面データ
-	MusicScoreData musicInformation = {};
+	MusicScoreData musicScoreData_ = {};
 	//ハイスピ
 	float_t hiSpeed_ = 5.0f;
 

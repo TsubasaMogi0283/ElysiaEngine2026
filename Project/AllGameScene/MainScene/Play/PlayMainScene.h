@@ -76,6 +76,14 @@ private:
 	void NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition);
 
 	/// <summary>
+	/// 判定
+	/// </summary>
+	/// <param name="noteInformation"></param>
+	/// <param name="laneCondition"></param>
+	/// <param name="closestNoteIndex"></param>
+	void Judge(NoteInformation& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex = -1);
+
+	/// <summary>
 	/// ポーズ処理
 	/// </summary>
 	void Pause();

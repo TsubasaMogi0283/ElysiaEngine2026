@@ -24,12 +24,8 @@ void PlayMainScene::Initialize(){
 	//メインシーンの空チェック
 	assert(mainScene_);
 
-	
-
-#ifdef _DEBUG
 	//譜面データを取得
-	musicScoreData_ = mainScene_->GetGameManager()->GetScoreDataManager()->GetSampleMusicScoreData();
-#endif
+	musicScoreData_ = mainScene_->GetScoreData();
 	//ノーマルタップノーツのモデルを読み込む
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube","Cube.obj");
 
@@ -192,25 +188,29 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			}
 		}
 	}
+	//判定
+	Judge(noteInformations[closestNoteIndex], laneCondition,closestNoteIndex);
 
-	//近いノーツ判定
+	
+}
+
+void PlayMainScene::Judge(NoteInformation& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex = -1){
+	//近いノーツを判定
 	if (closestNoteIndex != -1) {
-		//近いノーツの情報を取得
-		NoteInformation& closestNote = noteInformations[closestNoteIndex];
 		//絶対値版
-		float_t absJudgementTime = std::abs(laneCondition.touchTime - closestNote.arriveLineTime);
+		float_t absJudgementTime = std::abs(laneCondition.touchTime - noteInformation.arriveLineTime);
 		//通常タップ専用
-		if (closestNote.type == NoteType::NormalTap) {
+		if (noteInformation.type == NoteType::NormalTap) {
 			//Perfect用
 			if (absJudgementTime >= 0.0f &&
 				absJudgementTime < NoteJudgement::Time::PERFECT) {
-				
+
 				//Perfectの値を増やす
 				record_.perfect++;
-				closestNote.judgement = NoteJudgement::Selection::Perfect;
+				noteInformation.judgement = NoteJudgement::Selection::Perfect;
 				//判定が確定したらフラグを立てる
-				closestNote.isJudged = true;
-				closestNote.isProcessEnd = true;
+				noteInformation.isJudged = true;
+				noteInformation.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
 				//パーフェクトのスコアを加算
@@ -222,14 +222,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//効果音を鳴らす
 
 				record_.great++;
-				closestNote.judgement = NoteJudgement::Selection::Great;
+				noteInformation.judgement = NoteJudgement::Selection::Great;
 				//判定が確定したらフラグを立てる
-				closestNote.isJudged = true;
-				closestNote.isProcessEnd = true;
+				noteInformation.isJudged = true;
+				noteInformation.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
 				//グレートのスコアを加算
-				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_ );
+				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 			}
 			//Good用
 			else if (absJudgementTime >= NoteJudgement::Time::GREAT &&
@@ -237,10 +237,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//効果音を鳴らす
 
 				record_.good++;
-				closestNote.judgement = NoteJudgement::Selection::Good;
+				noteInformation.judgement = NoteJudgement::Selection::Good;
 				// 判定が確定したらフラグを立てる
-				closestNote.isJudged = true;
-				closestNote.isProcessEnd = true;
+				noteInformation.isJudged = true;
+				noteInformation.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
 				//グッドのスコアを加算
@@ -250,10 +250,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			else if (absJudgementTime >= NoteJudgement::Time::GOOD &&
 				absJudgementTime < NoteJudgement::Time::MISS) {
 				record_.miss++;
-				closestNote.judgement = NoteJudgement::Selection::Miss;
+				noteInformation.judgement = NoteJudgement::Selection::Miss;
 				// 判定が確定したらフラグを立てる
-				closestNote.isJudged = true;
-				closestNote.isProcessEnd = true;
+				noteInformation.isJudged = true;
+				noteInformation.isProcessEnd = true;
 				//コンボを0に戻す
 				record_.combo = 0u;
 				comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;

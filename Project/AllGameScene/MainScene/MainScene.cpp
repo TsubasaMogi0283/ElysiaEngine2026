@@ -24,7 +24,7 @@ void MainScene::Initialize(){
 	//楽曲譜面情報を取得
 	musicInformation_ = gameManager_->GetMusicInformation();
 #ifdef _DEBUG
-	musicInformation = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
+	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 
 #endif // _DEBUG
 
@@ -104,7 +104,7 @@ void MainScene::GenerateNotes(){
 	//開始時間の設定
 	float_t startTime = START_OFFSET_TIME_ * hiSpeed_;
 	//ノーツの配置
-	for (const NoteBarInformation& bar : musicInformation.newNotesData) {
+	for (const NoteBarInformation& bar : musicScoreData_.newNotesData) {
 		//1拍の秒数
 		float_t beatDuration = 60.0f / bar.bpm;
 		//ノーツ間隔(1小節4拍)
@@ -119,7 +119,7 @@ void MainScene::GenerateNotes(){
 			//上
 			if (note.upNote == NoteType::NormalTap) {
 				//ノーツの数を増やす
-				musicInformation.totalNote_++;
+				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
@@ -133,13 +133,13 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 				//挿入
-				musicInformation.upInformation.push_back(noteInformation);
+				musicScoreData_.upInformation.push_back(noteInformation);
 
 			}
 			//下
 			if (note.downNote == NoteType::NormalTap) {
 				//ノーツの数を増やす
-				musicInformation.totalNote_++;
+				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
@@ -153,7 +153,7 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 				//挿入
-				musicInformation.downInformation.push_back(noteInformation);
+				musicScoreData_.downInformation.push_back(noteInformation);
 
 			}
 #pragma endregion
@@ -162,7 +162,7 @@ void MainScene::GenerateNotes(){
 			//上
 			if (note.upNote == NoteType::LongEnd) {
 				//ノーツの数を増やす
-				musicInformation.totalNote_++;
+				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
@@ -176,14 +176,14 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 				//挿入
-				musicInformation.upInformation.push_back(noteInformation);
+				musicScoreData_.upInformation.push_back(noteInformation);
 
 			}
 			
 			//下
 			if (note.downNote == NoteType::LongEnd) {
 				//ノーツの数を増やす
-				musicInformation.totalNote_++;
+				musicScoreData_.totalNote_++;
 				//ノーツ情報を設定
 				NoteInformation noteInformation = {
 					.place = NoteLane::Place::Up,
@@ -197,7 +197,7 @@ void MainScene::GenerateNotes(){
 					.note = nullptr
 				};
 				//挿入
-				musicInformation.downInformation.push_back(noteInformation);
+				musicScoreData_.downInformation.push_back(noteInformation);
 			}
 #pragma endregion
 
