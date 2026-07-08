@@ -262,8 +262,6 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			//Great用
 			else if (absJudgementTime >= NoteJudgement::Time::PERFECT &&
 				absJudgementTime < NoteJudgement::Time::GREAT) {
-				//効果音を鳴らす
-
 				record_.great++;
 				targetNote.judgement = NoteJudgement::Selection::Great;
 				//判定が確定したらフラグを立てる
@@ -277,8 +275,6 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			//Good用
 			else if (absJudgementTime >= NoteJudgement::Time::GREAT &&
 				absJudgementTime < NoteJudgement::Time::GOOD) {
-				//効果音を鳴らす
-
 				record_.good++;
 				targetNote.judgement = NoteJudgement::Selection::Good;
 				// 判定が確定したらフラグを立てる
