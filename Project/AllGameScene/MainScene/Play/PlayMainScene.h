@@ -99,8 +99,10 @@ private:
 	const float_t JUDGEMENT_POSITION_X_ = -17.0f;
 	//初期のX座標
 	const float_t INITIAL_POSITION_X_ = 50.0f;
+	const float_t INITIAL_POSITION_Y_ = 0.0f;
+	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
 	//レーンのY座標
-	const std::array<float_t, NoteLane::Place::Size> LANE_POSITION_Y_ = { 10.0f,-10.0f };
+	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {10.0f,0.0f};
 	//レーンのZ座標
 	const float_t LANE_POSITION_Z_ = 0.0f;
 

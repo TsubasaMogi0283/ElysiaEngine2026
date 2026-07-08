@@ -11,7 +11,6 @@ void NormalTapNote::Initialize(const uint32_t& modelHandle){
 	worldTransform_.scale.x = 0.4f;
 	worldTransform_.scale.y = 3.0f;
 	//座標の初期化
-	worldTransform_.translate.y = lanePositionY_;
 	worldTransform_.translate.z = 0.0f;
 	//マテリアルの初期化
 	material_.Initialize();
@@ -22,7 +21,7 @@ void NormalTapNote::Update(){
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
 	//座標の計算
 	worldTransform_.translate.x = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
-	
+	worldTransform_.translate.y = lanePositionY_;
 
 	//使用状態の更新
 	if (ratio_ >= 1.0f) {

@@ -122,7 +122,7 @@ void MainScene::GenerateNotes(){
 				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = NoteLane::Place::Up,
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
 					.length = length,
 					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -143,7 +143,7 @@ void MainScene::GenerateNotes(){
 				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = NoteLane::Place::Down,
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
 					.length = length,
 					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -167,7 +167,7 @@ void MainScene::GenerateNotes(){
 				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = NoteLane::Place::Up,
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
 					.length = length,
 					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -189,7 +189,7 @@ void MainScene::GenerateNotes(){
 				musicScoreData_.totalNote_++;
 				//ノーツ情報を設定
 				NoteInformation noteInformation = {
-					.place = NoteLane::Place::Down,
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
 					.length = length,
 					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,

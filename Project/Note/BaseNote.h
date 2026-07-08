@@ -151,6 +151,15 @@ public:
 	inline float_t GetArriveLineTime()const {
 		return arriveLineTime_;
 	}
+
+	/// <summary>
+	/// Y座標の取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetJudgmentPositionY()const {
+		return lanePositionY_;
+	}
+
 #endif // _DEBUG
 
 

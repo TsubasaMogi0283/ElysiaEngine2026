@@ -25,7 +25,7 @@ namespace NoteLane {
 	/// <summary>
 	/// 位置
 	/// </summary>
-	enum Place {
+	enum class Place {
 		Up,
 		Down,
 		Size
