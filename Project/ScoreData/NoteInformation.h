@@ -34,9 +34,7 @@ struct NoteInformation {
 	uint8_t judgement = 0u;
 	//判定したかどうか
 	bool isJudged = false;
-
-	//ノーツ
-	//オブジェクトプールでやるからいずれ消す
-	std::shared_ptr<BaseNote> note = nullptr;
+	//割り当てられたかどうか
+	bool isAssigned = false;
 
 };

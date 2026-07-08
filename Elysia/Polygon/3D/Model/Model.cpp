@@ -159,17 +159,19 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	if (textureHandle_ != 0u) {
 		textureManager_->GraphicsCommand(2u, textureHandle_);
 	}
-	//DirectionalLight
-	if (material.lightingKinds == LightingType::DirectionalLighting) {
+	//ライトの設定
+	switch (material.lightingKinds) {
+	case LightingType::DirectionalLighting:
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, baseLight.resource->GetGPUVirtualAddress());
-	}
-	//PointLight
-	else if (material.lightingKinds == LightingType::PointLighting) {
+		break;
+
+	case LightingType::PointLighting:
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, baseLight.resource->GetGPUVirtualAddress());
-	}
-	//SpotLight
-	else if (material.lightingKinds == LightingType::SpotLighting) {
+		break;
+
+	case LightingType::SpotLighting:
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, baseLight.resource->GetGPUVirtualAddress());
+		break;
 	}
 	
 	//カメラ

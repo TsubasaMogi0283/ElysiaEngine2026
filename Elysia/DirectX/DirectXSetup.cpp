@@ -319,28 +319,19 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc={
 		//画面の幅。ウィンドウのクライアント領域を同じものにしておく
 		.Width = windowsSetup_->GetClientWidth(),
-		
 		//画面の高さ。ウィンドウのクライアント領域を同じものにしておく
 		.Height = windowsSetup_->GetClientHeight(),
-		
 		//色の形式
 		.Format = DXGI_FORMAT_R8G8B8A8_UNORM,
-		
 		//マルチサンプルしない
 		.SampleDesc = sampleDesc,
-
 		//描画のターゲットとして利用する
-		.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT,				
-		
+		.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT,		
 		//ダブルバッファ
 		.BufferCount = 2,
-
 		//モニタにうつしたら中身を破棄
-		.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD,					
-
-	
+		.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD,	
 	};
-	
 
 	//コマンドキュー、ウィンドウハンドル、設定を渡して生成する
 	HRESULT hr = DirectXSetup::GetInstance()->dxgiFactory_->CreateSwapChainForHwnd(
@@ -363,8 +354,6 @@ void Elysia::DirectXSetup::GenerateDescriptorHeap() {
 		windowsSetup_->GetClientHeight());
 
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
-
-
 
 	//DSVの設定
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};

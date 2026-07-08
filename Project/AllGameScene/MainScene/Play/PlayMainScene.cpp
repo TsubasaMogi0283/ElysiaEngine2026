@@ -34,10 +34,23 @@ void PlayMainScene::Initialize(){
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
+		normalTapNote->SetInitialPosition(INITIAL_POSITION_X_);
+		normalTapNote->SetJudgmentPositionX(JUDGEMENT_POSITION_X_);
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
 	
+	//判定線のモデルを生成
+	judgementLineModel_ = Elysia::Model::Create(normalNoteModelHandle);
+	judgementLineWorldTransform_.Initialize();
+	judgementLineWorldTransform_.scale.x = 0.1f;
+	judgementLineWorldTransform_.scale.y = 10.0f;
+	judgementLineWorldTransform_.translate.x = JUDGEMENT_POSITION_X_;
+	judgementLineWorldTransform_.translate.y = 5.0f;
+
+	judgementLineMaterial_.Initialize();
+	judgementLineMaterial_.color = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
+
 	//楽曲の再生
 	audio_->Play(musicScoreData_.musicHandle, false);
 	musicLength_= audio_->GetAudioLength(musicScoreData_.musicHandle);
@@ -80,26 +93,32 @@ void PlayMainScene::Update(){
 		return;
 	}
 	
-
+	//判定線の更新
+	judgementLineWorldTransform_.Update();
+	judgementLineMaterial_.Update();
+	
 #ifdef _DEBUG
 	ImGui::Begin("PlayScene");
-
+	ImGui::InputFloat("楽曲再生時間", &musicTime_);
+	ImGui::InputFloat("楽曲の長さ", &musicLength_);
+	ImGui::InputFloat("ポーズ時間", &pauseTime_);
 	if(ImGui::TreeNode("上レーン")) {
 		for (uint32_t i = 0u;i < NORMAL_NOTEMAX_SIZE_;i++) {
 			bool isUsed = normalTapNoteArray_[i]->GetIsUsed();
-			float_t startTime = normalTapNoteArray_[i]->GetStartMoveTime();
-			float_t arriveTime = normalTapNoteArray_[i]->GetArriveLineTime();
-			ImGui::Checkbox(("使用中" + std::to_string(i)).c_str(), &isUsed);
-			ImGui::InputFloat("移動開始時間", &startTime);
-			ImGui::InputFloat("到達時間" , &arriveTime);
+			if (isUsed) {
+				float_t startTime = normalTapNoteArray_[i]->GetStartMoveTime();
+				float_t arriveTime = normalTapNoteArray_[i]->GetArriveLineTime();
+				ImGui::Checkbox("使用中", &isUsed);
+				ImGui::InputFloat("移動開始時間", &startTime);
+				ImGui::InputFloat("到達時間", &arriveTime);
+			}
+			
 		}
 		
 		ImGui::TreePop();
 	}
 
-	ImGui::InputFloat("楽曲再生時間", &musicTime_);
-	ImGui::InputFloat("楽曲の長さ", &musicLength_);
-	ImGui::InputFloat("ポーズ時間", &pauseTime_);
+	
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
@@ -112,13 +131,12 @@ void PlayMainScene::Update(){
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	//通常ノーツの設定
-	for(const std::unique_ptr<NormalTapNote>& note : normalTapNoteArray_) {
-		if (note->GetIsUsed()) {
-			//note->DrawObject3D(camera, baseLight);
-		}
-
-		note->DrawObject3D(camera, baseLight);
+	for(uint32_t i = 0u; i < NORMAL_NOTEMAX_SIZE_; i++) {
+		normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 	}
+
+	//判定線の描画
+	judgementLineModel_->Draw(judgementLineWorldTransform_, camera, judgementLineMaterial_, baseLight);
 }
 
 void PlayMainScene::DrawSprite(){
@@ -137,37 +155,32 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		if (note.isJudged && note.isProcessEnd) {
 			continue;
 		}
+		//まだ動き始める時間になっていないので処理をしない
+		if (note.startMoveTime > musicTime_) {
+			break;
+		}
 
 		//タップ用
 		if (note.type == NoteType::NormalTap) {
-			//まだ動き始める時間になっていないので処理をしない
-			if (note.startMoveTime > musicTime_) {
-				break;
-			}
-			//動きの割合
-			note.moveRatio = SingleCalculation::InverseLerp(note.startMoveTime, note.arriveLineTime, musicTime_);
-			//通常ノーツの設定
-			for (uint32_t j = 0u; j < NORMAL_NOTEMAX_SIZE_; j++) {
-				//未使用時
-				if (!normalTapNoteArray_[j]->GetIsUsed()) {
-					//使用中にする
-					if (note.moveRatio >= 0.0f ) {
+			if (!note.isAssigned) {
+				//通常ノーツの設定
+				for (uint32_t j = 0u; j < NORMAL_NOTEMAX_SIZE_; j++) {
+					//未使用時
+					if (!normalTapNoteArray_[j]->GetIsUsed()) {
+						//
+						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
 						//開始時間を設定
 						normalTapNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
 						//到着時間を設定
 						normalTapNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
 						//使用中に設定
 						normalTapNoteArray_[j]->SetIsUsed(true);
+						note.isAssigned = true;
+						break;
 					}
 				}
-				//使用時
-				else {
-					//比率の割合を設定
-					normalTapNoteArray_[j]->SetRatio(note.moveRatio);
-					//更新
-					normalTapNoteArray_[j]->Update();
-				}	
 			}
+			
 		}
 		//タップ系
 		if (note.type == NoteType::NormalTap ||
@@ -195,6 +208,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 		//ロング終点
 		else if (note.type == NoteType::LongEnd) {
+			note.moveRatio = SingleCalculation::InverseLerp(note.startMoveTime, note.arriveLineTime, musicTime_);
 			if (note.moveRatio >= 1.0f) {
 				laneCondition.isHitLongNote = false;
 				note.isJudged = true;
@@ -205,7 +219,17 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 	//判定
 	Judge(noteInformations, laneCondition,closestNoteIndex);
 
-	
+	//通常ノーツの設定
+	for (uint32_t j = 0u; j < NORMAL_NOTEMAX_SIZE_; j++) {
+		//使用時
+		if (normalTapNoteArray_[j]->GetIsUsed()) {
+			//楽曲時間を設定
+			normalTapNoteArray_[j]->SetMusicTime(musicTime_);
+			//更新
+			normalTapNoteArray_[j]->Update();
+			
+		}
+	}
 }
 
 void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex){

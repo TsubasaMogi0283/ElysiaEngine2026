@@ -103,6 +103,14 @@ public:
 	}
 
 	/// <summary>
+	/// レーンの座標を設定
+	/// </summary>
+	/// <param name="positionY">Y座標</param>
+	inline void SetLanePositionY(const float_t& positionY) {
+		this->lanePositionY_ = positionY;
+	}
+
+	/// <summary>
 	/// 移動開始時間を設定
 	/// </summary>
 	/// <param name="time">時間</param>
@@ -118,6 +126,13 @@ public:
 		this->arriveLineTime_ = time;
 	}
 
+	/// <summary>
+	/// 楽曲時間の設定
+	/// </summary>
+	/// <param name="time">時間</param>
+	inline void SetMusicTime(const float_t& time) {
+		this->musicTime_ = time;
+	}
 
 #ifdef _DEBUG
 	
@@ -156,10 +171,15 @@ protected:
 	float_t initialPositionX_ = 0.0f;
 	//判定座標
 	float_t judgmentPositionX_ = 0.0f;
+	//レーンの座標
+	float_t lanePositionY_ = 0.0f;
 
 	//移動開始時間
 	float_t startMoveTime_ = 0.0f;
 	//到達時間
 	float_t arriveLineTime_ = 0.0f;
+	//楽曲時間
+	float_t musicTime_ = 0.0f;
+
 };
 

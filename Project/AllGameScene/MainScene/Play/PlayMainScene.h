@@ -96,11 +96,11 @@ private:
 private:
 	
 	//判定のX座標
-	const float_t JUDGEMENT_POSITION_X_ = -10.0f;
+	const float_t JUDGEMENT_POSITION_X_ = -17.0f;
 	//初期のX座標
-	const float_t INITIAL_POSITION_X_ = 20.0f;
+	const float_t INITIAL_POSITION_X_ = 50.0f;
 	//レーンのY座標
-	const std::array<float_t, NoteLane::Place::Size> LANE_POSITION_Y_ = { 5.0f,-5.0f };
+	const std::array<float_t, NoteLane::Place::Size> LANE_POSITION_Y_ = { 10.0f,-10.0f };
 	//レーンのZ座標
 	const float_t LANE_POSITION_Z_ = 0.0f;
 
@@ -147,6 +147,12 @@ private:
 	float_t pauseTime_ = PAUSE_TIME_;
 	//再開するかどうか
 	bool isRestart_ = false;
+
+
+	//判定線
+	std::unique_ptr<Elysia::Model> judgementLineModel_ = nullptr;
+	WorldTransform judgementLineWorldTransform_ = {};
+	Material judgementLineMaterial_ = {};
 
 	//レーンの状態
 	LaneCondition upLaneCondition = {};

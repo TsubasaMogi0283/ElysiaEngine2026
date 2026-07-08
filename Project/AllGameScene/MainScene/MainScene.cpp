@@ -131,7 +131,7 @@ void MainScene::GenerateNotes(){
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
-					.note = nullptr
+					.isAssigned = false
 				};
 				//挿入
 				musicScoreData_.upInformation.push_back(noteInformation);
@@ -143,7 +143,7 @@ void MainScene::GenerateNotes(){
 				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = NoteLane::Place::Up,
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -152,7 +152,7 @@ void MainScene::GenerateNotes(){
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
-					.note = nullptr
+					.isAssigned = false
 				};
 				//挿入
 				musicScoreData_.downInformation.push_back(noteInformation);
@@ -176,7 +176,7 @@ void MainScene::GenerateNotes(){
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
-					.note = nullptr
+					.isAssigned = false
 				};
 				//挿入
 				musicScoreData_.upInformation.push_back(noteInformation);
@@ -189,7 +189,7 @@ void MainScene::GenerateNotes(){
 				musicScoreData_.totalNote_++;
 				//ノーツ情報を設定
 				NoteInformation noteInformation = {
-					.place = NoteLane::Place::Up,
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -198,7 +198,7 @@ void MainScene::GenerateNotes(){
 					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
-					.note = nullptr
+					.isAssigned = false
 				};
 				//挿入
 				musicScoreData_.downInformation.push_back(noteInformation);
