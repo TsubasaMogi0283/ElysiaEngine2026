@@ -121,7 +121,7 @@ private:
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 
 	//ノーマルタップノーツ格納数の最大サイズ
-	static const uint32_t NORMAL_NOTEMAX_SIZE_ = 16u;
+	static const uint8_t NORMAL_NOTEMAX_SIZE_ = 16u;
 
 
 

@@ -164,7 +164,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		if (note.type == NoteType::NormalTap) {
 			if (!note.isAssigned) {
 				//通常ノーツの設定
-				for (uint32_t j = 0u; j < NORMAL_NOTEMAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < NORMAL_NOTEMAX_SIZE_; j++) {
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//
@@ -175,6 +175,9 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						normalTapNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
 						//使用中に設定
 						normalTapNoteArray_[j]->SetIsUsed(true);
+						//インデックスを保存
+						normalTapNoteArray_[j]->SetPoolIndex(j);
+						//割り当て済みにする
 						note.isAssigned = true;
 						break;
 					}
@@ -235,20 +238,22 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex){
 	//近いノーツを判定
 	if (closestNoteIndex != -1) {
+		//対象のノーツ
+		NoteInformation& targetNote = noteInformation[closestNoteIndex];
 		//絶対値版
-		float_t absJudgementTime = std::abs(laneCondition.touchTime - noteInformation[closestNoteIndex].arriveLineTime);
+		float_t absJudgementTime = std::abs(laneCondition.touchTime - targetNote.arriveLineTime);
 		//通常タップ専用
-		if (noteInformation[closestNoteIndex].type == NoteType::NormalTap) {
+		if (targetNote.type == NoteType::NormalTap) {
 			//Perfect用
 			if (absJudgementTime >= 0.0f &&
 				absJudgementTime < NoteJudgement::Time::PERFECT) {
 
 				//Perfectの値を増やす
 				record_.perfect++;
-				noteInformation[closestNoteIndex].judgement = NoteJudgement::Selection::Perfect;
+				targetNote.judgement = NoteJudgement::Selection::Perfect;
 				//判定が確定したらフラグを立てる
-				noteInformation[closestNoteIndex].isJudged = true;
-				noteInformation[closestNoteIndex].isProcessEnd = true;
+				targetNote.isJudged = true;
+				targetNote.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
 				//パーフェクトのスコアを加算
@@ -260,10 +265,10 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				//効果音を鳴らす
 
 				record_.great++;
-				noteInformation[closestNoteIndex].judgement = NoteJudgement::Selection::Great;
+				targetNote.judgement = NoteJudgement::Selection::Great;
 				//判定が確定したらフラグを立てる
-				noteInformation[closestNoteIndex].isJudged = true;
-				noteInformation[closestNoteIndex].isProcessEnd = true;
+				targetNote.isJudged = true;
+				targetNote.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
 				//グレートのスコアを加算
@@ -275,10 +280,10 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				//効果音を鳴らす
 
 				record_.good++;
-				noteInformation[closestNoteIndex].judgement = NoteJudgement::Selection::Good;
+				targetNote.judgement = NoteJudgement::Selection::Good;
 				// 判定が確定したらフラグを立てる
-				noteInformation[closestNoteIndex].isJudged = true;
-				noteInformation[closestNoteIndex].isProcessEnd = true;
+				targetNote.isJudged = true;
+				targetNote.isProcessEnd = true;
 				//コンボを増やす
 				record_.combo++;
 				//グッドのスコアを加算
@@ -288,10 +293,10 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			else if (absJudgementTime >= NoteJudgement::Time::GOOD &&
 				absJudgementTime < NoteJudgement::Time::MISS) {
 				record_.miss++;
-				noteInformation[closestNoteIndex].judgement = NoteJudgement::Selection::Miss;
+				targetNote.judgement = NoteJudgement::Selection::Miss;
 				// 判定が確定したらフラグを立てる
-				noteInformation[closestNoteIndex].isJudged = true;
-				noteInformation[closestNoteIndex].isProcessEnd = true;
+				targetNote.isJudged = true;
+				targetNote.isProcessEnd = true;
 				//コンボを0に戻す
 				record_.combo = 0u;
 				comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;

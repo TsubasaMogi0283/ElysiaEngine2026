@@ -36,5 +36,6 @@ struct NoteInformation {
 	bool isJudged = false;
 	//割り当てられたかどうか
 	bool isAssigned = false;
-
+	//オブジェクトプール用の割り当て番号
+	int8_t poolIndex = -1;
 };

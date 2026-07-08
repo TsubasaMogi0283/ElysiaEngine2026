@@ -134,6 +134,22 @@ public:
 		this->musicTime_ = time;
 	}
 
+	/// <summary>
+	/// オブジェクトプール用の割り当て番号を設定
+	/// </summary>
+	/// <param name="index">割り当て番号</param>
+	inline void SetPoolIndex(const uint32_t& index) {
+		this->poolIndex_ = static_cast<int8_t>(index);
+	}
+
+	/// <summary>
+	/// オブジェクトプール用の割り当て番号を取得
+	/// </summary>
+	/// <returns>割り当て番号</returns>
+	inline int8_t GetPoolIndex()const {
+		return poolIndex_;
+	}
+
 #ifdef _DEBUG
 	
 	/// <summary>
@@ -189,6 +205,7 @@ protected:
 	float_t arriveLineTime_ = 0.0f;
 	//楽曲時間
 	float_t musicTime_ = 0.0f;
-
+	//オブジェクトプールの割り当て番号
+	int8_t poolIndex_ = 0u;
 };
 
