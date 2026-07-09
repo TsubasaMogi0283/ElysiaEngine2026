@@ -135,22 +135,22 @@ namespace Elysia {
 		/// <summary>
 		/// 再生(ループ回数あり)
 		/// </summary>
-		/// <param name="audioHandle"></param>
-		/// <param name="loopCount"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="loopCount">ループ回数</param>
 		void PlayWave(const uint32_t& audioHandle, const uint32_t& loopCount);
 
 		/// <summary>
 		/// 再生
 		/// </summary>
-		/// <param name="audioHandle"></param>
-		/// <param name="isLoop"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="isLoop">ループするかどうか</param>
 		void PlayMP3(const uint32_t& audioHandle, const  bool& isLoop);
 
 		/// <summary>
 		/// 再生(ループ回数あり)
 		/// </summary>
-		/// <param name="audioHandle"></param>
-		/// <param name="loopCount"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="loopCount">ループ回数</param>
 		void PlayMP3(const uint32_t& audioHandle, const uint32_t& loopCount);
 
 	public:
@@ -158,20 +158,26 @@ namespace Elysia {
 		/// <summary>
 		/// 一時停止
 		/// </summary>
-		/// <param name="ハンドル名"></param>
+		/// <param name="audioHandle">ハンドル</param>
 		void PauseWave(const uint32_t& audioHandle);
 
 		/// <summary>
 		/// 再開
 		/// </summary>
-		/// <param name="ハンドル名"></param>
+		/// <param name="audioHandle">ハンドル</param>
 		void Resume(const uint32_t& audioHandle);
 
+		/// <summary>
+		/// 再開(指定時間から)
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="startSeconds">再生開始時間</param>
+		void Resume(const uint32_t& audioHandle,const float_t & startSeconds);
 
 		/// <summary>
 		/// 停止
 		/// </summary>
-		/// <param name="audioHandle"></param>
+		/// <param name="audioHandle">ハンドル</param>
 		void Stop(const uint32_t& audioHandle);
 
 #pragma endregion
@@ -183,31 +189,31 @@ namespace Elysia {
 		/// <summary>
 		/// ループから抜ける
 		/// </summary>
-		/// <param name="ハンドル名"></param>
+		/// <param name="audioHandle">ハンドル</param>
 		void ExitLoop(const uint32_t& audioHandle);
 
 
 		/// <summary>
 		/// 再生(後半ループ)
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="始まる位置(秒)"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="second">始まる位置(秒)</param>
 		void AfterLoopPlayWave(const uint32_t& audioHandle, const float_t& second);
 
 		/// <summary>
 		/// 再生(前半ループ)
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="ループ間の長さ(秒)"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="lengthSecond">ループ間の長さ(秒)</param>
 		void BeforeLoopPlayWave(const uint32_t& audioHandle, const float_t& lengthSecond);
 
 
 		/// <summary>
 		/// 部分ループ
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="開始位置(秒)"></param>
-		/// <param name="ループの長さ(秒)"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="start">開始位置(秒)</param>
+		/// <param name="lengthSecond">ループの長さ(秒)</param>
 		void PartlyLoopPlayWave(const uint32_t& audioHandle, const float_t& start, const float_t& lengthSecond);
 
 
@@ -216,8 +222,8 @@ namespace Elysia {
 		/// <summary>
 		/// 音量調節
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="音量"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="volume">音量</param>
 		void ChangeVolume(const uint32_t& audioHandle, const float_t& volume);
 
 #pragma region ピッチ系
@@ -225,8 +231,8 @@ namespace Elysia {
 		/// <summary>
 		/// 音の高さの変更(滑らか版)
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="値"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="ratio_">値</param>
 		void ChangeFrequencyRatio(const uint32_t& audioHandle, float_t& ratio_);
 
 
@@ -241,8 +247,8 @@ namespace Elysia {
 		/// <summary>
 		/// Pan振り
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="Panの値"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="pan">Panの値</param>
 		void SetPan(const uint32_t& audioHandle, const float_t& pan);
 
 
@@ -251,16 +257,16 @@ namespace Elysia {
 		/// <summary>
 		/// ローパスフィルター
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="CutOffの値"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="cutOff">カットオフ</param>
 		void SetLowPassFilter(const uint32_t& audioHandle, float_t& cutOff);
 
 		/// <summary>
 		/// ローパスフィルター(Qあり)
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="CutOffの値"></param>
-		/// <param name="oneOverQ"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="cutOff">カットオフ</param>
+		/// <param name="oneOverQ">Q</param>
 		void SetLowPassFilter(const uint32_t& audioHandle, float_t& cutOff, const float_t& oneOverQ);
 
 
@@ -268,38 +274,39 @@ namespace Elysia {
 		/// <summary>
 		/// ハイパスフィルター
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="CutOffの値"></param>
-		void SetHighPassFilter(const uint32_t& audioHandlee, float_t& cutOff);
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="cutOff">カットオフ</param>
+		void SetHighPassFilter(const uint32_t& audioHandle, float_t& cutOff);
 
 		/// <summary>
 		/// ハイパスフィルター(Qあり)
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="CutOffの値"></param>
-		/// <param name="oneOverQ"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="cutOff">カットオフ</param>
+		/// <param name="oneOverQ">Q</param>
 		void SetHighPassFilter(const uint32_t& audioHandle, float_t& cutOff, const float_t& oneOverQ);
 
 		/// <summary>
 		/// バンドパス
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="CutOffの値"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="cutOff">カットオフ</param>
 		void SetBandPassFilter(const uint32_t& audioHandle, float_t& cutOff);
 
 		/// <summary>
 		/// バンドパス(Qあり)
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="CutOffの値"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="cutOff">カットオフ</param>
+		/// <param name="oneOverQ">Q</param>
 		void SetBandPassFilter(const uint32_t& audioHandle, float_t& cutOff, const float_t& oneOverQ);
 
 
 		/// <summary>
 		/// ノッチフィルター
 		/// </summary>
-		/// <param name="ハンドル名"></param>
-		/// <param name="CutOffの値"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="cutOff">カットオフ</param>
 		void SetNotchFilter(const uint32_t& audioHandle, float_t& cutOff);
 
 		/// <summary>
@@ -315,46 +322,46 @@ namespace Elysia {
 		/// bitの数を取得
 		/// </summary>
 		/// <param name="audioHandle">ハンドル</param>
-		/// <returns></returns>
+		/// <returns>bit数</returns>
 		int32_t GetBitPerSample(const uint32_t& audioHandle);
 
 		/// <summary>
 		/// 現在再生している時間を取得
 		/// </summary>
 		/// <param name="audioHandle">ハンドル</param>
-		/// <returns></returns>
+		/// <returns>現在の再生時間</returns>
 		float_t GetPlayCurrentTime(const uint32_t& audioHandle);
 
 		/// <summary>
 		/// 音の長さを取得
 		/// </summary>
-		/// <param name="audioHandle"></param>
-		/// <returns></returns>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <returns>音の長さ</returns>
 		float_t GetAudioLength(const uint32_t& audioHandle);
 
 		/// <summary>
 		/// サブミックスボイスの作成
 		/// </summary>
-		/// <param name="channel"></param>
+		/// <param name="channel">チャンネル</param>
 		void CreateSubmixVoice(const uint32_t& channel);
 
 		/// <summary>
 		/// 指定したチャンネルに送る
 		/// </summary>
-		/// <param name="audioHandle"></param>
-		/// <param name="channelNumber"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="channelNumber">チャンネル番号</param>
 		void SendChannels(const uint32_t& audioHandle, const uint32_t& channelNumber);
 
 		/// <summary>
 		/// エフェクトの効果を無効にする
 		/// </summary>
-		/// <param name="audioHandle"></param>
+		/// <param name="audioHandle">ハンドル</param>
 		void OffEffect(const uint32_t& audioHandle);
 
 		/// <summary>
 		/// エフェクトの効果を有効にする
 		/// </summary>
-		/// <param name="audioHandle"></param>
+		/// <param name="audioHandle">ハンドル</param>
 		void OnEffect(const uint32_t& audioHandle);
 
 
@@ -368,7 +375,7 @@ namespace Elysia {
 		/// <summary>
 		/// 指定したハンドルが入っているfilePathを取得する
 		/// </summary>
-		/// <param name="handle"></param>
+		/// <param name="handle">ハンドル</param>
 		/// <returns></returns>
 		inline std::string GetAudioInformationKey(const uint32_t& handle) {
 			for (const auto& [filePath, modelInfo] : audioInformation_) {

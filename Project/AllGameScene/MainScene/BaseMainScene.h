@@ -14,6 +14,11 @@
 /// </summary>
 namespace Elysia {
 	/// <summary>
+	/// ウィンドウ
+	/// </summary>
+	class WindowsSetup;
+
+	/// <summary>
 	/// レベルエディタ
 	/// </summary>
 	class LevelDataManager;
@@ -115,6 +120,8 @@ public:
 protected:
 	//メインシーン
 	MainScene* mainScene_ = nullptr;
+	//ウィンドウの設定
+	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 	//入力
 	Elysia::Input* input_ = nullptr;
 	//オーディオ

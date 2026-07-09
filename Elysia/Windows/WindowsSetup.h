@@ -75,6 +75,8 @@ namespace Elysia {
 		/// <returns></returns>
 		WindowsSetup& operator=(const WindowsSetup& winApp) = delete;
 
+	public:
+
 		/// <summary>
 		/// ウィンドウプロシージャ
 		/// </summary>
@@ -96,6 +98,14 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="text"></param>
 		static void OutPutStringA(const std::string& text);
+
+		/// <summary>
+		/// ウィンドウが移動中かどうかを取得
+		/// </summary>
+		/// <returns>移動中かどうか</returns>
+		inline bool GetIsWindowMove() const {
+			return isWindowMove_;
+		}
 
 	private:
 
@@ -183,11 +193,10 @@ namespace Elysia {
 	private:
 		//ウィンドウハンドル
 		HWND hwnd_ = 0;
-
 		//ウィンドウクラス
 		WNDCLASS windowClass_{};
 
+		//ウィンドウが移動中かどうか
+		bool isWindowMove_ = false;	
 	};
-
-
 };

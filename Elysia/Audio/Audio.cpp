@@ -342,7 +342,7 @@ void Elysia::Audio::PlayMP3(const uint32_t& audioHandle, const uint32_t& loopCou
 	std::string fileKey = GetAudioInformationKey(audioHandle);
 
 	//同じものが再生されていたら一旦止める
-	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop();
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
 	assert(SUCCEEDED(hResult));
 
 	hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
@@ -371,7 +371,7 @@ void Elysia::Audio::PlayWave(const uint32_t& audioHandle, const bool& isLoop) {
 	std::string fileKey = GetAudioInformationKey(audioHandle);
 
 	//同じものが再生されていたら一旦止める
-	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop();
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
 	assert(SUCCEEDED(hResult));
 
 	hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
@@ -394,7 +394,7 @@ void Elysia::Audio::PlayWave(const uint32_t& audioHandle, const bool& isLoop) {
 	hResult = audioInformation_[fileKey].sourceVoice->SubmitSourceBuffer(&buffer);
 	assert(SUCCEEDED(hResult));
 	//波形データの再生
-	hResult = audioInformation_[fileKey].sourceVoice->Start();
+	hResult = audioInformation_[fileKey].sourceVoice->Start(0);
 	assert(SUCCEEDED(hResult));
 }
 
@@ -404,7 +404,7 @@ void Elysia::Audio::PlayWave(const uint32_t& audioHandle, const uint32_t& loopCo
 	std::string fileKey = GetAudioInformationKey(audioHandle);
 
 	//同じものが再生されていたら一旦止める
-	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop();
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
 	assert(SUCCEEDED(hResult));
 
 	//再生する波形データの設定
@@ -420,7 +420,7 @@ void Elysia::Audio::PlayWave(const uint32_t& audioHandle, const uint32_t& loopCo
 	hResult = audioInformation_[fileKey].sourceVoice->SubmitSourceBuffer(&buffer);
 	assert(SUCCEEDED(hResult));
 	//波形データの再生
-	hResult = audioInformation_[fileKey].sourceVoice->Start();
+	hResult = audioInformation_[fileKey].sourceVoice->Start(0);
 	assert(SUCCEEDED(hResult));
 }
 
@@ -443,11 +443,43 @@ void Elysia::Audio::Resume(const uint32_t& audioHandle) {
 	assert(SUCCEEDED(hResult));
 }
 
+void Elysia::Audio::Resume(const uint32_t& audioHandle, const float_t& startSeconds){
+	//ファイルキーの取得
+	std::string fileKey = GetAudioInformationKey(audioHandle);
+
+	//一旦止める
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
+	assert(SUCCEEDED(hResult));
+	audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
+	assert(SUCCEEDED(hResult));
+
+	//再生する波形データの設定
+	XAUDIO2_BUFFER buffer{};
+	buffer.pAudioData = audioInformation_[fileKey].soundData.pBuffer;
+	buffer.AudioBytes = audioInformation_[fileKey].soundData.bufferSize;
+	buffer.Flags = XAUDIO2_END_OF_STREAM;
+
+	//サンプルレートとブロックアライメント
+	int32_t samplingRate = audioInformation_[fileKey].soundData.wfex.nSamplesPerSec;
+	//int16_t blockAlign = audioInformation_[fileKey].soundData.wfex.nBlockAlign;
+
+	// 2. 秒数から再生開始サンプル数を計算
+	buffer.PlayBegin = static_cast<UINT32>(startSeconds * samplingRate);
+
+	//Buffer登録
+	hResult = audioInformation_[fileKey].sourceVoice->SubmitSourceBuffer(&buffer);
+	assert(SUCCEEDED(hResult));
+
+	//波形データの再生
+	hResult = audioInformation_[fileKey].sourceVoice->Start(0);
+	assert(SUCCEEDED(hResult));
+}
+
 void Elysia::Audio::Stop(const uint32_t& audioHandle) {
 	//ファイルキーの取得
 	std::string fileKey = GetAudioInformationKey(audioHandle);
 
-	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop();
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
 	assert(SUCCEEDED(hResult));
 }
 

@@ -105,9 +105,8 @@ private:
 	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {10.0f,0.0f};
 	//レーンのZ座標
 	const float_t LANE_POSITION_Z_ = 0.0f;
-
-
-private:
+	//ノーマルタップノーツ格納数の最大サイズ
+	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 16u;
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
@@ -116,14 +115,14 @@ private:
 
 	//ポーズ時間
 	const float_t PAUSE_TIME_ = 3.0f;
-
+	//再生開始のオフセット時間
+	float_t START_OFFSET_TIME_ = 1.0f;
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
-
-	//ノーマルタップノーツ格納数の最大サイズ
-	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 16u;
-
-
+	//最小の音量
+	const float_t MIN_VOLUME_ = 0.0f;
+	//最大の音量
+	const float_t MAX_VOLUME_ = 1.0f;
 
 private:
 
@@ -141,6 +140,8 @@ private:
 	float_t musicTime_ = 0.0f;
 	//楽曲の長さ
 	float_t musicLength_ = 0.0f;
+	//止めた時間
+	float_t stopTime_ = 0.0f;
 
 	//コンボのボーナス倍率
 	float_t comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
@@ -149,7 +150,7 @@ private:
 	float_t pauseTime_ = PAUSE_TIME_;
 	//再開するかどうか
 	bool isRestart_ = false;
-
+	bool isResume_ = false;
 
 	//判定線
 	std::unique_ptr<Elysia::Model> judgementLineModel_ = nullptr;

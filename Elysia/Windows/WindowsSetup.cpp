@@ -18,8 +18,18 @@ LRESULT Elysia::WindowsSetup::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPA
 	}
 	
 	switch (msg) {
-		//ウィンドウが破棄された
+	case WM_ENTERSIZEMOVE:
+		//ウィンドウが移動中
+		Elysia::WindowsSetup::GetInstance()->isWindowMove_ = true;
+		break;
+
+	case WM_EXITSIZEMOVE:
+		//ウィンドウが移動終了
+		Elysia::WindowsSetup::GetInstance()->isWindowMove_ = false;
+		break;
+
 	case WM_DESTROY:
+		//ウィンドウが破棄された
 		//OSに対してアプリの終了を伝える
 		PostQuitMessage(0);
 		return 0;

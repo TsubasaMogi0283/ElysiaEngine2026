@@ -8,10 +8,12 @@
 #include <MainScene/MainScene.h>
 #include <GameManager.h>
 #include <MainScene/End/EndMainScene.h>
-
+#include <Windows/WindowsSetup.h>
 #include <Note/Long/LongNote.h>
 
 PlayMainScene::PlayMainScene(){
+	//ウィンドウの設定
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//入力
 	input_ = Elysia::Input::GetInstance();
 	//オーディオ
@@ -86,7 +88,6 @@ void PlayMainScene::Update(){
 
 		//ポーズ処理
 		Pause();
-
 
 		//楽曲を再生し終わったとき
 		if (musicLength_ < musicTime_) {
@@ -354,7 +355,7 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 
 void PlayMainScene::Pause(){
 	if (isPause_) {
-		if (input_->IsTriggerKey(DIK_ESCAPE)) {
+		if (input_->IsTriggerKey(DIK_ESCAPE)||windowsSetup_->GetIsWindowMove()) {
 			isRestart_ = true;
 		}
 		//再開処理
@@ -362,13 +363,21 @@ void PlayMainScene::Pause(){
 			Restart();
 		}
 	} 
+	//ポーズする
 	else {
 		if (input_->IsTriggerKey(DIK_ESCAPE)) {
 			//ESCAPEでポーズ
 			audio_->Stop(musicScoreData_.musicHandle);
+			//音量も0にする
+			audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
 			//ポーズ時間の設定
 			pauseTime_ = PAUSE_TIME_;
+			//止めた時間を記録
+			stopTime_ = musicTime_;
+			//ポーズ中にする
 			isPause_ = true;
+			//まだ再生しない
+			isResume_ = false;
 		}
 	}
 }
@@ -379,10 +388,21 @@ void PlayMainScene::Restart(){
 
 	//0になったら再開
 	if (pauseTime_ <= 0.0f) {
-		//解除
-		isPause_ = false;
-		isRestart_ = false;
-		//再開
-		audio_->Resume(musicScoreData_.musicHandle);
+		//少し前から再生する
+		if (!isResume_) {
+			audio_->Resume(musicScoreData_.musicHandle, stopTime_ - START_OFFSET_TIME_);
+			isResume_ = true;
+		}
+		//いきなり大きい音が流れるのはよくないので線形補間で徐々に音量を上げる
+		float_t t = SingleCalculation::InverseLerp(stopTime_ - START_OFFSET_TIME_, stopTime_, musicTime_);
+		float_t volume = SingleCalculation::Lerp(MIN_VOLUME_, MAX_VOLUME_, t);
+		audio_->ChangeVolume(musicScoreData_.musicHandle, volume);
+		if (t >= 1.0f) {
+			//解除
+			isPause_ = false;
+			isRestart_ = false;
+			//音量を最大にする
+			audio_->ChangeVolume(musicScoreData_.musicHandle, MAX_VOLUME_);
+		}
 	}
 }

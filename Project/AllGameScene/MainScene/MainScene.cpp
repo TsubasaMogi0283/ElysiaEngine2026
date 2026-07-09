@@ -36,7 +36,7 @@ void MainScene::Initialize(){
 
 	//カメラの初期化
 	camera_.Initialize();
-	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -60.0f };
+	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -70.0f };
 
 	//平行光源の初期化
 	directionalLight_.Initialize();

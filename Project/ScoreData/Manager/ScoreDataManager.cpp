@@ -19,7 +19,7 @@ void ScoreDataManager::Initialize(){
 	//基本的には譜面データはJSONでやる
 	Load("HighwaySunset/HighwaySunset_Easy.json");
 	//Load("UnknownFunction");
-	//Load("C0ns+ruct10n");
+	Load("Construction/Construction_Easy.json");
 }
 
 void ScoreDataManager::Load(const std::string& path) {
