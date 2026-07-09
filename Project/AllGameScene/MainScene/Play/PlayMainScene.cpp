@@ -30,7 +30,7 @@ void PlayMainScene::Initialize(){
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube","Cube.obj");
 
 	//通常ノーツの生成
-	for (uint32_t i = 0u;i < NORMAL_NOTEMAX_SIZE_;i++) {
+	for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
@@ -66,10 +66,18 @@ void PlayMainScene::Update(){
 		//上
 		if (input_->IsTriggerKey(DIK_R)||input_->IsTriggerKey(DIK_I)) {
 			upLaneCondition.isHit = true;
+			upLaneCondition.touchTime = musicTime_;
+		}
+		else {
+			upLaneCondition.isHit = false;
 		}
 		//下
 		if (input_->IsTriggerKey(DIK_F) || input_->IsTriggerKey(DIK_J)) {
 			downLaneCondition.isHit = true;
+			downLaneCondition.touchTime = musicTime_;
+		}
+		else {
+			downLaneCondition.isHit = false;
 		}
 
 		//譜面の流れる処理
@@ -98,12 +106,36 @@ void PlayMainScene::Update(){
 	judgementLineMaterial_.Update();
 	
 #ifdef _DEBUG
-	ImGui::Begin("PlayScene");
+	ImGui::Begin("プレイシーン");
+	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
+	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
+
+
 	ImGui::InputFloat("楽曲再生時間", &musicTime_);
 	ImGui::InputFloat("楽曲の長さ", &musicLength_);
 	ImGui::InputFloat("ポーズ時間", &pauseTime_);
+	if (ImGui::TreeNode("判定")) {
+		int32_t perfect = static_cast<int32_t>(record_.perfect);
+		int32_t great = static_cast<int32_t>(record_.great);
+		int32_t good = static_cast<int32_t>(record_.good);
+		int32_t miss = static_cast<int32_t>(record_.miss);
+		int32_t combo = static_cast<int32_t>(record_.combo);
+		int32_t maxCombo = static_cast<int32_t>(record_.maxCombo);
+		int32_t score = static_cast<int32_t>(record_.score);
+		
+		ImGui::InputInt("Perfect", &perfect);
+		ImGui::InputInt("Great", &great);
+		ImGui::InputInt("Good", &good);
+		ImGui::InputInt("Miss", &miss);
+		ImGui::InputInt("Combo", &combo);
+		ImGui::InputInt("MaxCombo", &maxCombo);
+		ImGui::InputInt("Score", &score);
+		ImGui::TreePop();
+	}
+	
+
 	if(ImGui::TreeNode("上レーン")) {
-		for (uint32_t i = 0u;i < NORMAL_NOTEMAX_SIZE_;i++) {
+		for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
 			bool isUsed = normalTapNoteArray_[i]->GetIsUsed();
 			if (isUsed) {
 				float_t startTime = normalTapNoteArray_[i]->GetStartMoveTime();
@@ -112,9 +144,7 @@ void PlayMainScene::Update(){
 				ImGui::InputFloat("移動開始時間", &startTime);
 				ImGui::InputFloat("到達時間", &arriveTime);
 			}
-			
 		}
-		
 		ImGui::TreePop();
 	}
 
@@ -131,7 +161,7 @@ void PlayMainScene::Update(){
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	//通常ノーツの設定
-	for(uint32_t i = 0u; i < NORMAL_NOTEMAX_SIZE_; i++) {
+	for(uint32_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
 		normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 	}
 
@@ -164,7 +194,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		if (note.type == NoteType::NormalTap) {
 			if (!note.isAssigned) {
 				//通常ノーツの設定
-				for (uint8_t j = 0u; j < NORMAL_NOTEMAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//
@@ -223,7 +253,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 	Judge(noteInformations, laneCondition,closestNoteIndex);
 
 	//通常ノーツの設定
-	for (uint32_t j = 0u; j < NORMAL_NOTEMAX_SIZE_; j++) {
+	for (uint32_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
 		//使用時
 		if (normalTapNoteArray_[j]->GetIsUsed()) {
 			//楽曲時間を設定
@@ -244,58 +274,79 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 		float_t absJudgementTime = std::abs(laneCondition.touchTime - targetNote.arriveLineTime);
 		//通常タップ専用
 		if (targetNote.type == NoteType::NormalTap) {
+
+			//判定の確定
+			bool isConfirmJudgement = false;
+
 			//Perfect用
 			if (absJudgementTime >= 0.0f &&
 				absJudgementTime < NoteJudgement::Time::PERFECT) {
 
-				//Perfectの値を増やす
+				//判定の設定
 				record_.perfect++;
 				targetNote.judgement = NoteJudgement::Selection::Perfect;
-				//判定が確定したらフラグを立てる
-				targetNote.isJudged = true;
-				targetNote.isProcessEnd = true;
+				isConfirmJudgement = true;
+
 				//コンボを増やす
 				record_.combo++;
-				//パーフェクトのスコアを加算
+				//スコアを加算
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
 			}
 			//Great用
 			else if (absJudgementTime >= NoteJudgement::Time::PERFECT &&
 				absJudgementTime < NoteJudgement::Time::GREAT) {
+
+				//判定の設定
 				record_.great++;
 				targetNote.judgement = NoteJudgement::Selection::Great;
-				//判定が確定したらフラグを立てる
-				targetNote.isJudged = true;
-				targetNote.isProcessEnd = true;
+				isConfirmJudgement = true;
+
 				//コンボを増やす
 				record_.combo++;
-				//グレートのスコアを加算
+				//スコアを加算
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 			}
 			//Good用
 			else if (absJudgementTime >= NoteJudgement::Time::GREAT &&
 				absJudgementTime < NoteJudgement::Time::GOOD) {
+
+				//判定の設定
 				record_.good++;
 				targetNote.judgement = NoteJudgement::Selection::Good;
-				// 判定が確定したらフラグを立てる
-				targetNote.isJudged = true;
-				targetNote.isProcessEnd = true;
+				isConfirmJudgement = true;
+
 				//コンボを増やす
 				record_.combo++;
-				//グッドのスコアを加算
+				//スコアを加算
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 			}
 			//Miss用
 			else if (absJudgementTime >= NoteJudgement::Time::GOOD &&
 				absJudgementTime < NoteJudgement::Time::MISS) {
+
+				//判定の設定
 				record_.miss++;
 				targetNote.judgement = NoteJudgement::Selection::Miss;
-				// 判定が確定したらフラグを立てる
-				targetNote.isJudged = true;
-				targetNote.isProcessEnd = true;
+				isConfirmJudgement = true;
+
 				//コンボを0に戻す
 				record_.combo = 0u;
+				//スコアの倍率を初期化
 				comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
+			}
+
+			//判定が確定したらフラグを立てる
+			if (isConfirmJudgement) {
+				targetNote.isJudged = true;
+				targetNote.isProcessEnd = true;
+
+				//有効なな値を持っていれば未使用に戻す
+				if (targetNote.poolIndex != -1) {
+					//未使用
+					normalTapNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
+					//インデックスを初期化
+					targetNote.poolIndex = -1;
+				}
 			}
 		}
 	}

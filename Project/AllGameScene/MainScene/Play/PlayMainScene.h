@@ -121,7 +121,7 @@ private:
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 
 	//ノーマルタップノーツ格納数の最大サイズ
-	static const uint8_t NORMAL_NOTEMAX_SIZE_ = 16u;
+	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 16u;
 
 
 
@@ -131,7 +131,7 @@ private:
 	MusicScoreData musicScoreData_ = {};
 
 	//オブジェクトプールで管理するための通常タップノーツのベクター
-	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTEMAX_SIZE_> normalTapNoteArray_ = {};
+	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
 
 	//演奏中
 	bool isPlay_ = true;
