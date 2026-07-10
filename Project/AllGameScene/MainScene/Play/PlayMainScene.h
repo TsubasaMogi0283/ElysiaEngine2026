@@ -115,14 +115,8 @@ private:
 
 	//ポーズ時間
 	const float_t PAUSE_TIME_ = 3.0f;
-	//再生開始のオフセット時間
-	float_t START_OFFSET_TIME_ = 1.0f;
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
-	//最小の音量
-	const float_t MIN_VOLUME_ = 0.0f;
-	//最大の音量
-	const float_t MAX_VOLUME_ = 1.0f;
 
 private:
 

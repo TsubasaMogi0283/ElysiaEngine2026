@@ -461,7 +461,6 @@ void Elysia::Audio::Resume(const uint32_t& audioHandle, const float_t& startSeco
 
 	//サンプルレートとブロックアライメント
 	int32_t samplingRate = audioInformation_[fileKey].soundData.wfex.nSamplesPerSec;
-	//int16_t blockAlign = audioInformation_[fileKey].soundData.wfex.nBlockAlign;
 
 	// 2. 秒数から再生開始サンプル数を計算
 	buffer.PlayBegin = static_cast<UINT32>(startSeconds * samplingRate);

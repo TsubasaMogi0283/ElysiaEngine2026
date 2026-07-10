@@ -390,19 +390,9 @@ void PlayMainScene::Restart(){
 	if (pauseTime_ <= 0.0f) {
 		//少し前から再生する
 		if (!isResume_) {
-			audio_->Resume(musicScoreData_.musicHandle, stopTime_ - START_OFFSET_TIME_);
+			audio_->Resume(musicScoreData_.musicHandle);
 			isResume_ = true;
 		}
-		//いきなり大きい音が流れるのはよくないので線形補間で徐々に音量を上げる
-		float_t t = SingleCalculation::InverseLerp(stopTime_ - START_OFFSET_TIME_, stopTime_, musicTime_);
-		float_t volume = SingleCalculation::Lerp(MIN_VOLUME_, MAX_VOLUME_, t);
-		audio_->ChangeVolume(musicScoreData_.musicHandle, volume);
-		if (t >= 1.0f) {
-			//解除
-			isPause_ = false;
-			isRestart_ = false;
-			//音量を最大にする
-			audio_->ChangeVolume(musicScoreData_.musicHandle, MAX_VOLUME_);
-		}
+
 	}
 }
