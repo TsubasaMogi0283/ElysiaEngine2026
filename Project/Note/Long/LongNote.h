@@ -41,8 +41,5 @@ public:
 	/// </summary>
 	~LongNote() = default;
 
-private:
-
-
 };
 

@@ -15,27 +15,49 @@ void WorldTransform::Initialize() {
 	rotate = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 	//座標
 	translate = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
+	//アンカーポイント
+	anchorPoint = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 }
-
 
 void WorldTransform::Update() {
 
+	//アンカーポイント用の行列を作る
+	Vector3 anchorPointInverse = { .x = -anchorPoint.x,.y = -anchorPoint.y,.z = -anchorPoint.z };
+	Matrix4x4 anchorMatrix = Matrix4x4::MakeTranslateMatrix(anchorPointInverse);
+	Matrix4x4 postTranslateMatrix = Matrix4x4::MakeTranslateMatrix(anchorPoint);
 	//クォータニオンを使う場合
-	if (isUseQuaternion_==true) {
+	if (isUseQuaternion_) {
+		
 		//Scale
 		Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scale);
 		//Rotate。行列へ変換
 		Matrix4x4 rotateMatrix = Matrix4x4::MakeRotateMatrix(quaternion_);
 		//Translate
 		Matrix4x4 translateMatrix = Matrix4x4::MakeTranslateMatrix(translate);
+		
 
-		//合成
-		worldMatrix = Matrix4x4::Multiply(scaleMatrix, Matrix4x4::Multiply(rotateMatrix, translateMatrix));
+		worldMatrix = anchorMatrix;
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, scaleMatrix);
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, rotateMatrix);
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, postTranslateMatrix);
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, translateMatrix);
+
 	}
 	//使わない場合
 	else {
-		//そのままSRT合成
-		worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotate, translate);
+		//Scale
+		Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scale);
+		//Rotate。行列へ変換
+		Matrix4x4 rotateMatrix = Matrix4x4::MakeRotateXYZMatrix(rotate.x, rotate.y, rotate.z);
+		//Translate
+		Matrix4x4 translateMatrix = Matrix4x4::MakeTranslateMatrix(translate);
+
+		worldMatrix = anchorMatrix;
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, scaleMatrix);
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, rotateMatrix);
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, postTranslateMatrix);
+		worldMatrix = Matrix4x4::Multiply(worldMatrix, translateMatrix);
+
 
 	}
 
@@ -45,11 +67,6 @@ void WorldTransform::Update() {
 	
 	//転置にした
 	worldInverseTransposeMatrix = Matrix4x4::MakeTransposeMatrix(worldInverseMatrix);
-
-	//親があれば親のワールド行列を掛ける
-	if (parent!=nullptr) {
-		worldMatrix = Matrix4x4::Multiply(worldMatrix, parent->worldMatrix);
-	}
 
 	//転送
 	Transfer();

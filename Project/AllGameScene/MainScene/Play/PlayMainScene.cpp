@@ -110,7 +110,8 @@ void PlayMainScene::Update(){
 	ImGui::Begin("プレイシーン");
 	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
 	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
-
+	ImGui::SliderFloat3("判定線のスケール", &judgementLineWorldTransform_.scale.x, 1.0f, 4.0f);
+	ImGui::SliderFloat3("アンカーポイント", &judgementLineWorldTransform_.anchorPoint.x, -1.0f, 1.0f);
 
 	ImGui::InputFloat("楽曲再生時間", &musicTime_);
 	ImGui::InputFloat("楽曲の長さ", &musicLength_);
