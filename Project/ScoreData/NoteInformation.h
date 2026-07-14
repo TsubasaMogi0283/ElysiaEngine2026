@@ -28,8 +28,6 @@ struct NoteInformation {
 	//動いているときの比率
 	float_t moveRatio = 0.0f;
 
-	//処理が終わったかどうか
-	bool isProcessEnd = false;;
 	//判定
 	uint8_t judgement = 0u;
 	//判定したかどうか

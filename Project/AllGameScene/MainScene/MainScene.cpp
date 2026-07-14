@@ -128,7 +128,6 @@ void MainScene::GenerateNotes(){
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
-					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -149,7 +148,6 @@ void MainScene::GenerateNotes(){
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
-					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -173,7 +171,6 @@ void MainScene::GenerateNotes(){
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
-					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -195,7 +192,6 @@ void MainScene::GenerateNotes(){
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
-					.isProcessEnd = false,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false

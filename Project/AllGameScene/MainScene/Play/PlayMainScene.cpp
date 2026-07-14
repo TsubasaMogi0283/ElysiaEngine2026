@@ -36,7 +36,7 @@ void PlayMainScene::Initialize(){
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
-		normalTapNote->SetInitialPosition(INITIAL_POSITION_X_);
+		normalTapNote->SetInitialPositionX(INITIAL_POSITION_X_);
 		normalTapNote->SetJudgmentPositionX(JUDGEMENT_POSITION_X_);
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
@@ -49,7 +49,7 @@ void PlayMainScene::Initialize(){
 	judgementLineWorldTransform_.scale.y = 10.0f;
 	judgementLineWorldTransform_.translate.x = JUDGEMENT_POSITION_X_;
 	judgementLineWorldTransform_.translate.y = 5.0f;
-
+	//判定線のマテリアルを生成
 	judgementLineMaterial_.Initialize();
 	judgementLineMaterial_.color = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
 
@@ -164,7 +164,9 @@ void PlayMainScene::Update(){
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	//通常ノーツの設定
 	for(uint32_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
-		normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
+		if (normalTapNoteArray_[i]->GetIsUsed()) {
+			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
+		}
 	}
 
 	//判定線の描画
@@ -184,7 +186,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		NoteInformation& note = noteInformations[i];
 
 		//判定済みは処理せず次へ
-		if (note.isJudged && note.isProcessEnd) {
+		if (note.isJudged ) {
 			continue;
 		}
 		//まだ動き始める時間になっていないので処理をしない
@@ -199,7 +201,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
-						//
+						//Y座標の設定
 						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
 						//開始時間を設定
 						normalTapNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
@@ -238,7 +240,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				record_.miss++;
 				// 判定が確定したらフラグを立てる
 				note.isJudged = true;
-				note.isProcessEnd = true;
 			}
 		}
 		//ロング終点
@@ -247,7 +248,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			if (note.moveRatio >= 1.0f) {
 				laneCondition.isHitLongNote = false;
 				note.isJudged = true;
-				note.isProcessEnd = true;
 			}
 		}
 	}
@@ -262,7 +262,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			normalTapNoteArray_[j]->SetMusicTime(musicTime_);
 			//更新
 			normalTapNoteArray_[j]->Update();
-			
 		}
 	}
 }
@@ -272,8 +271,8 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 	if (closestNoteIndex != -1) {
 		//対象のノーツ
 		NoteInformation& targetNote = noteInformation[closestNoteIndex];
-		//絶対値版
-		float_t absJudgementTime = std::abs(laneCondition.touchTime - targetNote.arriveLineTime);
+		//判定時間の差分(絶対値)
+		float_t absoluteJudgementTime = std::abs(laneCondition.touchTime - targetNote.arriveLineTime);
 		//通常タップ専用
 		if (targetNote.type == NoteType::NormalTap) {
 
@@ -281,8 +280,8 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			bool isConfirmJudgement = false;
 
 			//Perfect用
-			if (absJudgementTime >= 0.0f &&
-				absJudgementTime < NoteJudgement::Time::PERFECT) {
+			if (absoluteJudgementTime >= 0.0f &&
+				absoluteJudgementTime < NoteJudgement::Time::PERFECT) {
 
 				//判定の設定
 				record_.perfect++;
@@ -295,8 +294,8 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
 			}
 			//Great用
-			else if (absJudgementTime >= NoteJudgement::Time::PERFECT &&
-				absJudgementTime < NoteJudgement::Time::GREAT) {
+			else if (absoluteJudgementTime >= NoteJudgement::Time::PERFECT &&
+				absoluteJudgementTime < NoteJudgement::Time::GREAT) {
 
 				//判定の設定
 				record_.great++;
@@ -309,8 +308,8 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 			}
 			//Good用
-			else if (absJudgementTime >= NoteJudgement::Time::GREAT &&
-				absJudgementTime < NoteJudgement::Time::GOOD) {
+			else if (absoluteJudgementTime >= NoteJudgement::Time::GREAT &&
+				absoluteJudgementTime < NoteJudgement::Time::GOOD) {
 
 				//判定の設定
 				record_.good++;
@@ -323,8 +322,8 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 			}
 			//Miss用
-			else if (absJudgementTime >= NoteJudgement::Time::GOOD &&
-				absJudgementTime < NoteJudgement::Time::MISS) {
+			else if (absoluteJudgementTime >= NoteJudgement::Time::GOOD &&
+				absoluteJudgementTime < NoteJudgement::Time::MISS) {
 
 				//判定の設定
 				record_.miss++;
@@ -340,9 +339,8 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			//判定が確定したらフラグを立てる
 			if (isConfirmJudgement) {
 				targetNote.isJudged = true;
-				targetNote.isProcessEnd = true;
 
-				//有効なな値を持っていれば未使用に戻す
+				//有効な値を持っていれば未使用に戻す
 				if (targetNote.poolIndex != -1) {
 					//未使用
 					normalTapNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
@@ -355,18 +353,22 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 }
 
 void PlayMainScene::Pause(){
+	//ポーズ中の時
 	if (isPause_) {
-		if (input_->IsTriggerKey(DIK_ESCAPE)||windowsSetup_->GetIsWindowMove()) {
+		
+		if (input_->IsTriggerKey(DIK_ESCAPE)) {
 			isRestart_ = true;
 		}
+
 		//再開処理
 		if (isRestart_) {
 			Restart();
 		}
 	} 
-	//ポーズする
+	//これからポーズする
 	else {
-		if (input_->IsTriggerKey(DIK_ESCAPE)) {
+		//ESCAPEかウィンドウの移動中の時
+		if (input_->IsTriggerKey(DIK_ESCAPE) ) {
 			//ESCAPEでポーズ
 			audio_->Stop(musicScoreData_.musicHandle);
 			//音量も0にする
@@ -380,6 +382,23 @@ void PlayMainScene::Pause(){
 			//まだ再生しない
 			isResume_ = false;
 		}
+
+		//ウィンドウのタイトルバーに触れたときのコールバックを設定
+		windowsSetup_->SetOnEnterSizeMoveCallback([this]() {
+			//ESCAPEでポーズ
+			audio_->Stop(musicScoreData_.musicHandle);
+			//音量も0にする
+			audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
+			//ポーズ時間の設定
+			pauseTime_ = PAUSE_TIME_;
+			//止めた時間を記録
+			stopTime_ = musicTime_;
+			//ポーズ中にする
+			isPause_ = true;
+			//まだ再生しない
+			isResume_ = false;
+			}
+		);
 	}
 }
 

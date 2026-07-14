@@ -21,11 +21,17 @@ LRESULT Elysia::WindowsSetup::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPA
 	case WM_ENTERSIZEMOVE:
 		//ウィンドウが移動中
 		Elysia::WindowsSetup::GetInstance()->isWindowMove_ = true;
+		if (Elysia::WindowsSetup::GetInstance()->onEnterSizeMoveCallback_) {
+			Elysia::WindowsSetup::GetInstance()->onEnterSizeMoveCallback_();
+		}
 		break;
 
 	case WM_EXITSIZEMOVE:
 		//ウィンドウが移動終了
 		Elysia::WindowsSetup::GetInstance()->isWindowMove_ = false;
+		if (Elysia::WindowsSetup::GetInstance()->onExitSizeMoveCallback_) {
+			Elysia::WindowsSetup::GetInstance()->onExitSizeMoveCallback_();
+		}
 		break;
 
 	case WM_DESTROY:

@@ -10,13 +10,11 @@
 #include <WinUser.h>
 #include <cstdint>
 #include <string>
+#include <functional>
+
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_dx12.h>
 #include <ImGui/imgui_impl_win32.h>
-
-//外部の,、つまり自分が作ったものではないファイルなどは
-//<>でインクルードさせた方が良い
-//その他自分で作ったものは""でインクルードさせてね
 
 //extern...グローバル変数を共有する
 
@@ -36,7 +34,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd,UINT msg,
 namespace Elysia {
 
 	/// <summary>
-	/// Windowsの設定(シングルトン)
+	/// Windowsの設定
 	/// </summary>
 	class WindowsSetup final {
 	private:
@@ -182,7 +180,15 @@ namespace Elysia {
 			return windowClass_.hInstance;
 		}
 
+	public:
+		// 外部から通知を受け取るための関数を登録する
+		void SetOnEnterSizeMoveCallback(std::function<void()> callback) { onEnterSizeMoveCallback_ = callback; }
+		void SetOnExitSizeMoveCallback(std::function<void()> callback) { onExitSizeMoveCallback_ = callback; }
 
+	private:
+		// コールバックを保持する変数
+		std::function<void()> onEnterSizeMoveCallback_ = nullptr;
+		std::function<void()> onExitSizeMoveCallback_ = nullptr;
 
 	public:
 		//クライアントのサイズ

@@ -123,7 +123,7 @@ private:
 	//譜面情報
 	MusicScoreData musicScoreData_ = {};
 
-	//オブジェクトプールで管理するための通常タップノーツのベクター
+	//オブジェクトプールで管理するための通常タップノーツの固定配列
 	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
 
 	//演奏中

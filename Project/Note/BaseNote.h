@@ -90,7 +90,7 @@ public:
 	/// 初期座標
 	/// </summary>
 	/// <param name="positionX">X座標</param>
-	inline void SetInitialPosition(const float_t& positionX) {
+	inline void SetInitialPositionX(const float_t& positionX) {
 		this->initialPositionX_ = positionX;
 	}
 
