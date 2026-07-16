@@ -211,6 +211,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						normalTapNoteArray_[j]->SetIsUsed(true);
 						//インデックスを保存
 						normalTapNoteArray_[j]->SetPoolIndex(j);
+						note.poolIndex = j;
 						//割り当て済みにする
 						note.isAssigned = true;
 						break;
@@ -255,13 +256,13 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 	Judge(noteInformations, laneCondition,closestNoteIndex);
 
 	//通常ノーツの設定
-	for (uint32_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
+	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
 		//使用時
-		if (normalTapNoteArray_[j]->GetIsUsed()) {
+		if (normalTapNoteArray_[i]->GetIsUsed()) {
 			//楽曲時間を設定
-			normalTapNoteArray_[j]->SetMusicTime(musicTime_);
+			normalTapNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新
-			normalTapNoteArray_[j]->Update();
+			normalTapNoteArray_[i]->Update();
 		}
 	}
 }
@@ -339,14 +340,10 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			//判定が確定したらフラグを立てる
 			if (isConfirmJudgement) {
 				targetNote.isJudged = true;
-
-				//有効な値を持っていれば未使用に戻す
-				if (targetNote.poolIndex != -1) {
-					//未使用
-					normalTapNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
-					//インデックスを初期化
-					targetNote.poolIndex = -1;
-				}
+				//また初期値に戻す
+				normalTapNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
+				normalTapNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
+				targetNote.poolIndex = -1;
 			}
 		}
 	}

@@ -138,8 +138,8 @@ public:
 	/// オブジェクトプール用の割り当て番号を設定
 	/// </summary>
 	/// <param name="index">割り当て番号</param>
-	inline void SetPoolIndex(const uint32_t& index) {
-		this->poolIndex_ = static_cast<int8_t>(index);
+	inline void SetPoolIndex(const int8_t& index) {
+		this->poolIndex_ = index;
 	}
 
 	/// <summary>
