@@ -42,6 +42,9 @@ void PlayMainScene::Initialize(){
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
 	
+	longNoteSmaple_ = std::make_unique<LongNote>();
+	longNoteSmaple_->Initialize(normalNoteModelHandle);
+
 	//判定線のモデルを生成
 	judgementLineModel_ = Elysia::Model::Create(normalNoteModelHandle);
 	judgementLineWorldTransform_.Initialize();
@@ -102,6 +105,8 @@ void PlayMainScene::Update(){
 		return;
 	}
 	
+	longNoteSmaple_->Update();
+
 	//判定線の更新
 	judgementLineWorldTransform_.Update();
 	judgementLineMaterial_.Update();
