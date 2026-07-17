@@ -301,6 +301,18 @@
     <Filter Include="Project\Record">
       <UniqueIdentifier>{f505dbd1-5554-4b9b-90a5-e2ad27a6dde9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\Note\LongNote\HiPass">
+      <UniqueIdentifier>{5736b2a0-5f7f-4387-989f-a2d2e86a24d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\LongNote\LowPass">
+      <UniqueIdentifier>{7311e3cf-6887-4ddf-8cc3-b11b149f21a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\LongNote\TransgateEigth">
+      <UniqueIdentifier>{cbac4696-9032-4430-8778-438dcca527fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\LongNote\TransgateSixteenth">
+      <UniqueIdentifier>{6d3c480c-5de1-417d-a49c-8873c19a43ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -913,20 +925,20 @@
     <ClInclude Include="Project\ScoreData\NoteBarInformation.h">
       <Filter>Project\ScoreData\Information</Filter>
     </ClInclude>
-    <ClInclude Include="Project\ScoreData\NoteInformation.h">
-      <Filter>Project\ScoreData\Information</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\ScoreData\NoteLane.h">
-      <Filter>Project\ScoreData\Information</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\Note\NoteType.h">
-      <Filter>Project\ScoreData\Information</Filter>
-    </ClInclude>
     <ClInclude Include="Project\Note\NoteJudgement.h">
       <Filter>Project\Note</Filter>
     </ClInclude>
     <ClInclude Include="Project\Record\RecordManager.h">
       <Filter>Project\Record</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\NoteType.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\ScoreData\NoteLane.h">
+      <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\ScoreData\NoteInformation.h">
+      <Filter>Project\Note</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

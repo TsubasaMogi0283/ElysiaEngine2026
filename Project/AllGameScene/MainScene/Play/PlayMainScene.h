@@ -14,6 +14,7 @@
 #include <ScoreData/MusicInformation.h>
 #include <Note/NoteJudgement.h>
 #include <Note/NormalTap/NormalTapNote.h>
+#include <Note/Long/LongNote.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -105,8 +106,12 @@ private:
 	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {10.0f,0.0f};
 	//レーンのZ座標
 	const float_t LANE_POSITION_Z_ = 0.0f;
+
 	//ノーマルタップノーツ格納数の最大サイズ
 	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 16u;
+	//ロングノーツ格納数の最大サイズ
+	static const uint8_t LONG_NOTE_MAX_SIZE_ = 4u;
+
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
@@ -123,8 +128,14 @@ private:
 	//譜面情報
 	MusicScoreData musicScoreData_ = {};
 
-	//オブジェクトプールで管理するための通常タップノーツの固定配列
+	//オブジェクトプールで管理するための変数
+	//通常タップノーツの固定配列
 	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
+	//ロング開始ノーツ
+	std::array<std::unique_ptr<LongNote>, LONG_NOTE_MAX_SIZE_> longTapNoteArray_ = {};
+
+	//サンプル
+	std::unique_ptr<LongNote> longNoteSmaple_ = nullptr;
 
 	//演奏中
 	bool isPlay_ = true;

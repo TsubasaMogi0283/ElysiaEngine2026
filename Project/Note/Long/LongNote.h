@@ -41,5 +41,16 @@ public:
 	/// </summary>
 	~LongNote() = default;
 
+public:
+
+	/// <summary>
+	/// X軸スケールの設定
+	/// </summary>
+	/// <param name="scaleY"></param>
+	void SetScaleX(const float_t& scaleY) {
+		this->worldTransform_.scale.x = scaleY;
+	}
+
+
 };
 

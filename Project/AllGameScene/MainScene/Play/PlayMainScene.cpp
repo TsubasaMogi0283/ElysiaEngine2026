@@ -169,8 +169,11 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 		}
 	}
 
+	longNoteSmaple_->DrawObject3D(camera, baseLight);
+
 	//判定線の描画
 	judgementLineModel_->Draw(judgementLineWorldTransform_, camera, judgementLineMaterial_, baseLight);
+
 }
 
 void PlayMainScene::DrawSprite(){
