@@ -181,13 +181,14 @@ namespace Elysia {
 		}
 
 	public:
-		// 外部から通知を受け取るための関数を登録する
+		//コールバック関数の設定
 		void SetOnEnterSizeMoveCallback(std::function<void()> callback) { onEnterSizeMoveCallback_ = callback; }
 		void SetOnExitSizeMoveCallback(std::function<void()> callback) { onExitSizeMoveCallback_ = callback; }
 
 	private:
-		// コールバックを保持する変数
+		//動く開始
 		std::function<void()> onEnterSizeMoveCallback_ = nullptr;
+		//動き終了
 		std::function<void()> onExitSizeMoveCallback_ = nullptr;
 
 	public:
@@ -198,11 +199,15 @@ namespace Elysia {
 
 	private:
 		//ウィンドウハンドル
-		HWND hwnd_ = 0;
+		HWND hwnd_ = {};
 		//ウィンドウクラス
 		WNDCLASS windowClass_{};
 
 		//ウィンドウが移動中かどうか
 		bool isWindowMove_ = false;	
+
+		//フルサイズ
+		int32_t fullSizeX_ = 0;
+		int32_t fullSizeY_ = 0;
 	};
 };

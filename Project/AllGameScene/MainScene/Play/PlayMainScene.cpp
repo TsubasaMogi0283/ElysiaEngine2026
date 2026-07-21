@@ -9,7 +9,7 @@
 #include <GameManager.h>
 #include <MainScene/End/EndMainScene.h>
 #include <Windows/WindowsSetup.h>
-#include <Note/Long/LongNote.h>
+#include <Note/Long/HighPass/HighPassLongNote.h>
 
 PlayMainScene::PlayMainScene(){
 	//ウィンドウの設定
@@ -42,7 +42,8 @@ void PlayMainScene::Initialize(){
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
 	
-	longNoteSmaple_ = std::make_unique<LongNote>();
+	//ロングノーツ
+	longNoteSmaple_ = std::make_unique<HighPassLongNote>();
 	longNoteSmaple_->Initialize(normalNoteModelHandle);
 
 	//判定線のモデルを生成

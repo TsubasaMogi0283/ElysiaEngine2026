@@ -9,7 +9,7 @@ void Camera::Initialize() {
 	//アスペクト比
 	aspectRatio = static_cast<float_t>(Elysia::WindowsSetup::GetClientWidth()) / static_cast<float_t>(Elysia::WindowsSetup::GetClientHeight());
 	
-	//初期
+	//初期値
 	scale = {.x= 1.0f,.y= 1.0f,.z= 1.0f };
 	rotate = {.x= 0.0f,.y= 0.0f,.z= 0.0f };
 	translate = {.x= 0.0f,.y= 0.0f,.z= -9.8f };

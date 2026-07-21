@@ -14,7 +14,7 @@
 #include <ScoreData/MusicInformation.h>
 #include <Note/NoteJudgement.h>
 #include <Note/NormalTap/NormalTapNote.h>
-#include <Note/Long/LongNote.h>
+#include <Note/Long/BaseLongNote.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -132,10 +132,10 @@ private:
 	//通常タップノーツの固定配列
 	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
 	//ロング開始ノーツ
-	std::array<std::unique_ptr<LongNote>, LONG_NOTE_MAX_SIZE_> longTapNoteArray_ = {};
+	std::array<std::unique_ptr<BaseLongNote>, LONG_NOTE_MAX_SIZE_> longTapNoteArray_ = {};
 
 	//サンプル
-	std::unique_ptr<LongNote> longNoteSmaple_ = nullptr;
+	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
 
 	//演奏中
 	bool isPlay_ = true;

@@ -139,7 +139,7 @@ namespace Elysia{
 		/// <summary>
 		/// ディスクリプタヒープの生成
 		/// </summary>
-		void GenerateDescriptorHeap();
+		void SetDepthStencilView();
 
 		/// <summary>
 		/// スワップチェーンを引っ張ってくる

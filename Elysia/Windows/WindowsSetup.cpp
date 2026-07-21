@@ -75,11 +75,14 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 	//ウィンドウクラス登録
 	RegisterClass(&windowClass_);
 
-	//クライアント領域サイズ
-	//ウィンドウサイズを表す構造体にクライアント領域を入れる
-	RECT wrc_ = { 0,0,LONG(clientWidth_) ,LONG(clientHeight_) };
+	//フルサイズにしたい場合のサイズを取得
+	fullSizeX_ = GetSystemMetrics(SM_CXSCREEN);
+	fullSizeY_ = GetSystemMetrics(SM_CYSCREEN);
+
+	//ウィンドウのサイズを設定(左、上、横幅、立幅)
+	RECT wrc = { 0,0,LONG(clientWidth_) ,LONG(clientHeight_) };
 	// クライアント領域を元に実際のサイズにwrcを変更
-	AdjustWindowRect(&wrc_, WS_OVERLAPPEDWINDOW, false);
+	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 	// ウィンドウ生成
 	hwnd_ = CreateWindow(
 		//クラス名
@@ -93,9 +96,9 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 		//標準Y座標
 		CW_USEDEFAULT,
 		//横幅
-		wrc_.right - wrc_.left,
+		wrc.right - wrc.left,
 		//縦幅
-		wrc_.bottom - wrc_.top,
+		wrc.bottom - wrc.top,
 		//親ハンドル
 		nullptr,
 		//メニューハンドル
@@ -114,6 +117,9 @@ void Elysia::WindowsSetup::Initialize(const wchar_t* title, const int32_t& clien
 	//値を入れる
 	clientWidth_ = clientWidth;
 	clientHeight_ = clientHeight;
+
+	
+
 
 	//システムタイマーの分解能を上げる
 	timeBeginPeriod(1);
