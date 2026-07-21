@@ -25,7 +25,6 @@ void MainScene::Initialize(){
 	musicInformation_ = gameManager_->GetMusicInformation();
 #ifdef _DEBUG
 	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
-
 #endif // _DEBUG
 
 	
@@ -40,7 +39,7 @@ void MainScene::Initialize(){
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
-
+	directionalLight_.direction = { 0.04f,-1.0f,0.75f };
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
