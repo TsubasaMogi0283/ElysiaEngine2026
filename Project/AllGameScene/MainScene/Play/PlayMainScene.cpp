@@ -9,6 +9,7 @@
 #include <GameManager.h>
 #include <MainScene/End/EndMainScene.h>
 #include <Windows/WindowsSetup.h>
+#include <TextureManager.h>
 #include <Note/Long/HighPass/HighPassLongNote.h>
 
 PlayMainScene::PlayMainScene(){
@@ -20,6 +21,8 @@ PlayMainScene::PlayMainScene(){
 	audio_ = Elysia::Audio::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
+	//テクスチャ管理クラス
+	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
 void PlayMainScene::Initialize(){
@@ -56,6 +59,11 @@ void PlayMainScene::Initialize(){
 	//判定線のマテリアルを生成
 	judgementLineMaterial_.Initialize();
 	judgementLineMaterial_.color = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
+
+	//ポーズ用
+	uint32_t blackTextureHandle = textureManager_->Load("Resources/Sprite/Back/Black.png");
+	pauseBackSprite_ = Elysia::Sprite::Create(blackTextureHandle);
+	pauseBackSprite_->SetTransparency(PAUSE_TRANSPARENCY_);
 
 	//楽曲の再生
 	audio_->Play(musicScoreData_.musicHandle, false);
@@ -186,6 +194,11 @@ void PlayMainScene::DrawSprite(){
 	//再開するときの演出スプライトを描画する
 	if (isRestart_) {
 
+	}
+
+	//ポーズ中暗くなる
+	if (isPause_) {
+		pauseBackSprite_->Draw();
 	}
 }
 
@@ -418,7 +431,8 @@ void PlayMainScene::Restart(){
 		if (!isResume_) {
 			audio_->Resume(musicScoreData_.musicHandle);
 			isResume_ = true;
+			//ポーズ解除
+			isPause_ = false;
 		}
-
 	}
 }

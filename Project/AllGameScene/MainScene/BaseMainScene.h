@@ -7,7 +7,7 @@
 
 #include <memory>
 #include <array>
-
+#include <Sprite.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -128,6 +128,8 @@ protected:
 	Elysia::Audio* audio_ = nullptr;
 	//モデル管理クラス
 	Elysia::ModelManager* modelManager_ = nullptr;
+	//テクスチャーハンドル
+	Elysia::TextureManager* textureManager_ = nullptr;
 protected:
 	//処理が終わったかどうか
 	bool isEnd_ = false;

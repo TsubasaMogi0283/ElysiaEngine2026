@@ -57,6 +57,12 @@ namespace Elysia {
 		/// <summary>
 		/// 描画
 		/// </summary>
+		void Draw();
+
+
+		/// <summary>
+		/// 描画
+		/// </summary>
 		/// <param name="textureHandle">ハンドル</param>
 		void Draw(const uint32_t& texturehandle);
 
@@ -239,9 +245,7 @@ namespace Elysia {
 			RightBottom,
 			//右上
 			RightTop,
-
 		};
-
 
 	private:
 		//UVトランスフォーム
@@ -276,6 +280,8 @@ namespace Elysia {
 		Vector2 textureLeftTop_ = {};
 		//テクスチャ切り出しサイズ
 		Vector2 textureSize_ = { .x = 100.0f,.y = 100.0f };
+		//テクスチャハンドル
+		uint32_t textureHandle_ = 0u;
 
 		//UVの設定をするかどうか
 		bool isUVSetting_ = false;
