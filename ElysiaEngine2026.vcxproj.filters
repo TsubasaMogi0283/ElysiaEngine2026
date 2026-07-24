@@ -313,6 +313,9 @@
     <Filter Include="Project\Note\LongNote\TransgateSixteenth">
       <UniqueIdentifier>{6d3c480c-5de1-417d-a49c-8873c19a43ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\PauseCountDown">
+      <UniqueIdentifier>{7cb24404-1b20-4742-92c5-5fafcf6123b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -554,6 +557,9 @@
     </ClCompile>
     <ClCompile Include="Project\Note\Long\LowPass\LowhPassLongNote.cpp">
       <Filter>Project\Note\LongNote\LowPass</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\PauseCountDown\PauseCountDown.cpp">
+      <Filter>Project\PauseCountDown</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -951,6 +957,9 @@
     </ClInclude>
     <ClInclude Include="Project\Note\Long\LowPass\LowPassLongNote.h">
       <Filter>Project\Note\LongNote\LowPass</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\PauseCountDown\PauseCountDown.h">
+      <Filter>Project\PauseCountDown</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

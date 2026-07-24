@@ -141,7 +141,7 @@ private:
 
 	//ポーズ中少し暗くするためのスプライト
 	std::unique_ptr<Elysia::Sprite> pauseBackSprite_ = nullptr;
-
+	//
 
 	//演奏中
 	bool isPlay_ = true;

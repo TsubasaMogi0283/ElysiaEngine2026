@@ -1,7 +1,7 @@
 #pragma once
 /**
  * @file Model.h
- * @brief モデル
+ * @brief モデルクラス
  * @author 茂木翼
  */
 
