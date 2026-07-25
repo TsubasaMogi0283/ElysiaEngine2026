@@ -1,29 +1,32 @@
 #pragma once
 
 /**
- * @file PauseAssets.h
- * @brief ポーズクラス
+ * @file PauseAsset.h
+ * @brief ポーズのアセットクラス
  * @author 茂木翼
  */
 
 #include <array>
+#include <vector>
 #include <memory>
 #include <Sprite.h>
 
  /// <summary>
- /// ポーズセット
+ /// ポーズのアセット
  /// </summary>
-class PauseAssets {
+class PauseAsset {
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	PauseAssets() = default;
+	PauseAsset() = default;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initilaize();
+	/// <param name="blackTextureHandle">黒背景のテクスチャーハンドル</param>
+	/// <param name="countNumberTextureHandles">カウントダウン用の数字のテクスチャーハンドル</param>
+	void Initilaize(const uint32_t& blackTextureHandle,const std::vector<uint32_t>& countNumberTextureHandles);
 
 	/// <summary>
 	/// 更新
@@ -38,7 +41,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PauseAssets() = default;
+	~PauseAsset() = default;
 
 public:
 	/// <summary>
@@ -57,18 +60,20 @@ public:
 		this->isDisplay_ = isDisplay;
 	}
 
+
 private:
-	//数字の量
-	static const uint8_t COUNT_DOWN_NUMBER_ = 3u;
+	//ポーズ時の透明度
+	const float_t PAUSE_TRANSPARENCY_ = 0.8f;
 
 private:
 	//カウントダウン用のスプライト
-	std::array<std::unique_ptr<Elysia::Sprite>, COUNT_DOWN_NUMBER_>spriteArray_ = {};
-
+	std::vector<std::unique_ptr<Elysia::Sprite>>countSpriteVector_ = {};
+	//ポーズ中少し暗くするためのスプライト
+	std::unique_ptr<Elysia::Sprite> backSprite_ = nullptr;
 	//時間
 	float_t timer_ = 0.0f;
 	//表示設定
 	bool isDisplay_ = true;
 
-};
 
+};

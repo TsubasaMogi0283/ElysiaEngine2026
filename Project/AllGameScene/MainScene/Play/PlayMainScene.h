@@ -15,6 +15,7 @@
 #include <Note/NoteJudgement.h>
 #include <Note/NormalTap/NormalTapNote.h>
 #include <Note/Long/BaseLongNote.h>
+#include <PauseAsset/PauseAsset.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -120,8 +121,7 @@ private:
 
 	//ポーズ時間
 	const float_t PAUSE_TIME_ = 3.0f;
-	//ポーズ時の透明度
-	const float_t PAUSE_TRANSPARENCY_ = 0.8f;
+	
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 
@@ -139,9 +139,9 @@ private:
 	//サンプル
 	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
 
-	//ポーズ中少し暗くするためのスプライト
-	std::unique_ptr<Elysia::Sprite> pauseBackSprite_ = nullptr;
-	//
+	
+	//ポーズアセット
+	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
 
 	//演奏中
 	bool isPlay_ = true;

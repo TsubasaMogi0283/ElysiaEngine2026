@@ -60,10 +60,18 @@ void PlayMainScene::Initialize(){
 	judgementLineMaterial_.Initialize();
 	judgementLineMaterial_.color = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
 
-	//ポーズ用
+	//ポーズ
 	uint32_t blackTextureHandle = textureManager_->Load("Resources/Sprite/Back/Black.png");
-	pauseBackSprite_ = Elysia::Sprite::Create(blackTextureHandle);
-	pauseBackSprite_->SetTransparency(PAUSE_TRANSPARENCY_);
+	//カウントダウン用のテクスチャハンドルを読み込む
+	std::vector<uint32_t>numberTextureHandleVector = {};
+	//何秒
+	uint8_t countNumber = 3u;
+	//カウントダウンの読み込み
+	for (uint8_t i = 0u;i < countNumber;i++) {
+		numberTextureHandleVector[i] = textureManager_->Load("Resources/Sprite/Number/CountDown/" + std::to_string(i + 1u));
+	}
+	pauseAsset_ = std::make_unique<PauseAsset>();
+	//pauseAsset_->Initilaize();
 
 	//楽曲の再生
 	audio_->Play(musicScoreData_.musicHandle, false);
@@ -198,7 +206,7 @@ void PlayMainScene::DrawSprite(){
 
 	//ポーズ中暗くなる
 	if (isPause_) {
-		pauseBackSprite_->Draw();
+		
 	}
 }
 
