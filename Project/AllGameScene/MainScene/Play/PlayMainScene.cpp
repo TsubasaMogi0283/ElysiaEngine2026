@@ -68,10 +68,11 @@ void PlayMainScene::Initialize(){
 	uint8_t countNumber = 3u;
 	//カウントダウンの読み込み
 	for (uint8_t i = 0u;i < countNumber;i++) {
-		numberTextureHandleVector[i] = textureManager_->Load("Resources/Sprite/Number/CountDown/" + std::to_string(i + 1u));
+		numberTextureHandleVector.push_back(textureManager_->Load("Resources/Sprite/Number/CountDown/" + std::to_string(i + 1u)+".png"));
 	}
+	//ポーズのアセット
 	pauseAsset_ = std::make_unique<PauseAsset>();
-	//pauseAsset_->Initilaize();
+	pauseAsset_->Initilaize(blackTextureHandle, numberTextureHandleVector);
 
 	//楽曲の再生
 	audio_->Play(musicScoreData_.musicHandle, false);
@@ -121,7 +122,7 @@ void PlayMainScene::Update(){
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;
 	}
-	
+	//ロングノーツのサンプルの更新
 	longNoteSmaple_->Update();
 
 	//判定線の更新
@@ -137,7 +138,7 @@ void PlayMainScene::Update(){
 
 	ImGui::InputFloat("楽曲再生時間", &musicTime_);
 	ImGui::InputFloat("楽曲の長さ", &musicLength_);
-	ImGui::InputFloat("ポーズ時間", &pauseTime_);
+	ImGui::InputFloat("ポーズ時間", &restartTimer_);
 	if (ImGui::TreeNode("判定")) {
 		int32_t perfect = static_cast<int32_t>(record_.perfect);
 		int32_t great = static_cast<int32_t>(record_.great);
@@ -190,7 +191,7 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
-
+	//ロングノーツのサンプルの描画
 	longNoteSmaple_->DrawObject3D(camera, baseLight);
 
 	//判定線の描画
@@ -199,15 +200,12 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 }
 
 void PlayMainScene::DrawSprite(){
-	//再開するときの演出スプライトを描画する
-	if (isRestart_) {
-
-	}
-
-	//ポーズ中暗くなる
+	//ポーズ中
 	if (isPause_) {
-		
+		//アセットの描画
+		pauseAsset_->Draw();
 	}
+	
 }
 
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition){
@@ -380,7 +378,7 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 }
 
 void PlayMainScene::Pause(){
-	//ポーズ中の時
+	//ポーズ中
 	if (isPause_) {
 		
 		if (input_->IsTriggerKey(DIK_ESCAPE)) {
@@ -391,6 +389,11 @@ void PlayMainScene::Pause(){
 		if (isRestart_) {
 			Restart();
 		}
+
+		//再開のカウントダウンの時間設定
+		pauseAsset_->SetRestartTimer(restartTimer_);
+		//アセットの更新
+		pauseAsset_->Update();
 	} 
 	//これからポーズする
 	else {
@@ -401,7 +404,7 @@ void PlayMainScene::Pause(){
 			//音量も0にする
 			audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
 			//ポーズ時間の設定
-			pauseTime_ = PAUSE_TIME_;
+			restartTimer_ = PAUSE_TIME_;
 			//止めた時間を記録
 			stopTime_ = musicTime_;
 			//ポーズ中にする
@@ -417,7 +420,7 @@ void PlayMainScene::Pause(){
 			//音量も0にする
 			audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
 			//ポーズ時間の設定
-			pauseTime_ = PAUSE_TIME_;
+			restartTimer_ = PAUSE_TIME_;
 			//止めた時間を記録
 			stopTime_ = musicTime_;
 			//ポーズ中にする
@@ -431,10 +434,10 @@ void PlayMainScene::Pause(){
 
 void PlayMainScene::Restart(){
 	//時間変化
-	pauseTime_ -= DELTA_TIME_;
+	restartTimer_ -= DELTA_TIME_;
 
 	//0になったら再開
-	if (pauseTime_ <= 0.0f) {
+	if (restartTimer_ <= 0.0f) {
 		//少し前から再生する
 		if (!isResume_) {
 			audio_->Resume(musicScoreData_.musicHandle);

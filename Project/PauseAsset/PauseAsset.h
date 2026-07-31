@@ -48,7 +48,7 @@ public:
 	/// 時間の設定
 	/// </summary>
 	/// <param name="timer">カウントダウンの時間</param>
-	inline void SetTimer(const float_t& timer){
+	inline void SetRestartTimer(const float_t& timer){
 		this->timer_ = timer;
 	}
 
@@ -66,8 +66,18 @@ private:
 	const float_t PAUSE_TRANSPARENCY_ = 0.8f;
 
 private:
+	struct NumberInformation {
+		//ハンドル
+		uint32_t textureHandle = 0u;
+		//数字
+		uint8_t number = 0u;
+	};
+
+private:
 	//カウントダウン用のスプライト
-	std::vector<std::unique_ptr<Elysia::Sprite>>countSpriteVector_ = {};
+	std::vector<NumberInformation>numberInformationVector_ = {};
+	//数字
+	std::unique_ptr<Elysia::Sprite>numberSprite_ = nullptr;
 	//ポーズ中少し暗くするためのスプライト
 	std::unique_ptr<Elysia::Sprite> backSprite_ = nullptr;
 	//時間

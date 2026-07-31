@@ -158,7 +158,7 @@ private:
 	float_t comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
 
 	//ポーズから再開したときの時間
-	float_t pauseTime_ = PAUSE_TIME_;
+	float_t restartTimer_ = PAUSE_TIME_;
 	//再開するかどうか
 	bool isRestart_ = false;
 	bool isResume_ = false;
