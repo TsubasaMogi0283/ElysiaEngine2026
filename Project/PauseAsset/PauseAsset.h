@@ -84,6 +84,7 @@ private:
 	float_t timer_ = 0.0f;
 	//表示設定
 	bool isDisplay_ = true;
-
+	//現在の数字テクスチャハンドル
+	uint32_t currentNumberTextureHandle_ = 0u;
 
 };

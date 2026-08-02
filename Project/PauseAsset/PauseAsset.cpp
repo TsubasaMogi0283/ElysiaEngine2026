@@ -19,6 +19,7 @@ void PauseAsset::Update() {
 		
 	}
 
+	currentNumberTextureHandle_ = numberInformationVector_[static_cast<uint8_t>(timer_) - 1u].textureHandle;
 
 }
 
@@ -28,6 +29,6 @@ void PauseAsset::Draw() {
 	
 	//カウント
 	for (uint8_t i = 0;i < numberInformationVector_.size();i++) {
-		numberSprite_->Draw();
+		numberSprite_->Draw(currentNumberTextureHandle_);
 	}
 }
