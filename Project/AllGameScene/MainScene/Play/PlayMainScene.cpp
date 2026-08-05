@@ -138,7 +138,6 @@ void PlayMainScene::Update(){
 
 	ImGui::InputFloat("楽曲再生時間", &musicTime_);
 	ImGui::InputFloat("楽曲の長さ", &musicLength_);
-	ImGui::InputFloat("ポーズ時間", &restartTimer_);
 	if (ImGui::TreeNode("判定")) {
 		int32_t perfect = static_cast<int32_t>(record_.perfect);
 		int32_t great = static_cast<int32_t>(record_.great);
@@ -173,7 +172,6 @@ void PlayMainScene::Update(){
 		ImGui::TreePop();
 	}
 
-	
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
@@ -193,7 +191,6 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 	}
 	//ロングノーツのサンプルの描画
 	longNoteSmaple_->DrawObject3D(camera, baseLight);
-
 	//判定線の描画
 	judgementLineModel_->Draw(judgementLineWorldTransform_, camera, judgementLineMaterial_, baseLight);
 
@@ -205,7 +202,6 @@ void PlayMainScene::DrawSprite(){
 		//アセットの描画
 		pauseAsset_->Draw();
 	}
-	
 }
 
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition){
@@ -381,69 +377,44 @@ void PlayMainScene::Pause(){
 	//ポーズ中
 	if (isPause_) {
 		
-		if (input_->IsTriggerKey(DIK_ESCAPE)) {
-			isRestart_ = true;
-		}
-
 		//再開処理
-		if (isRestart_) {
-			Restart();
+		if (pauseAsset_->GetIsEnd()) {
+			//再生する
+			audio_->Resume(musicScoreData_.musicHandle);
+			//ポーズ解除
+			isPause_ = false;
+			//初期状態に戻す
+			pauseAsset_->SetIsEnd(false);
 		}
 
-		//再開のカウントダウンの時間設定
-		pauseAsset_->SetRestartTimer(restartTimer_);
+		//ESCAPEで再開
+		if (input_->IsTriggerKey(DIK_ESCAPE)) {
+			//カウント開始
+			pauseAsset_->SetIsCountDown(true);
+		}
 		//アセットの更新
 		pauseAsset_->Update();
-	} 
-	//これからポーズする
+	}
 	else {
 		//ESCAPEかウィンドウの移動中の時
 		if (input_->IsTriggerKey(DIK_ESCAPE) ) {
-			//ESCAPEでポーズ
-			audio_->Stop(musicScoreData_.musicHandle);
-			//音量も0にする
-			audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
-			//ポーズ時間の設定
-			restartTimer_ = PAUSE_TIME_;
-			//止めた時間を記録
-			stopTime_ = musicTime_;
-			//ポーズ中にする
-			isPause_ = true;
-			//まだ再生しない
-			isResume_ = false;
+			Stop();
 		}
-
-		//ウィンドウのタイトルバーに触れたときのコールバックを設定
+		//ウィンドウのタイトルバーに触れた時
 		windowsSetup_->SetOnEnterSizeMoveCallback([this]() {
-			//ESCAPEでポーズ
-			audio_->Stop(musicScoreData_.musicHandle);
-			//音量も0にする
-			audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
-			//ポーズ時間の設定
-			restartTimer_ = PAUSE_TIME_;
-			//止めた時間を記録
-			stopTime_ = musicTime_;
-			//ポーズ中にする
-			isPause_ = true;
-			//まだ再生しない
-			isResume_ = false;
+			Stop();
 			}
 		);
 	}
 }
 
-void PlayMainScene::Restart(){
-	//時間変化
-	restartTimer_ -= DELTA_TIME_;
-
-	//0になったら再開
-	if (restartTimer_ <= 0.0f) {
-		//少し前から再生する
-		if (!isResume_) {
-			audio_->Resume(musicScoreData_.musicHandle);
-			isResume_ = true;
-			//ポーズ解除
-			isPause_ = false;
-		}
-	}
+void PlayMainScene::Stop(){
+	//ESCAPEでポーズ
+	audio_->Stop(musicScoreData_.musicHandle);
+	//音量も0にする
+	audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
+	//止めた時間を記録
+	stopTime_ = musicTime_;
+	//ポーズ中にする
+	isPause_ = true;
 }

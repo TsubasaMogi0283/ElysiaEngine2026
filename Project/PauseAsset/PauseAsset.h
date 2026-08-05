@@ -44,28 +44,51 @@ public:
 	~PauseAsset() = default;
 
 public:
+
+
 	/// <summary>
-	/// 時間の設定
+	/// カウントダウン状態の取得
 	/// </summary>
-	/// <param name="timer">カウントダウンの時間</param>
-	inline void SetRestartTimer(const float_t& timer){
-		this->timer_ = timer;
+	/// <returns>カウントダウン状態</returns>
+	inline bool GetIsCountDown()const {
+		return isCountDown_;
 	}
 
 	/// <summary>
-	/// 表示の設定
+	/// カウントダウン状態の設定
 	/// </summary>
-	/// <param name="isDisplay"></param>
-	inline void SetIsDisplay(const bool& isDisplay) {
-		this->isDisplay_ = isDisplay;
+	/// <param name="isCountDown">カウントダウン状態</param>
+	inline void SetIsCountDown(const bool& isCountDown) {
+		this->isCountDown_ = isCountDown;
 	}
 
+	/// <summary>
+	/// 終了状態の取得
+	/// </summary>
+	/// <returns>終了状態</returns>
+	inline bool GetIsEnd()const {
+		return isEnd_;
+	}
+
+	/// <summary>
+	/// 終了状態の設定
+	/// </summary>
+	/// <param name="isEnd">終了状態</param>
+	inline void SetIsEnd(const bool& isEnd) {
+		this->isEnd_ = isEnd;
+	}
 
 private:
 	//ポーズ時の透明度
 	const float_t PAUSE_TRANSPARENCY_ = 0.8f;
+	//ポーズ時間
+	const uint8_t PAUSE_TIME_ = 60u * 3;
 
 private:
+
+	/// <summary>
+	/// テクスチャや数字の情報
+	/// </summary>
 	struct NumberInformation {
 		//ハンドル
 		uint32_t textureHandle = 0u;
@@ -81,10 +104,17 @@ private:
 	//ポーズ中少し暗くするためのスプライト
 	std::unique_ptr<Elysia::Sprite> backSprite_ = nullptr;
 	//時間
-	float_t timer_ = 0.0f;
+	uint8_t timer_ = 60u*3;
 	//表示設定
 	bool isDisplay_ = true;
 	//現在の数字テクスチャハンドル
 	uint32_t currentNumberTextureHandle_ = 0u;
+	
+	//ポーズから再開したときの時間
+	float_t restartTimer_ = PAUSE_TIME_;
 
+	//再開したかどうか
+	bool isCountDown_ = false;
+	//終了
+	bool isEnd_ = false;
 };

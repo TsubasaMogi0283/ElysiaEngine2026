@@ -20,21 +20,37 @@ void PauseAsset::Initilaize(const uint32_t& blackTextureHandle, const std::vecto
 
 void PauseAsset::Update() {
 
-
-
-
-	for(size_t i = 0; i < numberInformationVector_.size(); i++) {
-		if (numberInformationVector_[i].number == static_cast<uint8_t>(timer_)) {
-			currentNumberTextureHandle_ = numberInformationVector_[i].textureHandle;
-			break;
+	//カウントダウン開始したかどうか
+	if (isCountDown_) {
+		//時間を減らす
+		timer_--;
+		//テクスチャハンドルの設定
+		for (size_t i = 0u; i < numberInformationVector_.size(); i++) {
+			if (numberInformationVector_[i].number == timer_/60u+1u) {
+				currentNumberTextureHandle_ = numberInformationVector_[i].textureHandle;
+				break;
+			}
 		}
+		//0になったら再開
+		if (timer_ <= 0u) {
+			isCountDown_ = false;
+			isEnd_ = true;
+		}
+
 	}
+	else {
+		//ポーズ時間を固定
+		timer_ = PAUSE_TIME_;
+	}
+	
 
 #ifdef _DEBUG
 	ImGui::Begin("ポーズ機能");
 
 	int32_t newHandle = static_cast<int32_t>(currentNumberTextureHandle_);
+	int32_t newTimer = static_cast<int32_t>(timer_);
 	ImGui::InputInt("New Texture Handle", &newHandle);
+	ImGui::InputInt("時間", &newTimer);
 	ImGui::End();
 #endif // _DEBUG
 
@@ -45,8 +61,10 @@ void PauseAsset::Draw() {
 	//黒背景
 	backSprite_->Draw();
 	
-	//カウント
-	for (uint8_t i = 0;i < numberInformationVector_.size();i++) {
+	//再開のときだけ描画
+	if (isCountDown_) {
+		//カウント
 		numberSprite_->Draw(currentNumberTextureHandle_);
 	}
+	
 }

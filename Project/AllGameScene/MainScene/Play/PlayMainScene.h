@@ -91,9 +91,9 @@ private:
 	void Pause();
 
 	/// <summary>
-	/// 再生の再開
+	/// 止める処理
 	/// </summary>
-	void Restart();
+	void Stop();
 
 private:
 	
@@ -119,12 +119,9 @@ private:
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
-	//ポーズ時間
-	const float_t PAUSE_TIME_ = 3.0f;
 	
-	//時間変化
-	const float_t DELTA_TIME_ = 1.0f / 60.0f;
-
+	
+	
 private:
 
 	//譜面情報
@@ -157,11 +154,6 @@ private:
 	//コンボのボーナス倍率
 	float_t comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
 
-	//ポーズから再開したときの時間
-	float_t restartTimer_ = PAUSE_TIME_;
-	//再開するかどうか
-	bool isRestart_ = false;
-	bool isResume_ = false;
 
 	//判定線
 	std::unique_ptr<Elysia::Model> judgementLineModel_ = nullptr;
