@@ -23,33 +23,39 @@ void PauseAsset::Update() {
 	//カウントダウン開始したかどうか
 	if (isCountDown_) {
 		//時間を減らす
-		timer_--;
+		timer_ -= DELTA_TIME_;
+		//透明度の設定
+		transparencyT = (SingleCalculation::InverseLerp<float_t>(TRANSPARENCY_START_TIME_,0.0f ,timer_));
+		transparencyT = std::clamp(transparencyT, 0.0f, 1.0f);
+		backSprite_->SetTransparency(PAUSE_TRANSPARENCY_ * (1.0f - transparencyT));
+
+		
 		//テクスチャハンドルの設定
 		for (size_t i = 0u; i < numberInformationVector_.size(); i++) {
-			if (numberInformationVector_[i].number == timer_/60u+1u) {
+			if (numberInformationVector_[i].number == static_cast<uint8_t>(timer_) + 1u) {
 				currentNumberTextureHandle_ = numberInformationVector_[i].textureHandle;
 				break;
 			}
 		}
 		//0になったら再開
-		if (timer_ <= 0u) {
+		if (timer_ <= 0.0f) {
 			isCountDown_ = false;
 			isEnd_ = true;
 		}
 
 	}
 	else {
+		//透明度の初期化
+		backSprite_->SetTransparency(PAUSE_TRANSPARENCY_);
 		//ポーズ時間を固定
-		timer_ = PAUSE_TIME_;
+		timer_ = COUNT_DOWN_TIME_;
 	}
 	
 
 #ifdef _DEBUG
 	ImGui::Begin("ポーズ機能");
-
-	int32_t newHandle = static_cast<int32_t>(currentNumberTextureHandle_);
 	int32_t newTimer = static_cast<int32_t>(timer_);
-	ImGui::InputInt("New Texture Handle", &newHandle);
+	ImGui::InputFloat("透明度の線形保管", &transparencyT);
 	ImGui::InputInt("時間", &newTimer);
 	ImGui::End();
 #endif // _DEBUG

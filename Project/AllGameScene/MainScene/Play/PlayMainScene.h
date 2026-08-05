@@ -16,6 +16,7 @@
 #include <Note/NormalTap/NormalTapNote.h>
 #include <Note/Long/BaseLongNote.h>
 #include <PauseAsset/PauseAsset.h>
+#include <JudgementLine/JudgementLine.h>
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -97,8 +98,6 @@ private:
 
 private:
 	
-	//判定のX座標
-	const float_t JUDGEMENT_POSITION_X_ = -17.0f;
 	//初期のX座標
 	const float_t INITIAL_POSITION_X_ = 50.0f;
 	const float_t INITIAL_POSITION_Y_ = 0.0f;
@@ -113,14 +112,11 @@ private:
 	//ロングノーツ格納数の最大サイズ
 	static const uint8_t LONG_NOTE_MAX_SIZE_ = 4u;
 
-
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
-	
-	
 	
 private:
 
@@ -135,7 +131,6 @@ private:
 
 	//サンプル
 	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
-
 	
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
@@ -156,9 +151,7 @@ private:
 
 
 	//判定線
-	std::unique_ptr<Elysia::Model> judgementLineModel_ = nullptr;
-	WorldTransform judgementLineWorldTransform_ = {};
-	Material judgementLineMaterial_ = {};
+	std::unique_ptr<JudgementLine> judgementLine_ = nullptr;
 
 	//レーンの状態
 	LaneCondition upLaneCondition = {};

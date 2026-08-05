@@ -32,15 +32,20 @@ void PlayMainScene::Initialize(){
 	//譜面データを取得
 	musicScoreData_ = mainScene_->GetScoreData();
 	//ノーマルタップノーツのモデルを読み込む
-	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube","Cube.obj");
+	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
+	//判定線のモデルを生成
+	judgementLine_ = std::make_unique<JudgementLine>();
+	judgementLine_->Initialize(normalNoteModelHandle);
+
+	
 	//通常ノーツの生成
 	for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
 		normalTapNote->SetInitialPositionX(INITIAL_POSITION_X_);
-		normalTapNote->SetJudgmentPositionX(JUDGEMENT_POSITION_X_);
+		normalTapNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
@@ -49,17 +54,9 @@ void PlayMainScene::Initialize(){
 	longNoteSmaple_ = std::make_unique<HighPassLongNote>();
 	longNoteSmaple_->Initialize(normalNoteModelHandle);
 
-	//判定線のモデルを生成
-	judgementLineModel_ = Elysia::Model::Create(normalNoteModelHandle);
-	judgementLineWorldTransform_.Initialize();
-	judgementLineWorldTransform_.scale.x = 0.1f;
-	judgementLineWorldTransform_.scale.y = 10.0f;
-	judgementLineWorldTransform_.translate.x = JUDGEMENT_POSITION_X_;
-	judgementLineWorldTransform_.translate.y = 5.0f;
-	//判定線のマテリアルを生成
-	judgementLineMaterial_.Initialize();
-	judgementLineMaterial_.color = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
+	
 
+#pragma region ポーズ
 	//ポーズ
 	uint32_t blackTextureHandle = textureManager_->Load("Resources/Sprite/Back/Black.png");
 	//カウントダウン用のテクスチャハンドルを読み込む
@@ -73,6 +70,8 @@ void PlayMainScene::Initialize(){
 	//ポーズのアセット
 	pauseAsset_ = std::make_unique<PauseAsset>();
 	pauseAsset_->Initilaize(blackTextureHandle, numberTextureHandleVector);
+
+#pragma endregion
 
 	//楽曲の再生
 	audio_->Play(musicScoreData_.musicHandle, false);
@@ -126,15 +125,12 @@ void PlayMainScene::Update(){
 	longNoteSmaple_->Update();
 
 	//判定線の更新
-	judgementLineWorldTransform_.Update();
-	judgementLineMaterial_.Update();
+	judgementLine_->Update();
 	
 #ifdef _DEBUG
 	ImGui::Begin("プレイシーン");
 	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
 	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
-	ImGui::SliderFloat3("判定線のスケール", &judgementLineWorldTransform_.scale.x, 1.0f, 4.0f);
-	ImGui::SliderFloat3("アンカーポイント", &judgementLineWorldTransform_.anchorPoint.x, -1.0f, 1.0f);
 
 	ImGui::InputFloat("楽曲再生時間", &musicTime_);
 	ImGui::InputFloat("楽曲の長さ", &musicLength_);
@@ -192,7 +188,7 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 	//ロングノーツのサンプルの描画
 	longNoteSmaple_->DrawObject3D(camera, baseLight);
 	//判定線の描画
-	judgementLineModel_->Draw(judgementLineWorldTransform_, camera, judgementLineMaterial_, baseLight);
+	judgementLine_->Draw(camera, baseLight);
 
 }
 
@@ -379,6 +375,8 @@ void PlayMainScene::Pause(){
 		
 		//再開処理
 		if (pauseAsset_->GetIsEnd()) {
+			//音量をもとに戻す
+			audio_->ChangeVolume(musicScoreData_.musicHandle, 1.0f);
 			//再生する
 			audio_->Resume(musicScoreData_.musicHandle);
 			//ポーズ解除

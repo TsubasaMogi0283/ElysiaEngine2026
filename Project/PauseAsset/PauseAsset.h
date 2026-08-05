@@ -82,8 +82,11 @@ private:
 	//ポーズ時の透明度
 	const float_t PAUSE_TRANSPARENCY_ = 0.8f;
 	//ポーズ時間
-	const uint8_t PAUSE_TIME_ = 60u * 3;
-
+	const float_t COUNT_DOWN_TIME_ = 3.0f;
+	//透明化開始時間
+	const float_t TRANSPARENCY_START_TIME_ = 1.0f;
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 private:
 
 	/// <summary>
@@ -103,15 +106,16 @@ private:
 	std::unique_ptr<Elysia::Sprite>numberSprite_ = nullptr;
 	//ポーズ中少し暗くするためのスプライト
 	std::unique_ptr<Elysia::Sprite> backSprite_ = nullptr;
+	float_t transparencyT = 0.0f;
 	//時間
-	uint8_t timer_ = 60u*3;
+	float_t timer_ = 3.0f;
 	//表示設定
 	bool isDisplay_ = true;
 	//現在の数字テクスチャハンドル
 	uint32_t currentNumberTextureHandle_ = 0u;
 	
 	//ポーズから再開したときの時間
-	float_t restartTimer_ = PAUSE_TIME_;
+	float_t restartTimer_ = COUNT_DOWN_TIME_;
 
 	//再開したかどうか
 	bool isCountDown_ = false;
