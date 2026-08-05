@@ -5,17 +5,18 @@
 #include <Easing.h>
 
 void PauseAsset::Initilaize(const uint32_t& blackTextureHandle, const std::vector<uint32_t>& countNumberTextureHandleVector) {
+	//黒背景のスプライトを生成
 	backSprite_ = Elysia::Sprite::Create(blackTextureHandle);
 	backSprite_->SetTransparency(PAUSE_TRANSPARENCY_);
 	
-	//数字のテクスチャのスプライトを作成
+	//数字のテクスチャのスプライトを生成
 	numberSprite_ = Elysia::Sprite::Create(blackTextureHandle);
 	//アンカーポイントの設定
 	numberSprite_->SetAnchorPoint(anchorPoint_);
 	//座標の設定
 	numberSprite_->SetPosition({ 
 		.x = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth() * 0.5f),
-			.y = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight() * 0.5f )
+		.y = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight() * 0.5f )
 	});
 
 	for (uint8_t i = 0;i < countNumberTextureHandleVector.size();i++) {

@@ -18,7 +18,6 @@ void ScoreDataManager::Initialize(){
 	
 	//基本的には譜面データはJSONでやる
 	Load("HighwaySunset/HighwaySunset_Easy.json");
-	//Load("UnknownFunction");
 	Load("Construction/Construction_Easy.json");
 }
 
@@ -37,7 +36,7 @@ void ScoreDataManager::Load(const std::string& path) {
 		//0からslashPositionまで
 		folderName = path.substr(0, slashPosition);
 		//「/」から最後まで
-		fileName = path.substr(slashPosition + 1);
+		fileName = path.substr(slashPosition + 1u);
 	}
 
 	//楽曲情報を記録
@@ -106,7 +105,7 @@ void ScoreDataManager::Place(MusicScoreData& musicNotesData, const nlohmann::jso
 		//行で見ていく
 		//合計上下で2つ
 		for (const auto& row : notesArray) {
-			if (!row.is_array() || row.size() < 2) {
+			if (!row.is_array() || row.size() < 2u) {
 				continue;
 			};
 			//ノーツ情報を記録

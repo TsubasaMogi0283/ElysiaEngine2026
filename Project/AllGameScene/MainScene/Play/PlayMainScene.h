@@ -14,6 +14,7 @@
 #include <ScoreData/MusicInformation.h>
 #include <Note/NoteJudgement.h>
 #include <Note/NormalTap/NormalTapNote.h>
+#include <Note/Long/HighPass/HighPassLongNote.h>
 #include <Note/Long/BaseLongNote.h>
 #include <PauseAsset/PauseAsset.h>
 #include <JudgementLine/JudgementLine.h>
@@ -68,6 +69,9 @@ private:
 		bool isHitLongNote = false;
 		//タッチ時間
 		float_t touchTime = 0.0f;
+
+		//ホールド状態
+		bool isHold = false;
 	};
 
 private:
@@ -108,9 +112,9 @@ private:
 	const float_t LANE_POSITION_Z_ = 0.0f;
 
 	//ノーマルタップノーツ格納数の最大サイズ
-	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 16u;
+	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 32u;
 	//ロングノーツ格納数の最大サイズ
-	static const uint8_t LONG_NOTE_MAX_SIZE_ = 4u;
+	static const uint8_t HI_PASS_LONG_NOTE_MAX_SIZE_ = 8u;
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
@@ -125,13 +129,12 @@ private:
 
 	//オブジェクトプールで管理するための変数
 	//通常タップノーツの固定配列
-	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
+	std::array<std::shared_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
 	//ロング開始ノーツ
-	std::array<std::unique_ptr<BaseLongNote>, LONG_NOTE_MAX_SIZE_> longTapNoteArray_ = {};
+	std::array<std::unique_ptr<HighPassLongNote>, HI_PASS_LONG_NOTE_MAX_SIZE_> longTapNoteArray_ = {};
 
 	//サンプル
 	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
-	
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
 

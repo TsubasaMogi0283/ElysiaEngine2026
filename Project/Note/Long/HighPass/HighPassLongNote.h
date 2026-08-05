@@ -29,9 +29,5 @@ public:
 	/// </summary>
 	void Update()override;
 
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~HighPassLongNote()override = default;
 };
 

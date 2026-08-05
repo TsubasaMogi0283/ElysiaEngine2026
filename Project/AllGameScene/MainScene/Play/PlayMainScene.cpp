@@ -50,12 +50,19 @@ void PlayMainScene::Initialize(){
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
 	
+	for (uint32_t i = 0u;i < HI_PASS_LONG_NOTE_MAX_SIZE_;i++) {
+		std::unique_ptr<HighPassLongNote> hiPassLongNote = std::make_unique<HighPassLongNote>();
+		//初期化
+		hiPassLongNote->Initialize(normalNoteModelHandle);
+		hiPassLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		hiPassLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		//挿入
+		longTapNoteArray_[i] = std::move(hiPassLongNote);
+	}
+
 	//ロングノーツ
 	longNoteSmaple_ = std::make_unique<HighPassLongNote>();
 	longNoteSmaple_->Initialize(normalNoteModelHandle);
-
-	
-
 #pragma region ポーズ
 	//ポーズ
 	uint32_t blackTextureHandle = textureManager_->Load("Resources/Sprite/Back/Black.png");
@@ -93,6 +100,14 @@ void PlayMainScene::Update(){
 		else {
 			upLaneCondition.isHit = false;
 		}
+
+		if(input_->IsPushKey(DIK_R)||input_->IsPushKey(DIK_I)) {
+			upLaneCondition.isHold = true;
+		}
+		else {
+			upLaneCondition.isHold = false;
+		}
+
 		//下
 		if (input_->IsTriggerKey(DIK_F) || input_->IsTriggerKey(DIK_J)) {
 			downLaneCondition.isHit = true;
@@ -100,6 +115,13 @@ void PlayMainScene::Update(){
 		}
 		else {
 			downLaneCondition.isHit = false;
+		}
+
+		if (input_->IsPushKey(DIK_F) || input_->IsPushKey(DIK_J)) {
+			downLaneCondition.isHold = true;
+		} 
+		else {
+			downLaneCondition.isHold = false;
 		}
 
 		//譜面の流れる処理
@@ -185,6 +207,12 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
+
+	for (uint32_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		if (longTapNoteArray_[i]->GetIsUsed()) {
+			longTapNoteArray_[i]->DrawObject3D(camera, baseLight);
+		}
+	}
 	//ロングノーツのサンプルの描画
 	longNoteSmaple_->DrawObject3D(camera, baseLight);
 	//判定線の描画
@@ -240,6 +268,31 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			}
 			
 		}
+		else if (note.type == NoteType::HiPassLongStart) {
+			if (!note.isAssigned) {
+				//通常ノーツの設定
+				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_MAX_SIZE_; j++) {
+					//未使用時
+					if (!longTapNoteArray_[j]->GetIsUsed()) {
+						//Y座標の設定
+						longTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						//開始時間を設定
+						longTapNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						//到着時間を設定
+						longTapNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						//使用中に設定
+						longTapNoteArray_[j]->SetIsUsed(true);
+						//インデックスを保存
+						longTapNoteArray_[j]->SetPoolIndex(j);
+						note.poolIndex = j;
+						//割り当て済みにする
+						note.isAssigned = true;
+						break;
+					}
+				}
+			}
+		}
+
 		//タップ系
 		if (note.type == NoteType::NormalTap ||
 			note.type == NoteType::HiPassLongStart ||
@@ -256,10 +309,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			//見過ごし用
 			float_t overlookValue = musicTime_ - note.arriveLineTime;
 			if (overlookValue >= NoteJudgement::Time::MISS) {
-				///ミス
+				//ミス
 				note.judgement = NoteJudgement::Selection::Miss;
 				record_.miss++;
-				// 判定が確定したらフラグを立てる
+				//判定が確定したらフラグを立てる
 				note.isJudged = true;
 			}
 		}
@@ -283,6 +336,19 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			normalTapNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新
 			normalTapNoteArray_[i]->Update();
+		}
+	}
+	//通常ノーツの設定
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (longTapNoteArray_[i]->GetIsUsed()) {
+			//長さの設定
+
+
+			//楽曲時間を設定
+			longTapNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			longTapNoteArray_[i]->Update();
 		}
 	}
 }
