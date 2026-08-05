@@ -1,12 +1,22 @@
 #include "PauseAsset.h"
+#include <WindowsSetup.h>
 #include <imgui.h>
+#include <numbers>
+#include <Easing.h>
 
 void PauseAsset::Initilaize(const uint32_t& blackTextureHandle, const std::vector<uint32_t>& countNumberTextureHandleVector) {
 	backSprite_ = Elysia::Sprite::Create(blackTextureHandle);
 	backSprite_->SetTransparency(PAUSE_TRANSPARENCY_);
-
+	
 	//数字のテクスチャのスプライトを作成
 	numberSprite_ = Elysia::Sprite::Create(blackTextureHandle);
+	//アンカーポイントの設定
+	numberSprite_->SetAnchorPoint(anchorPoint_);
+	//座標の設定
+	numberSprite_->SetPosition({ 
+		.x = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth() * 0.5f),
+			.y = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight() * 0.5f )
+	});
 
 	for (uint8_t i = 0;i < countNumberTextureHandleVector.size();i++) {
 		//数字の情報を格納
@@ -29,7 +39,16 @@ void PauseAsset::Update() {
 		transparencyT = std::clamp(transparencyT, 0.0f, 1.0f);
 		backSprite_->SetTransparency(PAUSE_TRANSPARENCY_ * (1.0f - transparencyT));
 
-		
+		//スケールの設定
+		float_t t = SingleCalculation::Lerp(0.0f, 1.0f, std::fmod(timer_, 1.0f));
+		float_t scaleT = Easing::EaseInBack(t);
+		scaleT = std::clamp(scaleT, 0.0f, 1.0f);
+		numberSprite_->SetScale({ .x = (1.0f - scaleT) * COUNT_DOWN_OFFSET_SCALE_SIZE_,.y = (1.0f - scaleT) * COUNT_DOWN_OFFSET_SCALE_SIZE_ });
+		//回転の設定
+
+		float_t rotateT = Easing::EaseInBack(t);
+		numberSprite_->SetRotate(rotateT*std::numbers::pi_v<float_t>*1.0f);
+
 		//テクスチャハンドルの設定
 		for (size_t i = 0u; i < numberInformationVector_.size(); i++) {
 			if (numberInformationVector_[i].number == static_cast<uint8_t>(timer_) + 1u) {
@@ -42,7 +61,6 @@ void PauseAsset::Update() {
 			isCountDown_ = false;
 			isEnd_ = true;
 		}
-
 	}
 	else {
 		//透明度の初期化

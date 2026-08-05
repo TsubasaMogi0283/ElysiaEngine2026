@@ -55,8 +55,8 @@ void Elysia::BoxFilter::PreDraw(){
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//縦横サイズ
-	uint32_t width = WindowsSetup::GetClientWidth();
-	uint32_t height = WindowsSetup::GetClientHeight();
+	uint32_t width = WindowsSetup::GetInstance()->GetClientWidth();
+	uint32_t height = WindowsSetup::GetInstance()->	GetClientHeight();
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width,height);

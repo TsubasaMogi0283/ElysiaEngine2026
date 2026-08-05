@@ -694,13 +694,10 @@ void Elysia::DirectXSetup::StartDraw() {
 	DirectXSetup::GetInstance()->GetCommandList()->ClearRenderTargetView(RtvManager::GetInstance()->GetRtvHandle(backBufferIndex_), clearColor, 0, nullptr);
 
 
-	uint32_t width = WindowsSetup::GetClientWidth();
-	uint32_t height = WindowsSetup::GetClientHeight();
-
 	//ビューポートの生成
-	GenerateViewport(width, height);
+	GenerateViewport(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
 	//シザーを生成
-	GenerateScissor(width, height);
+	GenerateScissor(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
 }
 
 void Elysia::DirectXSetup::EndDraw() {

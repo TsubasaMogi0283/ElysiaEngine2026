@@ -26,7 +26,7 @@ public:
 	/// </summary>
 	/// <param name="blackTextureHandle">黒背景のテクスチャーハンドル</param>
 	/// <param name="countNumberTextureHandles">カウントダウン用の数字のテクスチャーハンドル</param>
-	void Initilaize(const uint32_t& blackTextureHandle,const std::vector<uint32_t>& countNumberTextureHandles);
+	void Initilaize(const uint32_t& blackTextureHandle, const std::vector<uint32_t>& countNumberTextureHandles);
 
 	/// <summary>
 	/// 更新
@@ -87,6 +87,9 @@ private:
 	const float_t TRANSPARENCY_START_TIME_ = 1.0f;
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
+	//カウントダウンのスケールサイズ(オフセット)
+	const float_t COUNT_DOWN_OFFSET_SCALE_SIZE_ = 0.3f;
+
 private:
 
 	/// <summary>
@@ -104,9 +107,15 @@ private:
 	std::vector<NumberInformation>numberInformationVector_ = {};
 	//数字
 	std::unique_ptr<Elysia::Sprite>numberSprite_ = nullptr;
+	//アンカーポイント
+	Vector2 anchorPoint_ = {0.5f, 0.5f};
+	//回転
+	float_t numberSpriteRotate_ = 0.0f;
+
 	//ポーズ中少し暗くするためのスプライト
 	std::unique_ptr<Elysia::Sprite> backSprite_ = nullptr;
 	float_t transparencyT = 0.0f;
+	
 	//時間
 	float_t timer_ = 3.0f;
 	//表示設定

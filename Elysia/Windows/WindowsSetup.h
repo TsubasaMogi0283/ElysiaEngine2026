@@ -152,7 +152,7 @@ namespace Elysia {
 		/// クライアントの横幅
 		/// </summary>
 		/// <returns></returns>
-		static inline uint32_t GetClientWidth() {
+		inline uint32_t GetClientWidth()const {
 			return clientWidth_;
 		}
 
@@ -160,7 +160,7 @@ namespace Elysia {
 		/// クライアントの縦幅
 		/// </summary>
 		/// <returns></returns>
-		static inline uint32_t GetClientHeight() {
+		inline uint32_t GetClientHeight() const{
 			return clientHeight_;
 		}
 
@@ -193,8 +193,8 @@ namespace Elysia {
 
 	public:
 		//クライアントのサイズ
-		static uint32_t clientWidth_;
-		static uint32_t clientHeight_;
+		uint32_t clientWidth_ = 0u;;
+		uint32_t clientHeight_ = 0u;
 
 
 	private:

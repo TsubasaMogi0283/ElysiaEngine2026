@@ -4,8 +4,6 @@
 
 #include "Convert.h"
 
-uint32_t Elysia::WindowsSetup::clientWidth_ = 0;
-uint32_t Elysia::WindowsSetup::clientHeight_ = 0;
 
 Elysia::WindowsSetup* Elysia::WindowsSetup::GetInstance(){
 	static WindowsSetup instance;
@@ -117,9 +115,6 @@ void Elysia::WindowsSetup::Initialize(const wchar_t* title, const int32_t& clien
 	//値を入れる
 	clientWidth_ = clientWidth;
 	clientHeight_ = clientHeight;
-
-	
-
 
 	//システムタイマーの分解能を上げる
 	timeBeginPeriod(1);
