@@ -50,6 +50,7 @@ void PlayMainScene::Initialize(){
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
 	
+	//ハイパスロングノーツの生成
 	for (uint32_t i = 0u;i < HI_PASS_LONG_NOTE_MAX_SIZE_;i++) {
 		std::unique_ptr<HighPassLongNote> hiPassLongNote = std::make_unique<HighPassLongNote>();
 		//初期化
@@ -145,7 +146,6 @@ void PlayMainScene::Update(){
 	}
 	//ロングノーツのサンプルの更新
 	longNoteSmaple_->Update();
-
 	//判定線の更新
 	judgementLine_->Update();
 	
@@ -338,12 +338,24 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			normalTapNoteArray_[i]->Update();
 		}
 	}
-	//通常ノーツの設定
+	//ハイパスロングノーツの設定
 	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
 		//使用時
 		if (longTapNoteArray_[i]->GetIsUsed()) {
-			//長さの設定
+			//現在の比率を計算
+			//そこから座標を求めていく
+			float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[i].startMoveTime, noteInformations[i].arriveLineTime, musicTime_);
+			float_t endPositionX = SingleCalculation::Lerp(INITIAL_POSITION_X_, judgementLine_->GetJudgementPositionX(), currentRatio);
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
 
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					longTapNoteArray_[i]->SetEndPositionX(endPositionX);
+					break;
+				}
+			}
+			//長さの設定
+			noteInformations[i].type = NoteType::LongEnd;
 
 			//楽曲時間を設定
 			longTapNoteArray_[i]->SetMusicTime(musicTime_);
