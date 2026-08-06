@@ -204,7 +204,7 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 	//通常ノーツの設定
 	for(uint32_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
 		if (normalTapNoteArray_[i]->GetIsUsed()) {
-			//normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
+			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
@@ -213,10 +213,9 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			highPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
-	//ロングノーツのサンプルの描画
-	//longNoteSmaple_->DrawObject3D(camera, baseLight);
+
 	//判定線の描画
-	//judgementLine_->Draw(camera, baseLight);
+	judgementLine_->Draw(camera, baseLight);
 
 }
 
@@ -295,7 +294,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 		//タップ系
 		if (note.type == NoteType::NormalTap ||
-			note.type == NoteType::HiPassLongStart ||
+
 			note.type == NoteType::LowPassLongStart ||
 			note.type == NoteType::TranceGate8LongStart ||
 			note.type == NoteType::TranceGate16LongStart) {
@@ -344,17 +343,21 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			//現在の比率を計算
 			//そこから座標を求めていく
-			float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[i].startMoveTime, noteInformations[i].arriveLineTime, musicTime_);
-			float_t endPositionX = SingleCalculation::Lerp(INITIAL_POSITION_X_, judgementLine_->GetJudgementPositionX(), currentRatio);
 			for (size_t j = 0u; j < noteInformations.size(); j++) {
 
 				//終了地点を見つけたら探すのをやめる。
 				if (noteInformations[j].type == NoteType::LongEnd) {
+					float_t smt = noteInformations[j].startMoveTime;
+					float_t alt = noteInformations[j].arriveLineTime;
+
+					float_t currentRatio = SingleCalculation::InverseLerp(smt, alt, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					float_t endPositionX = SingleCalculation::Lerp(INITIAL_POSITION_X_, judgementLine_->GetJudgementPositionX(), currentRatio);
 					highPassLongNoteArray_[i]->SetEndPositionX(endPositionX);
 					break;
 				}
 			}
-
+			
 			//楽曲時間を設定
 			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新

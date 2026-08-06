@@ -113,7 +113,7 @@ void MainScene::GenerateNotes(){
 		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
 			const NoteLane::Information& note = bar.notesLane[i];
 			
-#pragma region 通常タッチ
+#pragma region 通常タップ
 			//上
 			if (note.upNote == NoteType::NormalTap) {
 				//ノーツの数を増やす

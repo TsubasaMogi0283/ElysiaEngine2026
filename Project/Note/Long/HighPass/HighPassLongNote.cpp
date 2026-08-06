@@ -28,14 +28,20 @@ void HighPassLongNote::Update(){
 
 	//開始の比率を計算
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
+
+	
 	//座標の計算
 	worldTransform_.translate.x = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
 	worldTransform_.translate.y = lanePositionY_;
 
+	//スケールの計算
+	worldTransform_.scale.x = endPositionX_ - worldTransform_.translate.x;
+
+
 	//使用状態の更新
 	if (ratio_ >= 1.0f) {
-		ratio_ = 0.0f;
-		isUsed_ = false;
+		//ratio_ = 0.0f;
+		//isUsed_ = false;
 	}
 
 	//更新
