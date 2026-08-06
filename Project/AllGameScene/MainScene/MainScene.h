@@ -177,7 +177,7 @@ private:
 
 private:
 	//開始オフセット
-	const float_t START_OFFSET_TIME_ = 1.0f;
+	const float_t START_OFFSET_TIME_ = 3.0f;
 
 private:
 	//背景
