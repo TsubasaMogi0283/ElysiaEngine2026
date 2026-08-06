@@ -7,6 +7,16 @@
 #include <ScoreData/MusicScoreData.h>
 
 /// <summary>
+/// ElysiaEngine(前方宣言)
+/// </summary>
+namespace Elysia{
+	/// <summary>
+	/// オーディオ
+	/// </summary>
+	class Audio;
+}
+
+/// <summary>
 /// 譜面管理クラス
 /// </summary>
 class ScoreDataManager {
@@ -14,7 +24,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	ScoreDataManager() = default;
+	ScoreDataManager();
 
 	/// <summary>
 	/// ノーツが流れる処理
@@ -43,12 +53,53 @@ private:
 	/// </summary>
 	static nlohmann::json Deserialize(const std::string& fullFilePath);
 
+
+public:
+	MusicScoreData GetMusicScoreData(const std::string& id,const std::string& level) {
+		level;
+		MusicScoreData musicScoreData = {};
+		//見つけたら代入
+		auto it = musicInformation.find(id);
+		if (it != musicInformation.end()) {
+			musicScoreData = it->second;
+		}
+		else {
+			//空データ
+			musicScoreData = {};
+		}
+
+		return musicScoreData;
+	}
+
+	/// <summary>
+	/// サンプルの取得
+	/// </summary>
+	/// <returns></returns>
+	MusicScoreData GetSampleMusicScoreData() {
+		MusicScoreData musicScoreData = {};
+		//見つけたら代入
+		auto it = musicInformation.find("Construction_Easy");
+		if (it != musicInformation.end()) {
+			musicScoreData = it->second;
+		}
+		else {
+			//空データ
+			musicScoreData = {};
+		}
+
+		return musicScoreData;
+	}
+
+private:
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
+
 private:
 	//譜面が入っているフォルダパス
-	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore";
+	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore/";
 
 	//各譜面情報
-	std::map<std::string,MusicScoreData> musicScoreData_ = {};
+	std::map<std::string,MusicScoreData> musicInformation = {};
 	
 };
 

@@ -40,9 +40,4 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~NormalTapNote() = default;
-
-private:
-
-
 };
-

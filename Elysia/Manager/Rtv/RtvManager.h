@@ -86,7 +86,7 @@ namespace Elysia {
 		// </summary>
 		// <param name="number">数</param>
 		// <returns>ハンドル</returns>
-		inline D3D12_CPU_DESCRIPTOR_HANDLE& GetRtvHandle(const uint32_t& number) const {
+		inline D3D12_CPU_DESCRIPTOR_HANDLE& GetRtvHandle(const uint32_t& number) {
 			return rtvHandles_[number];
 		}
 
@@ -120,7 +120,7 @@ namespace Elysia {
 		//ディスクリプタ
 		ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
 		//ハンドル
-		static D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[RTV_DESCRIPTOR_SIZE_];
+		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[RTV_DESCRIPTOR_SIZE_];
 
 		/// <summary>
 		/// RTVの情報

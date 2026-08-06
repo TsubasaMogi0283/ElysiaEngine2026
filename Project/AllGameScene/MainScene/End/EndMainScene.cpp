@@ -12,15 +12,15 @@ EndMainScene::EndMainScene() {
 }
 
 void EndMainScene::Initialize(){
-	
+	//メインシーンの空チェック
+	assert(mainScene_);
 }
 
-void EndMainScene::Update(MainScene* mainScene){
+void EndMainScene::Update(){
 #ifdef _DEBUG
 	ImGui::Begin("EndScene");
 	ImGui::End();
 
-	mainScene;
 
 #endif // _DEBUG
 }
@@ -28,14 +28,6 @@ void EndMainScene::Update(MainScene* mainScene){
 void EndMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	baseLight;
 	camera;
-}
-
-void EndMainScene::PreDrawPostEffect(){
-
-}
-
-void EndMainScene::DrawPostEffect(){
-
 }
 
 void EndMainScene::DrawSprite(){

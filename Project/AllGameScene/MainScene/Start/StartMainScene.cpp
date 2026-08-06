@@ -12,18 +12,20 @@ StartMainScene::StartMainScene(){
 }
 
 void StartMainScene::Initialize(){
-	
+	//メインシーンの空チェック
+	assert(mainScene_);
 }
 
-void StartMainScene::Update(MainScene* mainScene){
+void StartMainScene::Update(){
 
 #ifdef _DEBUG
 	ImGui::Begin("StartScene");
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
-	if (input_->IsTriggerKey(DIK_N)) {
-		mainScene->ChangeMainScene(std::make_unique<PlayMainScene>());
+	if (input_->IsTriggerKey(DIK_M)) {
+		mainScene_->ChangeMainScene(std::make_unique<PlayMainScene>());
+		return;
 	}
 
 #endif // _DEBUG
@@ -32,14 +34,6 @@ void StartMainScene::Update(MainScene* mainScene){
 void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	camera;
 	baseLight;
-}
-
-void StartMainScene::PreDrawPostEffect(){
-
-}
-
-void StartMainScene::DrawPostEffect(){
-
 }
 
 void StartMainScene::DrawSprite(){

@@ -39,7 +39,7 @@ Elysia::Framework::Framework(){
 
 void Elysia::Framework::Initialize(){
 	//ここでタイトルバーの名前を決めてね
-	const wchar_t* TITLE_BAR_NAME = L"静寂の霊園";
+	const wchar_t* TITLE_BAR_NAME = L"DA・DA・PA!!!";
 	//ウィンドウのサイズを決める
 	const int32_t WINDOW_SIZE_WIDTH = 1280;
 	const int32_t WINDOW_SIZE_HEIGHT = 720;
@@ -202,11 +202,6 @@ void Elysia::Framework::Execute(){
 
 			//更新処理
 			Update();
-
-			//ESCAPE押されたら終了
-			if (engineManagers_.input_->IsTriggerKey(DIK_ESCAPE)==true) {
-				break;
-			}
 
 			//描画
 			Draw();

@@ -93,7 +93,7 @@ void Triangle::Draw(const Transform& transform, const Vector4& color) {
 	materialResource_->Map(0u, nullptr, reinterpret_cast<void**>(&materialData_));
 
 	materialData_->color = color;
-	materialData_->lightingKinds = 0;
+	materialData_->lightingKinds = LightingType::NoneLighting;
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 	
 	materialResource_->Unmap(0u, nullptr);

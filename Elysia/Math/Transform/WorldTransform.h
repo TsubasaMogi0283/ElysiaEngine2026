@@ -9,6 +9,7 @@
 #include "Vector3.h"
 #include "Quaternion.h"
 #include "DirectXSetup.h"
+#include <Transform.h>
 
 /// <summary>
 /// シェーダーに送るデータ
@@ -36,14 +37,6 @@ public:
 	/// 更新
 	/// </summary>
 	void Update();
-
-	/// <summary>
-	/// ペアレントの設定
-	/// </summary>
-	/// <param name="parent"></param>
-	inline void SetParent(const WorldTransform* newParent) {
-		this->parent = newParent;
-	}
 
 	/// <summary>
 	/// ワールド座標を取得
@@ -75,6 +68,9 @@ public:
 	//座標
 	Vector3 translate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
 
+	//アンカーポイント
+	Vector3 anchorPoint = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
+
 	//クォータニオンを使うかどうか
 	bool isUseQuaternion_ = false;
 	//クォータニオン
@@ -90,8 +86,5 @@ public:
 	Matrix4x4 worldMatrix = {};
 	//逆転置行列
 	Matrix4x4 worldInverseTransposeMatrix = {};
-
-	//親となるワールド変換へのポインタ
-	const WorldTransform* parent = nullptr;
 
 };

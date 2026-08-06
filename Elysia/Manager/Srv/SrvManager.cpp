@@ -24,7 +24,7 @@ uint32_t Elysia::SrvManager::Allocate(){
 	//上限だったらasset
 	assert(useIndex_ < MAX_SRV_COUNT_);
 
-	//return する番号を一旦記録しておく
+	//returnする番号を一旦記録しておく
 	int index = useIndex_;
 
 	//次のために番号を1進める

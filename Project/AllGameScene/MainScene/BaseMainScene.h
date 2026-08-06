@@ -7,12 +7,17 @@
 
 #include <memory>
 #include <array>
-
+#include <Sprite.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
 /// </summary>
 namespace Elysia {
+	/// <summary>
+	/// ウィンドウ
+	/// </summary>
+	class WindowsSetup;
+
 	/// <summary>
 	/// レベルエディタ
 	/// </summary>
@@ -42,6 +47,11 @@ namespace Elysia {
 	/// 入力クラス
 	/// </summary>
 	class Input;
+
+	/// <summary>
+	/// オーディオ
+	/// </summary>
+	class Audio;
 
 }
 
@@ -73,8 +83,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="mainScene">メインシーン</param>
-	virtual void Update(MainScene* mainScene) = 0;
+	virtual void Update() = 0;
 
 	/// <summary>
 	/// 3Dオブジェクトの描画
@@ -82,16 +91,6 @@ public:
 	/// <param name="camera"></param>
 	/// <param name="baseLight"></param>
 	virtual void DrawObject3D(const Camera& camera,const BaseLight& baseLight)=0;
-
-	/// <summary>
-	/// ポストエフェクト描画前
-	/// </summary>
-	virtual void PreDrawPostEffect() = 0;
-
-	/// <summary>
-	/// ポストエフェクトの描画
-	/// </summary>
-	virtual void DrawPostEffect() = 0;
 
 	/// <summary>
 	/// スプライト
@@ -102,6 +101,15 @@ public:
 	/// デストラクタ
 	/// </summary>
 	virtual ~BaseMainScene()=default;
+
+public:
+	/// <summary>
+	/// メインシーンの設定を設定
+	/// </summary>
+	virtual void SetMainScene(MainScene* mainScene) {
+		this->mainScene_ = mainScene;
+	}
+
 public:
 
 	//処理が終わったかどうかを返す
@@ -110,9 +118,18 @@ public:
 	}
 
 protected:
+	//メインシーン
+	MainScene* mainScene_ = nullptr;
+	//ウィンドウの設定
+	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 	//入力
 	Elysia::Input* input_ = nullptr;
-
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
+	//モデル管理クラス
+	Elysia::ModelManager* modelManager_ = nullptr;
+	//テクスチャーハンドル
+	Elysia::TextureManager* textureManager_ = nullptr;
 protected:
 	//処理が終わったかどうか
 	bool isEnd_ = false;

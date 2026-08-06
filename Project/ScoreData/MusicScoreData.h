@@ -24,11 +24,14 @@ struct MusicScoreData {
 
 	//楽曲情報
 	MusicInformation musicInformation = {};
-	//ハンドル
-	int32_t handle = -1;
+	//楽曲ハンドル
+	int32_t musicHandle = -1;
 	//譜面のパス
 	std::string fullFilePath_="";
+	//総ノーツ数
+	uint16_t totalNote_ = 0u;
 
 	//1小節ごとのデータ
+	//ScoreDataManagerで譜面を読み込むときに使用する
 	std::vector<NoteBarInformation> newNotesData = {};
 };

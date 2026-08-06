@@ -34,8 +34,7 @@ namespace Elysia {
 		/// <summary>
 		/// 更新
 		/// </summary>
-		/// <param name="gameManager"></param>
-		virtual void Update(Elysia::GameManager* gameManager) = 0;
+		virtual void Update() = 0;
 
 
 		/// <summary>
@@ -58,7 +57,11 @@ namespace Elysia {
 		/// </summary>
 		virtual void DrawPostEffect() = 0;
 
-
+		/// <summary>
+		/// ゲーム管理クラスを設定
+		/// </summary>
+		/// <param name="gameManager"></param>
+		virtual void SetGameManager(Elysia::GameManager* gameManager) = 0;
 	};
 }
 

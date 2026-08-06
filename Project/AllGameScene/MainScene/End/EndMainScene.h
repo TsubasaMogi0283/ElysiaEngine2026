@@ -21,13 +21,12 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize()override;
+	void Initialize();
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="mainScene">メインシーン</param>
-	void Update(MainScene* mainScene)override;
+	void Update()override;
 
 	/// <summary>
 	/// 3Dオブジェクトの描画
@@ -35,16 +34,6 @@ public:
 	/// <param name="camera"></param>
 	/// <param name="baseLight"></param>
 	void DrawObject3D(const Camera& camera, const BaseLight& baseLight);
-
-	/// <summary>
-	/// ポストエフェクト描画前
-	/// </summary>
-	void PreDrawPostEffect()override;
-
-	/// <summary>
-	/// ポストエフェクトの描画
-	/// </summary>
-	void DrawPostEffect()override;
 
 	/// <summary>
 	/// スプライト

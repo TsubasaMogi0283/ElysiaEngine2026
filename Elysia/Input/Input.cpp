@@ -22,7 +22,6 @@ void Elysia::Input::Initialize() {
 		(void**)&directInput_, nullptr);
 	assert(SUCCEEDED(hr));
 
-
 	//キーボードデバイスの生成
 	hr = directInput_->CreateDevice(GUID_SysKeyboard, &keyboard_, NULL);
 	assert(SUCCEEDED(hr));
@@ -171,7 +170,7 @@ void Elysia::Input::Update() {
 
 	//再初期化
 	//接続されたらまたデバイスを作り直す
-	if (joyStickDevice_ == nullptr) {
+	if (!joyStickDevice_) {
 		HRESULT hr = directInput_->CreateDevice(GUID_Joystick, &joyStickDevice_, NULL);
 		if (SUCCEEDED(hr)) {
 			hr = joyStickDevice_->SetDataFormat(&c_dfDIJoystick);

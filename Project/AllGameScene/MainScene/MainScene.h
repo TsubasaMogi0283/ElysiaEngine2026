@@ -12,17 +12,13 @@
 #include "IGameScene.h"
 #include "BackTexture.h"
 #include "Model.h"
-#include "Particle3D.h"
 #include "WorldTransform.h"
-#include "AABB.h"
 #include "Camera.h"
 #include "Material.h"
 #include "DirectionalLight.h"
-#include <PointLight.h>
-#include <SpotLight.h>
-#include <AnimationModel.h>
-#include <Dissolve.h>
 #include "BaseMainScene.h"
+#include <Audio.h>
+#include <ScoreData/MusicScoreData.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -79,8 +75,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	/// <param name="gameManager"></param>
-	void Update(Elysia::GameManager* gameManager)override;
+	void Update()override;
 
 	/// <summary>
 	/// 3Dオブジェクト
@@ -109,44 +104,80 @@ public:
 
 
 public:
+	
 	/// <summary>
 	/// メインシーンを変更する
 	/// </summary>
 	/// <param name="newMainScene">新しいメインシーン</param>
-	void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene) {
+	inline void ChangeMainScene(std::unique_ptr<BaseMainScene> newMainScene) {
 		if (baseMainScene_ != newMainScene) {
 			//新しいシーンをセット
 			baseMainScene_ = std::move(newMainScene);
 			//初期化
+			baseMainScene_->SetMainScene(this);
 			baseMainScene_->Initialize();
 		}
-	}
-	
-private:
+	};
 
 	/// <summary>
-	/// レーンの位置
+	/// ゲーム管理クラスを設定
 	/// </summary>
-	enum LanePlace {
-		UpLane,
-		DownLane,
-		LanePlaceSize
-	};
+	/// <param name="gameManager"></param>
+	inline void SetGameManager(Elysia::GameManager* gameManager) override{
+		this->gameManager_ = gameManager;
+	}
+
+	/// <summary>
+	/// ゲーム管理クラスを取得
+	/// </summary>
+	/// <returns></returns>
+	inline Elysia::GameManager* GetGameManager()const {
+		return gameManager_;
+	}
+
+	/// <summary>
+	/// 楽曲情報を取得
+	/// </summary>
+	/// <returns></returns>
+	inline MusicScoreData GetScoreData()const {
+		return musicScoreData_;
+	}
+
+	/// <summary>
+	/// ハイスピの設定
+	/// </summary>
+	/// <param name="hiSpeed"></param>
+	inline void SetHiSpeed(const float_t& hiSpeed) {
+		this->hiSpeed_ = hiSpeed;
+	}
+
+	/// <summary>
+	/// ハイスピの取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetHiSpeed()const {
+		return hiSpeed_;
+	}
+
 private:
-
-	//流れに関するのはX・Y軸しかないのでZは無し
-	const float_t JUDGEENT_POSITION_Y_ = -10.0f;
-	const std::array<Vector2, LanePlace::LanePlaceSize> JUDGEENT_POSITION_ = {};
-
-	//動き始める時間のオフセット
-	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
-
+	/// <summary>
+	/// ノーツ生成クラス
+	/// </summary>
+	void GenerateNotes();
+	
 private:
+	//入力
+	Elysia::Input* input_ = nullptr;
 	//レベルエディタ
 	Elysia::LevelDataManager* levelDataManager_ = nullptr;
 	//ハンドル
 	uint32_t levelHandle_ = 0u;
+	//ゲーム管理クラス
+	Elysia::GameManager* gameManager_ = nullptr;
 
+private:
+	//開始オフセット
+	const float_t START_OFFSET_TIME_ = 2.0f;
 
 private:
 	//背景
@@ -155,9 +186,15 @@ private:
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
-	PointLight pointLight={};
-	SpotLight spotLight = {};
 	//メインシーンの中で細かく分けるための変数
 	std::unique_ptr<BaseMainScene> baseMainScene_ = nullptr;
+
+	//楽曲情報
+	MusicInformation musicInformation_ = {};
+	//譜面データ
+	MusicScoreData musicScoreData_ = {};
+	//ハイスピ
+	float_t hiSpeed_ = 5.0f;
+
 
 };

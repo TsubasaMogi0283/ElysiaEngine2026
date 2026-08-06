@@ -4,8 +4,6 @@
 
 #include "Convert.h"
 
-uint32_t Elysia::WindowsSetup::clientWidth_ = 0;
-uint32_t Elysia::WindowsSetup::clientHeight_ = 0;
 
 Elysia::WindowsSetup* Elysia::WindowsSetup::GetInstance(){
 	static WindowsSetup instance;
@@ -18,8 +16,24 @@ LRESULT Elysia::WindowsSetup::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPA
 	}
 	
 	switch (msg) {
-		//ウィンドウが破棄された
+	case WM_ENTERSIZEMOVE:
+		//ウィンドウが移動中
+		Elysia::WindowsSetup::GetInstance()->isWindowMove_ = true;
+		if (Elysia::WindowsSetup::GetInstance()->onEnterSizeMoveCallback_) {
+			Elysia::WindowsSetup::GetInstance()->onEnterSizeMoveCallback_();
+		}
+		break;
+
+	case WM_EXITSIZEMOVE:
+		//ウィンドウが移動終了
+		Elysia::WindowsSetup::GetInstance()->isWindowMove_ = false;
+		if (Elysia::WindowsSetup::GetInstance()->onExitSizeMoveCallback_) {
+			Elysia::WindowsSetup::GetInstance()->onExitSizeMoveCallback_();
+		}
+		break;
+
 	case WM_DESTROY:
+		//ウィンドウが破棄された
 		//OSに対してアプリの終了を伝える
 		PostQuitMessage(0);
 		return 0;
@@ -59,11 +73,14 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 	//ウィンドウクラス登録
 	RegisterClass(&windowClass_);
 
-	//クライアント領域サイズ
-	//ウィンドウサイズを表す構造体にクライアント領域を入れる
-	RECT wrc_ = { 0,0,LONG(clientWidth_) ,LONG(clientHeight_) };
+	//フルサイズにしたい場合のサイズを取得
+	fullSizeX_ = GetSystemMetrics(SM_CXSCREEN);
+	fullSizeY_ = GetSystemMetrics(SM_CYSCREEN);
+
+	//ウィンドウのサイズを設定(左、上、横幅、立幅)
+	RECT wrc = { 0,0,LONG(clientWidth_) ,LONG(clientHeight_) };
 	// クライアント領域を元に実際のサイズにwrcを変更
-	AdjustWindowRect(&wrc_, WS_OVERLAPPEDWINDOW, false);
+	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 	// ウィンドウ生成
 	hwnd_ = CreateWindow(
 		//クラス名
@@ -77,9 +94,9 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 		//標準Y座標
 		CW_USEDEFAULT,
 		//横幅
-		wrc_.right - wrc_.left,
+		wrc.right - wrc.left,
 		//縦幅
-		wrc_.bottom - wrc_.top,
+		wrc.bottom - wrc.top,
 		//親ハンドル
 		nullptr,
 		//メニューハンドル

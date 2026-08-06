@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- * @file Model.h
- * @brief モデル
+ * @file MusicInformation.h
+ * @brief 楽曲情報
  * @author 茂木翼
  */
 

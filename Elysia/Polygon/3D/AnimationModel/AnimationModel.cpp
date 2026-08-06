@@ -86,7 +86,7 @@ void Elysia::AnimationModel::Update(const float& animationTime) {
 
 void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const DirectionalLight& directionalLight) {
 	//Materialのライティングの設定が平行光源ではない場合止める
-	assert(material.lightingKinds == DirectionalLighting);
+	assert(material.lightingKinds == LightingType::DirectionalLighting);
 
 	//アニメーションの更新
 	Update(animationTime);
@@ -153,7 +153,7 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 
 void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const PointLight& pointLight) {
 	//Materialのライティングの設定が点光源ではない場合止める
-	assert(material.lightingKinds == PointLighting);
+	assert(material.lightingKinds == LightingType::PointLighting);
 
 	//アニメーションの更新
 	Update(animationTime);
@@ -223,7 +223,7 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 
 void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const SpotLight& spotLight) {
 	//Materialのライティングの設定がスポットライトではない場合止める
-	assert(material.lightingKinds == SpotLighting);
+	assert(material.lightingKinds == LightingType::SpotLighting);
 
 	//アニメーションの更新
 	Update(animationTime);

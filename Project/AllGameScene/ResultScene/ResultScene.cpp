@@ -23,7 +23,6 @@ ResultScene::ResultScene(){
 }
 
 void ResultScene::Initialize(){
-
 	//ハンドルの取得
 	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
 
@@ -84,7 +83,7 @@ void ResultScene::Initialize(){
 	backTexture_->Initialize();
 }
 
-void ResultScene::Update(Elysia::GameManager* gameManager){
+void ResultScene::Update(){
 
 
 	//再読み込み
@@ -158,8 +157,6 @@ void ResultScene::Update(Elysia::GameManager* gameManager){
 	//吸収座標の設定
 	deadParticle_->SetAbsorbPosition(playerWorldTransform_.GetWorldPosition());
 
-
-	gameManager;
 
 #ifdef _DEBUG
 

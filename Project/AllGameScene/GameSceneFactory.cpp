@@ -11,27 +11,28 @@ std::unique_ptr<Elysia::IGameScene> GameSceneFactory::CreateScene(const std::str
     //シーンを生成
     std::unique_ptr<Elysia::IGameScene> newScene = nullptr;
 
-    //テスト
     if (sceneName == "Test") {
+        //テスト
         newScene = std::make_unique<TestScene>();
     }
-	//タイトルシーン
     else if (sceneName == "Title") {
+        //タイトルシーン
         newScene = std::make_unique<TitleScene>();
     }
-    //選択
     else if (sceneName == "Select") {
+        //選択
         newScene = std::make_unique<SelectScene>();
     }
-    //メイン
     else if (sceneName == "Main") {
+        //メイン
         newScene = std::make_unique<MainScene>();
     }
-    //結果
     else if (sceneName == "Result") {
+        //結果
         newScene = std::make_unique<ResultScene>();
     } 
     else {
+        //その他テストへ
         newScene = std::make_unique<TestScene>();
     }
 

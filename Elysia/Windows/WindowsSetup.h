@@ -10,13 +10,11 @@
 #include <WinUser.h>
 #include <cstdint>
 #include <string>
+#include <functional>
+
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_dx12.h>
 #include <ImGui/imgui_impl_win32.h>
-
-//外部の,、つまり自分が作ったものではないファイルなどは
-//<>でインクルードさせた方が良い
-//その他自分で作ったものは""でインクルードさせてね
 
 //extern...グローバル変数を共有する
 
@@ -36,7 +34,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd,UINT msg,
 namespace Elysia {
 
 	/// <summary>
-	/// Windowsの設定(シングルトン)
+	/// Windowsの設定
 	/// </summary>
 	class WindowsSetup final {
 	private:
@@ -75,6 +73,8 @@ namespace Elysia {
 		/// <returns></returns>
 		WindowsSetup& operator=(const WindowsSetup& winApp) = delete;
 
+	public:
+
 		/// <summary>
 		/// ウィンドウプロシージャ
 		/// </summary>
@@ -96,6 +96,14 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="text"></param>
 		static void OutPutStringA(const std::string& text);
+
+		/// <summary>
+		/// ウィンドウが移動中かどうかを取得
+		/// </summary>
+		/// <returns>移動中かどうか</returns>
+		inline bool GetIsWindowMove() const {
+			return isWindowMove_;
+		}
 
 	private:
 
@@ -144,7 +152,7 @@ namespace Elysia {
 		/// クライアントの横幅
 		/// </summary>
 		/// <returns></returns>
-		static inline uint32_t GetClientWidth() {
+		inline uint32_t GetClientWidth()const {
 			return clientWidth_;
 		}
 
@@ -152,7 +160,7 @@ namespace Elysia {
 		/// クライアントの縦幅
 		/// </summary>
 		/// <returns></returns>
-		static inline uint32_t GetClientHeight() {
+		inline uint32_t GetClientHeight() const{
 			return clientHeight_;
 		}
 
@@ -172,22 +180,34 @@ namespace Elysia {
 			return windowClass_.hInstance;
 		}
 
+	public:
+		//コールバック関数の設定
+		void SetOnEnterSizeMoveCallback(std::function<void()> callback) { onEnterSizeMoveCallback_ = callback; }
+		void SetOnExitSizeMoveCallback(std::function<void()> callback) { onExitSizeMoveCallback_ = callback; }
 
+	private:
+		//動く開始
+		std::function<void()> onEnterSizeMoveCallback_ = nullptr;
+		//動き終了
+		std::function<void()> onExitSizeMoveCallback_ = nullptr;
 
 	public:
 		//クライアントのサイズ
-		static uint32_t clientWidth_;
-		static uint32_t clientHeight_;
+		uint32_t clientWidth_ = 0u;;
+		uint32_t clientHeight_ = 0u;
 
 
 	private:
 		//ウィンドウハンドル
-		HWND hwnd_ = 0;
-
+		HWND hwnd_ = {};
 		//ウィンドウクラス
 		WNDCLASS windowClass_{};
 
+		//ウィンドウが移動中かどうか
+		bool isWindowMove_ = false;	
+
+		//フルサイズ
+		int32_t fullSizeX_ = 0;
+		int32_t fullSizeY_ = 0;
 	};
-
-
 };

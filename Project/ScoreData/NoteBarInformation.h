@@ -8,8 +8,8 @@
 /// </summary>
 struct NoteBarInformation {
 	//ノーツ
-	std::vector<NoteLane> notesLane = {};
+	std::vector<NoteLane::Information> notesLane = {};
 
 	//BPM
-	float bpm = 170.0f;
+	float_t bpm = 170.0f;
 };

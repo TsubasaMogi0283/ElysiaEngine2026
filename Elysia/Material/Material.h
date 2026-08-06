@@ -22,7 +22,7 @@ struct MaterialData {
 	//色
 	Vector4 color;
 	//ライティングの種類
-	int32_t lightingKinds;
+	LightingType lightingKinds = LightingType::DirectionalLighting;
 	float_t padding[3];
 	//UVトランスフォーム
 	Matrix4x4 uvTransform;
@@ -55,7 +55,7 @@ public:
 	//色
 	Vector4 color = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f};
 	//Lightingの種類
-	int32_t lightingKinds=DirectionalLighting;
+	LightingType lightingKinds = LightingType::DirectionalLighting;
 	//UV行列
 	Matrix4x4 uvTransform = {};
 	//輝度

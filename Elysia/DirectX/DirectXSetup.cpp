@@ -187,9 +187,6 @@ void Elysia::DirectXSetup::SelectAdapter() {
 	//更新したデータをメンバ変数にまた保存
 	DirectXSetup::GetInstance()->dxgiFactory_ = dxgiFactory;
 	DirectXSetup::GetInstance()->useAdapter_ = useAdapter;
-
-
-
 }
 
 void Elysia::DirectXSetup::GenerateD3D12Device() {
@@ -200,7 +197,6 @@ void Elysia::DirectXSetup::GenerateD3D12Device() {
 		D3D_FEATURE_LEVEL_12_0
 	};
 	
-
 	const char* featureLevelStrings[] = { "12.2","12.1","12.0" };
 	//高い順に生成出来るか試していく
 	for (size_t i = 0; i < _countof(featureLevels); ++i) {
@@ -309,8 +305,6 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 	//このことをダブルバッファリングという。
 	HWND hwnd = windowsSetup_->GetHwnd();
 
-
-
 	DXGI_SAMPLE_DESC sampleDesc = {
 		//カウント
 		.Count = 1u,
@@ -319,28 +313,19 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc={
 		//画面の幅。ウィンドウのクライアント領域を同じものにしておく
 		.Width = windowsSetup_->GetClientWidth(),
-		
 		//画面の高さ。ウィンドウのクライアント領域を同じものにしておく
 		.Height = windowsSetup_->GetClientHeight(),
-		
 		//色の形式
 		.Format = DXGI_FORMAT_R8G8B8A8_UNORM,
-		
 		//マルチサンプルしない
 		.SampleDesc = sampleDesc,
-
 		//描画のターゲットとして利用する
-		.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT,				
-		
+		.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT,		
 		//ダブルバッファ
 		.BufferCount = 2,
-
 		//モニタにうつしたら中身を破棄
-		.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD,					
-
-	
+		.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD,	
 	};
-	
 
 	//コマンドキュー、ウィンドウハンドル、設定を渡して生成する
 	HRESULT hr = DirectXSetup::GetInstance()->dxgiFactory_->CreateSwapChainForHwnd(
@@ -356,15 +341,13 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 
 }
 
-void Elysia::DirectXSetup::GenerateDescriptorHeap() {
+void Elysia::DirectXSetup::SetDepthStencilView() {
 	
 	ComPtr<ID3D12Resource> depthStencilResource = GenerateDepthStencilTextureResource(
 		windowsSetup_->GetClientWidth(),
 		windowsSetup_->GetClientHeight());
 
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
-
-
 
 	//DSVの設定
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
@@ -389,9 +372,6 @@ void Elysia::DirectXSetup::PullResourcesFromSwapChain() {
 	assert(SUCCEEDED(hr));
 	hr = DirectXSetup::GetInstance()->swapChain_.swapChain->GetBuffer(1, IID_PPV_ARGS(& DirectXSetup::GetInstance()->swapChain_.resource[1]));
 	assert(SUCCEEDED(hr));
-
-	
-
 }
 
 void Elysia::DirectXSetup::GenerateFence() {
@@ -401,8 +381,6 @@ void Elysia::DirectXSetup::GenerateFence() {
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DirectXSetup::GetInstance()->dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
 	DirectXSetup::GetInstance()->dsvHandle_ = dsvHandle;
 
-
-	//FenceとEvent
 	//Fence・・・CPUとGPUの同期を取るために利用するオブジェクト。
 	//			 GPUで値を書き込み、CPUで値を読み取ったりWindowsにメッセージ(Event)を送ったりできる
 	//			 理想を実現するためのもの
@@ -418,37 +396,29 @@ void Elysia::DirectXSetup::GenerateFence() {
 	HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 	assert(fenceEvent != nullptr);
 
-
 	DirectXSetup::GetInstance()->fenceValue_ = fenceValue;
 	DirectXSetup::GetInstance()->fenceEvent_ = fenceEvent;
 	DirectXSetup::GetInstance()->fence_ = fence;
-
-
 }
-
-
 
 void Elysia::DirectXSetup::GenerateViewport(const uint32_t& width,const uint32_t& height) {
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	D3D12_VIEWPORT viewport = {
 		.TopLeftX = 0.0f,
 		.TopLeftY = 0.0f,
-		.Width = static_cast<float>(width),
-		.Height= static_cast<float>(height),
+		.Width = static_cast<float_t>(width),
+		.Height= static_cast<float_t>(height),
 		.MinDepth = 0.0f,
 		.MaxDepth = 1.0f
 	};
 	
-
 	//ビューポートの設定
 	DirectXSetup::GetInstance()->GetCommandList()->RSSetViewports(1, &viewport);
 
 }
 
 void Elysia::DirectXSetup::GenerateScissor(const uint32_t& right,const uint32_t& bottom) {
-	
 	//基本的にビューポートと同じ矩形が構成されるようにする
-
 	//シザー矩形 
 	D3D12_RECT scissorRect={
 		.left=0u,
@@ -459,13 +429,10 @@ void Elysia::DirectXSetup::GenerateScissor(const uint32_t& right,const uint32_t&
 	
 	//シザーを生成
 	DirectXSetup::GetInstance()->GetCommandList()->RSSetScissorRects(1, &scissorRect);
-	
-
 }
 
 void Elysia::DirectXSetup::SetResourceBarrier(const ComPtr<ID3D12Resource>& resource,const D3D12_RESOURCE_STATES& beforeState,const D3D12_RESOURCE_STATES& afterState){
 	
-
 	//TransitionBarrierを張るコード
 	//現在のResourceStateを設定する必要がある → ResourceがどんなStateなのかを追跡する必要がある
 	//追跡する仕組みはStateTrackingという
@@ -484,7 +451,6 @@ void Elysia::DirectXSetup::SetResourceBarrier(const ComPtr<ID3D12Resource>& reso
 	barrier.Transition.StateAfter = afterState;
 	//TransitionBarrierを張る
 	DirectXSetup::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier);
-
 
 }
 
@@ -514,22 +480,17 @@ void Elysia::DirectXSetup::SetResourceBarrierForSwapChain(const D3D12_RESOURCE_S
 
 }
 
-
 //FPS固定初期化
 void Elysia::DirectXSetup::InitializeFPS() {
 	//現在時間を記録する
 	//初期化前の時間を記録
 	//std::chrono::steady_clock...逆行しないタイマー
 	DirectXSetup::GetInstance()->frameEndTime_ = std::chrono::steady_clock::now();
-
-	
 }
 
 #pragma endregion
 
 void Elysia::DirectXSetup::FirstInitialize() {
-	//出力ウィンドウへの文字出力
-	OutputDebugStringA("Hello,DirectX!\n");
 
 	//FPSの初期化
 	InitializeFPS();
@@ -565,8 +526,8 @@ void Elysia::DirectXSetup::FirstInitialize() {
 	//2.swapChainからResourceを引っ張ってくる
 	//3.引っ張ってきたResourceに対してDescriptor上にRTVを作る
 
-	////DescriptorHeap(RTV用)を生成する
-	GenerateDescriptorHeap();
+	//DSVの設定
+	SetDepthStencilView();
 
 	//スワップチェーンを引っ張ってくる
 	PullResourcesFromSwapChain();
@@ -575,13 +536,9 @@ void Elysia::DirectXSetup::FirstInitialize() {
 
 void Elysia::DirectXSetup::SecondInitialize() {
 
-	//名前を設定
-	DirectXSetup::GetInstance()->swapChainName_[0] = "SwapChainNumber1";
-	DirectXSetup::GetInstance()->swapChainName_[1] = "SwapChainNumber2";
-
 	//ハンドルの計算
-	DirectXSetup::GetInstance()->rtvHandle_[0] = RtvManager::GetInstance()->Allocate(DirectXSetup::GetInstance()->swapChainName_[0]);
-	DirectXSetup::GetInstance()->rtvHandle_[1] = RtvManager::GetInstance()->Allocate(DirectXSetup::GetInstance()->swapChainName_[1]);
+	DirectXSetup::GetInstance()->rtvHandle_[0] = RtvManager::GetInstance()->Allocate("SwapChainNumber1");
+	DirectXSetup::GetInstance()->rtvHandle_[1] = RtvManager::GetInstance()->Allocate("SwapChainNumber2");
 	
 	//スワップチェーン1枚目
 	RtvManager::GetInstance()->GenerateRenderTargetView(DirectXSetup::GetInstance()->GetSwapChain().resource[0].Get(), DirectXSetup::GetInstance()->rtvHandle_[0]);
@@ -737,13 +694,10 @@ void Elysia::DirectXSetup::StartDraw() {
 	DirectXSetup::GetInstance()->GetCommandList()->ClearRenderTargetView(RtvManager::GetInstance()->GetRtvHandle(backBufferIndex_), clearColor, 0, nullptr);
 
 
-	uint32_t width = WindowsSetup::GetClientWidth();
-	uint32_t height = WindowsSetup::GetClientHeight();
-
 	//ビューポートの生成
-	GenerateViewport(width, height);
+	GenerateViewport(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
 	//シザーを生成
-	GenerateScissor(width, height);
+	GenerateScissor(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
 }
 
 void Elysia::DirectXSetup::EndDraw() {

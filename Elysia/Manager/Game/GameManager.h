@@ -11,6 +11,8 @@
 #include "IGameScene.h"
 #include "IAbstractSceneFactory.h"
 #include <ScoreData/Manager/ScoreDataManager.h>
+#include <Record/RecordManager.h>
+#include <Note/NoteJudgement.h>
 
 
 /// <summary>
@@ -79,6 +81,40 @@ namespace Elysia {
 			return scoreDataManager_.get();
 		}
 
+		/// <summary>
+		/// 一時記録場所
+		/// </summary>
+		/// <param name="musicInformation"></param>
+		void SetMusicInformation(const MusicInformation& musicInformation) {
+			this->temporaryMusicInformation_ = musicInformation;
+		}
+
+		/// <summary>
+		/// 一時保存の楽曲情報を取得
+		/// </summary>
+		/// <returns></returns>
+		MusicInformation GetMusicInformation()const {
+			return temporaryMusicInformation_;
+		}
+
+		/// <summary>
+		/// 判定結果の設定
+		/// </summary>
+		/// <param name="m"></param>
+		inline void SetRecord(const NoteJudgement::Record& noteJudgementResult) {
+			this->temporaryRecord_ = noteJudgementResult;
+		}
+
+		/// <summary>
+		/// 判定結果の取得
+		/// </summary>
+		/// <returns></returns>
+		inline NoteJudgement::Record GetNoteJudgementResult()const {
+			return temporaryRecord_;
+		}
+
+		
+
 	private:
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> abstractSceneFactory_ = nullptr;
@@ -93,6 +129,13 @@ namespace Elysia {
 
 		//ノーツ管理クラス
 		std::unique_ptr<ScoreDataManager> scoreDataManager_ = nullptr;
+		std::unique_ptr<RecordManager> recordManager_ = nullptr;
 
+	private:
+		//一時保管場所
+		//楽曲情報
+		MusicInformation temporaryMusicInformation_ = {};
+		//結果
+		NoteJudgement::Record temporaryRecord_ = {};
 	};
 }

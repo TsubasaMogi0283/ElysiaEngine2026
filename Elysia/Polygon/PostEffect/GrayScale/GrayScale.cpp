@@ -52,14 +52,10 @@ void Elysia::GrayScale::PreDraw() {
 	directXSetup_->GetCommandList()->ClearDepthStencilView(
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
-	//縦横
-	uint32_t width = WindowsSetup::GetClientWidth();
-	uint32_t height = WindowsSetup::GetClientHeight();
-
 	//ビューポート
-	directXSetup_->GenerateViewport(width, height);
+	directXSetup_->GenerateViewport(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
 	//シザー矩形 
-	directXSetup_->GenerateScissor(width, height);
+	directXSetup_->GenerateScissor(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
 
 }
 

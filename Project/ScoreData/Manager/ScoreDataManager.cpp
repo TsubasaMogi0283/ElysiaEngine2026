@@ -1,7 +1,15 @@
 #include "ScoreDataManager.h"
 
 #include <fstream>
+#include <Audio.h>
 #include <ScoreData/MusicScoreData.h>
+#include <StringOption.h>
+
+
+ScoreDataManager::ScoreDataManager(){
+	//オーディオクラス
+	audio_ = Elysia::Audio::GetInstance();
+}
 
 void ScoreDataManager::Initialize(){
 	//ToDo
@@ -9,9 +17,8 @@ void ScoreDataManager::Initialize(){
 	//フォルダに楽曲名を入れる。楽曲名を全て探索し、数を数え、各難易度の譜面データを記録していく
 	
 	//基本的には譜面データはJSONでやる
-	Load("HighwaySunset");
-	Load("UnknownFunction");
-	Load("C0ns+ruct10n");
+	Load("HighwaySunset/HighwaySunset_Easy.json");
+	Load("Construction/Construction_Easy.json");
 }
 
 void ScoreDataManager::Load(const std::string& path) {
@@ -29,12 +36,12 @@ void ScoreDataManager::Load(const std::string& path) {
 		//0からslashPositionまで
 		folderName = path.substr(0, slashPosition);
 		//「/」から最後まで
-		fileName = path.substr(slashPosition + 1);
+		fileName = path.substr(slashPosition + 1u);
 	}
 
 	//楽曲情報を記録
 	//タイトル
-	const std::string TTLE = deserialized["title"].get<std::string>();
+	const std::string TITLE = deserialized["title"].get<std::string>();
 	//作曲
 	const std::string PRODUCE = deserialized["produce"].get<std::string>();
 	//レベル
@@ -49,25 +56,31 @@ void ScoreDataManager::Load(const std::string& path) {
 	const std::string ID = deserialized["id"].get<std::string>();
 	//楽曲ファイル名
 	const std::string MUSIC_FILE_NAME = deserialized["filename"].get<std::string>();
+	//拡張子を取得
+	std::string MUSIC_FULL_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_+MUSIC_FILE_NAME, MUSIC_FILE_NAME);
+	//楽曲ファイルパス
+	std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + MUSIC_FILE_NAME +"/" + MUSIC_FILE_NAME + MUSIC_FULL_EXTENSION;
+
 	//ハンドルとパスを記録
 	MusicScoreData musicNotesData = {};
 	const MusicInformation MUSIC_INFORMATION = {
-		.title = TTLE,
+		.title = TITLE,
 		.produce = PRODUCE,
 		.level = LEVEL,
 		.difficulty = std::atoi(DIFFICULTY.c_str()),
 		.bpm = static_cast<float_t>(std::atof(BPM.c_str())),
 		.offset = static_cast<float_t>(std::atof(OFFSET.c_str())),
 		.id = ID,
-		.fileName = MUSIC_FILE_NAME
+		.fileName = MUSIC_FILE_NAME,
 	};
 	//挿入
 	musicNotesData.musicInformation = MUSIC_INFORMATION;
 	musicNotesData.fullFilePath_ = fullFilePath;
+	musicNotesData.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
 	//ノーツの配置
 	Place(musicNotesData, deserialized);
 	//挿入
-	musicScoreData_.insert(make_pair(MUSIC_INFORMATION.id,musicNotesData));
+	musicInformation.insert(make_pair(MUSIC_INFORMATION.id,musicNotesData));
 
 }
 
@@ -92,15 +105,15 @@ void ScoreDataManager::Place(MusicScoreData& musicNotesData, const nlohmann::jso
 		//行で見ていく
 		//合計上下で2つ
 		for (const auto& row : notesArray) {
-			if (!row.is_array() || row.size() < 2) {
+			if (!row.is_array() || row.size() < 2u) {
 				continue;
 			};
 			//ノーツ情報を記録
-			NoteLane noteLane = {
+			NoteLane::Information noteLane = {
 				//上
-				.up = row[0].get<uint8_t>(),
+				.upNote = row[0].get<NoteType>(),
 				//下
-				.down = row[1].get<uint8_t>(),
+				.downNote = row[1].get<NoteType>(),
 			};
 			//挿入
 			noteBar.notesLane.push_back(noteLane);

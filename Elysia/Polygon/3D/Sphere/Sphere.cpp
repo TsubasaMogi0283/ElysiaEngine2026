@@ -40,11 +40,11 @@ void Elysia::Sphere::Initialize() {
 
 	//頂点バッファビューを作成する
 	//リソースの先頭のアドレスから使う
-	vertexBufferViewSphere_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
+	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースのサイズは頂点３つ分のサイズ
-	vertexBufferViewSphere_.SizeInBytes = sizeof(VertexData) * SUBDIVISION_ * SUBDIVISION_ * 6;
+	vertexBufferView_.SizeInBytes = sizeof(VertexData) * SUBDIVISION_ * SUBDIVISION_ * 6;
 	//１頂点あたりのサイズ
-	vertexBufferViewSphere_.StrideInBytes = sizeof(VertexData);
+	vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
 
 
@@ -193,7 +193,7 @@ void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix
 	//reinterpret_cast...char* から int* へ、One_class* から Unrelated_class* へなどの変換に使用
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = color;
-	materialData_->lightingKinds=0;
+	materialData_->lightingKinds= LightingType::NoneLighting;
 
 	materialData_->uvTransform = Matrix4x4	::MakeIdentity4x4();
 
@@ -224,7 +224,7 @@ void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, materialResource_->GetGPUVirtualAddress());
 
 	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferViewSphere_);
+	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
 
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, transformationMatrixResource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である

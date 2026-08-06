@@ -9,7 +9,7 @@
 /// <summary>
 /// ライティングの種類
 /// </summary>
-enum LightingType {
+enum class LightingType {
 	//無し
 	NoneLighting,
 	//平行光源
