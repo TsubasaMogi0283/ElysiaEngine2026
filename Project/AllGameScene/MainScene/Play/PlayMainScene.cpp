@@ -58,7 +58,7 @@ void PlayMainScene::Initialize(){
 		hiPassLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
 		hiPassLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
 		//挿入
-		longTapNoteArray_[i] = std::move(hiPassLongNote);
+		highPassLongNoteArray_[i] = std::move(hiPassLongNote);
 	}
 
 	//ロングノーツ
@@ -204,19 +204,19 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 	//通常ノーツの設定
 	for(uint32_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
 		if (normalTapNoteArray_[i]->GetIsUsed()) {
-			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
+			//normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	for (uint32_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
-		if (longTapNoteArray_[i]->GetIsUsed()) {
-			longTapNoteArray_[i]->DrawObject3D(camera, baseLight);
+		if (highPassLongNoteArray_[i]->GetIsUsed()) {
+			highPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 	//ロングノーツのサンプルの描画
-	longNoteSmaple_->DrawObject3D(camera, baseLight);
+	//longNoteSmaple_->DrawObject3D(camera, baseLight);
 	//判定線の描画
-	judgementLine_->Draw(camera, baseLight);
+	//judgementLine_->Draw(camera, baseLight);
 
 }
 
@@ -273,17 +273,17 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//通常ノーツの設定
 				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
-					if (!longTapNoteArray_[j]->GetIsUsed()) {
+					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						longTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
 						//開始時間を設定
-						longTapNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						highPassLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
 						//到着時間を設定
-						longTapNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						highPassLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
 						//使用中に設定
-						longTapNoteArray_[j]->SetIsUsed(true);
+						highPassLongNoteArray_[j]->SetIsUsed(true);
 						//インデックスを保存
-						longTapNoteArray_[j]->SetPoolIndex(j);
+						highPassLongNoteArray_[j]->SetPoolIndex(j);
 						note.poolIndex = j;
 						//割り当て済みにする
 						note.isAssigned = true;
@@ -341,7 +341,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 	//ハイパスロングノーツの設定
 	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
 		//使用時
-		if (longTapNoteArray_[i]->GetIsUsed()) {
+		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			//現在の比率を計算
 			//そこから座標を求めていく
 			float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[i].startMoveTime, noteInformations[i].arriveLineTime, musicTime_);
@@ -350,17 +350,15 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 				//終了地点を見つけたら探すのをやめる。
 				if (noteInformations[j].type == NoteType::LongEnd) {
-					longTapNoteArray_[i]->SetEndPositionX(endPositionX);
+					highPassLongNoteArray_[i]->SetEndPositionX(endPositionX);
 					break;
 				}
 			}
-			//長さの設定
-			noteInformations[i].type = NoteType::LongEnd;
 
 			//楽曲時間を設定
-			longTapNoteArray_[i]->SetMusicTime(musicTime_);
+			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新
-			longTapNoteArray_[i]->Update();
+			highPassLongNoteArray_[i]->Update();
 		}
 	}
 }
@@ -379,8 +377,7 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			bool isConfirmJudgement = false;
 
 			//Perfect用
-			if (absoluteJudgementTime >= 0.0f &&
-				absoluteJudgementTime < NoteJudgement::Time::PERFECT) {
+			if (absoluteJudgementTime < NoteJudgement::Time::PERFECT) {
 
 				//判定の設定
 				record_.perfect++;
@@ -393,8 +390,7 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
 			}
 			//Great用
-			else if (absoluteJudgementTime >= NoteJudgement::Time::PERFECT &&
-				absoluteJudgementTime < NoteJudgement::Time::GREAT) {
+			else if (absoluteJudgementTime < NoteJudgement::Time::GREAT) {
 
 				//判定の設定
 				record_.great++;
@@ -407,8 +403,7 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 			}
 			//Good用
-			else if (absoluteJudgementTime >= NoteJudgement::Time::GREAT &&
-				absoluteJudgementTime < NoteJudgement::Time::GOOD) {
+			else if (absoluteJudgementTime < NoteJudgement::Time::GOOD) {
 
 				//判定の設定
 				record_.good++;
@@ -421,8 +416,7 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 			}
 			//Miss用
-			else if (absoluteJudgementTime >= NoteJudgement::Time::GOOD &&
-				absoluteJudgementTime < NoteJudgement::Time::MISS) {
+			else if (absoluteJudgementTime < NoteJudgement::Time::MISS) {
 
 				//判定の設定
 				record_.miss++;

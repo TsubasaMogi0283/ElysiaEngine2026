@@ -22,10 +22,20 @@ void HighPassLongNote::Update(){
 	ImGui::SliderFloat("AnchorX", &worldTransform_.anchorPoint.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("ScaleX", &worldTransform_.scale.x, 1.0f, 10.0f);
 	ImGui::SliderFloat3("Color", &material_.color.x, 0.0f, 1.0f);
-
+	ImGui::InputFloat("EndPositionX", &endPositionX_);
 	ImGui::End();
 #endif // _DEBUG
 
+	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
+	//座標の計算
+	worldTransform_.translate.x = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
+	worldTransform_.translate.y = lanePositionY_;
+
+	//使用状態の更新
+	if (ratio_ >= 1.0f) {
+		ratio_ = 0.0f;
+		isUsed_ = false;
+	}
 
 	//更新
 	worldTransform_.Update();

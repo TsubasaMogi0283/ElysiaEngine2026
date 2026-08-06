@@ -109,7 +109,7 @@ void MainScene::GenerateNotes(){
 		//ノーツ間隔(1小節4拍)
 		float_t noteInterval = (beatDuration * 4.0f) / bar.notesLane.size();
 		//長さ
-		uint8_t length = static_cast<uint8_t>(bar.notesLane.size());
+		size_t length = bar.notesLane.size();
 
 		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
 			const NoteLane::Information& note = bar.notesLane[i];
@@ -153,7 +153,6 @@ void MainScene::GenerateNotes(){
 				};
 				//挿入
 				musicScoreData_.downInformation.push_back(noteInformation);
-
 			}
 #pragma endregion
 
@@ -186,7 +185,7 @@ void MainScene::GenerateNotes(){
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Down),
 					.length = length,
-					.type = NoteType::NormalTap,
+					.type = NoteType::HiPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
 					.moveRatio = 0.0f,
@@ -196,15 +195,12 @@ void MainScene::GenerateNotes(){
 				};
 				//挿入
 				musicScoreData_.downInformation.push_back(noteInformation);
-
 			}
 #pragma endregion
 
 #pragma region ロング終点
 			//上
 			if (note.upNote == NoteType::LongEnd) {
-				//ノーツの数を増やす
-				musicScoreData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Up),
@@ -219,13 +215,10 @@ void MainScene::GenerateNotes(){
 				};
 				//挿入
 				musicScoreData_.upInformation.push_back(noteInformation);
-
 			}
 			
 			//下
 			if (note.downNote == NoteType::LongEnd) {
-				//ノーツの数を増やす
-				musicScoreData_.totalNote_++;
 				//ノーツ情報を設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Down),
@@ -242,7 +235,6 @@ void MainScene::GenerateNotes(){
 				musicScoreData_.downInformation.push_back(noteInformation);
 			}
 #pragma endregion
-
 		}
 		// 小節分進める
 		totalTime += 4.0f * beatDuration;

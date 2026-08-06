@@ -18,7 +18,7 @@ struct NoteInformation {
 	//上下のレーン
 	uint8_t place = 0u;
 	//ノーツの感覚(音符)
-	uint8_t length = 0u;
+	size_t length = 0u;
 	//種類
 	NoteType type = NoteType::None;
 	//動き出す時間
