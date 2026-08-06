@@ -27,7 +27,6 @@ void MainScene::Initialize(){
 	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 #endif // _DEBUG
 
-	
 	//ノーツの生成
 	GenerateNotes();
 	//ハンドルの取得

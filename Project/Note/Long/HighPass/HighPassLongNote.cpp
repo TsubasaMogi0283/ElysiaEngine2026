@@ -26,6 +26,7 @@ void HighPassLongNote::Update(){
 	ImGui::End();
 #endif // _DEBUG
 
+	//開始の比率を計算
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
 	//座標の計算
 	worldTransform_.translate.x = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
