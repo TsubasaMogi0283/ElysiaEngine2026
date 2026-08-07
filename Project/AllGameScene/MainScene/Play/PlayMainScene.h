@@ -15,9 +15,12 @@
 #include <Note/NoteJudgement.h>
 #include <Note/NormalTap/NormalTapNote.h>
 #include <Note/Long/HighPass/HighPassLongNote.h>
+#include <Note/Long/LowPass/LowPassLongNote.h>
+
 #include <Note/Long/BaseLongNote.h>
 #include <PauseAsset/PauseAsset.h>
 #include <JudgementLine/JudgementLine.h>
+
 
 /// <summary>
 /// メインシーンのプレイシーン
@@ -100,6 +103,15 @@ private:
 	/// </summary>
 	void Stop();
 
+	
+	/// <summary>
+	/// 入力処理
+	/// </summary>
+	/// <param name="laneCondition">レーンの状態</param>
+	/// <param name="inputLeft">左入力</param>
+	/// <param name="inputRight">右入力</param>
+	void Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight);
+
 private:
 	
 	//初期のX座標
@@ -113,8 +125,16 @@ private:
 
 	//ノーマルタップノーツ格納数の最大サイズ
 	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 32u;
-	//ロングノーツ格納数の最大サイズ
-	static const uint8_t HI_PASS_LONG_NOTE_MAX_SIZE_ = 8u;
+	//ロングノーツ(ハイパス)格納数の最大サイズ
+	static const uint8_t HI_PASS_LONG_NOTE_MAX_SIZE_ = 6u;
+	//ロングノーツ(ローパス)格納数の最大サイズ
+	static const uint8_t LOW_PASS_LONG_NOTE_MAX_SIZE_ = 6u;
+	//ロングノーツ(トランスゲート8)格納数の最大サイズ
+	static const uint8_t TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_ = 6u;
+	//ロングノーツ(トランスゲート16)格納数の最大サイズ
+	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_ = 6u;
+
+
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
@@ -129,9 +149,16 @@ private:
 
 	//オブジェクトプールで管理するための変数
 	//通常タップノーツの固定配列
-	std::array<std::shared_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
+	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
 	//ロング開始ノーツ
-	std::array<std::unique_ptr<BaseLongNote>, HI_PASS_LONG_NOTE_MAX_SIZE_> highPassLongNoteArray_ = {};
+	std::array<std::unique_ptr<HighPassLongNote>, HI_PASS_LONG_NOTE_MAX_SIZE_> highPassLongNoteArray_ = {};
+	//ロング(ローパス)開始ノーツ
+	std::array<std::unique_ptr<LowPassLongNote>, LOW_PASS_LONG_NOTE_MAX_SIZE_> lowPassLongNoteArray_ = {};
+
+	//ロング(トランスゲート8)開始ノーツ
+	std::array<std::unique_ptr<HighPassLongNote>, TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_> transGateEighthLongNoteArray_ = {};
+	//ロング(トランスゲート16)開始ノーツ
+	std::array<std::unique_ptr<HighPassLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_> transGateSixteenthLongNoteArray_ = {};
 
 	//サンプル
 	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
