@@ -405,7 +405,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//現在の比率を計算し設定
 					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
 					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
-					highPassLongNoteArray_[i]->SetEndRatio(currentRatio);
+					lowPassLongNoteArray_[i]->SetEndRatio(currentRatio);
 					break;
 				}
 			}
