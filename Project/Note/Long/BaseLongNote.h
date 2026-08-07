@@ -71,6 +71,10 @@ public:
 	}
 
 protected:
+	//スケールのオフセット
+	float SCALE_OFFSET = 1.2f;
+
+protected:
 	//終点比率
 	float_t endRatio_ = 0.0f;
 

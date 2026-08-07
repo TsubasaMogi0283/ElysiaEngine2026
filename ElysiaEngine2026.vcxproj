@@ -213,7 +213,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\Note\BaseNote.cpp" />
     <ClCompile Include="Project\Note\Long\BaseLongNote.cpp" />
     <ClCompile Include="Project\Note\Long\HighPass\HighPassLongNote.cpp" />
-    <ClCompile Include="Project\Note\Long\LowPass\LowhPassLongNote.cpp" />
+    <ClCompile Include="Project\Note\Long\LowPass\LowPassLongNote.cpp" />
+    <ClCompile Include="Project\Note\Long\TransgateEighth\TransgateEighthLongNote.cpp" />
+    <ClCompile Include="Project\Note\Long\TransgateSixteenth\TransgateSixteenthLongNote.cpp" />
     <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp" />
     <ClCompile Include="Project\PauseAsset\PauseAsset.cpp" />
     <ClCompile Include="Project\Record\RecordManager.cpp" />
@@ -347,6 +349,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\Note\Long\BaseLongNote.h" />
     <ClInclude Include="Project\Note\Long\HighPass\HighPassLongNote.h" />
     <ClInclude Include="Project\Note\Long\LowPass\LowPassLongNote.h" />
+    <ClInclude Include="Project\Note\Long\TransgateEighth\TransgateEighthLongNote.h" />
+    <ClInclude Include="Project\Note\Long\TransgateSixteenth\TransgateSixteenthLongNote.h" />
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h" />
     <ClInclude Include="Project\Note\NoteJudgement.h" />
     <ClInclude Include="Project\Note\NoteType.h" />

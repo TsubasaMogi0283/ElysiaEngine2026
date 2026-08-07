@@ -73,6 +73,20 @@ void PlayMainScene::Initialize() {
 		lowPassLongNoteArray_[i] = std::move(lowPassLongNote);
 	}
 
+	//トランスゲート8ロングノーツの生成
+	for (uint8_t i = 0u;i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_;i++) {
+		std::unique_ptr<TransGateEighthLongNote> transgate8LongNote = std::make_unique<TransGateEighthLongNote>();
+		//初期化
+		transgate8LongNote->Initialize(normalNoteModelHandle);
+		transgate8LongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		transgate8LongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		//挿入
+		transGateEighthLongNoteArray_[i] = std::move(transgate8LongNote);
+	}
+
+
+	
+
 #pragma endregion	
 
 	//ロングノーツサンプル
@@ -208,7 +222,11 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			lowPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
-
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
+			transGateEighthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
+		}
+	}
 	//判定線の描画
 	judgementLine_->Draw(camera, baseLight);
 
@@ -236,9 +254,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			break;
 		}
 
-		//通常タップ
-		if (note.type == NoteType::NormalTap) {
-			if (!note.isAssigned) {
+
+		if (!note.isAssigned) {
+			//ノーツの種類によってオブジェクトプールから割り当てる
+			switch (note.type) {
+			case NoteType::NormalTap:
 				//通常ノーツの設定
 				for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
 					//未使用時
@@ -259,12 +279,9 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						break;
 					}
 				}
-			}
+				break;
 
-		}
-		//ハイパス
-		else if (note.type == NoteType::HiPassLongStart) {
-			if (!note.isAssigned) {
+			case NoteType::HiPassLongStart:
 				//通常ノーツの設定
 				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
@@ -285,11 +302,9 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						break;
 					}
 				}
-			}
-		}
-		//ローパス
-		else if (note.type == NoteType::LowPassLongStart) {
-			if (!note.isAssigned) {
+				break;
+
+			case NoteType::LowPassLongStart:
 				//通常ノーツの設定
 				for (uint8_t j = 0u; j < LOW_PASS_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
@@ -310,8 +325,44 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						break;
 					}
 				}
+				break;
+
+
+
+			case NoteType::TranceGate8LongStart:
+				//通常ノーツの設定
+				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; j++) {
+					//未使用時
+					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
+						//Y座標の設定
+						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						//開始時間を設定
+						transGateEighthLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						//到着時間を設定
+						transGateEighthLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						//使用中に設定
+						transGateEighthLongNoteArray_[j]->SetIsUsed(true);
+						//インデックスを保存
+						transGateEighthLongNoteArray_[j]->SetPoolIndex(j);
+						note.poolIndex = j;
+						//割り当て済みにする
+						note.isAssigned = true;
+						break;
+					}
+				}
+
+
+
+
+
+
+				break;
 			}
+
+			
+
 		}
+		
 
 		//タップ系
 		if (note.type == NoteType::NormalTap) {
@@ -364,7 +415,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				if (noteInformations[j].type == NoteType::HiPassLongStart) {
 					startIndex = j;
 				}
-
 			}
 
 			for (size_t j = startIndex; j < noteInformations.size(); j++) {
@@ -394,7 +444,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				if (noteInformations[j].type == NoteType::LowPassLongStart) {
 					startIndex = j;
 				}
-
 			}
 
 			for (size_t j = startIndex; j < noteInformations.size(); j++) {
@@ -413,6 +462,36 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			lowPassLongNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新
 			lowPassLongNoteArray_[i]->Update();
+		}
+	}
+
+	//トランスゲート8ノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::TranceGate8LongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					transGateEighthLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			transGateEighthLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			transGateEighthLongNoteArray_[i]->Update();
 		}
 	}
 }
@@ -543,6 +622,7 @@ void PlayMainScene::Stop() {
 }
 
 void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight) {
+	//トリガー
 	if (input_->IsTriggerKey(inputLeft) || input_->IsTriggerKey(inputRight)) {
 		laneCondition.isHit = true;
 		laneCondition.touchTime = musicTime_;
@@ -550,6 +630,7 @@ void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft
 		laneCondition.isHit = false;
 	}
 
+	//長押し
 	if (input_->IsPushKey(inputLeft) || input_->IsPushKey(inputRight)) {
 		laneCondition.isHold = true;
 	} else {

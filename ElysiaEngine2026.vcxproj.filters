@@ -558,7 +558,7 @@
     <ClCompile Include="Project\Note\Long\HighPass\HighPassLongNote.cpp">
       <Filter>Project\Note\LongNote\HiPass</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Note\Long\LowPass\LowhPassLongNote.cpp">
+    <ClCompile Include="Project\Note\Long\LowPass\LowPassLongNote.cpp">
       <Filter>Project\Note\LongNote\LowPass</Filter>
     </ClCompile>
     <ClCompile Include="Project\PauseAsset\PauseAsset.cpp">
@@ -566,6 +566,12 @@
     </ClCompile>
     <ClCompile Include="Project\JudgementLine\JudgementLine.cpp">
       <Filter>Elysia\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Note\Long\TransgateEighth\TransgateEighthLongNote.cpp">
+      <Filter>Project\Note\LongNote\TransgateEigth</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Note\Long\TransgateSixteenth\TransgateSixteenthLongNote.cpp">
+      <Filter>Project\Note\LongNote\TransgateSixteenth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -969,6 +975,12 @@
     </ClInclude>
     <ClInclude Include="Project\JudgementLine\JudgementLine.h">
       <Filter>Elysia\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\Long\TransgateEighth\TransgateEighthLongNote.h">
+      <Filter>Project\Note\LongNote\TransgateEigth</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\Long\TransgateSixteenth\TransgateSixteenthLongNote.h">
+      <Filter>Project\Note\LongNote\TransgateSixteenth</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

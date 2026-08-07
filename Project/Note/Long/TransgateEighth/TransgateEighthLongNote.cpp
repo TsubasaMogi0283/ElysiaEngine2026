@@ -1,7 +1,7 @@
-#include "LowPassLongNote.h"
+#include "TransGateEighthLongNote.h"
 #include <imgui.h>
 
-void LowPassLongNote::Initialize(const uint32_t& modelHandle){
+void TransGateEighthLongNote::Initialize(const uint32_t& modelHandle){
 	//モデルの生成
 	model_ = Elysia::Model::Create(modelHandle);
 
@@ -12,10 +12,10 @@ void LowPassLongNote::Initialize(const uint32_t& modelHandle){
 	//マテリアルの初期化
 	material_.Initialize();
 	material_.lightingKinds = LightingType::DirectionalLighting;
-	material_.color = { .x = 0.0f,.y = 0.5f,.z = 1.0f,.w = 1.0f };
+	material_.color = { .x = 1.0f,.y = 0.85f,.z = 0.0f,.w = 1.0f };
 }
 
-void LowPassLongNote::Update(){
+void TransGateEighthLongNote::Update(){
 	//開始の比率を計算
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
 
@@ -29,7 +29,7 @@ void LowPassLongNote::Update(){
 
 	//スケールの計算
 	//裏返り厳禁！
-	worldTransform_.scale.x = (abs(endPositionX - startPositionX) / 2.0f) * 1.1f;
+	worldTransform_.scale.x = (abs(endPositionX - startPositionX) / 2.0f) * SCALE_OFFSET;
 
 	//最後までいったら未使用状態にする
 	if (endRatio_ >= 1.0f) {
@@ -37,7 +37,7 @@ void LowPassLongNote::Update(){
 	}
 
 #ifdef _DEBUG
-	ImGui::Begin("ローパス用ロングノーツ");
+	ImGui::Begin("トランスゲート8用ロングノーツ");
 	ImGui::SliderFloat("AnchorX", &worldTransform_.anchorPoint.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("ScaleX", &worldTransform_.scale.x, 1.0f, 10.0f);
 	ImGui::SliderFloat3("Color", &material_.color.x, 0.0f, 1.0f);
