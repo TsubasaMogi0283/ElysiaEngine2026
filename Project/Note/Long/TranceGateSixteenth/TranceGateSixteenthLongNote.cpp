@@ -1,7 +1,7 @@
-#include "TransgateSixteenthLongNote.h"
+#include "TranceGateSixteenthLongNote.h"
 #include <imgui.h>
 
-void TransgateSixteenthLongNote::Initialize(const uint32_t& modelHandle){
+void TranceGateSixteenthLongNote::Initialize(const uint32_t& modelHandle){
 	//モデルの生成
 	model_ = Elysia::Model::Create(modelHandle);
 
@@ -15,7 +15,7 @@ void TransgateSixteenthLongNote::Initialize(const uint32_t& modelHandle){
 	material_.color = { .x = 0.0f,.y = 0.85f,.z = 0.0f,.w = 1.0f };
 }
 
-void TransgateSixteenthLongNote::Update(){
+void TranceGateSixteenthLongNote::Update(){
 	//開始の比率を計算
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
 

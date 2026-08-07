@@ -73,17 +73,27 @@ void PlayMainScene::Initialize() {
 		lowPassLongNoteArray_[i] = std::move(lowPassLongNote);
 	}
 
-	//トランスゲート8ロングノーツの生成
+	//トランスゲート8分ロングノーツの生成
 	for (uint8_t i = 0u;i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_;i++) {
-		std::unique_ptr<TransGateEighthLongNote> transgate8LongNote = std::make_unique<TransGateEighthLongNote>();
+		std::unique_ptr<TranceGateEighthLongNote> tranceGateEighthLongNote = std::make_unique<TranceGateEighthLongNote>();
 		//初期化
-		transgate8LongNote->Initialize(normalNoteModelHandle);
-		transgate8LongNote->SetInitialPositionX(INITIAL_POSITION_X_);
-		transgate8LongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		tranceGateEighthLongNote->Initialize(normalNoteModelHandle);
+		tranceGateEighthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		tranceGateEighthLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
 		//挿入
-		transGateEighthLongNoteArray_[i] = std::move(transgate8LongNote);
+		transGateEighthLongNoteArray_[i] = std::move(tranceGateEighthLongNote);
 	}
 
+	//トランスゲート16分ロングノーツの生成
+	for (uint8_t i = 0u;i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_;i++) {
+		std::unique_ptr<TranceGateSixteenthLongNote> tranceGateSixteenthLongNote = std::make_unique<TranceGateSixteenthLongNote>();
+		//初期化
+		tranceGateSixteenthLongNote->Initialize(normalNoteModelHandle);
+		tranceGateSixteenthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		tranceGateSixteenthLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		//挿入
+		transGateSixteenthLongNoteArray_[i] = std::move(tranceGateSixteenthLongNote);
+	}
 
 	
 
@@ -227,6 +237,12 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			transGateEighthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
+
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
+			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
+		}
+	}
 	//判定線の描画
 	judgementLine_->Draw(camera, baseLight);
 
@@ -282,7 +298,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::HiPassLongStart:
-				//通常ノーツの設定
 				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
@@ -305,7 +320,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::LowPassLongStart:
-				//通常ノーツの設定
 				for (uint8_t j = 0u; j < LOW_PASS_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
 					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
@@ -330,7 +344,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 
 			case NoteType::TranceGate8LongStart:
-				//通常ノーツの設定
 				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
 					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
@@ -350,16 +363,30 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						break;
 					}
 				}
+				break;
 
-
-
-
-
-
+			case NoteType::TranceGate16LongStart:
+				for (uint8_t j = 0u; j < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; j++) {
+					//未使用時
+					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
+						//Y座標の設定
+						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						//開始時間を設定
+						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						//到着時間を設定
+						transGateSixteenthLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						//使用中に設定
+						transGateSixteenthLongNoteArray_[j]->SetIsUsed(true);
+						//インデックスを保存
+						transGateSixteenthLongNoteArray_[j]->SetPoolIndex(j);
+						note.poolIndex = j;
+						//割り当て済みにする
+						note.isAssigned = true;
+						break;
+					}
+				}
 				break;
 			}
-
-			
 
 		}
 		
@@ -492,6 +519,37 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			transGateEighthLongNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新
 			transGateEighthLongNoteArray_[i]->Update();
+		}
+	}
+
+
+	//トランスゲート16ノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::TranceGate16LongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					transGateSixteenthLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			transGateSixteenthLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			transGateSixteenthLongNoteArray_[i]->Update();
 		}
 	}
 }

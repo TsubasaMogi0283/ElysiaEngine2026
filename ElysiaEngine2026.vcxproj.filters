@@ -304,12 +304,6 @@
     <Filter Include="Project\Note\LongNote\LowPass">
       <UniqueIdentifier>{7311e3cf-6887-4ddf-8cc3-b11b149f21a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Project\Note\LongNote\TransgateEigth">
-      <UniqueIdentifier>{cbac4696-9032-4430-8778-438dcca527fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\Note\LongNote\TransgateSixteenth">
-      <UniqueIdentifier>{6d3c480c-5de1-417d-a49c-8873c19a43ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Project\PauseAsset">
       <UniqueIdentifier>{7cb24404-1b20-4742-92c5-5fafcf6123b7}</UniqueIdentifier>
     </Filter>
@@ -318,6 +312,12 @@
     </Filter>
     <Filter Include="Project\JudgementLine">
       <UniqueIdentifier>{23969ba5-a305-4a6b-8936-187c231f1a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\LongNote\TranceGateSixteenth">
+      <UniqueIdentifier>{6d3c480c-5de1-417d-a49c-8873c19a43ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\LongNote\TranceGateEigth">
+      <UniqueIdentifier>{cbac4696-9032-4430-8778-438dcca527fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -567,11 +567,11 @@
     <ClCompile Include="Project\JudgementLine\JudgementLine.cpp">
       <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Note\Long\TransgateEighth\TransgateEighthLongNote.cpp">
-      <Filter>Project\Note\LongNote\TransgateEigth</Filter>
+    <ClCompile Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.cpp">
+      <Filter>Project\Note\LongNote\TranceGateSixteenth</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Note\Long\TransgateSixteenth\TransgateSixteenthLongNote.cpp">
-      <Filter>Project\Note\LongNote\TransgateSixteenth</Filter>
+    <ClCompile Include="Project\Note\Long\TranceGateEighth\TranceGateEighthLongNote.cpp">
+      <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -976,11 +976,11 @@
     <ClInclude Include="Project\JudgementLine\JudgementLine.h">
       <Filter>Elysia\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\Long\TransgateEighth\TransgateEighthLongNote.h">
-      <Filter>Project\Note\LongNote\TransgateEigth</Filter>
+    <ClInclude Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.h">
+      <Filter>Project\Note\LongNote\TranceGateSixteenth</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Note\Long\TransgateSixteenth\TransgateSixteenthLongNote.h">
-      <Filter>Project\Note\LongNote\TransgateSixteenth</Filter>
+    <ClInclude Include="Project\Note\Long\TranceGateEighth\TranceGateEighthLongNote.h">
+      <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

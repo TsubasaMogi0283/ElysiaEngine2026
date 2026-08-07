@@ -1,7 +1,7 @@
 #pragma once
 
 /*
-* @file TransGateEighthLongNote.h
+* @file TranceGateEighthLongNote.h
 * @brief トランスゲート8用のロングノーツ
 * @author 茂木翼
 */
@@ -11,12 +11,12 @@
 /// <summary>
 /// トランスゲート8用のロングノーツ
 /// </summary>
-class TransGateEighthLongNote : public BaseLongNote{
+class TranceGateEighthLongNote : public BaseLongNote{
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	TransGateEighthLongNote() = default;
+	TranceGateEighthLongNote() = default;
 
 	/// <summary>
 	/// 初期化
@@ -32,6 +32,6 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~TransGateEighthLongNote()override = default;
+	~TranceGateEighthLongNote()override = default;
 };
 

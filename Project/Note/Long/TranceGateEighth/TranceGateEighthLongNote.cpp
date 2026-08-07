@@ -1,7 +1,7 @@
-#include "TransGateEighthLongNote.h"
+#include "TranceGateEighthLongNote.h"
 #include <imgui.h>
 
-void TransGateEighthLongNote::Initialize(const uint32_t& modelHandle){
+void TranceGateEighthLongNote::Initialize(const uint32_t& modelHandle){
 	//モデルの生成
 	model_ = Elysia::Model::Create(modelHandle);
 
@@ -15,7 +15,7 @@ void TransGateEighthLongNote::Initialize(const uint32_t& modelHandle){
 	material_.color = { .x = 1.0f,.y = 0.85f,.z = 0.0f,.w = 1.0f };
 }
 
-void TransGateEighthLongNote::Update(){
+void TranceGateEighthLongNote::Update(){
 	//開始の比率を計算
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
 

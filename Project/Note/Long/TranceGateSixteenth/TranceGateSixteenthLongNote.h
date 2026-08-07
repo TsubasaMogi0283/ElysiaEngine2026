@@ -1,7 +1,7 @@
 #pragma once
 
 /*
-* @file TransgateSixteenthLongNote.h
+* @file TranceGateSixteenthLongNote.h
 * @brief トランスゲート16用のロングノーツ
 * @author 茂木翼
 */
@@ -11,12 +11,12 @@
 /// <summary>
 /// トランスゲート16用のロングノーツ
 /// </summary>
-class TransgateSixteenthLongNote : public BaseLongNote{
+class TranceGateSixteenthLongNote : public BaseLongNote{
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	TransgateSixteenthLongNote() = default;
+	TranceGateSixteenthLongNote() = default;
 
 	/// <summary>
 	/// 初期化
@@ -32,6 +32,6 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~TransgateSixteenthLongNote()override = default;
+	~TranceGateSixteenthLongNote()override = default;
 };
 

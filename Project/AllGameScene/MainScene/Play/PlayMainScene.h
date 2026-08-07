@@ -16,7 +16,8 @@
 #include <Note/NormalTap/NormalTapNote.h>
 #include <Note/Long/HighPass/HighPassLongNote.h>
 #include <Note/Long/LowPass/LowPassLongNote.h>
-#include <Note/Long/TransgateEighth/TransgateEighthLongNote.h>
+#include <Note/Long/TranceGateEighth/TranceGateEighthLongNote.h>
+#include <Note/Long/TranceGateSixteenth/TranceGateSixteenthLongNote.h>
 
 #include <Note/Long/BaseLongNote.h>
 #include <PauseAsset/PauseAsset.h>
@@ -135,8 +136,6 @@ private:
 	//ロングノーツ(トランスゲート16)格納数の最大サイズ
 	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_ = 6u;
 
-
-
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 	//初期のコンボボーナス倍率
@@ -156,9 +155,9 @@ private:
 	//ロング(ローパス)開始ノーツ
 	std::array<std::unique_ptr<LowPassLongNote>, LOW_PASS_LONG_NOTE_MAX_SIZE_> lowPassLongNoteArray_ = {};
 	//ロング(トランスゲート8)開始ノーツ
-	std::array<std::unique_ptr<TransGateEighthLongNote>, TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_> transGateEighthLongNoteArray_ = {};
+	std::array<std::unique_ptr<TranceGateEighthLongNote>, TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_> transGateEighthLongNoteArray_ = {};
 	//ロング(トランスゲート16)開始ノーツ
-	//std::array<std::unique_ptr<TransGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_> transGateSixteenthLongNoteArray_ = {};
+	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_> transGateSixteenthLongNoteArray_ = {};
 
 	//サンプル
 	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
