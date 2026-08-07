@@ -131,7 +131,7 @@ private:
 	//通常タップノーツの固定配列
 	std::array<std::shared_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
 	//ロング開始ノーツ
-	std::array<std::unique_ptr<HighPassLongNote>, HI_PASS_LONG_NOTE_MAX_SIZE_> highPassLongNoteArray_ = {};
+	std::array<std::unique_ptr<BaseLongNote>, HI_PASS_LONG_NOTE_MAX_SIZE_> highPassLongNoteArray_ = {};
 
 	//サンプル
 	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;

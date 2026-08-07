@@ -347,13 +347,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 				//終了地点を見つけたら探すのをやめる。
 				if (noteInformations[j].type == NoteType::LongEnd) {
-					float_t smt = noteInformations[j].startMoveTime;
-					float_t alt = noteInformations[j].arriveLineTime;
-
-					float_t currentRatio = SingleCalculation::InverseLerp(smt, alt, musicTime_);
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
 					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
-					float_t endPositionX = SingleCalculation::Lerp(INITIAL_POSITION_X_, judgementLine_->GetJudgementPositionX(), currentRatio);
-					highPassLongNoteArray_[i]->SetEndPositionX(endPositionX);
+					highPassLongNoteArray_[i]->SetEndRatio(currentRatio);
 					break;
 				}
 			}

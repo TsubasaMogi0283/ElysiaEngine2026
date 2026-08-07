@@ -23,11 +23,11 @@ public:
 
 public:
 	/// <summary>
-	/// 終点の座標を設定
+	/// 終点比率の設定
 	/// </summary>
-	/// <param name="positionX">X座標</param>
-	inline void SetEndPositionX(const float_t positionX) {
-		this->endPositionX_ = positionX;
+	/// <param name="ratio"></param>
+	inline void SetEndRatio(const float_t& ratio) {
+		this->endRatio_ = ratio;
 	}
 
 	/// <summary>
@@ -71,8 +71,8 @@ public:
 	}
 
 protected:
-	//終点座標
-	float_t endPositionX_ = 0.0f;
+	//終点比率
+	float_t endRatio_ = 0.0f;
 
 	//ホールド中
 	bool isHold_ = false;
