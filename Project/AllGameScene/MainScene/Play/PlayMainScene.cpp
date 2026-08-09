@@ -12,7 +12,7 @@
 #include <TextureManager.h>
 #include <Note/Long/HighPass/HighPassLongNote.h>
 
-PlayMainScene::PlayMainScene(){
+PlayMainScene::PlayMainScene() {
 	//ウィンドウの設定
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//入力
@@ -25,7 +25,7 @@ PlayMainScene::PlayMainScene(){
 	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
-void PlayMainScene::Initialize(){
+void PlayMainScene::Initialize() {
 	//メインシーンの空チェック
 	assert(mainScene_);
 
@@ -38,9 +38,10 @@ void PlayMainScene::Initialize(){
 	judgementLine_ = std::make_unique<JudgementLine>();
 	judgementLine_->Initialize(normalNoteModelHandle);
 
-	
+#pragma region ノーツの生成
+
 	//通常ノーツの生成
-	for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
@@ -49,9 +50,9 @@ void PlayMainScene::Initialize(){
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
-	
+
 	//ハイパスロングノーツの生成
-	for (uint32_t i = 0u;i < HI_PASS_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < HI_PASS_LONG_NOTE_MAX_SIZE_;i++) {
 		std::unique_ptr<HighPassLongNote> hiPassLongNote = std::make_unique<HighPassLongNote>();
 		//初期化
 		hiPassLongNote->Initialize(normalNoteModelHandle);
@@ -61,7 +62,44 @@ void PlayMainScene::Initialize(){
 		highPassLongNoteArray_[i] = std::move(hiPassLongNote);
 	}
 
-	//ロングノーツ
+	//ローパスロングノーツの生成
+	for (uint8_t i = 0u;i < LOW_PASS_LONG_NOTE_MAX_SIZE_;i++) {
+		std::unique_ptr<LowPassLongNote> lowPassLongNote = std::make_unique<LowPassLongNote>();
+		//初期化
+		lowPassLongNote->Initialize(normalNoteModelHandle);
+		lowPassLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		lowPassLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		//挿入
+		lowPassLongNoteArray_[i] = std::move(lowPassLongNote);
+	}
+
+	//トランスゲート8分ロングノーツの生成
+	for (uint8_t i = 0u;i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_;i++) {
+		std::unique_ptr<TranceGateEighthLongNote> tranceGateEighthLongNote = std::make_unique<TranceGateEighthLongNote>();
+		//初期化
+		tranceGateEighthLongNote->Initialize(normalNoteModelHandle);
+		tranceGateEighthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		tranceGateEighthLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		//挿入
+		transGateEighthLongNoteArray_[i] = std::move(tranceGateEighthLongNote);
+	}
+
+	//トランスゲート16分ロングノーツの生成
+	for (uint8_t i = 0u;i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_;i++) {
+		std::unique_ptr<TranceGateSixteenthLongNote> tranceGateSixteenthLongNote = std::make_unique<TranceGateSixteenthLongNote>();
+		//初期化
+		tranceGateSixteenthLongNote->Initialize(normalNoteModelHandle);
+		tranceGateSixteenthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		tranceGateSixteenthLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		//挿入
+		transGateSixteenthLongNoteArray_[i] = std::move(tranceGateSixteenthLongNote);
+	}
+
+	
+
+#pragma endregion	
+
+	//ロングノーツサンプル
 	longNoteSmaple_ = std::make_unique<HighPassLongNote>();
 	longNoteSmaple_->Initialize(normalNoteModelHandle);
 #pragma region ポーズ
@@ -73,7 +111,7 @@ void PlayMainScene::Initialize(){
 	uint8_t countNumber = 3u;
 	//カウントダウンの読み込み
 	for (uint8_t i = 0u;i < countNumber;i++) {
-		numberTextureHandleVector.push_back(textureManager_->Load("Resources/Sprite/Number/CountDown/" + std::to_string(i + 1u)+".png"));
+		numberTextureHandleVector.push_back(textureManager_->Load("Resources/Sprite/Number/CountDown/" + std::to_string(i + 1u) + ".png"));
 	}
 	//ポーズのアセット
 	pauseAsset_ = std::make_unique<PauseAsset>();
@@ -83,51 +121,27 @@ void PlayMainScene::Initialize(){
 
 	//楽曲の再生
 	audio_->Play(musicScoreData_.musicHandle, false);
-	musicLength_= audio_->GetAudioLength(musicScoreData_.musicHandle);
+	musicLength_ = audio_->GetAudioLength(musicScoreData_.musicHandle);
 }
 
-void PlayMainScene::Update(){
+void PlayMainScene::Update() {
 	//再生時間を取得
 	musicTime_ = audio_->GetPlayCurrentTime(musicScoreData_.musicHandle);
 
 	//プレイ中
 	if (isPlay_) {
 
+		//入力処理
 		//上
-		if (input_->IsTriggerKey(DIK_R)||input_->IsTriggerKey(DIK_I)) {
-			upLaneCondition.isHit = true;
-			upLaneCondition.touchTime = musicTime_;
-		}
-		else {
-			upLaneCondition.isHit = false;
-		}
-
-		if(input_->IsPushKey(DIK_R)||input_->IsPushKey(DIK_I)) {
-			upLaneCondition.isHold = true;
-		}
-		else {
-			upLaneCondition.isHold = false;
-		}
-
+		Touch(upLaneCondition, DIK_R, DIK_I);
 		//下
-		if (input_->IsTriggerKey(DIK_F) || input_->IsTriggerKey(DIK_J)) {
-			downLaneCondition.isHit = true;
-			downLaneCondition.touchTime = musicTime_;
-		}
-		else {
-			downLaneCondition.isHit = false;
-		}
-
-		if (input_->IsPushKey(DIK_F) || input_->IsPushKey(DIK_J)) {
-			downLaneCondition.isHold = true;
-		} 
-		else {
-			downLaneCondition.isHold = false;
-		}
+		Touch(downLaneCondition, DIK_F, DIK_J);
 
 		//譜面の流れる処理
-		NoteFlow(musicScoreData_.upInformation,upLaneCondition);
-		NoteFlow(musicScoreData_.downInformation,downLaneCondition);
+		//上
+		NoteFlow(musicScoreData_.upInformation, upLaneCondition);
+		//下
+		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
 
 		//ポーズ処理
 		Pause();
@@ -136,8 +150,7 @@ void PlayMainScene::Update(){
 		if (musicLength_ < musicTime_) {
 			isPlay_ = false;
 		}
-	}
-	else {
+	} else {
 		//楽曲停止
 		audio_->Stop(musicScoreData_.musicHandle);
 		//終了シーンへ
@@ -148,7 +161,7 @@ void PlayMainScene::Update(){
 	longNoteSmaple_->Update();
 	//判定線の更新
 	judgementLine_->Update();
-	
+
 #ifdef _DEBUG
 	ImGui::Begin("プレイシーン");
 	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
@@ -164,7 +177,7 @@ void PlayMainScene::Update(){
 		int32_t combo = static_cast<int32_t>(record_.combo);
 		int32_t maxCombo = static_cast<int32_t>(record_.maxCombo);
 		int32_t score = static_cast<int32_t>(record_.score);
-		
+
 		ImGui::InputInt("Perfect", &perfect);
 		ImGui::InputInt("Great", &great);
 		ImGui::InputInt("Good", &good);
@@ -174,9 +187,9 @@ void PlayMainScene::Update(){
 		ImGui::InputInt("Score", &score);
 		ImGui::TreePop();
 	}
-	
 
-	if(ImGui::TreeNode("上レーン")) {
+
+	if (ImGui::TreeNode("上レーン")) {
 		for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
 			bool isUsed = normalTapNoteArray_[i]->GetIsUsed();
 			if (isUsed) {
@@ -200,27 +213,42 @@ void PlayMainScene::Update(){
 #endif // _DEBUG
 }
 
-void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
+void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight) {
 	//通常ノーツの設定
-	for(uint32_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
 		if (normalTapNoteArray_[i]->GetIsUsed()) {
-			//normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
+			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
-	for (uint32_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			highPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
-	//ロングノーツのサンプルの描画
-	//longNoteSmaple_->DrawObject3D(camera, baseLight);
+
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
+			lowPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
+		}
+	}
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
+			transGateEighthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
+		}
+	}
+
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
+			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
+		}
+	}
 	//判定線の描画
-	//judgementLine_->Draw(camera, baseLight);
+	judgementLine_->Draw(camera, baseLight);
 
 }
 
-void PlayMainScene::DrawSprite(){
+void PlayMainScene::DrawSprite() {
 	//ポーズ中
 	if (isPause_) {
 		//アセットの描画
@@ -228,13 +256,13 @@ void PlayMainScene::DrawSprite(){
 	}
 }
 
-void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition){
+void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition) {
 	int32_t closestNoteIndex = -1;
 	for (size_t i = 0u; i < noteInformations.size(); i++) {
 		NoteInformation& note = noteInformations[i];
 
 		//判定済みは処理せず次へ
-		if (note.isJudged ) {
+		if (note.isJudged) {
 			continue;
 		}
 		//まだ動き始める時間になっていないので処理をしない
@@ -242,9 +270,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			break;
 		}
 
-		//タップ用
-		if (note.type == NoteType::NormalTap) {
-			if (!note.isAssigned) {
+
+		if (!note.isAssigned) {
+			//ノーツの種類によってオブジェクトプールから割り当てる
+			switch (note.type) {
+			case NoteType::NormalTap:
 				//通常ノーツの設定
 				for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
 					//未使用時
@@ -265,12 +295,9 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						break;
 					}
 				}
-			}
-			
-		}
-		else if (note.type == NoteType::HiPassLongStart) {
-			if (!note.isAssigned) {
-				//通常ノーツの設定
+				break;
+
+			case NoteType::HiPassLongStart:
 				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
@@ -290,15 +317,82 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						break;
 					}
 				}
+				break;
+
+			case NoteType::LowPassLongStart:
+				for (uint8_t j = 0u; j < LOW_PASS_LONG_NOTE_MAX_SIZE_; j++) {
+					//未使用時
+					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
+						//Y座標の設定
+						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						//開始時間を設定
+						lowPassLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						//到着時間を設定
+						lowPassLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						//使用中に設定
+						lowPassLongNoteArray_[j]->SetIsUsed(true);
+						//インデックスを保存
+						lowPassLongNoteArray_[j]->SetPoolIndex(j);
+						note.poolIndex = j;
+						//割り当て済みにする
+						note.isAssigned = true;
+						break;
+					}
+				}
+				break;
+
+
+
+			case NoteType::TranceGate8LongStart:
+				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; j++) {
+					//未使用時
+					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
+						//Y座標の設定
+						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						//開始時間を設定
+						transGateEighthLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						//到着時間を設定
+						transGateEighthLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						//使用中に設定
+						transGateEighthLongNoteArray_[j]->SetIsUsed(true);
+						//インデックスを保存
+						transGateEighthLongNoteArray_[j]->SetPoolIndex(j);
+						note.poolIndex = j;
+						//割り当て済みにする
+						note.isAssigned = true;
+						break;
+					}
+				}
+				break;
+
+			case NoteType::TranceGate16LongStart:
+				for (uint8_t j = 0u; j < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; j++) {
+					//未使用時
+					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
+						//Y座標の設定
+						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						//開始時間を設定
+						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						//到着時間を設定
+						transGateSixteenthLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						//使用中に設定
+						transGateSixteenthLongNoteArray_[j]->SetIsUsed(true);
+						//インデックスを保存
+						transGateSixteenthLongNoteArray_[j]->SetPoolIndex(j);
+						note.poolIndex = j;
+						//割り当て済みにする
+						note.isAssigned = true;
+						break;
+					}
+				}
+				break;
 			}
+
 		}
+		
 
 		//タップ系
-		if (note.type == NoteType::NormalTap ||
-			note.type == NoteType::HiPassLongStart ||
-			note.type == NoteType::LowPassLongStart ||
-			note.type == NoteType::TranceGate8LongStart ||
-			note.type == NoteType::TranceGate16LongStart) {
+		if (note.type == NoteType::NormalTap) {
 			//入力されたとき
 			if (laneCondition.isHit) {
 				//最も近いノーツのインデックスを記録
@@ -326,44 +420,141 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 	}
 	//判定
-	Judge(noteInformations, laneCondition,closestNoteIndex);
+	Judge(noteInformations, laneCondition, closestNoteIndex);
 
 	//通常ノーツの設定
-	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
 		//使用時
-		if (normalTapNoteArray_[i]->GetIsUsed()) {
+		if (normalTapNoteArray_[j]->GetIsUsed()) {
 			//楽曲時間を設定
-			normalTapNoteArray_[i]->SetMusicTime(musicTime_);
+			normalTapNoteArray_[j]->SetMusicTime(musicTime_);
 			//更新
-			normalTapNoteArray_[i]->Update();
+			normalTapNoteArray_[j]->Update();
 		}
 	}
 	//ハイパスロングノーツの設定
 	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
 		//使用時
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
-			//現在の比率を計算
-			//そこから座標を求めていく
-			float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[i].startMoveTime, noteInformations[i].arriveLineTime, musicTime_);
-			float_t endPositionX = SingleCalculation::Lerp(INITIAL_POSITION_X_, judgementLine_->GetJudgementPositionX(), currentRatio);
-			for (size_t j = 0u; j < noteInformations.size(); j++) {
 
-				//終了地点を見つけたら探すのをやめる。
-				if (noteInformations[j].type == NoteType::LongEnd) {
-					highPassLongNoteArray_[i]->SetEndPositionX(endPositionX);
-					break;
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::HiPassLongStart) {
+					startIndex = j;
 				}
 			}
 
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					highPassLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
 			//楽曲時間を設定
 			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新
 			highPassLongNoteArray_[i]->Update();
 		}
 	}
+	//ローパスロングノーツの設定
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::LowPassLongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					lowPassLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			lowPassLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			lowPassLongNoteArray_[i]->Update();
+		}
+	}
+
+	//トランスゲート8ノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::TranceGate8LongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					transGateEighthLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			transGateEighthLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			transGateEighthLongNoteArray_[i]->Update();
+		}
+	}
+
+
+	//トランスゲート16ノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::TranceGate16LongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					transGateSixteenthLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			transGateSixteenthLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			transGateSixteenthLongNoteArray_[i]->Update();
+		}
+	}
 }
 
-void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex){
+void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex) {
 	//近いノーツを判定
 	if (closestNoteIndex != -1) {
 		//対象のノーツ
@@ -441,10 +632,10 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 	}
 }
 
-void PlayMainScene::Pause(){
+void PlayMainScene::Pause() {
 	//ポーズ中
 	if (isPause_) {
-		
+
 		//再開処理
 		if (pauseAsset_->GetIsEnd()) {
 			//音量をもとに戻す
@@ -464,10 +655,9 @@ void PlayMainScene::Pause(){
 		}
 		//アセットの更新
 		pauseAsset_->Update();
-	}
-	else {
+	} else {
 		//ESCAPEかウィンドウの移動中の時
-		if (input_->IsTriggerKey(DIK_ESCAPE) ) {
+		if (input_->IsTriggerKey(DIK_ESCAPE)) {
 			Stop();
 		}
 		//ウィンドウのタイトルバーに触れた時
@@ -478,7 +668,7 @@ void PlayMainScene::Pause(){
 	}
 }
 
-void PlayMainScene::Stop(){
+void PlayMainScene::Stop() {
 	//ESCAPEでポーズ
 	audio_->Stop(musicScoreData_.musicHandle);
 	//音量も0にする
@@ -487,4 +677,21 @@ void PlayMainScene::Stop(){
 	stopTime_ = musicTime_;
 	//ポーズ中にする
 	isPause_ = true;
+}
+
+void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight) {
+	//トリガー
+	if (input_->IsTriggerKey(inputLeft) || input_->IsTriggerKey(inputRight)) {
+		laneCondition.isHit = true;
+		laneCondition.touchTime = musicTime_;
+	} else {
+		laneCondition.isHit = false;
+	}
+
+	//長押し
+	if (input_->IsPushKey(inputLeft) || input_->IsPushKey(inputRight)) {
+		laneCondition.isHold = true;
+	} else {
+		laneCondition.isHold = false;
+	}
 }

@@ -122,7 +122,7 @@ public:
 	/// <summary>
 	/// ゲーム管理クラスを設定
 	/// </summary>
-	/// <param name="gameManager"></param>
+	/// <param name="gameManager">ゲーム管理クラス</param>
 	inline void SetGameManager(Elysia::GameManager* gameManager) override{
 		this->gameManager_ = gameManager;
 	}
@@ -130,7 +130,7 @@ public:
 	/// <summary>
 	/// ゲーム管理クラスを取得
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>ゲーム管理クラス</returns>
 	inline Elysia::GameManager* GetGameManager()const {
 		return gameManager_;
 	}
@@ -138,7 +138,7 @@ public:
 	/// <summary>
 	/// 楽曲情報を取得
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>楽曲情報</returns>
 	inline MusicScoreData GetScoreData()const {
 		return musicScoreData_;
 	}
@@ -146,7 +146,7 @@ public:
 	/// <summary>
 	/// ハイスピの設定
 	/// </summary>
-	/// <param name="hiSpeed"></param>
+	/// <param name="hiSpeed">ハイスピ</param>
 	inline void SetHiSpeed(const float_t& hiSpeed) {
 		this->hiSpeed_ = hiSpeed;
 	}
@@ -154,14 +154,14 @@ public:
 	/// <summary>
 	/// ハイスピの取得
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>ハイスピ</returns>
 	inline float_t GetHiSpeed()const {
 		return hiSpeed_;
 	}
 
 private:
 	/// <summary>
-	/// ノーツ生成クラス
+	/// ノーツ生成
 	/// </summary>
 	void GenerateNotes();
 	
@@ -177,7 +177,7 @@ private:
 
 private:
 	//開始オフセット
-	const float_t START_OFFSET_TIME_ = 2.0f;
+	const float_t START_OFFSET_TIME_ = 1.0f;
 
 private:
 	//背景
