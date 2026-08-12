@@ -15,6 +15,58 @@ Elysia::Sprite::Sprite() {
 	pipelineManager_ = Elysia::PipelineManager::GetInstance();
 }
 
+std::unique_ptr<Elysia::Sprite> Elysia::Sprite::Create(){
+	//生成
+	std::unique_ptr<Elysia::Sprite> sprite = std::make_unique<Elysia::Sprite>();
+	//色の設定
+	sprite->color_ = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
+	//テクスチャハンドルの設定
+	sprite->textureHandle_ = Elysia::TextureManager::GetInstance()->Load("Resources/Sprite/Back/White.png");
+
+	//テクスチャの情報を取得
+	D3D12_RESOURCE_DESC resourceDesc_ = {}; resourceDesc_ = Elysia::TextureManager::GetInstance()->GetResourceDesc(sprite->textureHandle_);
+	//サイズを取得
+	sprite->size_ = { .x = static_cast<float_t>(resourceDesc_.Width),.y = static_cast<float_t>(resourceDesc_.Height) };
+
+	//頂点リソースを作る
+	sprite->vertexResource_ = sprite->directXSetup_->CreateBufferResource(sizeof(VertexData) * 6u);
+	//頂点バッファビューを作成する
+	//リソースの先頭のアドレスから使う
+	sprite->vertexBufferView_.BufferLocation = sprite->vertexResource_->GetGPUVirtualAddress();
+	//使用するリソースのサイズは頂点３つ分のサイズ
+	sprite->vertexBufferView_.SizeInBytes = sizeof(VertexData) * 4u;
+	//１頂点あたりのサイズ
+	sprite->vertexBufferView_.StrideInBytes = sizeof(VertexData);
+
+	//index用のリソースを作る
+	sprite->indexResource_ = sprite->directXSetup_->CreateBufferResource(sizeof(uint32_t) * 6u);
+	//Indexを利用
+	//リsp－スの先頭のアドレスから使う
+	sprite->indexBufferView_.BufferLocation = sprite->indexResource_->GetGPUVirtualAddress();
+	//使用するリソースのサイズはインデックス6つ分のサイズ
+	sprite->indexBufferView_.SizeInBytes = sizeof(uint32_t) * 6u;
+	//インデックスはuint32_tとする
+	sprite->indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+
+	//マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
+	sprite->materialResource_ = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(MaterialData));
+	//TransformationMatrix用のリソースを作る。
+	sprite->transformationMatrixResource_ = Elysia::DirectXSetup::GetInstance()->CreateBufferResource(sizeof(TransformationMatrix));
+
+
+	//UVトランスフォームの初期化
+	sprite->uvTransform_ = {
+		//S
+		{.x = 1.0f,. y = 1.0f,.z = 1.0f},
+		//R
+		{.x = 0.0f,.y = 0.0f,.z = 0.0f},
+		//T
+		{.x = 0.0f,.y = 0.0f,.z = 0.0f}
+	};
+
+	return sprite;
+}
+
 std::unique_ptr<Elysia::Sprite>  Elysia::Sprite::Create(const uint32_t& textureHandle) {
 	//生成
 	std::unique_ptr<Elysia::Sprite> sprite = std::make_unique<Elysia::Sprite>();
@@ -24,7 +76,7 @@ std::unique_ptr<Elysia::Sprite>  Elysia::Sprite::Create(const uint32_t& textureH
 	sprite->textureHandle_ = textureHandle;
 
 	//テクスチャの情報を取得
-	D3D12_RESOURCE_DESC resourceDesc_ = {}; resourceDesc_ = Elysia::TextureManager::GetInstance()->GetResourceDesc(textureHandle);
+	D3D12_RESOURCE_DESC resourceDesc_ = {}; resourceDesc_ = Elysia::TextureManager::GetInstance()->GetResourceDesc(sprite->textureHandle_);
 	//サイズを取得
 	sprite->size_ = { .x = static_cast<float_t>(resourceDesc_.Width),.y = static_cast<float_t>(resourceDesc_.Height) };
 

@@ -17,7 +17,7 @@ void Elysia::GameManager::Initialize() {
 #ifdef _DEBUG
 	//デバッグ時はこっちに入れてね
 	currentGamaScene_->SetGameManager(this);
-	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
+	currentGamaScene_ = abstractSceneFactory_->CreateScene("Select");
 #endif // _DEBUG
 	//譜面データ生成と読み込み
 	scoreDataManager_ = std::make_unique<ScoreDataManager>();

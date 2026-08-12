@@ -43,8 +43,16 @@ void MainScene::Initialize(){
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
 	
+
+
+	scoreSpriteArray_ = Elysia::Sprite::Create();
+
+
 	//メインシーンの中
-	baseMainScene_ = std::make_unique<PlayMainScene>();
+	baseMainScene_ = std::make_unique<StartMainScene>();
+#ifdef _DEBUG
+	baseMainScene_ = std::make_unique<StartMainScene>();
+#endif // _DEBUG
 	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
 

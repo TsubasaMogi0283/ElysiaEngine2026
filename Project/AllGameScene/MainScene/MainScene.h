@@ -18,6 +18,7 @@
 #include "DirectionalLight.h"
 #include "BaseMainScene.h"
 #include <Audio.h>
+#include <Sprite.h>
 #include <ScoreData/MusicScoreData.h>
 
 /// <summary>
@@ -178,6 +179,10 @@ private:
 private:
 	//開始オフセット
 	const float_t START_OFFSET_TIME_ = 1.0f;
+	//スコアの桁数
+	static const uint8_t SCORE_DIGIT_ = 7u;
+	//コンボの桁数
+	static const uint8_t COMBO_DIGIT_ = 4u;
 
 private:
 	//背景
@@ -197,4 +202,18 @@ private:
 	float_t hiSpeed_ = 5.0f;
 
 
+
+	//メインシーン共通部分
+	//UI
+	
+	//ゲージ
+	std::unique_ptr<Elysia::Sprite>gaugeSprite_ = nullptr;
+	uint16_t gauge_ = 0u;
+	//スコア
+	std::array<std::unique_ptr<Elysia::Sprite>, SCORE_DIGIT_>scoreSpriteArray_ = {};
+	uint16_t score_ = 0u;
+	//コンボ
+	std::array<std::unique_ptr<Elysia::Sprite>, COMBO_DIGIT_>comboSpriteArray_ = {};
+	uint16_t combo_ = 0u;
+	
 };

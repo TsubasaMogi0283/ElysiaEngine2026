@@ -43,28 +43,6 @@ void SelectScene::Initialize(){
 	playerAnimationWorldTransform_.translate.x = -20.0f;
 	playerAnimationWorldTransform_.translate.z = 20.0f;
 
-	//球モデル
-	uint32_t sphereModelHandle = modelManager_->Load("Resources/Model/Sample/Sphere", "Sphere.obj");
-	//四隅
-	for (uint32_t i = 0; i < COUNER_QUANTITY_; i++) {
-		playerCornerModel_[i] = Elysia::Model::Create(sphereModelHandle);
-		playerCornerWorldTransform_[i].Initialize();
-
-	}
-	
-	//吸収パーティクル
-	deadParticle_ = std::move(Elysia::Particle3D::Create(ParticleMoveType::Absorb));
-	deadParticle_->SetIsReleaseOnceMode(false);
-	deadParticle_->SetIsToTransparent(true);
-	deadParticle_->SetCount(5u);
-	deadParticle_->SetFrequency(1.0f);
-
-
-	particle2_ = std::move(Elysia::Particle3D::Create(ParticleMoveType::NormalRelease));
-	particle2_->SetIsReleaseOnceMode(false);
-	particle2_->SetIsToTransparent(true);
-	particle2_->SetCount(10u);
-	particle2_->SetFrequency(0.5f);
 
 	
 
@@ -139,11 +117,6 @@ void SelectScene::Update(){
 		PushBackCalculation::FixPosition(playerCenterPosition_,playerAABB_, objects[i]);
 	}
 
-	//四隅の球の更新
-	for (uint32_t i = 0; i < COUNER_QUANTITY_; i++) {
-		playerCornerWorldTransform_[i].Update();
-	}
-
 	animationTime_ += 0.1f;
 
 	//プレイヤー更新
@@ -153,9 +126,6 @@ void SelectScene::Update(){
 	camera_.Update();
 	directionalLight_.Update();
 	playerMaterial_.Update();
-
-	//吸収座標の設定
-	deadParticle_->SetAbsorbPosition(playerWorldTransform_.GetWorldPosition());
 
 #ifdef _DEBUG
 
@@ -180,10 +150,7 @@ void SelectScene::DrawObject3D(){
 	playerModel_->Draw(playerWorldTransform_,camera_, playerMaterial_, directionalLight_);
 
 	playerAnimationModel_->Draw(playerAnimationWorldTransform_, camera_, animationTime_, playerMaterial_,directionalLight_);
-	//パーティクル
-	deadParticle_->Draw(camera_, playerMaterial_, directionalLight_);
-	particle2_->Draw(camera_, playerMaterial_, directionalLight_);
-
+	
 }
 
 void SelectScene::PreDrawPostEffect(){

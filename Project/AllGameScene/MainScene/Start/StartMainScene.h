@@ -47,5 +47,10 @@ public:
 	~StartMainScene()override = default;
 
 
+private:
+
+
+
+
 };
 
