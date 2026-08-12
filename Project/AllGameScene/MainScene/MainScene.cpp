@@ -43,10 +43,16 @@ void MainScene::Initialize(){
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
 	
-
-
-	scoreSpriteArray_ = Elysia::Sprite::Create();
-
+	//ゲージ
+	gauge_.sprite = Elysia::Sprite::Create();
+	//スコア
+	for (uint16_t i = 0u; i < SCORE_DIGIT_; i++) {
+		scoreArray_[i].sprite = Elysia::Sprite::Create();
+	}
+	//コンボ
+	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
+		comboArray_[i].sprite = Elysia::Sprite::Create();
+	}
 
 	//メインシーンの中
 	baseMainScene_ = std::make_unique<StartMainScene>();
