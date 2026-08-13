@@ -167,6 +167,11 @@ private:
 	/// </summary>
 	void GenerateNotes();
 	
+	/// <summary>
+	/// 各数値をテクスチャに割り当て
+	/// </summary>
+	void AssignToTexture();
+
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -176,13 +181,37 @@ private:
 	uint32_t levelHandle_ = 0u;
 	//ゲーム管理クラス
 	Elysia::GameManager* gameManager_ = nullptr;
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
+
 private:
 	//開始オフセット
 	const float_t START_OFFSET_TIME_ = 1.0f;
+	//数字のテクスチャの数
+	static const uint8_t NUMBER_TEXTURE_AMOUNT_ = 10u;
+
+	//桁関係の定数
 	//スコアの桁数
 	static const uint8_t SCORE_DIGIT_ = 7u;
 	//コンボの桁数
 	static const uint8_t COMBO_DIGIT_ = 4u;
+
+	//一の桁
+	const uint8_t ONE_DIGIT_ = 0u;
+	//十の桁
+	const uint8_t TEN_DIGIT_ = 1u;
+	//百の桁
+	const uint8_t ONE_HUNDRED_DIGIT_ = 2u;
+	//千の桁
+	const uint8_t ONE_THOUSAND_DIGIT_ = 3u;
+	//一万の桁
+	const uint8_t TEN_THOUSAND_DIGIT_ = 4u;
+	//十万の桁
+	const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 5u;
+	//百万の桁
+	const uint8_t ONE_MILLION_DIGIT_ = 6u;
+
+
 
 private:
 	/// <summary>
@@ -194,7 +223,9 @@ private:
 		//スプライトの座標
 		Vector2 position = {};
 		//値
-		uint16_t value = 0u;
+		uint8_t value = 0u;
+		//テクスチャハンドル
+		uint32_t textureHandle = 0u;
 	};
 
 
@@ -296,11 +327,16 @@ private:
 private:
 	//メインシーン共通部分
 	//UI
+	//数字のテクスチャハンドル
+	std::array<uint32_t, NUMBER_TEXTURE_AMOUNT_>numberTextureHandlesArray = {};
 	//ゲージ
 	UIInformation gauge_ = {};
 	//スコア
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
+	uint32_t totalScore_ = 0u;
 	//コンボ
 	std::array<UIInformation, COMBO_DIGIT_>comboArray_ = {};
-	
+	uint16_t totalCombo_ = 0u;
+	//最大コンボ
+	uint16_t maxCombo_ = 0u;
 };
