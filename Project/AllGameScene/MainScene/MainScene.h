@@ -331,6 +331,7 @@ private:
 	std::array<uint32_t, NUMBER_TEXTURE_AMOUNT_>numberTextureHandlesArray = {};
 	//ゲージ
 	UIInformation gauge_ = {};
+	Vector2 gaugeScale = { .x = 0.2f,.y = 0.2f };
 	//スコア
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
 	uint32_t totalScore_ = 0u;

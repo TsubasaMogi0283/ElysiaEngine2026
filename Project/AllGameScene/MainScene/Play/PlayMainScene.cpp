@@ -221,23 +221,28 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 		}
 	}
 
+	//ハイパスロングノーツの設定
 	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			highPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
+	//ローパスロングノーツの設定
 	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
 		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
 			lowPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
+
+	//トランスゲート8分ロングノーツの設定
 	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
 		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
 			transGateEighthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
+	//トランスゲート16分ロングノーツの設定
 	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
 		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
 			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);

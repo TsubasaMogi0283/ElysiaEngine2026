@@ -81,12 +81,16 @@ void MainScene::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
+	ImGui::SliderFloat2("ゲージの座標", &gauge_.position.x, 0.0f, 720.0f);
+	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
+	
 	ImGui::End();
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
 		gameManager_->ChangeScene("Result");
 		return;
 	}
+
 
 #endif // _DEBUG
 
@@ -122,6 +126,21 @@ void MainScene::DrawPostEffect() {
 void MainScene::DrawSprite() {
 	//スプライトの描画
 	baseMainScene_->DrawSprite();
+
+	//ゲージ
+	gauge_.sprite->SetPosition(gauge_.position);
+	gauge_.sprite->SetScale(gaugeScale);
+	gauge_.sprite->Draw();
+
+	////スコア
+	//for (uint32_t i = 0u;i < SCORE_DIGIT_;i++) {
+	//	scoreArray_[i].sprite->Draw(scoreArray_[i].textureHandle);
+	//}
+	////コンボ
+	//for (uint32_t i = 0u;i < COMBO_DIGIT_;i++) {
+	//	comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
+	//}
+
 }
 
 void MainScene::GenerateNotes() {
@@ -403,15 +422,12 @@ void MainScene::GenerateNotes() {
 
 void MainScene::AssignToTexture() {
 
-	//ゲージ
-	gauge_ = {};
-
 #pragma region スコア
 	//各桁に数字を割り当てる
 	totalScore_ = 1234567u;
 	uint32_t score = totalScore_;
 	uint32_t digit = 1000000u;
-	for (uint8_t i = SCORE_DIGIT_-1; i >0u; i--) {
+	for (uint8_t i = SCORE_DIGIT_ - 1; i > 0u; i--) {
 		scoreArray_[i].value = static_cast<uint8_t>(score / digit);
 		score %= digit;
 		//10のくらいの時以外だけ
@@ -437,10 +453,10 @@ void MainScene::AssignToTexture() {
 
 	//各桁に数字を割り当てる
 	uint16_t combo = totalCombo_;
-	comboArray_[ONE_THOUSAND_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast < uint8_t>(1000u);
+	comboArray_[ONE_THOUSAND_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast <uint8_t>(1000u);
 	comboArray_[ONE_HUNDRED_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast<uint8_t>(100u);
-	comboArray_[TEN_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast < uint8_t>(10u);
-	comboArray_[ONE_DIGIT_].value = static_cast<uint8_t>(combo) % static_cast < uint8_t>(10u);
+	comboArray_[TEN_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast <uint8_t>(10u);
+	comboArray_[ONE_DIGIT_].value = static_cast<uint8_t>(combo) % static_cast <uint8_t>(10u);
 
 	//テクスチャハンドルに割り当てる
 	comboArray_[ONE_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_DIGIT_].value];
