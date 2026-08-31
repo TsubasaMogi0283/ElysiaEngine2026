@@ -18,21 +18,34 @@ void StartMainScene::Initialize(){
 
 void StartMainScene::Update(){
 
-	//線形補間の時間を加算
-	startMoveT_ += DELTA_TIME_;
-	float_t g = std::clamp(startMoveT_, 0.0f, 1.0f);
+	switch (currentState_) {
+	case StartMainSceneState::Transition:
+		//トランジションから始まる
+		currentState_ = StartMainSceneState::UIMove;
+		break;
 
-	//トランジションから始まる
+	case StartMainSceneState::UIMove:
+		//線形補間の時間を加算
+		startMoveT_ += DELTA_TIME_;
+		startMoveT_ = std::clamp(startMoveT_, 0.0f, 1.0f);
+		//線形保管&イージングで滑らかに
+		float_t gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, startMoveT_);
+		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, gaugePositionY });
 
+		break;
 
-	//UIの移動
+	case StartMainSceneState::ReadyGo:
+		//Ready?&Go!!の表示
+		
 
-	//Ready?&Go!!
+	case StartMainSceneState::ToPlayScene:
 
-	//プレイシーンへ
-
+		break;
+	}
+	
 #ifdef _DEBUG
 	ImGui::Begin("StartScene");
+	ImGui::InputFloat("startMoveT_", &startMoveT_);
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ

@@ -1,5 +1,6 @@
 #include "MainScene.h"
 
+#include <cassert>
 #include <imgui.h>
 #include <numbers>
 
@@ -54,7 +55,20 @@ void MainScene::Initialize() {
 	}
 
 	//ゲージ
-	gauge_.sprite = Elysia::Sprite::Create();
+	uint32_t gaugeTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Gauge.png");
+	gauge_.sprite = Elysia::Sprite::Create(gaugeTextureHandle);
+	//画像サイズ
+	uint64_t textureHeight = textureManager_->GetTextureHeight(gaugeTextureHandle);
+	uint64_t textureWidth = textureManager_->GetTextureWidth(gaugeTextureHandle);
+	//通常表示座標
+	gaugeDisplayPosition_={ .x = 640.0f - static_cast<float_t>(textureWidth / 2u),.y = 720.0f - static_cast<float_t>(textureHeight) };
+	//初期座標
+	initialGaugePosition_ = { gaugeDisplayPosition_.x, gaugeDisplayPosition_.y + textureHeight };
+
+
+	//初期設定
+	gauge_.sprite->SetPosition(initialGaugePosition_);
+	gauge_.sprite->SetScale(gaugeScale);
 	//スコア
 	for (uint16_t i = 0u; i < SCORE_DIGIT_; i++) {
 		scoreArray_[i].sprite = Elysia::Sprite::Create();
@@ -63,8 +77,6 @@ void MainScene::Initialize() {
 	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
 		comboArray_[i].sprite = Elysia::Sprite::Create();
 	}
-
-
 
 	//メインシーンの中
 	baseMainScene_ = std::make_unique<StartMainScene>();
@@ -81,9 +93,8 @@ void MainScene::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
-	ImGui::SliderFloat2("ゲージの座標", &gauge_.position.x, 0.0f, 720.0f);
+	ImGui::SliderFloat2("ゲージの座標", &gaugeDisplayPosition_.x, 0.0f, 720.0f);
 	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
-	
 	ImGui::End();
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
@@ -128,8 +139,6 @@ void MainScene::DrawSprite() {
 	baseMainScene_->DrawSprite();
 
 	//ゲージ
-	gauge_.sprite->SetPosition(gauge_.position);
-	gauge_.sprite->SetScale(gaugeScale);
 	gauge_.sprite->Draw();
 
 	////スコア
@@ -455,7 +464,8 @@ void MainScene::AssignToTexture() {
 	uint16_t combo = totalCombo_;
 	comboArray_[ONE_THOUSAND_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast <uint8_t>(1000u);
 	comboArray_[ONE_HUNDRED_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast<uint8_t>(100u);
-	comboArray_[TEN_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast <uint8_t>(10u);
+	assert(static_cast<size_t>(TEN_DIGIT_) < comboArray_.size());
+	comboArray_[static_cast<size_t>(TEN_DIGIT_)].value = static_cast<uint8_t>(combo / 10u);
 	comboArray_[ONE_DIGIT_].value = static_cast<uint8_t>(combo) % static_cast <uint8_t>(10u);
 
 	//テクスチャハンドルに割り当てる

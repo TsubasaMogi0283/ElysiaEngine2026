@@ -160,6 +160,7 @@ public:
 		return hiSpeed_;
 	}
 
+	
 
 private:
 	/// <summary>
@@ -210,8 +211,15 @@ private:
 	const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 5u;
 	//百万の桁
 	const uint8_t ONE_MILLION_DIGIT_ = 6u;
+	
+private:
+	//移動後のゲージ座標
+	Vector2 initialGaugePosition_ = { .x = 0.0f,.y = 0.0f };
+	//移動後のゲージ座標
+	Vector2 gaugeDisplayPosition_ = { .x = 0.0f,.y = 0.0f };
 
-
+	//初期スコア座標
+	const std::array<Vector2, SCORE_DIGIT_> INITIAL_SCOREPOSITIONS_ = {};
 
 private:
 	/// <summary>
@@ -235,15 +243,23 @@ public:
 	/// </summary>
 	/// <param name="position">座標</param>
 	inline void SetGaugePosition(const Vector2& position) {
-		this->gauge_.position = position;
+		this->gauge_.sprite->SetPosition(position);
 	}
 
 	/// <summary>
-	/// ゲージの座標を取得
+	/// ゲージの通常表示座標を取得
 	/// </summary>
-	/// <returns>ゲージの座標</returns>
-	inline Vector2 GetGaugePosition()const {
-		return gauge_.position;
+	/// <returns>ゲージの通常表示座標</returns>
+	inline Vector2 GetGaugeDisplayPosition()const {
+		return gaugeDisplayPosition_;
+	}
+
+	/// <summary>
+	/// 初期ゲージ座標を取得
+	/// </summary>
+	/// <returns>初期ゲージ座標</returns>
+	inline Vector2 GetInitialGaugePosition()const {
+		return initialGaugePosition_;
 	}
 
 	/// <summary>
@@ -331,7 +347,7 @@ private:
 	std::array<uint32_t, NUMBER_TEXTURE_AMOUNT_>numberTextureHandlesArray = {};
 	//ゲージ
 	UIInformation gauge_ = {};
-	Vector2 gaugeScale = { .x = 0.2f,.y = 0.2f };
+	Vector2 gaugeScale = { .x = 1.0f,.y = 1.0f };
 	//スコア
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
 	uint32_t totalScore_ = 0u;

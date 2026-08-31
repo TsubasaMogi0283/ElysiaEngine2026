@@ -48,6 +48,24 @@ public:
 
 
 private:
+	/// <summary>
+	/// スタートメインシーンの状態
+	/// </summary>
+	enum class StartMainSceneState {
+		//トランジション
+		Transition,
+		//UIの移動
+		UIMove,
+		//Ready?&Go!!
+		ReadyGo,
+		//プレイシーンへ
+		ToPlayScene,
+	};
+
+	//現在の状態
+	StartMainSceneState currentState_ = StartMainSceneState::Transition;
+
+private:
 
 
 	//線形補間(UI開始の動き)
