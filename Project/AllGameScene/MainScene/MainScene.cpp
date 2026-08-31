@@ -74,8 +74,15 @@ void MainScene::Initialize() {
 		scoreArray_[i].sprite = Elysia::Sprite::Create();
 	}
 	//コンボ
+	uint64_t numberTextureHandle[10] = {};
 	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
-		comboArray_[i].sprite = Elysia::Sprite::Create();
+		std::string fullPath = "Resources/Sprite/Number/" + std::to_string(i) + ".png";
+		numberTextureHandle[i] = textureManager_->Load(fullPath);
+
+		uint64_t numberTextureWidth = textureManager_->GetTextureWidth(numberTextureHandle[i]);
+
+		comboArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
+		comboArray_[i].sprite->SetPosition({ i * numberTextureWidth ,0.0f });
 	}
 
 	//メインシーンの中
@@ -145,10 +152,10 @@ void MainScene::DrawSprite() {
 	//for (uint32_t i = 0u;i < SCORE_DIGIT_;i++) {
 	//	scoreArray_[i].sprite->Draw(scoreArray_[i].textureHandle);
 	//}
-	////コンボ
-	//for (uint32_t i = 0u;i < COMBO_DIGIT_;i++) {
-	//	comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
-	//}
+	//コンボ
+	for (uint32_t i = 0u;i < COMBO_DIGIT_;i++) {
+		comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
+	}
 
 }
 

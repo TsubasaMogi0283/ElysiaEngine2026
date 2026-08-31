@@ -26,6 +26,7 @@ void StartMainScene::Update(){
 		break;
 
 	case StartMainSceneState::UIMove:
+
 		//線形補間の時間を加算
 		startMoveT_ += DELTA_TIME_;
 		startMoveT_ = std::clamp(startMoveT_, 0.0f, 1.0f);
@@ -33,13 +34,17 @@ void StartMainScene::Update(){
 		gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, startMoveT_);
 		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, gaugePositionY });
 
+		//コンボ
+		mainScene_->SetComboPositions({ {{.x = 0.0f,.y = 0.0f},{.x = 0.0f,.y = 0.0f},{.x = 0.0f,.y = 0.0f},{.x = 0.0f,.y = 0.0f}} });
+		
 		break;
 
 	case StartMainSceneState::ReadyGo:
 		//Ready?&Go!!の表示
-		
+		break;
 
 	case StartMainSceneState::ToPlayScene:
+		//プレイシーンへ
 
 		break;
 	}

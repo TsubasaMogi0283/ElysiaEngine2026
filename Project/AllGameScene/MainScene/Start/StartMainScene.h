@@ -66,6 +66,9 @@ private:
 	StartMainSceneState currentState_ = StartMainSceneState::Transition;
 
 private:
+	
+
+private:
 
 
 	//線形補間(UI開始の動き)
