@@ -18,6 +18,7 @@ void StartMainScene::Initialize(){
 
 void StartMainScene::Update(){
 
+	float_t gaugePositionY = 0.0f;
 	switch (currentState_) {
 	case StartMainSceneState::Transition:
 		//トランジションから始まる
@@ -29,7 +30,7 @@ void StartMainScene::Update(){
 		startMoveT_ += DELTA_TIME_;
 		startMoveT_ = std::clamp(startMoveT_, 0.0f, 1.0f);
 		//線形保管&イージングで滑らかに
-		float_t gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, startMoveT_);
+		gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, startMoveT_);
 		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, gaugePositionY });
 
 		break;
