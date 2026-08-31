@@ -1,24 +1,28 @@
 #include "MainScene.h"
 
+#include <cassert>
 #include <imgui.h>
 #include <numbers>
 
 #include "Input.h"
 #include "ModelManager.h"
 #include "LevelDataManager.h"
+#include <TextureManager.h>
 #include <GameManager.h>
 #include <MainScene/Start/StartMainScene.h>
 #include <MainScene/Play/PlayMainScene.h>
 #include <Note/NoteJudgement.h>
 
-MainScene::MainScene(){
+MainScene::MainScene() {
 	//レベルエディタ管理クラス
 	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 	//入力
 	input_ = Elysia::Input::GetInstance();
+	//テクスチャ
+	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
-void MainScene::Initialize(){
+void MainScene::Initialize() {
 
 
 	//楽曲譜面情報を取得
@@ -42,28 +46,67 @@ void MainScene::Initialize(){
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
-	
+
+	//数字のテクスチャハンドル
+	for (uint8_t i = 0; i < NUMBER_TEXTURE_AMOUNT_; i++) {
+		//各数字のテクスチャを読み込み
+		std::string numberPath = "Resources/Sprite/Number/" + std::to_string(i) + ".png";
+		numberTextureHandlesArray[i] = textureManager_->Load(numberPath);
+	}
+
+	//ゲージ
+	uint32_t gaugeTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Gauge.png");
+	gauge_.sprite = Elysia::Sprite::Create(gaugeTextureHandle);
+	//画像サイズ
+	uint64_t textureHeight = textureManager_->GetTextureHeight(gaugeTextureHandle);
+	uint64_t textureWidth = textureManager_->GetTextureWidth(gaugeTextureHandle);
+	//通常表示座標
+	gaugeDisplayPosition_={ .x = 640.0f - static_cast<float_t>(textureWidth / 2u),.y = 720.0f - static_cast<float_t>(textureHeight) };
+	//初期座標
+	initialGaugePosition_ = { gaugeDisplayPosition_.x, gaugeDisplayPosition_.y + textureHeight };
+
+
+	//初期設定
+	gauge_.sprite->SetPosition(initialGaugePosition_);
+	gauge_.sprite->SetScale(gaugeScale);
+	//スコア
+	for (uint16_t i = 0u; i < SCORE_DIGIT_; i++) {
+		scoreArray_[i].sprite = Elysia::Sprite::Create();
+	}
+	//コンボ
+	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
+		comboArray_[i].sprite = Elysia::Sprite::Create();
+	}
+
 	//メインシーンの中
-	baseMainScene_ = std::make_unique<PlayMainScene>();
+	baseMainScene_ = std::make_unique<StartMainScene>();
+#ifdef _DEBUG
+	baseMainScene_ = std::make_unique<StartMainScene>();
+#endif // _DEBUG
 	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
 
 }
 
-void MainScene::Update(){
+void MainScene::Update() {
 
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
-	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x,-1.0f,1.0f);
+	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
+	ImGui::SliderFloat2("ゲージの座標", &gaugeDisplayPosition_.x, 0.0f, 720.0f);
+	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
 	ImGui::End();
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
 		gameManager_->ChangeScene("Result");
 		return;
 	}
-	
+
+
 #endif // _DEBUG
 
+	//テクスチャ割り当て
+	AssignToTexture();
 
 	//更新
 	levelDataManager_->Update(levelHandle_);
@@ -72,31 +115,44 @@ void MainScene::Update(){
 	camera_.Update();
 }
 
-void MainScene::DrawObject3D(){
+void MainScene::DrawObject3D() {
 	//オブジェクトの描画
 	//レベルエディタ  
 	//levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
-	baseMainScene_->DrawObject3D(camera_,directionalLight_);
+	baseMainScene_->DrawObject3D(camera_, directionalLight_);
 
 }
 
-void MainScene::PreDrawPostEffect(){
-	
+void MainScene::PreDrawPostEffect() {
+
 	//ポストエフェクト描画前処理
 	backTexture_->PreDraw();
 }
 
-void MainScene::DrawPostEffect(){
+void MainScene::DrawPostEffect() {
 	//ポストエフェクト描画処理
 	backTexture_->Draw();
 }
 
-void MainScene::DrawSprite(){
+void MainScene::DrawSprite() {
 	//スプライトの描画
 	baseMainScene_->DrawSprite();
+
+	//ゲージ
+	gauge_.sprite->Draw();
+
+	////スコア
+	//for (uint32_t i = 0u;i < SCORE_DIGIT_;i++) {
+	//	scoreArray_[i].sprite->Draw(scoreArray_[i].textureHandle);
+	//}
+	////コンボ
+	//for (uint32_t i = 0u;i < COMBO_DIGIT_;i++) {
+	//	comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
+	//}
+
 }
 
-void MainScene::GenerateNotes(){
+void MainScene::GenerateNotes() {
 	//合計の時間
 	float_t totalTime = 0.0f;
 	//開始時間の設定
@@ -112,7 +168,7 @@ void MainScene::GenerateNotes(){
 
 		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
 			const NoteLane::Information& note = bar.notesLane[i];
-			
+
 #pragma region 通常タップ
 			//上
 			if (note.upNote == NoteType::NormalTap) {
@@ -348,7 +404,7 @@ void MainScene::GenerateNotes(){
 				//挿入
 				musicScoreData_.upInformation.push_back(noteInformation);
 			}
-			
+
 			//下
 			if (note.downNote == NoteType::LongEnd) {
 				//ノーツ情報を設定
@@ -373,3 +429,50 @@ void MainScene::GenerateNotes(){
 	}
 }
 
+void MainScene::AssignToTexture() {
+
+#pragma region スコア
+	//各桁に数字を割り当てる
+	totalScore_ = 1234567u;
+	uint32_t score = totalScore_;
+	uint32_t digit = 1000000u;
+	for (uint8_t i = SCORE_DIGIT_ - 1; i > 0u; i--) {
+		scoreArray_[i].value = static_cast<uint8_t>(score / digit);
+		score %= digit;
+		//10のくらいの時以外だけ
+		//模試と王とこの後にある
+		if (i != TEN_DIGIT_) {
+			digit /= 10;
+		}
+	}
+	scoreArray_[ONE_DIGIT_].value = static_cast<uint8_t>(score) % static_cast<uint8_t>(digit);
+
+	//テクスチャハンドルに割り当てる
+	scoreArray_[ONE_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_DIGIT_].value];
+	scoreArray_[TEN_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[TEN_DIGIT_].value];
+	scoreArray_[ONE_HUNDRED_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_HUNDRED_DIGIT_].value];
+	scoreArray_[ONE_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_THOUSAND_DIGIT_].value];
+	scoreArray_[TEN_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[TEN_THOUSAND_DIGIT_].value];
+	scoreArray_[ONE_HUNDRED_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_HUNDRED_THOUSAND_DIGIT_].value];
+	scoreArray_[ONE_MILLION_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_MILLION_DIGIT_].value];
+
+#pragma endregion
+
+#pragma region コンボ
+
+	//各桁に数字を割り当てる
+	uint16_t combo = totalCombo_;
+	comboArray_[ONE_THOUSAND_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast <uint8_t>(1000u);
+	comboArray_[ONE_HUNDRED_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast<uint8_t>(100u);
+	assert(static_cast<size_t>(TEN_DIGIT_) < comboArray_.size());
+	comboArray_[static_cast<size_t>(TEN_DIGIT_)].value = static_cast<uint8_t>(combo / 10u);
+	comboArray_[ONE_DIGIT_].value = static_cast<uint8_t>(combo) % static_cast <uint8_t>(10u);
+
+	//テクスチャハンドルに割り当てる
+	comboArray_[ONE_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_DIGIT_].value];
+	comboArray_[TEN_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[TEN_DIGIT_].value];
+	comboArray_[ONE_HUNDRED_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_HUNDRED_DIGIT_].value];
+	comboArray_[ONE_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_THOUSAND_DIGIT_].value];
+
+#pragma endregion
+}

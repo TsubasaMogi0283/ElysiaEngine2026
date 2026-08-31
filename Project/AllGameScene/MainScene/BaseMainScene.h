@@ -130,9 +130,16 @@ protected:
 	Elysia::ModelManager* modelManager_ = nullptr;
 	//テクスチャーハンドル
 	Elysia::TextureManager* textureManager_ = nullptr;
+
+protected:
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f / 60.0f;
+
 protected:
 	//処理が終わったかどうか
 	bool isEnd_ = false;
+
+	
 
 };
 

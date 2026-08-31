@@ -50,6 +50,12 @@ namespace Elysia {
 		/// <summary>
 		/// 生成
 		/// </summary>
+		/// <returns>スプライト</returns>
+		static std::unique_ptr<Sprite> Create();
+
+		/// <summary>
+		/// 生成
+		/// </summary>
 		/// <param name="textureHandle">ハンドル</param>
 		/// <returns>スプライト</returns>
 		static std::unique_ptr<Sprite> Create(const uint32_t& textureHandle);

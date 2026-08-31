@@ -18,6 +18,7 @@
 #include "DirectionalLight.h"
 #include "BaseMainScene.h"
 #include <Audio.h>
+#include <Sprite.h>
 #include <ScoreData/MusicScoreData.h>
 
 /// <summary>
@@ -159,12 +160,19 @@ public:
 		return hiSpeed_;
 	}
 
+	
+
 private:
 	/// <summary>
 	/// ノーツ生成
 	/// </summary>
 	void GenerateNotes();
 	
+	/// <summary>
+	/// 各数値をテクスチャに割り当て
+	/// </summary>
+	void AssignToTexture();
+
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -174,10 +182,146 @@ private:
 	uint32_t levelHandle_ = 0u;
 	//ゲーム管理クラス
 	Elysia::GameManager* gameManager_ = nullptr;
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
 
 private:
 	//開始オフセット
 	const float_t START_OFFSET_TIME_ = 1.0f;
+	//数字のテクスチャの数
+	static const uint8_t NUMBER_TEXTURE_AMOUNT_ = 10u;
+
+	//桁関係の定数
+	//スコアの桁数
+	static const uint8_t SCORE_DIGIT_ = 7u;
+	//コンボの桁数
+	static const uint8_t COMBO_DIGIT_ = 4u;
+
+	//一の桁
+	const uint8_t ONE_DIGIT_ = 0u;
+	//十の桁
+	const uint8_t TEN_DIGIT_ = 1u;
+	//百の桁
+	const uint8_t ONE_HUNDRED_DIGIT_ = 2u;
+	//千の桁
+	const uint8_t ONE_THOUSAND_DIGIT_ = 3u;
+	//一万の桁
+	const uint8_t TEN_THOUSAND_DIGIT_ = 4u;
+	//十万の桁
+	const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 5u;
+	//百万の桁
+	const uint8_t ONE_MILLION_DIGIT_ = 6u;
+	
+private:
+	//移動後のゲージ座標
+	Vector2 initialGaugePosition_ = { .x = 0.0f,.y = 0.0f };
+	//移動後のゲージ座標
+	Vector2 gaugeDisplayPosition_ = { .x = 0.0f,.y = 0.0f };
+
+	//初期スコア座標
+	const std::array<Vector2, SCORE_DIGIT_> INITIAL_SCOREPOSITIONS_ = {};
+
+private:
+	/// <summary>
+	/// UI情報
+	/// </summary>
+	struct UIInformation {
+		//UI用のスプライト
+		std::unique_ptr<Elysia::Sprite>sprite = nullptr;
+		//スプライトの座標
+		Vector2 position = {};
+		//値
+		uint8_t value = 0u;
+		//テクスチャハンドル
+		uint32_t textureHandle = 0u;
+	};
+
+
+public:
+	/// <summary>
+	/// ゲージの座標を設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	inline void SetGaugePosition(const Vector2& position) {
+		this->gauge_.sprite->SetPosition(position);
+	}
+
+	/// <summary>
+	/// ゲージの通常表示座標を取得
+	/// </summary>
+	/// <returns>ゲージの通常表示座標</returns>
+	inline Vector2 GetGaugeDisplayPosition()const {
+		return gaugeDisplayPosition_;
+	}
+
+	/// <summary>
+	/// 初期ゲージ座標を取得
+	/// </summary>
+	/// <returns>初期ゲージ座標</returns>
+	inline Vector2 GetInitialGaugePosition()const {
+		return initialGaugePosition_;
+	}
+
+	/// <summary>
+	/// スコアの桁数を取得
+	/// </summary>
+	/// <returns>桁数</returns>
+	inline uint8_t GetScoreDigit()const {
+		return SCORE_DIGIT_;
+	}
+
+	/// <summary>
+	/// スコアの座標を設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	inline void SetScorePositions(const std::array<Vector2, SCORE_DIGIT_>& positions) {
+		for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
+			this->scoreArray_[i].position = positions[i];
+		}
+	}
+
+	/// <summary>
+	/// スコアの座標を取得
+	/// </summary>
+	/// <returns>座標</returns>
+	inline  std::array<Vector2, SCORE_DIGIT_> GetScorePositions()const {
+		std::array<Vector2, SCORE_DIGIT_> positionArray = {};
+		for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
+			positionArray[i] = this->scoreArray_[i].position;
+		}
+		return positionArray;
+	}
+
+	/// <summary>
+	/// コンボの桁数を取得
+	/// </summary>
+	/// <returns>桁数</returns>
+	inline uint8_t GetComboDigit()const {
+		return COMBO_DIGIT_;
+	}
+
+	/// <summary>
+	/// コンボの座標を設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	inline void SetComboPositions(const std::array<Vector2, COMBO_DIGIT_>& positions) {
+		for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
+			this->comboArray_[i].position = positions[i];
+		}
+	}
+
+	/// <summary>
+	/// コンボの座標を取得
+	/// </summary>
+	/// <returns>座標</returns>
+	inline  std::array<Vector2, COMBO_DIGIT_> GetComboPositions()const {
+		std::array<Vector2, COMBO_DIGIT_> positionArray = {};
+		for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
+			positionArray[i] = this->comboArray_[i].position;
+		}
+		return positionArray;
+	}
+
 
 private:
 	//背景
@@ -196,5 +340,20 @@ private:
 	//ハイスピ
 	float_t hiSpeed_ = 5.0f;
 
-
+private:
+	//メインシーン共通部分
+	//UI
+	//数字のテクスチャハンドル
+	std::array<uint32_t, NUMBER_TEXTURE_AMOUNT_>numberTextureHandlesArray = {};
+	//ゲージ
+	UIInformation gauge_ = {};
+	Vector2 gaugeScale = { .x = 1.0f,.y = 1.0f };
+	//スコア
+	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
+	uint32_t totalScore_ = 0u;
+	//コンボ
+	std::array<UIInformation, COMBO_DIGIT_>comboArray_ = {};
+	uint16_t totalCombo_ = 0u;
+	//最大コンボ
+	uint16_t maxCombo_ = 0u;
 };
