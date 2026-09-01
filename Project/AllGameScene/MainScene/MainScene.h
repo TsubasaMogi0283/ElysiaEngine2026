@@ -213,10 +213,21 @@ private:
 	const uint8_t ONE_MILLION_DIGIT_ = 6u;
 	
 private:
-	//移動後のゲージ座標
+	//初期のゲージ座標
 	Vector2 initialGaugePosition_ = { .x = 0.0f,.y = 0.0f };
-	//移動後のゲージ座標
+	//通常表示時のゲージ座標
 	Vector2 gaugeDisplayPosition_ = { .x = 0.0f,.y = 0.0f };
+
+	//初期のコンボ座標
+	float_t initialComboPositionY_ = 0.0f;
+	//通常表示時のコンボ座標
+	float_t comboDisplayPositionY_ = 0.0f;
+
+	//初期のスコア座標
+	float_t initialScorePositionY_ = 0.0f;
+	//通常表示時のスコア座標
+	float_t scoreDisplayPositionY_ = 0.0f;
+
 
 	//初期スコア座標
 	const std::array<Vector2, SCORE_DIGIT_> INITIAL_SCOREPOSITIONS_ = {};
@@ -261,6 +272,16 @@ public:
 	inline Vector2 GetInitialGaugePosition()const {
 		return initialGaugePosition_;
 	}
+
+	/// <summary>
+	/// コンボの初期座標を取得
+	/// </summary>
+	/// <returns>初期座標</returns>
+	inline float_t GetInitialComboPositionY()const {
+		return initialComboPositionY_;
+	}
+
+
 
 	/// <summary>
 	/// スコアの桁数を取得
@@ -356,4 +377,11 @@ private:
 	uint16_t totalCombo_ = 0u;
 	//最大コンボ
 	uint16_t maxCombo_ = 0u;
+
+
+
+
+	Vector4
+
+
 };

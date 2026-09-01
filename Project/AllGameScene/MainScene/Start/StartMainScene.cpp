@@ -3,6 +3,7 @@
 #include <imgui.h>
 
 #include <Input.h>
+#include <Easing.h>
 #include <MainScene/MainScene.h>
 #include <MainScene/Play/PlayMainScene.h>
 
@@ -19,6 +20,9 @@ void StartMainScene::Initialize(){
 void StartMainScene::Update(){
 
 	float_t gaugePositionY = 0.0f;
+	float_t comboPositionY = 0.0f;
+	//状態遷移
+	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
 	switch (currentState_) {
 	case StartMainSceneState::Transition:
 		//トランジションから始まる
@@ -30,13 +34,20 @@ void StartMainScene::Update(){
 		//線形補間の時間を加算
 		startMoveT_ += DELTA_TIME_;
 		startMoveT_ = std::clamp(startMoveT_, 0.0f, 1.0f);
-		//線形保管&イージングで滑らかに
-		gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, startMoveT_);
+		//イージング
+		//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
+		float_t easedT = Easing::EaseInOutQuad(startMoveT_);
+
+		//ゲージ
+		gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, easedT);
 		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, gaugePositionY });
 
-		//コンボ
-		mainScene_->SetComboPositions({ {{.x = 0.0f,.y = 0.0f},{.x = 0.0f,.y = 0.0f},{.x = 0.0f,.y = 0.0f},{.x = 0.0f,.y = 0.0f}} });
-		
+		//コンボはの座標はY座標だけ設定しておく
+		//comboPositionY = SingleCalculation::Lerp(mainScene_->GetInitialComboPositionY(), mainScene_->GetComboDisplayPosition().y, easedT);
+
+		//スコア
+
+
 		break;
 
 	case StartMainSceneState::ReadyGo:

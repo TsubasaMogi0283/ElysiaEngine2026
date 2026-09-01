@@ -74,15 +74,15 @@ void MainScene::Initialize() {
 		scoreArray_[i].sprite = Elysia::Sprite::Create();
 	}
 	//コンボ
-	uint64_t numberTextureHandle[10] = {};
+	uint32_t numberTextureHandle[10] = {};
 	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
 		std::string fullPath = "Resources/Sprite/Number/" + std::to_string(i) + ".png";
 		numberTextureHandle[i] = textureManager_->Load(fullPath);
-
+		//長さを取得
 		uint64_t numberTextureWidth = textureManager_->GetTextureWidth(numberTextureHandle[i]);
-
+		//生成
 		comboArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
-		comboArray_[i].sprite->SetPosition({ i * numberTextureWidth ,0.0f });
+		comboArray_[i].sprite->SetPosition({ static_cast<float_t>(i) * static_cast<float_t>(numberTextureWidth) ,0.0f });
 	}
 
 	//メインシーンの中
@@ -102,7 +102,11 @@ void MainScene::Update() {
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
 	ImGui::SliderFloat2("ゲージの座標", &gaugeDisplayPosition_.x, 0.0f, 720.0f);
 	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
+	ImGui::SliderFloat3("色",&gauge_.sprite)
 	ImGui::End();
+
+	gauge_.sprite->SetColor()
+
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
 		gameManager_->ChangeScene("Result");
