@@ -102,10 +102,10 @@ void MainScene::Update() {
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
 	ImGui::SliderFloat2("ゲージの座標", &gaugeDisplayPosition_.x, 0.0f, 720.0f);
 	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
-	ImGui::SliderFloat3("色",&gauge_.sprite)
+	//ImGui::SliderFloat3("色", &gauge_.sprite);
 	ImGui::End();
 
-	gauge_.sprite->SetColor()
+	//gauge_.sprite->SetColor()
 
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {

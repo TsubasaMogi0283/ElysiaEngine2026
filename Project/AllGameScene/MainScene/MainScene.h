@@ -381,7 +381,5 @@ private:
 
 
 
-	Vector4
-
 
 };

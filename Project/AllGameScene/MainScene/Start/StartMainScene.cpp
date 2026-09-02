@@ -20,7 +20,8 @@ void StartMainScene::Initialize(){
 void StartMainScene::Update(){
 
 	float_t gaugePositionY = 0.0f;
-	float_t comboPositionY = 0.0f;
+	//float_t comboPositionY = 0.0f;
+	float_t easedT = 0.0f;
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
 	switch (currentState_) {
@@ -36,7 +37,7 @@ void StartMainScene::Update(){
 		startMoveT_ = std::clamp(startMoveT_, 0.0f, 1.0f);
 		//イージング
 		//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
-		float_t easedT = Easing::EaseInOutQuad(startMoveT_);
+		easedT = Easing::EaseInOutQuad(startMoveT_);
 
 		//ゲージ
 		gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, easedT);
