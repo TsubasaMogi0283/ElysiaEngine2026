@@ -61,7 +61,7 @@ void MainScene::Initialize() {
 	uint64_t textureHeight = textureManager_->GetTextureHeight(gaugeTextureHandle);
 	uint64_t textureWidth = textureManager_->GetTextureWidth(gaugeTextureHandle);
 	//通常表示座標
-	gaugeDisplayPosition_={ .x = 640.0f - static_cast<float_t>(textureWidth / 2u),.y = 720.0f - static_cast<float_t>(textureHeight) };
+	gaugeDisplayPosition_ = { .x = 640.0f - static_cast<float_t>(textureWidth / 2u),.y = 720.0f - static_cast<float_t>(textureHeight) };
 	//初期座標
 	initialGaugePosition_ = { gaugeDisplayPosition_.x, gaugeDisplayPosition_.y + textureHeight };
 
@@ -69,17 +69,29 @@ void MainScene::Initialize() {
 	//初期設定
 	gauge_.sprite->SetPosition(initialGaugePosition_);
 	gauge_.sprite->SetScale(gaugeScale);
-	//スコア
-	for (uint16_t i = 0u; i < SCORE_DIGIT_; i++) {
-		scoreArray_[i].sprite = Elysia::Sprite::Create();
-	}
-	//コンボ
-	uint32_t numberTextureHandle[10] = {};
-	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
+
+	//数字のテクスチャの読み込み
+	uint32_t numberTextureHandle[10u] = {};
+	for (uint8_t i = 0u;i < 10u;i++) {
+		numberTextureHandlesArray[i] = textureManager_->Load("Resources/Sprite/Number/" + std::to_string(i) + ".png");
 		std::string fullPath = "Resources/Sprite/Number/" + std::to_string(i) + ".png";
 		numberTextureHandle[i] = textureManager_->Load(fullPath);
-		//長さを取得
-		uint64_t numberTextureWidth = textureManager_->GetTextureWidth(numberTextureHandle[i]);
+	}
+
+	//数字のテクスチャの横幅を取得
+	uint64_t numberTextureWidth = textureManager_->GetTextureWidth(numberTextureHandle[0]);
+	uint64_t numberTextureHeight = textureManager_->GetTextureHeight(numberTextureHandle[0]);
+
+	//スコア
+	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
+		scoreArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandlesArray[i]);
+		scoreDisplayPositionY_ = 0.0f;
+		initialScorePositionY_ = -static_cast<float>(numberTextureHeight);
+		scoreArray_[i].sprite->SetPosition({ .x = static_cast<float_t>(numberTextureWidth) * static_cast<float_t>(i),.y = initialScorePositionY_ });
+	}
+
+	//コンボ
+	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
 		//生成
 		comboArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
 		comboArray_[i].sprite->SetPosition({ static_cast<float_t>(i) * static_cast<float_t>(numberTextureWidth) ,0.0f });
@@ -102,10 +114,10 @@ void MainScene::Update() {
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
 	ImGui::SliderFloat2("ゲージの座標", &gaugeDisplayPosition_.x, 0.0f, 720.0f);
 	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
-	//ImGui::SliderFloat3("色", &gauge_.sprite);
+	ImGui::SliderFloat4("色", &color_.x, 0.0f, 1.0f);
 	ImGui::End();
-
-	//gauge_.sprite->SetColor()
+	gauge_.sprite->SetScale(gaugeScale);
+	gauge_.sprite->SetColor(color_);
 
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
@@ -152,14 +164,18 @@ void MainScene::DrawSprite() {
 	//ゲージ
 	gauge_.sprite->Draw();
 
-	////スコア
-	//for (uint32_t i = 0u;i < SCORE_DIGIT_;i++) {
-	//	scoreArray_[i].sprite->Draw(scoreArray_[i].textureHandle);
-	//}
-	//コンボ
-	for (uint32_t i = 0u;i < COMBO_DIGIT_;i++) {
-		comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
+	//スコア
+	for (uint8_t i = 0u;i < SCORE_DIGIT_;i++) {
+		scoreArray_[i].sprite->Draw(numberTextureHandlesArray[0]);
 	}
+
+	if (totalScore_ >= 10u) {
+		//コンボ
+		for (uint8_t i = 0u;i < COMBO_DIGIT_;i++) {
+			comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
+		}
+	}
+
 
 }
 
@@ -451,7 +467,6 @@ void MainScene::AssignToTexture() {
 		scoreArray_[i].value = static_cast<uint8_t>(score / digit);
 		score %= digit;
 		//10のくらいの時以外だけ
-		//模試と王とこの後にある
 		if (i != TEN_DIGIT_) {
 			digit /= 10;
 		}

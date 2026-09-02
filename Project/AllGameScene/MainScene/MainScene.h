@@ -21,9 +21,9 @@
 #include <Sprite.h>
 #include <ScoreData/MusicScoreData.h>
 
-/// <summary>
-/// ElysiaEngine(前方宣言)
-/// </summary>
+ /// <summary>
+ /// ElysiaEngine(前方宣言)
+ /// </summary>
 namespace Elysia {
 	/// <summary>
 	/// レベルエディタ
@@ -60,7 +60,7 @@ namespace Elysia {
 /// <summary>
 /// メインシーン
 /// </summary>
-class MainScene : public Elysia::IGameScene{
+class MainScene : public Elysia::IGameScene {
 public:
 
 	/// <summary>
@@ -105,7 +105,7 @@ public:
 
 
 public:
-	
+
 	/// <summary>
 	/// メインシーンを変更する
 	/// </summary>
@@ -124,7 +124,7 @@ public:
 	/// ゲーム管理クラスを設定
 	/// </summary>
 	/// <param name="gameManager">ゲーム管理クラス</param>
-	inline void SetGameManager(Elysia::GameManager* gameManager) override{
+	inline void SetGameManager(Elysia::GameManager* gameManager) override {
 		this->gameManager_ = gameManager;
 	}
 
@@ -160,14 +160,14 @@ public:
 		return hiSpeed_;
 	}
 
-	
+
 
 private:
 	/// <summary>
 	/// ノーツ生成
 	/// </summary>
 	void GenerateNotes();
-	
+
 	/// <summary>
 	/// 各数値をテクスチャに割り当て
 	/// </summary>
@@ -211,7 +211,7 @@ private:
 	const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 5u;
 	//百万の桁
 	const uint8_t ONE_MILLION_DIGIT_ = 6u;
-	
+
 private:
 	//初期のゲージ座標
 	Vector2 initialGaugePosition_ = { .x = 0.0f,.y = 0.0f };
@@ -281,6 +281,13 @@ public:
 		return initialComboPositionY_;
 	}
 
+	inline float_t GetInitialScorePositionY()const {
+		return initialScorePositionY_;
+	}
+
+	inline float_t GetScoreDisplayPositionY()const {
+		return scoreDisplayPositionY_;
+	}
 
 
 	/// <summary>
@@ -295,9 +302,9 @@ public:
 	/// スコアの座標を設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	inline void SetScorePositions(const std::array<Vector2, SCORE_DIGIT_>& positions) {
+	inline void SetScorePositionsY(const float_t positions) {
 		for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
-			this->scoreArray_[i].position = positions[i];
+			this->scoreArray_[i].position.y = positions;
 		}
 	}
 
@@ -322,25 +329,13 @@ public:
 	}
 
 	/// <summary>
-	/// コンボの座標を設定
+	/// コンボのY座標を設定
 	/// </summary>
-	/// <param name="position">座標</param>
-	inline void SetComboPositions(const std::array<Vector2, COMBO_DIGIT_>& positions) {
+	/// <param name="positionY">Y座標</param>
+	inline void SetComboPositionsY(const float_t& positionY) {
 		for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
-			this->comboArray_[i].position = positions[i];
+			this->comboArray_[i].position.y = positionY;
 		}
-	}
-
-	/// <summary>
-	/// コンボの座標を取得
-	/// </summary>
-	/// <returns>座標</returns>
-	inline  std::array<Vector2, COMBO_DIGIT_> GetComboPositions()const {
-		std::array<Vector2, COMBO_DIGIT_> positionArray = {};
-		for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
-			positionArray[i] = this->comboArray_[i].position;
-		}
-		return positionArray;
 	}
 
 
@@ -380,6 +375,8 @@ private:
 
 
 
+
+	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 
 };

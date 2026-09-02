@@ -9,10 +9,10 @@
 
 #include <MainScene/BaseMainScene.h>
 
-/// <summary>
-/// メインシーンのスタートシーン
-/// </summary>
-class StartMainScene :public BaseMainScene{
+ /// <summary>
+ /// メインシーンのスタートシーン
+ /// </summary>
+class StartMainScene :public BaseMainScene {
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -66,7 +66,7 @@ private:
 	StartMainSceneState currentState_ = StartMainSceneState::Transition;
 
 private:
-	
+
 
 private:
 

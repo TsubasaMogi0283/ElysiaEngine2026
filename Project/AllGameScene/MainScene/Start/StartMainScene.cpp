@@ -7,20 +7,20 @@
 #include <MainScene/MainScene.h>
 #include <MainScene/Play/PlayMainScene.h>
 
-StartMainScene::StartMainScene(){
+StartMainScene::StartMainScene() {
 	//インスタンスの取得
 	input_ = Elysia::Input::GetInstance();
 }
 
-void StartMainScene::Initialize(){
+void StartMainScene::Initialize() {
 	//メインシーンの空チェック
 	assert(mainScene_);
 }
 
-void StartMainScene::Update(){
+void StartMainScene::Update() {
 
 	float_t gaugePositionY = 0.0f;
-	//float_t comboPositionY = 0.0f;
+	float_t scorePositionY = 0.0f;
 	float_t easedT = 0.0f;
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
@@ -33,7 +33,7 @@ void StartMainScene::Update(){
 	case StartMainSceneState::UIMove:
 
 		//線形補間の時間を加算
-		startMoveT_ += DELTA_TIME_;
+		startMoveT_ += DELTA_TIME_ * 2.0f;
 		startMoveT_ = std::clamp(startMoveT_, 0.0f, 1.0f);
 		//イージング
 		//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
@@ -43,11 +43,9 @@ void StartMainScene::Update(){
 		gaugePositionY = SingleCalculation::Lerp(mainScene_->GetInitialGaugePosition().y, mainScene_->GetGaugeDisplayPosition().y, easedT);
 		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, gaugePositionY });
 
-		//コンボはの座標はY座標だけ設定しておく
-		//comboPositionY = SingleCalculation::Lerp(mainScene_->GetInitialComboPositionY(), mainScene_->GetComboDisplayPosition().y, easedT);
-
 		//スコア
-
+		scorePositionY = SingleCalculation::Lerp(mainScene_->GetInitialScorePositionY(), mainScene_->GetScoreDisplayPositionY(), easedT);
+		mainScene_->SetScorePositionsY(scorePositionY);
 
 		break;
 
@@ -60,10 +58,10 @@ void StartMainScene::Update(){
 
 		break;
 	}
-	
+
 #ifdef _DEBUG
-	ImGui::Begin("StartScene");
-	ImGui::InputFloat("startMoveT_", &startMoveT_);
+	ImGui::Begin("メインシーン(開始)");
+	ImGui::InputFloat("開始線形補間の値", &startMoveT_);
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
@@ -75,11 +73,11 @@ void StartMainScene::Update(){
 #endif // _DEBUG
 }
 
-void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
+void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight) {
 	camera;
 	baseLight;
 }
 
-void StartMainScene::DrawSprite(){
+void StartMainScene::DrawSprite() {
 
 }
