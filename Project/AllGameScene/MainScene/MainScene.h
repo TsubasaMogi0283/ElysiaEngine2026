@@ -232,6 +232,9 @@ private:
 	//初期スコア座標
 	const std::array<Vector2, SCORE_DIGIT_> INITIAL_SCOREPOSITIONS_ = {};
 
+	uint64_t numberTextureWidth ;
+	uint64_t numberTextureHeight;
+
 private:
 	/// <summary>
 	/// UI情報
@@ -242,7 +245,7 @@ private:
 		//スプライトの座標
 		Vector2 position = {};
 		//値
-		uint8_t value = 0u;
+		uint16_t value = 0u;
 		//テクスチャハンドル
 		uint32_t textureHandle = 0u;
 	};

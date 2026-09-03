@@ -71,30 +71,31 @@ void MainScene::Initialize() {
 	gauge_.sprite->SetScale(gaugeScale);
 
 	//数字のテクスチャの読み込み
-	uint32_t numberTextureHandle[10u] = {};
-	for (uint8_t i = 0u;i < 10u;i++) {
-		numberTextureHandlesArray[i] = textureManager_->Load("Resources/Sprite/Number/" + std::to_string(i) + ".png");
+	uint32_t numberTextureHandle[NUMBER_TEXTURE_AMOUNT_] = {};
+	for (uint8_t i = 0u;i < NUMBER_TEXTURE_AMOUNT_;i++) {
 		std::string fullPath = "Resources/Sprite/Number/" + std::to_string(i) + ".png";
 		numberTextureHandle[i] = textureManager_->Load(fullPath);
 	}
 
 	//数字のテクスチャの横幅を取得
-	uint64_t numberTextureWidth = textureManager_->GetTextureWidth(numberTextureHandle[0]);
-	uint64_t numberTextureHeight = textureManager_->GetTextureHeight(numberTextureHandle[0]);
+	numberTextureWidth = textureManager_->GetTextureWidth(numberTextureHandle[0]);
+	numberTextureHeight = textureManager_->GetTextureHeight(numberTextureHandle[0]);
 
 	//スコア
 	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
-		scoreArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandlesArray[i]);
-		scoreDisplayPositionY_ = 0.0f;
+		scoreArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
 		initialScorePositionY_ = -static_cast<float>(numberTextureHeight);
-		scoreArray_[i].sprite->SetPosition({ .x = static_cast<float_t>(numberTextureWidth) * static_cast<float_t>(i),.y = initialScorePositionY_ });
+		scoreArray_[i].sprite->SetPosition({ .x = static_cast<float_t>(numberTextureWidth) * static_cast<float_t>(i)+100.0f,.y = initialScorePositionY_ });
 	}
+	scoreDisplayPositionY_ = 0.0f;
 
 	//コンボ
-	for (uint16_t i = 0u; i < COMBO_DIGIT_; i++) {
+	for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
 		//生成
 		comboArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
-		comboArray_[i].sprite->SetPosition({ static_cast<float_t>(i) * static_cast<float_t>(numberTextureWidth) ,0.0f });
+		comboArray_[i].sprite->SetPosition({
+			.x = (static_cast<float_t>(i)- 2.0f)* static_cast<float_t>(numberTextureWidth) + 640.0f,
+			.y = 0.0f });
 	}
 
 	//メインシーンの中
@@ -166,17 +167,18 @@ void MainScene::DrawSprite() {
 
 	//スコア
 	for (uint8_t i = 0u;i < SCORE_DIGIT_;i++) {
-		scoreArray_[i].sprite->Draw(numberTextureHandlesArray[0]);
+		//scoreArray_[i].sprite->Draw(scoreArray_[0].textureHandle);
 	}
 
-	if (totalScore_ >= 10u) {
-		//コンボ
-		for (uint8_t i = 0u;i < COMBO_DIGIT_;i++) {
+	
+
+	//コンボ
+	for (uint8_t i = 0u;i < COMBO_DIGIT_;i++) {
+		if (totalCombo_ >= 10u) {
+
 			comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
 		}
 	}
-
-
 }
 
 void MainScene::GenerateNotes() {
@@ -462,16 +464,17 @@ void MainScene::AssignToTexture() {
 	//各桁に数字を割り当てる
 	totalScore_ = 1234567u;
 	uint32_t score = totalScore_;
-	uint32_t digit = 1000000u;
-	for (uint8_t i = SCORE_DIGIT_ - 1; i > 0u; i--) {
-		scoreArray_[i].value = static_cast<uint8_t>(score / digit);
-		score %= digit;
+	uint32_t scoreDigit = 1000000u;
+	for (uint8_t i = SCORE_DIGIT_ - 1u; i > 0u; i--) {
+		scoreArray_[i].value = static_cast<uint8_t>(score / scoreDigit);
+		score %= scoreDigit;
 		//10のくらいの時以外だけ
 		if (i != TEN_DIGIT_) {
-			digit /= 10;
+			scoreDigit /= 10;
 		}
 	}
-	scoreArray_[ONE_DIGIT_].value = static_cast<uint8_t>(score) % static_cast<uint8_t>(digit);
+	//1の位は個別でやる
+	scoreArray_[ONE_DIGIT_].value = static_cast<uint8_t>(score) % static_cast<uint8_t>(scoreDigit);
 
 	//テクスチャハンドルに割り当てる
 	scoreArray_[ONE_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_DIGIT_].value];
@@ -487,18 +490,43 @@ void MainScene::AssignToTexture() {
 #pragma region コンボ
 
 	//各桁に数字を割り当てる
+	totalCombo_ = 123u;
 	uint16_t combo = totalCombo_;
-	comboArray_[ONE_THOUSAND_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast <uint8_t>(1000u);
-	comboArray_[ONE_HUNDRED_DIGIT_].value = static_cast<uint8_t>(combo) / static_cast<uint8_t>(100u);
-	assert(static_cast<size_t>(TEN_DIGIT_) < comboArray_.size());
-	comboArray_[static_cast<size_t>(TEN_DIGIT_)].value = static_cast<uint8_t>(combo / 10u);
-	comboArray_[ONE_DIGIT_].value = static_cast<uint8_t>(combo) % static_cast <uint8_t>(10u);
-
+	//uint16_t comboDigit = 1000u;
+	
+	comboArray_[ONE_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
+	combo /= 10u;
+	comboArray_[TEN_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
+	combo /= 10u;
+	comboArray_[ONE_HUNDRED_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
+	combo /= 10u;
+	comboArray_[ONE_THOUSAND_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
+	
+	
 	//テクスチャハンドルに割り当てる
 	comboArray_[ONE_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_DIGIT_].value];
 	comboArray_[TEN_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[TEN_DIGIT_].value];
 	comboArray_[ONE_HUNDRED_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_HUNDRED_DIGIT_].value];
 	comboArray_[ONE_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_THOUSAND_DIGIT_].value];
+
+#ifdef _DEBUG
+	ImGui::Begin("コンボ");
+	int one = comboArray_[ONE_DIGIT_].value;
+	int ten = comboArray_[TEN_DIGIT_].value;
+	int hundred = comboArray_[ONE_HUNDRED_DIGIT_].value;
+	int thousand = comboArray_[ONE_THOUSAND_DIGIT_].value;
+
+	ImGui::InputInt("千", &one);
+	ImGui::InputInt("百", &ten);
+	ImGui::InputInt("十", &hundred);
+	ImGui::InputInt("一", &thousand);
+
+
+
+	ImGui::End();
+#endif // _DEBUG
+
+
 
 #pragma endregion
 }

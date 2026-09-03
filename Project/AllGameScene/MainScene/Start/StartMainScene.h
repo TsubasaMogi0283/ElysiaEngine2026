@@ -68,9 +68,6 @@ private:
 private:
 
 
-private:
-
-
 	//線形補間(UI開始の動き)
 	float_t startMoveT_ = 0.0f;
 
