@@ -167,7 +167,7 @@ void MainScene::DrawSprite() {
 
 	//スコア
 	for (uint8_t i = 0u;i < SCORE_DIGIT_;i++) {
-		//scoreArray_[i].sprite->Draw(scoreArray_[0].textureHandle);
+		scoreArray_[i].sprite->Draw(scoreArray_[0].textureHandle);
 	}
 
 	//コンボ
@@ -493,26 +493,24 @@ void MainScene::AssignToTexture() {
 
 #pragma region コンボ
 
-	//各桁に数字を割り当てる
+#ifdef _DEBUG
 	totalCombo_ = 123u;
+#endif // _DEBUG
 	uint16_t combo = totalCombo_;
-	//uint16_t comboDigit = 1000u;
-	
-	comboArray_[ONE_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
-	combo /= 10u;
-	comboArray_[TEN_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
-	combo /= 10u;
-	comboArray_[ONE_HUNDRED_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
-	combo /= 10u;
-	comboArray_[ONE_THOUSAND_DIGIT_].value = static_cast<uint16_t>(combo % 10u);
-	
-	
-	//テクスチャハンドルに割り当てる
-	comboArray_[ONE_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_DIGIT_].value];
-	comboArray_[TEN_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[TEN_DIGIT_].value];
-	comboArray_[ONE_HUNDRED_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_HUNDRED_DIGIT_].value];
-	comboArray_[ONE_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[comboArray_[ONE_THOUSAND_DIGIT_].value];
 
+	//各桁の数字を割り当てる
+	for (uint8_t i = 0;i < COMBO_DIGIT_;i++) {
+		comboArray_[i].value = static_cast<uint16_t>(combo % 10u);
+		//最後の桁以外は10で割る
+		if (i != COMBO_DIGIT_-1u) {
+			combo /= 10u;
+		}
+		//テクスチャハンドルに割り当てる
+		comboArray_[i].textureHandle = numberTextureHandlesArray[comboArray_[i].value];
+	}
+
+	
+	
 #ifdef _DEBUG
 	ImGui::Begin("コンボ");
 	int one = comboArray_[ONE_DIGIT_].value;
