@@ -93,9 +93,11 @@ void MainScene::Initialize() {
 	for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
 		//生成
 		comboArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
-		comboArray_[i].sprite->SetPosition({
-			.x = (static_cast<float_t>(i)- 2.0f)* static_cast<float_t>(numberTextureWidth) + 640.0f,
-			.y = 0.0f });
+		comboArray_[i].position = {
+			.x = (static_cast<float_t>(COMBO_DIGIT_-i) - 3.0f) * static_cast<float_t>(numberTextureWidth) + 640.0f,
+			.y = 0.0f
+		};
+		comboArray_[i].sprite->SetPosition(comboArray_[i].position);
 	}
 
 	//メインシーンの中
@@ -159,9 +161,7 @@ void MainScene::DrawPostEffect() {
 }
 
 void MainScene::DrawSprite() {
-	//スプライトの描画
-	baseMainScene_->DrawSprite();
-
+	
 	//ゲージ
 	gauge_.sprite->Draw();
 
@@ -170,8 +170,6 @@ void MainScene::DrawSprite() {
 		//scoreArray_[i].sprite->Draw(scoreArray_[0].textureHandle);
 	}
 
-	
-
 	//コンボ
 	for (uint8_t i = 0u;i < COMBO_DIGIT_;i++) {
 		if (totalCombo_ >= 10u) {
@@ -179,6 +177,12 @@ void MainScene::DrawSprite() {
 			comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
 		}
 	}
+
+
+	//スプライトの描画
+	baseMainScene_->DrawSprite();
+
+
 }
 
 void MainScene::GenerateNotes() {
@@ -516,13 +520,14 @@ void MainScene::AssignToTexture() {
 	int hundred = comboArray_[ONE_HUNDRED_DIGIT_].value;
 	int thousand = comboArray_[ONE_THOUSAND_DIGIT_].value;
 
-	ImGui::InputInt("千", &one);
-	ImGui::InputInt("百", &ten);
-	ImGui::InputInt("十", &hundred);
-	ImGui::InputInt("一", &thousand);
-
-
-
+	ImGui::InputInt("千", &thousand);
+	ImGui::InputInt("百", &hundred);
+	ImGui::InputInt("十", &ten);
+	ImGui::InputInt("一", &one);
+	ImGui::InputFloat2("千",&comboArray_[ONE_THOUSAND_DIGIT_].position.x);
+	ImGui::InputFloat2("百", &comboArray_[ONE_HUNDRED_DIGIT_].position.x);
+	ImGui::InputFloat2("十", &comboArray_[TEN_DIGIT_].position.x);
+	ImGui::InputFloat2("一", &comboArray_[ONE_DIGIT_].position.x);
 	ImGui::End();
 #endif // _DEBUG
 
