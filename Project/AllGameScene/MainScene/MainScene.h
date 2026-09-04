@@ -227,10 +227,11 @@ private:
 	std::array<float_t, SCORE_DIGIT_> initialScorePositionXArray_ = {};
 	float_t initialScorePositionY_ = 0.0f;
 	//通常表示時のスコア座標
-	const float_t scoreDisplayPositionY_ = 0.0f;
-
-
-	
+	float_t scoreDisplayPositionY_ = 0.0f;
+	//スコア座標のオフセット
+	float_t scorePositionOffsetX_ = 1000.0f;
+	//スコアのスケール
+	float_t scoreScale_ = 0.5f;
 
 	uint64_t numberTextureWidth = 0u;
 	uint64_t numberTextureHeight = 0u;
