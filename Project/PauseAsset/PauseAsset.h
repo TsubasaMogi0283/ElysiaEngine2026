@@ -108,7 +108,7 @@ private:
 	//数字
 	std::unique_ptr<Elysia::Sprite>numberSprite_ = nullptr;
 	//アンカーポイント
-	Vector2 anchorPoint_ = {0.5f, 0.5f};
+	Vector2<float_t> anchorPoint_ = {.x = 0.5f, .y = 0.5f};
 	//回転
 	float_t numberSpriteRotate_ = 0.0f;
 

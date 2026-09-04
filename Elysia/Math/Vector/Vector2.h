@@ -8,13 +8,15 @@
 
 #include <cmath>
 
+template <typename Type>
+
 /// <summary>
 /// ベクトル(2D)
 /// </summary>
 struct Vector2 {
 	// 要素
-	float_t x;
-	float_t y;
+	Type x;
+	Type y;
 
 #pragma region 四則演算
 
@@ -77,12 +79,12 @@ struct Vector2 {
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns></returns>
-	static inline Vector2 Normalize(const Vector2& v) {
+	static inline Vector2<float_t> Normalize(const Vector2& v) {
 		//長さを求める
-		float_t length = sqrtf(v.x * v.x + v.y * v.y);
+		Type length = sqrtf(v.x * v.x + v.y * v.y);
 		//仮で入れる
-		float_t tmpX = v.x;
-		float_t tmpY = v.y;
+		Type tmpX = v.x;
+		Type tmpY = v.y;
 
 		//0除算を防ぐ
 		if (length != 0.0f) {
@@ -105,7 +107,7 @@ struct Vector2 {
 	/// <param name="v2"></param>
 	/// <param name="t"></param>
 	/// <returns></returns>
-	static inline Vector2 Lerp(const Vector2& v1, const Vector2& v2, const float_t& t) {
+	static inline Vector2 Lerp(const Vector2& v1, const Vector2& v2, const Type& t) {
 		Vector2 result = {
 			.x = (1.0f - t) * v1.x + t * v2.x,
 			.y = (1.0f - t) * v1.y + t * v2.y,
@@ -118,7 +120,7 @@ struct Vector2 {
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns>長さ</returns>
-	static inline float_t Length(const Vector2& v) {
+	static inline Type Length(const Vector2& v) {
 		return sqrtf(v.x * v.x + v.y * v.y);
 	};
 
@@ -128,7 +130,7 @@ struct Vector2 {
 	/// <param name="v1">ベクトル1</param>
 	/// <param name="v2">ベクトル2</param>
 	/// <returns>結果</returns>
-	static inline float_t Dot(const Vector2& v1, const Vector2& v2) {
+	static inline Type Dot(const Vector2& v1, const Vector2& v2) {
 		return (v1.x * v2.x + v1.y * v2.y);
 	};
 };

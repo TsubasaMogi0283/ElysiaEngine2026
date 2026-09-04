@@ -78,13 +78,13 @@ void MainScene::Initialize() {
 	}
 
 	//数字のテクスチャの横幅を取得
-	numberTextureWidth = textureManager_->GetTextureWidth(numberTextureHandle[0]);
-	numberTextureHeight = textureManager_->GetTextureHeight(numberTextureHandle[0]);
+	numberTextureSize_.x = textureManager_->GetTextureWidth(numberTextureHandle[0]);
+	numberTextureSize_.y = textureManager_->GetTextureHeight(numberTextureHandle[0]);
 
 	//スコア
 	//初期Y座標を設定
-	initialScorePositionY_ = -static_cast<float_t>(numberTextureHeight);
-	scoreDisplayPositionY_ = static_cast<float_t>(numberTextureHeight)* scoreScale_;
+	initialScorePositionY_ = -static_cast<float_t>(numberTextureSize_.y);
+	scoreDisplayPositionY_ = static_cast<float_t>(numberTextureSize_.y) * scoreScale_;
 	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
 		//生成
 		scoreArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
@@ -92,7 +92,7 @@ void MainScene::Initialize() {
 		//スケールの設定
 		scoreArray_[i].sprite->SetScale({ .x = scoreScale_,.y = scoreScale_ });
 		//座標の設定
-		initialScorePositionXArray_[i] = static_cast<float_t>(numberTextureWidth) * static_cast<float_t>(SCORE_DIGIT_-i) * scoreScale_ + scorePositionOffsetX_;
+		initialScorePositionXArray_[i] = static_cast<float_t>(numberTextureSize_.x) * static_cast<float_t>(SCORE_DIGIT_-i) * scoreScale_ + scorePositionOffsetX_;
 		scoreArray_[i].sprite->SetPosition({ .x = initialScorePositionXArray_[i],.y = initialScorePositionY_ });
 	}
 
@@ -103,7 +103,7 @@ void MainScene::Initialize() {
 
 		//座標の設定
 		comboArray_[i].position = {
-			.x = (static_cast<float_t>(COMBO_DIGIT_-i) - 3.0f) * static_cast<float_t>(numberTextureWidth) + 640.0f,
+			.x = (static_cast<float_t>(COMBO_DIGIT_-i) - 3.0f) * static_cast<float_t>(numberTextureSize_.x) + 640.0f,
 			.y = 0.0f
 		};
 		comboArray_[i].sprite->SetPosition(comboArray_[i].position);
@@ -136,7 +136,7 @@ void MainScene::Update() {
 	for (uint8_t i = 0; i < SCORE_DIGIT_; i++) {
 		scoreArray_[i].sprite->SetScale({ scoreScale_,scoreScale_ });
 		//座標の設定
-		initialScorePositionXArray_[i] = static_cast<float_t>(numberTextureWidth) * static_cast<float_t>(SCORE_DIGIT_ - i)*scoreScale_ + scorePositionOffsetX_;
+		initialScorePositionXArray_[i] = static_cast<float_t>(numberTextureSize_.x) * static_cast<float_t>(SCORE_DIGIT_ - i)*scoreScale_ + scorePositionOffsetX_;
 		scoreArray_[i].sprite->SetPosition({ .x = initialScorePositionXArray_[i],.y = scoreDisplayPositionY_ });
 	}
 	

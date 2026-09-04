@@ -214,9 +214,9 @@ private:
 
 private:
 	//初期のゲージ座標
-	Vector2 initialGaugePosition_ = {};
+	Vector2<float_t> initialGaugePosition_ = {};
 	//通常表示時のゲージ座標
-	Vector2 gaugeDisplayPosition_ = {};
+	Vector2<float_t> gaugeDisplayPosition_ = {};
 
 	//初期のコンボ座標
 	float_t initialComboPositionY_ = 0.0f;
@@ -233,8 +233,7 @@ private:
 	//スコアのスケール
 	float_t scoreScale_ = 0.5f;
 
-	uint64_t numberTextureWidth = 0u;
-	uint64_t numberTextureHeight = 0u;
+	Vector2<uint64_t> numberTextureSize_ = { .x = 0u, .y = 0u };
 
 private:
 	/// <summary>
@@ -244,7 +243,7 @@ private:
 		//UI用のスプライト
 		std::unique_ptr<Elysia::Sprite>sprite = nullptr;
 		//スプライトの座標
-		Vector2 position = {};
+		Vector2<float_t> position = {};
 		//値
 		uint16_t value = 0u;
 		//テクスチャハンドル
@@ -257,7 +256,7 @@ public:
 	/// ゲージの座標を設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	inline void SetGaugePosition(const Vector2& position) {
+	inline void SetGaugePosition(const Vector2<float_t>& position) {
 		this->gauge_.sprite->SetPosition(position);
 	}
 
@@ -265,7 +264,7 @@ public:
 	/// ゲージの通常表示座標を取得
 	/// </summary>
 	/// <returns>ゲージの通常表示座標</returns>
-	inline Vector2 GetGaugeDisplayPosition()const {
+	inline Vector2<float_t> GetGaugeDisplayPosition()const {
 		return gaugeDisplayPosition_;
 	}
 
@@ -273,7 +272,7 @@ public:
 	/// 初期ゲージ座標を取得
 	/// </summary>
 	/// <returns>初期ゲージ座標</returns>
-	inline Vector2 GetInitialGaugePosition()const {
+	inline Vector2<float_t> GetInitialGaugePosition()const {
 		return initialGaugePosition_;
 	}
 
@@ -356,7 +355,7 @@ private:
 	std::array<uint32_t, NUMBER_TEXTURE_AMOUNT_>numberTextureHandlesArray = {};
 	//ゲージ
 	UIInformation gauge_ = {};
-	Vector2 gaugeScale = { .x = 1.0f,.y = 1.0f };
+	Vector2<float_t> gaugeScale = { .x = 1.0f,.y = 1.0f };
 	//スコア
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
 	uint32_t totalScore_ = 0u;

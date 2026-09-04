@@ -98,7 +98,7 @@ namespace Elysia {
 		/// スケールの設定
 		/// </summary>
 		/// <param name="scale">スケール</param>
-		void SetScale(const Vector2& scale) {
+		void SetScale(const Vector2<float_t>& scale) {
 			this->scale_ = scale;
 		}
 
@@ -114,7 +114,7 @@ namespace Elysia {
 		/// 位置の設定
 		/// </summary>
 		/// <param name="position">座標</param>
-		inline void SetPosition(const Vector2& position) {
+		inline void SetPosition(const Vector2<float_t>& position) {
 			this->position_ = position;
 		}
 
@@ -122,7 +122,7 @@ namespace Elysia {
 		/// アンカーポイントの設定
 		/// </summary>
 		/// <param name="point">ポイント</param>
-		inline void SetAnchorPoint(const Vector2& point) {
+		inline void SetAnchorPoint(const Vector2<float_t>& point) {
 			this->anchorPoint_ = point;
 		}
 
@@ -170,7 +170,7 @@ namespace Elysia {
 		/// UV座標系左上の設定
 		/// </summary>
 		/// <param name="textureLeftTop">左上の座標</param>
-		inline void SetTextureLeftTop(const Vector2& textureLeftTop) {
+		inline void SetTextureLeftTop(const Vector2<float_t>& textureLeftTop) {
 			this->textureLeftTop_ = textureLeftTop;
 		}
 
@@ -178,7 +178,7 @@ namespace Elysia {
 		/// テクスチャのサイズの設定
 		/// </summary>
 		/// <param name="textureSize">サイズ</param>
-		inline void SetTextureSize(const Vector2& textureSize) {
+		inline void SetTextureSize(const Vector2<float_t>& textureSize) {
 			this->textureSize_ = textureSize;
 		}
 
@@ -249,16 +249,16 @@ namespace Elysia {
 		Transform uvTransform_ = {};
 
 		//サイズ
-		Vector2 size_ = {};
+		Vector2<float_t> size_ = {};
 		//S
-		Vector2 scale_ = { 1.0f,1.0f };
+		Vector2<float_t> scale_ = { 1.0f,1.0f };
 		//R
 		float_t rotate_ = 0.0f;
 		//T
-		Vector2 position_ = {};
+		Vector2<float_t> position_ = {};
 
 		//アンカーポイント
-		Vector2 anchorPoint_ = {};
+		Vector2<float_t> anchorPoint_ = {};
 		//色
 		Vector4 color_ = {};
 
@@ -274,9 +274,9 @@ namespace Elysia {
 		bool isBack_ = false;
 
 		//テクスチャ範囲設定
-		Vector2 textureLeftTop_ = {};
+		Vector2<float_t> textureLeftTop_ = {};
 		//テクスチャ切り出しサイズ
-		Vector2 textureSize_ = { .x = 100.0f,.y = 100.0f };
+		Vector2<float_t> textureSize_ = { .x = 100.0f,.y = 100.0f };
 		//テクスチャハンドル
 		uint32_t textureHandle_ = 0u;
 
