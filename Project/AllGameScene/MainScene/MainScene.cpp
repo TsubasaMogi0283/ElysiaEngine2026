@@ -82,12 +82,14 @@ void MainScene::Initialize() {
 	numberTextureHeight = textureManager_->GetTextureHeight(numberTextureHandle[0]);
 
 	//スコア
+	//初期Y座標を設定
+	initialScorePositionY_ = -static_cast<float_t>(numberTextureHeight);
 	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
+		//生成
 		scoreArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
-		initialScorePositionY_ = -static_cast<float>(numberTextureHeight);
-		scoreArray_[i].sprite->SetPosition({ .x = static_cast<float_t>(numberTextureWidth) * static_cast<float_t>(i)+100.0f,.y = initialScorePositionY_ });
+		initialScorePositionXArray_[i] = static_cast<float_t>(numberTextureWidth) * static_cast<float_t>(SCORE_DIGIT_-i) +700.0f;
+		scoreArray_[i].sprite->SetPosition({ .x = initialScorePositionXArray_[i],.y = initialScorePositionY_ });
 	}
-	scoreDisplayPositionY_ = 0.0f;
 
 	//コンボ
 	for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
@@ -163,18 +165,18 @@ void MainScene::DrawPostEffect() {
 void MainScene::DrawSprite() {
 	
 	//ゲージ
-	gauge_.sprite->Draw();
+	//gauge_.sprite->Draw();
 
 	//スコア
 	for (uint8_t i = 0u;i < SCORE_DIGIT_;i++) {
-		scoreArray_[i].sprite->Draw(scoreArray_[0].textureHandle);
+		scoreArray_[i].sprite->Draw(scoreArray_[i].textureHandle);
 	}
 
 	//コンボ
 	for (uint8_t i = 0u;i < COMBO_DIGIT_;i++) {
 		if (totalCombo_ >= 10u) {
 
-			comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
+			//comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
 		}
 	}
 
@@ -465,40 +467,34 @@ void MainScene::GenerateNotes() {
 void MainScene::AssignToTexture() {
 
 #pragma region スコア
-	//各桁に数字を割り当てる
+	
+#ifdef _DEBUG
 	totalScore_ = 1234567u;
-	uint32_t score = totalScore_;
-	uint32_t scoreDigit = 1000000u;
-	for (uint8_t i = SCORE_DIGIT_ - 1u; i > 0u; i--) {
-		scoreArray_[i].value = static_cast<uint8_t>(score / scoreDigit);
-		score %= scoreDigit;
-		//10のくらいの時以外だけ
-		if (i != TEN_DIGIT_) {
-			scoreDigit /= 10;
-		}
-	}
-	//1の位は個別でやる
-	scoreArray_[ONE_DIGIT_].value = static_cast<uint8_t>(score) % static_cast<uint8_t>(scoreDigit);
+#endif // _DEBUG
 
-	//テクスチャハンドルに割り当てる
-	scoreArray_[ONE_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_DIGIT_].value];
-	scoreArray_[TEN_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[TEN_DIGIT_].value];
-	scoreArray_[ONE_HUNDRED_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_HUNDRED_DIGIT_].value];
-	scoreArray_[ONE_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_THOUSAND_DIGIT_].value];
-	scoreArray_[TEN_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[TEN_THOUSAND_DIGIT_].value];
-	scoreArray_[ONE_HUNDRED_THOUSAND_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_HUNDRED_THOUSAND_DIGIT_].value];
-	scoreArray_[ONE_MILLION_DIGIT_].textureHandle = numberTextureHandlesArray[scoreArray_[ONE_MILLION_DIGIT_].value];
+	//各桁に数字を割り当てる
+	uint32_t score = totalScore_;
+	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
+		scoreArray_[i].value = static_cast<uint16_t>(score % 10u);
+		//最後の桁以外は10で割る
+		if (i != SCORE_DIGIT_ - 1u) {
+			score /= 10u;
+		}
+		//テクスチャハンドルに割り当てる
+		scoreArray_[i].textureHandle = numberTextureHandlesArray[scoreArray_[i].value];
+	}
 
 #pragma endregion
+
 
 #pragma region コンボ
 
 #ifdef _DEBUG
 	totalCombo_ = 123u;
 #endif // _DEBUG
-	uint16_t combo = totalCombo_;
 
 	//各桁の数字を割り当てる
+	uint16_t combo = totalCombo_;
 	for (uint8_t i = 0;i < COMBO_DIGIT_;i++) {
 		comboArray_[i].value = static_cast<uint16_t>(combo % 10u);
 		//最後の桁以外は10で割る
@@ -508,28 +504,6 @@ void MainScene::AssignToTexture() {
 		//テクスチャハンドルに割り当てる
 		comboArray_[i].textureHandle = numberTextureHandlesArray[comboArray_[i].value];
 	}
-
-	
-	
-#ifdef _DEBUG
-	ImGui::Begin("コンボ");
-	int one = comboArray_[ONE_DIGIT_].value;
-	int ten = comboArray_[TEN_DIGIT_].value;
-	int hundred = comboArray_[ONE_HUNDRED_DIGIT_].value;
-	int thousand = comboArray_[ONE_THOUSAND_DIGIT_].value;
-
-	ImGui::InputInt("千", &thousand);
-	ImGui::InputInt("百", &hundred);
-	ImGui::InputInt("十", &ten);
-	ImGui::InputInt("一", &one);
-	ImGui::InputFloat2("千",&comboArray_[ONE_THOUSAND_DIGIT_].position.x);
-	ImGui::InputFloat2("百", &comboArray_[ONE_HUNDRED_DIGIT_].position.x);
-	ImGui::InputFloat2("十", &comboArray_[TEN_DIGIT_].position.x);
-	ImGui::InputFloat2("一", &comboArray_[ONE_DIGIT_].position.x);
-	ImGui::End();
-#endif // _DEBUG
-
-
 
 #pragma endregion
 }
