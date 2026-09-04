@@ -208,7 +208,7 @@ void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix
 	//遠視投影行列
 	Matrix4x4 viewMatrixSphere = Matrix4x4::MakeIdentity4x4();
 	
-	Matrix4x4 projectionMatrixSphere = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float>(windowsSetup_->GetClientWidth()), static_cast<float>(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrixSphere = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(windowsSetup_->GetClientSize().x), static_cast<float_t>(windowsSetup_->GetClientSize().y), 0.0f, 100.0f);
 	
 	//WVP行列を作成
 	Matrix4x4 worldViewProjectionMatrixSphere = Matrix4x4::Multiply(worldMatrixSphere, Matrix4x4::Multiply(viewMatrix, projectionMatrix));

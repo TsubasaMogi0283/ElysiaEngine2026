@@ -53,9 +53,9 @@ void Elysia::GrayScale::PreDraw() {
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//ビューポート
-	directXSetup_->GenerateViewport(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
+	directXSetup_->GenerateViewport(WindowsSetup::GetInstance()->GetClientSize().x, WindowsSetup::GetInstance()->GetClientSize().y);
 	//シザー矩形 
-	directXSetup_->GenerateScissor(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
+	directXSetup_->GenerateScissor(WindowsSetup::GetInstance()->GetClientSize().x, WindowsSetup::GetInstance()->GetClientSize().y);
 
 }
 

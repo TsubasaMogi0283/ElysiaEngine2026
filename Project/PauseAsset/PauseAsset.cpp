@@ -15,8 +15,8 @@ void PauseAsset::Initilaize(const uint32_t& blackTextureHandle, const std::vecto
 	numberSprite_->SetAnchorPoint(anchorPoint_);
 	//座標の設定
 	numberSprite_->SetPosition({ 
-		.x = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientWidth() * 0.5f),
-		.y = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientHeight() * 0.5f )
+		.x = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x * 0.5f),
+		.y = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().y * 0.5f )
 	});
 
 	for (uint8_t i = 0;i < countNumberTextureHandleVector.size();i++) {

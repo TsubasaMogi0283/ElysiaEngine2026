@@ -223,7 +223,7 @@ void Elysia::Sprite::Draw(){
 	//遠視投影行列を計算
 	Matrix4x4 viewMatrix = Matrix4x4::MakeIdentity4x4();
 	//プロジェクション行列を計算
-	Matrix4x4 projectionMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(windowsSetup_->GetClientWidth()), static_cast<float_t>(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(windowsSetup_->GetClientSize().x), static_cast<float_t>(windowsSetup_->GetClientSize().y), 0.0f, 100.0f);
 	//WVP行列を作成
 	Matrix4x4 worldViewProjectionMatrix = Matrix4x4::Multiply(affineMatrix, Matrix4x4::Multiply(viewMatrix, projectionMatrix));
 	transformationMatrixData_->WVP = worldViewProjectionMatrix;
@@ -378,7 +378,7 @@ void Elysia::Sprite::Draw(const uint32_t& textureHandle){
 	//遠視投影行列を計算
 	Matrix4x4 viewMatrix = Matrix4x4::MakeIdentity4x4();
 	//プロジェクション行列を計算
-	Matrix4x4 projectionMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(windowsSetup_->GetClientWidth()), static_cast<float_t>(windowsSetup_->GetClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrix = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, static_cast<float_t>(windowsSetup_->GetClientSize().x), static_cast<float_t>(windowsSetup_->GetClientSize().y), 0.0f, 100.0f);
 	//WVP行列を作成
 	Matrix4x4 worldViewProjectionMatrix = Matrix4x4::Multiply(affineMatrix, Matrix4x4::Multiply(viewMatrix, projectionMatrix));
 	transformationMatrixData_->WVP = worldViewProjectionMatrix;

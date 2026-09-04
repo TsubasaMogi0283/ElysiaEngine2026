@@ -84,7 +84,7 @@ namespace Elysia {
 		//横
 		uint32_t width_ = 0u;
 		//縦
-		uint32_t height_ = 0u;
+		uint32_t heightScale_ = 0u;
 
 		//SRVハンドル
 		uint32_t srvHandle_ = 0;

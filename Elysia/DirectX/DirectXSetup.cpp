@@ -312,9 +312,9 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc={
 		//画面の幅。ウィンドウのクライアント領域を同じものにしておく
-		.Width = windowsSetup_->GetClientWidth(),
+		.Width = windowsSetup_->GetClientSize().x,
 		//画面の高さ。ウィンドウのクライアント領域を同じものにしておく
-		.Height = windowsSetup_->GetClientHeight(),
+		.Height = windowsSetup_->GetClientSize().y,
 		//色の形式
 		.Format = DXGI_FORMAT_R8G8B8A8_UNORM,
 		//マルチサンプルしない
@@ -344,8 +344,8 @@ void Elysia::DirectXSetup::GenerateSwapChain() {
 void Elysia::DirectXSetup::SetDepthStencilView() {
 	
 	ComPtr<ID3D12Resource> depthStencilResource = GenerateDepthStencilTextureResource(
-		windowsSetup_->GetClientWidth(),
-		windowsSetup_->GetClientHeight());
+		windowsSetup_->GetClientSize().x,
+		windowsSetup_->GetClientSize().y);
 
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = GenerateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
 
@@ -695,9 +695,9 @@ void Elysia::DirectXSetup::StartDraw() {
 
 
 	//ビューポートの生成
-	GenerateViewport(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
+	GenerateViewport(WindowsSetup::GetInstance()->GetClientSize().x, WindowsSetup::GetInstance()->GetClientSize().y);
 	//シザーを生成
-	GenerateScissor(WindowsSetup::GetInstance()->GetClientWidth(), WindowsSetup::GetInstance()->GetClientHeight());
+	GenerateScissor(WindowsSetup::GetInstance()->GetClientSize().x, WindowsSetup::GetInstance()->GetClientSize().y);
 }
 
 void Elysia::DirectXSetup::EndDraw() {

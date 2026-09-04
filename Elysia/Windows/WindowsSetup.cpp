@@ -78,7 +78,7 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 	fullSizeY_ = GetSystemMetrics(SM_CYSCREEN);
 
 	//ウィンドウのサイズを設定(左、上、横幅、立幅)
-	RECT wrc = { 0,0,LONG(clientWidth_) ,LONG(clientHeight_) };
+	RECT wrc = { 0,0,static_cast<LONG>(clientSize_.x), static_cast<LONG>(clientSize_.y) };
 	// クライアント領域を元に実際のサイズにwrcを変更
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 	// ウィンドウ生成
@@ -111,10 +111,9 @@ void  Elysia::WindowsSetup::RegisterWindowsClass(const wchar_t* title) {
 
 #pragma endregion
 
-void Elysia::WindowsSetup::Initialize(const wchar_t* title, const int32_t& clientWidth, const int32_t& clientHeight) {
+void Elysia::WindowsSetup::Initialize(const wchar_t* title, const Vector2<uint16_t>& clientSize) {
 	//値を入れる
-	clientWidth_ = clientWidth;
-	clientHeight_ = clientHeight;
+	clientSize_ = clientSize;
 
 	//システムタイマーの分解能を上げる
 	timeBeginPeriod(1);

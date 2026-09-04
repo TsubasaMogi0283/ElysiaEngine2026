@@ -319,6 +319,9 @@
     <Filter Include="Project\Note\LongNote\TranceGateEigth">
       <UniqueIdentifier>{cbac4696-9032-4430-8778-438dcca527fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\Transition">
+      <UniqueIdentifier>{11c413c0-2250-4daf-8986-08a1b725d173}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -572,6 +575,9 @@
     </ClCompile>
     <ClCompile Include="Project\Note\Long\TranceGateEighth\TranceGateEighthLongNote.cpp">
       <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Transition\Transition.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -981,6 +987,9 @@
     </ClInclude>
     <ClInclude Include="Project\Note\Long\TranceGateEighth\TranceGateEighthLongNote.h">
       <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Transition\Transition.h">
+      <Filter>Elysia\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -41,12 +41,11 @@ void Elysia::Framework::Initialize() {
 	//ここでタイトルバーの名前を決めてね
 	const wchar_t* TITLE_BAR_NAME = L"DA・DA・PA!!!";
 	//ウィンドウのサイズを決める
-	const int32_t WINDOW_SIZE_WIDTH = 1280;
-	const int32_t WINDOW_SIZE_HEIGHT = 720;
+	Vector2<uint16_t> windowSize = { .x = 1280, .y = 720 };
 
 	//初期化
 	//ウィンドウ
-	engineManagers_.windowsSetup_->Initialize(TITLE_BAR_NAME, WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT);
+	engineManagers_.windowsSetup_->Initialize(TITLE_BAR_NAME, windowSize);
 
 	//COMの初期化
 	//COM...ComponentObjectModel、Microsoftの提唱する設計技術の１つ
