@@ -13,6 +13,7 @@
 #include <ScoreData/Manager/ScoreDataManager.h>
 #include <Record/RecordManager.h>
 #include <Note/NoteJudgement.h>
+#include <Transition/Transition.h>
 
 
 /// <summary>
@@ -76,9 +77,17 @@ namespace Elysia {
 		/// <summary>
 		/// 譜面管理クラスを取得
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>譜面管理クラス</returns>
 		ScoreDataManager* GetScoreDataManager()const {
 			return scoreDataManager_.get();
+		}
+
+		/// <summary>
+		/// トランジションクラスを取得
+		/// </summary>
+		/// <returns>トランジションクラス</returns>
+		Transition* GetTransition()const {
+			return transition_.get();
 		}
 
 		/// <summary>
@@ -127,9 +136,12 @@ namespace Elysia {
 		//現在のシーンの数
 		uint32_t currentSceneNumber_ = 0;
 
-		//ノーツ管理クラス
+		//スコアデータ管理クラス
 		std::unique_ptr<ScoreDataManager> scoreDataManager_ = nullptr;
+		//レコード管理クラス
 		std::unique_ptr<RecordManager> recordManager_ = nullptr;
+		//トランジションクラス
+		std::unique_ptr<Transition>transition_ = nullptr;
 
 	private:
 		//一時保管場所

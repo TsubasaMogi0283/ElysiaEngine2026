@@ -14,6 +14,7 @@
 #include <Note/NoteJudgement.h>
 
 MainScene::MainScene() {
+	//インスタンスの取得
 	//レベルエディタ管理クラス
 	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 	//入力
@@ -23,8 +24,6 @@ MainScene::MainScene() {
 }
 
 void MainScene::Initialize() {
-
-
 	//楽曲譜面情報を取得
 	musicInformation_ = gameManager_->GetMusicInformation();
 #ifdef _DEBUG
@@ -42,7 +41,7 @@ void MainScene::Initialize() {
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
-	directionalLight_.direction = { 0.04f,-1.0f,0.75f };
+	directionalLight_.direction = {.x = 0.04f,.y = -1.0f,.z = 0.75f };
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
@@ -61,9 +60,9 @@ void MainScene::Initialize() {
 	uint64_t gaugeTextureHeight = textureManager_->GetTextureHeight(gaugeTextureHandle);
 	uint64_t gaugeTextureWidth = textureManager_->GetTextureWidth(gaugeTextureHandle);
 	//通常表示座標
-	gaugeDisplayPosition_ = { .x = 640.0f - static_cast<float_t>(gaugeTextureWidth / 2u),.y = 720.0f - static_cast<float_t>(gaugeTextureHeight) };
+	gaugeDisplayPosition_ = { .x = 640 - static_cast<int32_t>(gaugeTextureWidth / 2u),.y = 720 - static_cast<int32_t>(gaugeTextureHeight) };
 	//初期座標
-	initialGaugePosition_ = { gaugeDisplayPosition_.x, gaugeDisplayPosition_.y + gaugeTextureHeight };
+	initialGaugePosition_ = { gaugeDisplayPosition_.x, gaugeDisplayPosition_.y + static_cast<int32_t>(gaugeTextureHeight) };
 
 
 	//初期設定
@@ -78,13 +77,13 @@ void MainScene::Initialize() {
 	}
 
 	//数字のテクスチャの横幅を取得
-	numberTextureSize_.x = textureManager_->GetTextureWidth(numberTextureHandle[0]);
-	numberTextureSize_.y = textureManager_->GetTextureHeight(numberTextureHandle[0]);
+	numberTextureSize_.x = static_cast<uint32_t>(textureManager_->GetTextureWidth(numberTextureHandle[0]));
+	numberTextureSize_.y = static_cast<uint32_t>(textureManager_->GetTextureHeight(numberTextureHandle[0]));
 
 	//スコア
 	//初期Y座標を設定
-	initialScorePositionY_ = -static_cast<float_t>(numberTextureSize_.y);
-	scoreDisplayPositionY_ = static_cast<float_t>(numberTextureSize_.y) * scoreScale_;
+	initialScorePositionY_ = -numberTextureSize_.y;
+	scoreDisplayPositionY_ = static_cast<int32_t>(numberTextureSize_.y * scoreScale_);
 	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
 		//生成
 		scoreArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
@@ -92,7 +91,7 @@ void MainScene::Initialize() {
 		//スケールの設定
 		scoreArray_[i].sprite->SetScale({ .x = scoreScale_,.y = scoreScale_ });
 		//座標の設定
-		initialScorePositionXArray_[i] = static_cast<float_t>(numberTextureSize_.x) * static_cast<float_t>(SCORE_DIGIT_-i) * scoreScale_ + scorePositionOffsetX_;
+		initialScorePositionXArray_[i] = numberTextureSize_.x * static_cast<int32_t>(static_cast<float_t>(SCORE_DIGIT_-i) * scoreScale_) + scorePositionOffsetX_;
 		scoreArray_[i].sprite->SetPosition({ .x = initialScorePositionXArray_[i],.y = initialScorePositionY_ });
 	}
 
@@ -103,8 +102,8 @@ void MainScene::Initialize() {
 
 		//座標の設定
 		comboArray_[i].position = {
-			.x = (static_cast<float_t>(COMBO_DIGIT_-i) - 3.0f) * static_cast<float_t>(numberTextureSize_.x) + 640.0f,
-			.y = 0.0f
+			.x = (COMBO_DIGIT_-i - 3) * numberTextureSize_.x + 640,
+			.y = 0u
 		};
 		comboArray_[i].sprite->SetPosition(comboArray_[i].position);
 	}
@@ -121,24 +120,22 @@ void MainScene::Initialize() {
 
 void MainScene::Update() {
 
+
+	scoreArray_;
+
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
-	ImGui::SliderFloat2("ゲージの座標", &gaugeDisplayPosition_.x, 0.0f, 720.0f);
 	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
 	ImGui::SliderFloat4("色", &color_.x, 0.0f, 1.0f);
 	ImGui::SliderFloat("スコアのスケール", &scoreScale_, 0.0f, 2.0f);
-	ImGui::SliderFloat("スコアの座標オフセット", &scorePositionOffsetX_, 0.0f, 1000.0f);
+	int32_t scorePositionOffsetXInt = static_cast<int32_t>(scorePositionOffsetX_);
+	ImGui::SliderInt("スコアの座標オフセット", &scorePositionOffsetXInt, 0, 1000);
 	ImGui::End();
 	gauge_.sprite->SetScale(gaugeScale);
 	gauge_.sprite->SetColor(color_);
 
-	for (uint8_t i = 0; i < SCORE_DIGIT_; i++) {
-		scoreArray_[i].sprite->SetScale({ scoreScale_,scoreScale_ });
-		//座標の設定
-		initialScorePositionXArray_[i] = static_cast<float_t>(numberTextureSize_.x) * static_cast<float_t>(SCORE_DIGIT_ - i)*scoreScale_ + scorePositionOffsetX_;
-		scoreArray_[i].sprite->SetPosition({ .x = initialScorePositionXArray_[i],.y = scoreDisplayPositionY_ });
-	}
+	
 	
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {

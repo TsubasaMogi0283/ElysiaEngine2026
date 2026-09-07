@@ -22,9 +22,15 @@ void Elysia::GameManager::Initialize() {
 	//譜面データ生成と読み込み
 	scoreDataManager_ = std::make_unique<ScoreDataManager>();
 	scoreDataManager_->Initialize();
-	//初期化
+
+	//各シーン
 	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_->Initialize();
+
+	//トランジション
+	transition_ = std::make_unique<Transition>();
+	transition_->Initialize();
+
 }
 
 void Elysia::GameManager::ChangeScene(const std::string& sceneName){
@@ -52,6 +58,7 @@ void Elysia::GameManager::ChangeScene(const std::string& sceneName){
 void Elysia::GameManager::Update() {
 	//更新
 	currentGamaScene_->Update();
+	transition_->Update();
 
 #ifdef _DEBUG
 	ImGui::Begin("ゲームシーンの管理");
@@ -78,8 +85,6 @@ void Elysia::GameManager::Update() {
 
 	ImGui::End();
 #endif // _DEBUG
-
-
 }
 
 void Elysia::GameManager::DrawObject3D() {
@@ -90,6 +95,8 @@ void Elysia::GameManager::DrawObject3D() {
 void Elysia::GameManager::DrawSprite(){
 	//スプライトの描画
 	currentGamaScene_->DrawSprite();
+	//トランジションの描画
+	transition_->DrawSprite();
 }
 
 void Elysia::GameManager::PreDrawPostEffect(){
