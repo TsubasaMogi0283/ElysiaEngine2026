@@ -26,7 +26,7 @@ void Elysia::GameManager::Initialize() {
 	//各シーン
 	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_->Initialize();
-
+			
 	//トランジション
 	transition_ = std::make_unique<Transition>();
 	transition_->Initialize();

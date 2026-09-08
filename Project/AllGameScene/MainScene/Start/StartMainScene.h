@@ -6,7 +6,7 @@
  * @author 茂木翼
  */
 
-
+#include <string>
 #include <MainScene/BaseMainScene.h>
 
  /// <summary>
@@ -51,29 +51,71 @@ private:
 	/// <summary>
 	/// スタートメインシーンの状態
 	/// </summary>
-	enum class StartMainSceneState {
+	enum StartMainSceneState {
 		//トランジション
 		Transition,
 		//UIの移動
 		UIMove,
-		//Ready?&Go!!
-		ReadyGo,
+		//Ready
+		Ready,
+		//Go!!
+		Go,
 		//プレイシーンへ
 		ToPlayScene,
+
+		//この列挙体の量
+		Amount,
 	};
 
 	//現在の状態
 	StartMainSceneState currentState_ = StartMainSceneState::Transition;
 
+
+private:
+	struct UITextTimeInformation {
+		float_t startTime;
+		float_t endTime;
+	};
+
 private:
 	//UIの移動を待つ時間
 	const float_t WAIT_FOR_UI_MOVE_TIME_ = 1.0f;
+	//準備を待つ時間
+	const float_t WAIT_FOR_READY_TIME_ = 2.0f;
 
+	//Ready
+	//テクスチャの量
+	static const uint8_t READY_TEXTURE_AMOUNT_ = 5u;
+	//テクスチャの名前
+	const std::string READY_TEXTURE_NAME_ = "Ready";
+	
+	//Readyが動いている時間
+	const float_t READY_SCALE_MOVE_TIME_ = 0.5f;
+	//動く間隔
+	const float_t READY_SCALE_MOVE_INTERVAL_ = 0.1f;
+
+	//Go
+	//テクスチャの量
+	static const uint8_t GO_TEXTURE_AMOUNT_ = 3u;
+	//テクスチャの名前
+	const std::string GO_TEXTURE_NAME_ = "Go!";
+
+	
+	
 
 private:
-	//UIの移動を待つ時間
-	float_t waitForUIMoveTime = 0.0f;
+	bool isEndTransition = false;
+	//Ready用のスプライト
+	std::array<std::unique_ptr<Elysia::Sprite>, READY_TEXTURE_AMOUNT_> readySpriteArray_ = {};
+	//
+	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyStartMoveTime_ = {};
+	float_t allReadyStartTime_ = 0.0f;
 
+	//Go用のスプライト
+	std::array<std::unique_ptr<Elysia::Sprite>, GO_TEXTURE_AMOUNT_> goSpriteArray_ = {};
+
+	//UIの移動を待つ時間
+	std::array<float_t, StartMainSceneState::Amount> waitingTimeArray_ = {};
 
 	//線形補間(UI開始の動き)
 	float_t startMoveT_ = 0.0f;

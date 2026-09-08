@@ -6,6 +6,8 @@
 #include <Easing.h>
 #include <MainScene/MainScene.h>
 #include <GameManager.h>
+#include <TextureManager.h>
+#include <WindowsSetup.h>
 #include <MainScene/Play/PlayMainScene.h>
 
 StartMainScene::StartMainScene() {
@@ -16,6 +18,39 @@ StartMainScene::StartMainScene() {
 void StartMainScene::Initialize() {
 	//メインシーンの空チェック
 	assert(mainScene_);
+
+	const int32_t WINDOW_WIDTH = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x);
+	const int32_t WINDOW_HEIGHT = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().y);
+
+	//Ready
+	for (uint8_t i = 0; i < READY_TEXTURE_AMOUNT_; i++) {
+		//スプライトの生成
+		std::string fullPath = "Resources/Sprite/ReadyGo/Ready/" + std::string(1, READY_TEXTURE_NAME_[i]);
+		uint32_t readyTextureHandle = Elysia::TextureManager::GetInstance()->Load(fullPath + ".png");
+		readySpriteArray_[i] = Elysia::Sprite::Create(readyTextureHandle);
+
+		//文字の動く時間を設定
+		readyStartMoveTime_[i] = {
+			.startTime= READY_SCALE_MOVE_INTERVAL_ * i,
+			.endTime = READY_SCALE_MOVE_INTERVAL_ * i + READY_SCALE_MOVE_TIME_ 
+		};
+
+		int32_t textureWidth = static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureWidth(readyTextureHandle));
+		readySpriteArray_[i]->SetPosition({
+			.x= WINDOW_WIDTH / 2 - (READY_TEXTURE_AMOUNT_-i-2)*(textureWidth )+300,
+			.y= WINDOW_HEIGHT / 2
+			}
+		);
+	}
+
+	//Goのスプライトの生成
+	for (uint8_t i = 0; i < GO_TEXTURE_AMOUNT_; i++) {
+		std::string fullPath = "Resources/Sprite/ReadyGo/Go/" + std::string(1, GO_TEXTURE_NAME_[i]);
+		uint32_t goTextureHandle = Elysia::TextureManager::GetInstance()->Load(fullPath + ".png");
+
+		goSpriteArray_[i] = Elysia::Sprite::Create(goTextureHandle);
+	}
+
 }
 
 void StartMainScene::Update() {
@@ -23,15 +58,19 @@ void StartMainScene::Update() {
 	float_t gaugePositionY = 0;
 	float_t scorePositionY = 0;
 	float_t easedT = 0.0f;
+	
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
 	switch (currentState_) {
 	case StartMainSceneState::Transition:
 		//トランジションから始まる
 		if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
+			isEndTransition = true;
+		}
 
-			waitForUIMoveTime += DELTA_TIME_;
-			if (waitForUIMoveTime >= WAIT_FOR_UI_MOVE_TIME_) {
+		if (isEndTransition) {
+			waitingTimeArray_[Transition] += DELTA_TIME_;
+			if (waitingTimeArray_[Transition] >= WAIT_FOR_UI_MOVE_TIME_) {
 				//トランジションが終わったらUIの移動へ
 				currentState_ = StartMainSceneState::UIMove;
 			}
@@ -55,10 +94,33 @@ void StartMainScene::Update() {
 		scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);
 		mainScene_->SetScorePositionsY(static_cast<int32_t>(scorePositionY));
 
+		//指定した時間を超えたらReadyへ
+		if (easedT >= 1.0f) {
+			waitingTimeArray_[UIMove] += DELTA_TIME_;
+			if (waitingTimeArray_[UIMove] >= WAIT_FOR_READY_TIME_) {
+				currentState_ = StartMainSceneState::Ready;
+			}
+		}
+
 		break;
 
-	case StartMainSceneState::ReadyGo:
-		//Ready?&Go!!の表示
+	case StartMainSceneState::Ready:
+		//Readyの表示
+
+		allReadyStartTime_ += DELTA_TIME_;
+		for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
+			float_t t = SingleCalculation::InverseLerp(readyStartMoveTime_[i].startTime, readyStartMoveTime_[i].endTime, allReadyStartTime_);
+			t = std::clamp(t, 0.0f, 1.0f);
+			float_t easeT = Easing::EaseOutBack(t);
+
+			readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = easeT });
+		}
+
+
+		break;
+
+	case StartMainSceneState::Go:
+		//Go!!の表示
 		break;
 
 	case StartMainSceneState::ToPlayScene:
@@ -89,4 +151,20 @@ void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLig
 
 void StartMainScene::DrawSprite() {
 
+	switch (currentState_) {
+	case StartMainSceneState::Ready:
+		//Readyの描画
+		for (uint8_t i = 0; i < READY_TEXTURE_AMOUNT_; i++) {
+			readySpriteArray_[i]->Draw();
+		}
+
+		break;
+	case StartMainSceneState::Go:
+		//Goのスプライトの描画
+		for (uint8_t i = 0; i < GO_TEXTURE_AMOUNT_; i++) {
+			goSpriteArray_[i]->Draw();
+		}
+
+		break;
+	}
 }
