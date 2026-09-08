@@ -567,9 +567,6 @@
     <ClCompile Include="Project\PauseAsset\PauseAsset.cpp">
       <Filter>Project\PauseAsset</Filter>
     </ClCompile>
-    <ClCompile Include="Project\JudgementLine\JudgementLine.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.cpp">
       <Filter>Project\Note\LongNote\TranceGateSixteenth</Filter>
     </ClCompile>
@@ -577,7 +574,10 @@
       <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
     </ClCompile>
     <ClCompile Include="Project\Transition\Transition.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
+      <Filter>Project\Transition</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\JudgementLine\JudgementLine.cpp">
+      <Filter>Project\JudgementLine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -979,9 +979,6 @@
     <ClInclude Include="Project\PauseAsset\PauseAsset.h">
       <Filter>Project\PauseAsset</Filter>
     </ClInclude>
-    <ClInclude Include="Project\JudgementLine\JudgementLine.h">
-      <Filter>Elysia\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.h">
       <Filter>Project\Note\LongNote\TranceGateSixteenth</Filter>
     </ClInclude>
@@ -989,7 +986,10 @@
       <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
     </ClInclude>
     <ClInclude Include="Project\Transition\Transition.h">
-      <Filter>Elysia\ヘッダー ファイル</Filter>
+      <Filter>Project\Transition</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\JudgementLine\JudgementLine.h">
+      <Filter>Project\JudgementLine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

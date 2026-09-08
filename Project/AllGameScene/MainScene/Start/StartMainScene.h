@@ -66,6 +66,13 @@ private:
 	StartMainSceneState currentState_ = StartMainSceneState::Transition;
 
 private:
+	//UIの移動を待つ時間
+	const float_t WAIT_FOR_UI_MOVE_TIME_ = 1.0f;
+
+
+private:
+	//UIの移動を待つ時間
+	float_t waitForUIMoveTime = 0.0f;
 
 
 	//線形補間(UI開始の動き)

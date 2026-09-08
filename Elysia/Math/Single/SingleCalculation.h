@@ -25,7 +25,6 @@ namespace SingleCalculation{
 		return (1.0f / std::tanf(theta)); 
 	};
 
-
 	/// <summary>
 	/// 線形補間(float)
 	/// </summary>

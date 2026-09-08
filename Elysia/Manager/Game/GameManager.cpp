@@ -48,7 +48,7 @@ void Elysia::GameManager::ChangeScene(const std::string& sceneName){
 	//シーンの値を取ってくる
 	currentGamaScene_ = abstractSceneFactory_->CreateScene(currentSceneName_);
 	//空ではない時初期化処理に入る
-	assert(currentGamaScene_ != nullptr);
+	assert(currentGamaScene_ );
 	//初期化
 	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_->Initialize();

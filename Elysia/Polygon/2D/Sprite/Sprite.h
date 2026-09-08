@@ -252,7 +252,7 @@ namespace Elysia {
 		//サイズ
 		Vector2<float_t> size_ = {};
 		//S
-		Vector2<float_t> scale_ = { 1.0f,1.0f };
+		Vector2<float_t> scale_ = { .x = 1.0f,.y = 1.0f };
 		//R
 		float_t rotate_ = 0.0f;
 		//T

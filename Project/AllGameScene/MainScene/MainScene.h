@@ -284,21 +284,20 @@ public:
 		return initialComboPositionY_;
 	}
 
+	/// <summary>
+	/// スコアの初期Y座標を取得
+	/// </summary>
+	/// <returns>初期Y座標</returns>
 	inline int32_t GetInitialScorePositionY()const {
 		return initialScorePositionY_;
 	}
 
+	/// <summary>
+	/// スコアの通常表示座標を取得
+	/// </summary>
+	/// <returns>スコアの通常表示座標</returns>
 	inline int32_t GetScoreDisplayPositionY()const {
 		return scoreDisplayPositionY_;
-	}
-
-
-	/// <summary>
-	/// スコアの桁数を取得
-	/// </summary>
-	/// <returns>桁数</returns>
-	inline uint8_t GetScoreDigit()const {
-		return SCORE_DIGIT_;
 	}
 
 	/// <summary>
@@ -309,15 +308,6 @@ public:
 		for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
 			this->scoreArray_[i].sprite->SetPosition({initialScorePositionXArray_[i], positionY});
 		}
-	}
-
-
-	/// <summary>
-	/// コンボの桁数を取得
-	/// </summary>
-	/// <returns>桁数</returns>
-	inline uint8_t GetComboDigit()const {
-		return COMBO_DIGIT_;
 	}
 
 	/// <summary>

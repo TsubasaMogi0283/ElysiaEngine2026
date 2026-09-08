@@ -29,8 +29,12 @@ void StartMainScene::Update() {
 	case StartMainSceneState::Transition:
 		//トランジションから始まる
 		if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
-			//トランジションが終わったらUIの移動へ
-			currentState_ = StartMainSceneState::UIMove;
+
+			waitForUIMoveTime += DELTA_TIME_;
+			if (waitForUIMoveTime >= WAIT_FOR_UI_MOVE_TIME_) {
+				//トランジションが終わったらUIの移動へ
+				currentState_ = StartMainSceneState::UIMove;
+			}
 		}
 		break;
 

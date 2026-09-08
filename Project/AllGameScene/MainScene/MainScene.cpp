@@ -103,7 +103,7 @@ void MainScene::Initialize() {
 		//座標の設定
 		comboArray_[i].position = {
 			.x = (COMBO_DIGIT_-i - 3) * numberTextureSize_.x + 640,
-			.y = 0u
+			.y = 0
 		};
 		comboArray_[i].sprite->SetPosition(comboArray_[i].position);
 	}
@@ -119,10 +119,6 @@ void MainScene::Initialize() {
 }
 
 void MainScene::Update() {
-
-
-	scoreArray_;
-
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
@@ -135,14 +131,11 @@ void MainScene::Update() {
 	gauge_.sprite->SetScale(gaugeScale);
 	gauge_.sprite->SetColor(color_);
 
-	
-	
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
 		gameManager_->ChangeScene("Result");
 		return;
 	}
-
 
 #endif // _DEBUG
 

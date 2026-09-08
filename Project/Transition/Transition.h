@@ -55,7 +55,7 @@ public:
 private:
 
 	//トランジション用の画像の分割数
-	static const uint8_t DIVIDE_NUMBER_ = 10u;
+	static const uint8_t DIVIDE_NUMBER_ = 11u;
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f/60.0f;
 private:
@@ -70,6 +70,7 @@ private:
 	//高さのスケール
 	float_t heightScale_ = 0.0f;
 	
+
 	//開いているかどうか
 	bool isOpened_ = false;
 	//閉まっているかどうか
