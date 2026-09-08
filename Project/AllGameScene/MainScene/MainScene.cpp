@@ -91,7 +91,7 @@ void MainScene::Initialize() {
 		//スケールの設定
 		scoreArray_[i].sprite->SetScale({ .x = scoreScale_,.y = scoreScale_ });
 		//座標の設定
-		initialScorePositionXArray_[i] = numberTextureSize_.x * static_cast<int32_t>(static_cast<float_t>(SCORE_DIGIT_-i) * scoreScale_) + scorePositionOffsetX_;
+		initialScorePositionXArray_[i] = static_cast<int32_t>(static_cast<float_t>(numberTextureSize_.x) * static_cast<float_t>(SCORE_DIGIT_ - i) * scoreScale_) + scorePositionOffsetX_;
 		scoreArray_[i].sprite->SetPosition({ .x = initialScorePositionXArray_[i],.y = initialScorePositionY_ });
 	}
 

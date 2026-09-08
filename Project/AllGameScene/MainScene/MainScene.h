@@ -193,7 +193,7 @@ private:
 
 	//桁関係の定数
 	//スコアの桁数
-	static const uint8_t SCORE_DIGIT_ = 3u;
+	static const uint8_t SCORE_DIGIT_ = 7u;
 	//コンボの桁数
 	static const uint8_t COMBO_DIGIT_ = 4u;
 
