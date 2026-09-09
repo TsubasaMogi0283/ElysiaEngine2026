@@ -90,9 +90,10 @@ private:
 	const std::string READY_TEXTURE_NAME_ = "Ready";
 	
 	//Readyが動いている時間
-	const float_t READY_SCALE_MOVE_TIME_ = 0.5f;
+	const float_t READY_SCALE_MOVE_TIME_ = 0.75f;
 	//動く間隔
-	const float_t READY_SCALE_MOVE_INTERVAL_ = 0.1f;
+	const float_t READY_SCALE_MOVE_INTERVAL_ = 0.2f;
+	const float_t READY_DISPLAY_TIME_ = 1.5f;
 
 	//Go
 	//テクスチャの量
@@ -100,16 +101,20 @@ private:
 	//テクスチャの名前
 	const std::string GO_TEXTURE_NAME_ = "Go!";
 
-	
-	
-
 private:
 	bool isEndTransition = false;
 	//Ready用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, READY_TEXTURE_AMOUNT_> readySpriteArray_ = {};
 	//
-	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyStartMoveTime_ = {};
+	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleUpTime_ = {};
+	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleDownTime_ = {};
+
 	float_t allReadyStartTime_ = 0.0f;
+	bool isNormalDisplayReady_ = false;
+	bool isScaleDaownReady_ = false;
+	bool isScaleDownReady_ = false;
+	float_t readyDisplayTime_ = 0.0f;
+	float_t scaleDownTime_ = 0.0f;
 
 	//Go用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, GO_TEXTURE_AMOUNT_> goSpriteArray_ = {};

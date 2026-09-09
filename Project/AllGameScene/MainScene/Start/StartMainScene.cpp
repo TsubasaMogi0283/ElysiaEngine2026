@@ -30,17 +30,27 @@ void StartMainScene::Initialize() {
 		readySpriteArray_[i] = Elysia::Sprite::Create(readyTextureHandle);
 
 		//文字の動く時間を設定
-		readyStartMoveTime_[i] = {
+		readyScaleUpTime_[i] = {
 			.startTime= READY_SCALE_MOVE_INTERVAL_ * i,
 			.endTime = READY_SCALE_MOVE_INTERVAL_ * i + READY_SCALE_MOVE_TIME_ 
 		};
 
+		//文字の動く時間を設定
+		readyScaleDownTime_[i] = {
+			.startTime = 0.0f,
+			.endTime = READY_SCALE_MOVE_INTERVAL_
+		};
+
 		int32_t textureWidth = static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureWidth(readyTextureHandle));
+		int32_t textureHeight = static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureHeight(readyTextureHandle));
+
 		readySpriteArray_[i]->SetPosition({
-			.x= WINDOW_WIDTH / 2 - (READY_TEXTURE_AMOUNT_-i-2)*(textureWidth )+300,
-			.y= WINDOW_HEIGHT / 2
+			.x = WINDOW_WIDTH / 2 - (READY_TEXTURE_AMOUNT_ - i - 2) * (textureWidth)+100,
+			.y = WINDOW_HEIGHT / 2 - (textureHeight / 2)
 			}
 		);
+		//最初は非表示にする
+		readySpriteArray_[i]->SetInvisible(true);
 	}
 
 	//Goのスプライトの生成
@@ -106,15 +116,45 @@ void StartMainScene::Update() {
 
 	case StartMainSceneState::Ready:
 		//Readyの表示
-
 		allReadyStartTime_ += DELTA_TIME_;
 		for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
-			float_t t = SingleCalculation::InverseLerp(readyStartMoveTime_[i].startTime, readyStartMoveTime_[i].endTime, allReadyStartTime_);
+			readySpriteArray_[i]->SetInvisible(false);
+			
+			float_t t = SingleCalculation::InverseLerp(readyScaleUpTime_[i].startTime, readyScaleUpTime_[i].endTime, allReadyStartTime_);
 			t = std::clamp(t, 0.0f, 1.0f);
 			float_t easeT = Easing::EaseOutBack(t);
 
 			readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = easeT });
+
+			if (t >= 1.0f) {
+				isNormalDisplayReady_ = true;
+			}
+
 		}
+
+
+		if (isNormalDisplayReady_) {
+			readyDisplayTime_ += DELTA_TIME_;
+
+			if (readyDisplayTime_ >= READY_DISPLAY_TIME_) {
+				isScaleDownReady_ = true;
+			}
+		}
+
+		if (isScaleDownReady_) {
+			scaleDownTime_ += DELTA_TIME_;
+
+			//スケールダウンの処理
+			for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
+				float_t t = SingleCalculation::InverseLerp(readyScaleDownTime_[i].startTime, readyScaleDownTime_[i].endTime, scaleDownTime_);
+				t = std::clamp(t, 0.0f, 1.0f);
+				float_t easeT = Easing::EaseInQuart(t);
+
+				readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = 1.0f - easeT });
+			}
+			
+		}
+
 
 
 		break;
@@ -131,6 +171,7 @@ void StartMainScene::Update() {
 
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン(開始)");
+	ImGui::InputFloat("時間", &allReadyStartTime_);
 	ImGui::InputFloat("開始線形補間の値", &startMoveT_);
 	ImGui::InputFloat("sss", &scorePositionY);
 	ImGui::End();
