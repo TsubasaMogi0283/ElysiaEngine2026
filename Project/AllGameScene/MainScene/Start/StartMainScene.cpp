@@ -41,12 +41,15 @@ void StartMainScene::Initialize() {
 			.endTime = READY_SCALE_MOVE_INTERVAL_
 		};
 
-		int32_t textureWidth = static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureWidth(readyTextureHandle));
-		int32_t textureHeight = static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureHeight(readyTextureHandle));
+		//テクスチャサイズ
+		Vector2<int32_t> textureSize = {
+			.x= static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureWidth(readyTextureHandle)),
+			.y= static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureHeight(readyTextureHandle))
+		};
 
 		readySpriteArray_[i]->SetPosition({
-			.x = WINDOW_WIDTH / 2 - (READY_TEXTURE_AMOUNT_ - i - 2) * (textureWidth)+100,
-			.y = WINDOW_HEIGHT / 2 - (textureHeight / 2)
+			.x = WINDOW_WIDTH / 2 - (READY_TEXTURE_AMOUNT_ - i - 2) * (textureSize.x)+100,
+			.y = WINDOW_HEIGHT / 2 - (textureSize.y / 2)
 			}
 		);
 		//最初は非表示にする
@@ -58,9 +61,15 @@ void StartMainScene::Initialize() {
 		std::string fullPath = "Resources/Sprite/ReadyGo/Go/" + std::string(1, GO_TEXTURE_NAME_[i]);
 		uint32_t goTextureHandle = Elysia::TextureManager::GetInstance()->Load(fullPath + ".png");
 
+		//goSpriteArray_[i]->({ .x=,.y = 0.0f });
 		goSpriteArray_[i] = Elysia::Sprite::Create(goTextureHandle);
 	}
 
+
+	//下地のスプライトの生成
+	textBase_ = Elysia::Sprite::Create();
+	//最初は非表示
+	textBase_->SetInvisible(true);
 }
 
 void StartMainScene::Update() {
@@ -115,6 +124,9 @@ void StartMainScene::Update() {
 		break;
 
 	case StartMainSceneState::Ready:
+		//表示
+		textBase_->SetInvisible(false);
+
 		//Readyの表示
 		allReadyStartTime_ += DELTA_TIME_;
 		for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
@@ -150,16 +162,41 @@ void StartMainScene::Update() {
 				t = std::clamp(t, 0.0f, 1.0f);
 				float_t easeT = Easing::EaseInQuart(t);
 
-				readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = 1.0f - easeT });
+				readySpriteArray_[i]->SetScale({ .x = 1.0f- easeT,.y = 1.0f - easeT });
+
+				//Goへ
+				if (t >= 1.0f) {
+					isReadyWait_ = true;
+				}
+			}
+
+
+			waitingTimeArray_[StartMainSceneState::Ready] += DELTA_TIME_;
+			if (waitingTimeArray_[StartMainSceneState::Ready] >= 2.0f) {
+				currentState_ = StartMainSceneState::Go;
 			}
 			
 		}
 
-
-
 		break;
 
 	case StartMainSceneState::Go:
+
+		//スケールダウンの時間
+		goFirstScaleDownTime_ += DELTA_TIME_;
+
+		//スケールダウンの処理
+		for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
+			//線形補間といーじんぐで滑らかにスケールダウン
+			float_t t = SingleCalculation::InverseLerp(0.0f, GO_FIRST_SCALE_DOWN_TIME_, goFirstScaleDownTime_);
+			t = std::clamp(t, 0.0f, 1.0f);
+			float_t easeT = Easing::EaseOutQuart(t);
+			float_t textScale = SingleCalculation::Lerp(GO_MAX_SCALE_, GO_NORMAL_SCALE_, easeT);
+			
+			goSpriteArray_[i]->SetScale({ .x = 1.0f,.y = textScale});
+		}
+
+
 		//Go!!の表示
 		break;
 

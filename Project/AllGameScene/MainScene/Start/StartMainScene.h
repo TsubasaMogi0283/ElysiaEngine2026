@@ -100,6 +100,14 @@ private:
 	static const uint8_t GO_TEXTURE_AMOUNT_ = 3u;
 	//テクスチャの名前
 	const std::string GO_TEXTURE_NAME_ = "Go!";
+	//サイズ
+	const float_t GO_MAX_SCALE_ = 5.0f;
+	const float_t GO_NORMAL_SCALE_ = 1.0f;
+	const float_t GO_MIN_SCALE_ = 0.0f;
+
+	//最初のスケールダウンの時間
+	const float_t GO_FIRST_SCALE_DOWN_TIME_ = 0.75f;
+
 
 private:
 	bool isEndTransition = false;
@@ -108,16 +116,27 @@ private:
 	//
 	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleUpTime_ = {};
 	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleDownTime_ = {};
-
+	
+	//Readyに関する変数
 	float_t allReadyStartTime_ = 0.0f;
 	bool isNormalDisplayReady_ = false;
 	bool isScaleDaownReady_ = false;
 	bool isScaleDownReady_ = false;
 	float_t readyDisplayTime_ = 0.0f;
 	float_t scaleDownTime_ = 0.0f;
+	bool isReadyWait_ = false;
 
 	//Go用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, GO_TEXTURE_AMOUNT_> goSpriteArray_ = {};
+
+	//ReadyやGo!の下地
+	std::unique_ptr<Elysia::Sprite> textBase_ = nullptr;
+	//スケール
+	Vector2<float_t> textBaseScale_ = { .x = 1.0f,.y = 1.0f };
+	//スケールダウンの時間
+	float_t goFirstScaleDownTime_ = 0.0f;
+	float_t goSecondScaleDownTime_ = 0.0f;
+
 
 	//UIの移動を待つ時間
 	std::array<float_t, StartMainSceneState::Amount> waitingTimeArray_ = {};
