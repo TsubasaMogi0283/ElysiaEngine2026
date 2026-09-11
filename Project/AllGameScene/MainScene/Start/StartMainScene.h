@@ -72,6 +72,9 @@ private:
 
 
 private:
+	/// <summary>
+	/// UIテキスト時間情報
+	/// </summary>
 	struct UITextTimeInformation {
 		float_t startTime;
 		float_t endTime;
@@ -128,7 +131,7 @@ private:
 
 	//Go用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, GO_TEXTURE_AMOUNT_> goSpriteArray_ = {};
-
+	Vector2<int32_t> goTextureSize = {};
 	//ReadyやGo!の下地
 	std::unique_ptr<Elysia::Sprite> textBase_ = nullptr;
 	//スケール

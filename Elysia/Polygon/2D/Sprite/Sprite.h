@@ -179,8 +179,8 @@ namespace Elysia {
 		/// テクスチャのサイズの設定
 		/// </summary>
 		/// <param name="textureSize">サイズ</param>
-		inline void SetTextureSize(const Vector2<float_t>& textureSize) {
-			this->textureSize_ = textureSize;
+		inline void SetTextureSize(const Vector2<float_t>& goTextureSize) {
+			this->textureSize_ = goTextureSize;
 		}
 
 		/// <summary>

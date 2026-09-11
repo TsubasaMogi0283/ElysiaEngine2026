@@ -13,20 +13,25 @@
 StartMainScene::StartMainScene() {
 	//インスタンスの取得
 	input_ = Elysia::Input::GetInstance();
+	//テクスチャ
+	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
 void StartMainScene::Initialize() {
 	//メインシーンの空チェック
 	assert(mainScene_);
 
-	const int32_t WINDOW_WIDTH = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x);
-	const int32_t WINDOW_HEIGHT = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().y);
+	//ウィンドウのサイズ
+	const Vector2<int32_t> WINDOW_SIZE = {
+		.x = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x),
+		.y = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().y)
+	};
 
 	//Ready
 	for (uint8_t i = 0; i < READY_TEXTURE_AMOUNT_; i++) {
 		//スプライトの生成
 		std::string fullPath = "Resources/Sprite/ReadyGo/Ready/" + std::string(1, READY_TEXTURE_NAME_[i]);
-		uint32_t readyTextureHandle = Elysia::TextureManager::GetInstance()->Load(fullPath + ".png");
+		uint32_t readyTextureHandle = textureManager_->Load(fullPath + ".png");
 		readySpriteArray_[i] = Elysia::Sprite::Create(readyTextureHandle);
 
 		//文字の動く時間を設定
@@ -42,14 +47,18 @@ void StartMainScene::Initialize() {
 		};
 
 		//テクスチャサイズ
-		Vector2<int32_t> textureSize = {
-			.x= static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureWidth(readyTextureHandle)),
-			.y= static_cast<int32_t>(Elysia::TextureManager::GetInstance()->GetTextureHeight(readyTextureHandle))
+		Vector2<int32_t> readyTextureSize = {
+			.x= static_cast<int32_t>(textureManager_->GetTextureWidth(readyTextureHandle)),
+			.y= static_cast<int32_t>(textureManager_->GetTextureHeight(readyTextureHandle))
 		};
 
+		//アンカーポイント
+		readySpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+
+		//座標の設定
 		readySpriteArray_[i]->SetPosition({
-			.x = WINDOW_WIDTH / 2 - (READY_TEXTURE_AMOUNT_ - i - 2) * (textureSize.x)+100,
-			.y = WINDOW_HEIGHT / 2 - (textureSize.y / 2)
+			.x = WINDOW_SIZE.x / 2 - (2-i) * (readyTextureSize.x),
+			.y = WINDOW_SIZE.y / 2
 			}
 		);
 		//最初は非表示にする
@@ -59,17 +68,36 @@ void StartMainScene::Initialize() {
 	//Goのスプライトの生成
 	for (uint8_t i = 0; i < GO_TEXTURE_AMOUNT_; i++) {
 		std::string fullPath = "Resources/Sprite/ReadyGo/Go/" + std::string(1, GO_TEXTURE_NAME_[i]);
-		uint32_t goTextureHandle = Elysia::TextureManager::GetInstance()->Load(fullPath + ".png");
+		uint32_t goTextureHandle = textureManager_->Load(fullPath + ".png");
+		
+		//サイズ
+		goTextureSize = { 
+			.x = static_cast<int32_t>(textureManager_->GetTextureWidth(goTextureHandle)) ,
+			.y = static_cast<int32_t>(textureManager_->GetTextureHeight(goTextureHandle))
+		};
 
-		//goSpriteArray_[i]->({ .x=,.y = 0.0f });
+
+		//生成
 		goSpriteArray_[i] = Elysia::Sprite::Create(goTextureHandle);
-	}
+		//アンカーポイント
+		goSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+		//座標
+		goSpriteArray_[i]->SetPosition({ .x = WINDOW_SIZE.x/2-(i-1)* goTextureSize.x,.y = WINDOW_SIZE.y/2 });
 
+	}
 
 	//下地のスプライトの生成
 	textBase_ = Elysia::Sprite::Create();
 	//最初は非表示
 	textBase_->SetInvisible(true);
+	//アンカーポイントの設定
+	textBase_->SetAnchorPoint({ .x	= 0.0f,.y = 0.5f });
+
+	//スケール
+	textBaseScale_ = { .x = 1.0f,.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(WINDOW_SIZE.y) };
+	textBase_->SetScale(textBaseScale_);
+	//座標
+	textBase_->SetPosition({ .x = 0,.y = WINDOW_SIZE.y / 2 });
 }
 
 void StartMainScene::Update() {
@@ -77,11 +105,13 @@ void StartMainScene::Update() {
 	float_t gaugePositionY = 0;
 	float_t scorePositionY = 0;
 	float_t easedT = 0.0f;
-	
+	float_t textBaseEaseT = 0.0f;
+	float_t textBaseT = 0.0f;
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
 	switch (currentState_) {
 	case StartMainSceneState::Transition:
+
 		//トランジションから始まる
 		if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
 			isEndTransition = true;
@@ -120,7 +150,6 @@ void StartMainScene::Update() {
 				currentState_ = StartMainSceneState::Ready;
 			}
 		}
-
 		break;
 
 	case StartMainSceneState::Ready:
@@ -135,15 +164,20 @@ void StartMainScene::Update() {
 			float_t t = SingleCalculation::InverseLerp(readyScaleUpTime_[i].startTime, readyScaleUpTime_[i].endTime, allReadyStartTime_);
 			t = std::clamp(t, 0.0f, 1.0f);
 			float_t easeT = Easing::EaseOutBack(t);
-
 			readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = easeT });
 
 			if (t >= 1.0f) {
 				isNormalDisplayReady_ = true;
 			}
-
 		}
 
+		//スケールの設定
+		textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, allReadyStartTime_);
+		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
+		textBaseEaseT=Easing::EaseInOutQuart(textBaseT);
+		
+		textBaseScale_.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(720) *textBaseEaseT;
+		textBase_->SetScale(textBaseScale_);
 
 		if (isNormalDisplayReady_) {
 			readyDisplayTime_ += DELTA_TIME_;
@@ -161,7 +195,6 @@ void StartMainScene::Update() {
 				float_t t = SingleCalculation::InverseLerp(readyScaleDownTime_[i].startTime, readyScaleDownTime_[i].endTime, scaleDownTime_);
 				t = std::clamp(t, 0.0f, 1.0f);
 				float_t easeT = Easing::EaseInQuart(t);
-
 				readySpriteArray_[i]->SetScale({ .x = 1.0f- easeT,.y = 1.0f - easeT });
 
 				//Goへ
@@ -170,14 +203,11 @@ void StartMainScene::Update() {
 				}
 			}
 
-
 			waitingTimeArray_[StartMainSceneState::Ready] += DELTA_TIME_;
 			if (waitingTimeArray_[StartMainSceneState::Ready] >= 2.0f) {
 				currentState_ = StartMainSceneState::Go;
-			}
-			
+			}	
 		}
-
 		break;
 
 	case StartMainSceneState::Go:
@@ -187,7 +217,7 @@ void StartMainScene::Update() {
 
 		//スケールダウンの処理
 		for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
-			//線形補間といーじんぐで滑らかにスケールダウン
+			//線形補間とイージングで滑らかにスケールダウン
 			float_t t = SingleCalculation::InverseLerp(0.0f, GO_FIRST_SCALE_DOWN_TIME_, goFirstScaleDownTime_);
 			t = std::clamp(t, 0.0f, 1.0f);
 			float_t easeT = Easing::EaseOutQuart(t);
@@ -228,6 +258,8 @@ void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLig
 }
 
 void StartMainScene::DrawSprite() {
+	//テキストの下地
+	textBase_->Draw();
 
 	switch (currentState_) {
 	case StartMainSceneState::Ready:

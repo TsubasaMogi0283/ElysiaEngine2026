@@ -241,13 +241,13 @@ private:
 	/// </summary>
 	struct UIInformation {
 		//UI用のスプライト
-		std::unique_ptr<Elysia::Sprite>sprite = nullptr;
+		std::unique_ptr<Elysia::Sprite>sprite;
 		//スプライトの座標
-		Vector2<int32_t> position = {};
+		Vector2<int32_t> position;
 		//値
-		uint16_t value = 0u;
+		uint16_t value;
 		//テクスチャハンドル
-		uint32_t textureHandle = 0u;
+		uint32_t textureHandle;
 	};
 
 

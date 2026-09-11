@@ -344,7 +344,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\AllGameScene\SelectScene\SelectScene.h" />
     <ClInclude Include="Project\AllGameScene\TestScene\TestScene.h" />
     <ClInclude Include="Project\AllGameScene\TitleScene\TitleScene.h" />
-    <ClInclude Include="Project\CollisionConfig\CollisionConfig.h" />
     <ClInclude Include="Project\JudgementLine\JudgementLine.h" />
     <ClInclude Include="Project\Note\BaseNote.h" />
     <ClInclude Include="Project\Note\Long\BaseLongNote.h" />

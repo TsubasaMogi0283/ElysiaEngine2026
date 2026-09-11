@@ -601,9 +601,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Project\CollisionConfig\CollisionConfig.h">
-      <Filter>Project</Filter>
-    </ClInclude>
     <ClInclude Include="Project\AllGameScene\GameSceneFactory.h">
       <Filter>Project\AllGameScene</Filter>
     </ClInclude>

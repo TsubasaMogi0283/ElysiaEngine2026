@@ -57,13 +57,15 @@ void MainScene::Initialize() {
 	uint32_t gaugeTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Gauge.png");
 	gauge_.sprite = Elysia::Sprite::Create(gaugeTextureHandle);
 	//画像サイズ
-	uint64_t gaugeTextureHeight = textureManager_->GetTextureHeight(gaugeTextureHandle);
-	uint64_t gaugeTextureWidth = textureManager_->GetTextureWidth(gaugeTextureHandle);
-	//通常表示座標
-	gaugeDisplayPosition_ = { .x = 640 - static_cast<int32_t>(gaugeTextureWidth / 2u),.y = 720 - static_cast<int32_t>(gaugeTextureHeight) };
-	//初期座標
-	initialGaugePosition_ = { gaugeDisplayPosition_.x, gaugeDisplayPosition_.y + static_cast<int32_t>(gaugeTextureHeight) };
+	Vector2<uint64_t> gaugeTextureSize = {
+		.x= textureManager_->GetTextureWidth(gaugeTextureHandle),
+		.y= textureManager_->GetTextureHeight(gaugeTextureHandle)
+	};
 
+	//通常表示座標
+	gaugeDisplayPosition_ = { .x = 640 - static_cast<int32_t>(gaugeTextureSize.x / 2u),.y = 720 - static_cast<int32_t>(gaugeTextureSize.y) };
+	//初期座標
+	initialGaugePosition_ = { .x = gaugeDisplayPosition_.x,.y = gaugeDisplayPosition_.y + static_cast<int32_t>(gaugeTextureSize.y) };
 
 	//初期設定
 	gauge_.sprite->SetPosition(initialGaugePosition_);
@@ -119,6 +121,7 @@ void MainScene::Initialize() {
 }
 
 void MainScene::Update() {
+
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
