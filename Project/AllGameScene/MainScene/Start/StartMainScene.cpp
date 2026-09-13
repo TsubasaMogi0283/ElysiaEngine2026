@@ -22,7 +22,7 @@ void StartMainScene::Initialize() {
 	assert(mainScene_);
 
 	//ウィンドウのサイズ
-	const Vector2<int32_t> WINDOW_SIZE = {
+	windowSize_ = {
 		.x = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x),
 		.y = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().y)
 	};
@@ -57,8 +57,8 @@ void StartMainScene::Initialize() {
 
 		//座標の設定
 		readySpriteArray_[i]->SetPosition({
-			.x = WINDOW_SIZE.x / 2 - (2-i) * (readyTextureSize.x),
-			.y = WINDOW_SIZE.y / 2
+			.x = windowSize_.x / 2 - (2-i) * (readyTextureSize.x),
+			.y = windowSize_.y / 2
 			}
 		);
 		//最初は非表示にする
@@ -76,13 +76,12 @@ void StartMainScene::Initialize() {
 			.y = static_cast<int32_t>(textureManager_->GetTextureHeight(goTextureHandle))
 		};
 
-
 		//生成
 		goSpriteArray_[i] = Elysia::Sprite::Create(goTextureHandle);
 		//アンカーポイント
 		goSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 		//座標
-		goSpriteArray_[i]->SetPosition({ .x = WINDOW_SIZE.x/2-(i-1)* goTextureSize.x,.y = WINDOW_SIZE.y/2 });
+		goSpriteArray_[i]->SetPosition({ .x = windowSize_.x/2-(i-1)* goTextureSize.x,.y = windowSize_.y/2 });
 
 	}
 
@@ -94,10 +93,10 @@ void StartMainScene::Initialize() {
 	textBase_->SetAnchorPoint({ .x	= 0.0f,.y = 0.5f });
 
 	//スケール
-	textBaseScale_ = { .x = 1.0f,.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(WINDOW_SIZE.y) };
+	textBaseScale_ = { .x = 1.0f,.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(windowSize_.y) };
 	textBase_->SetScale(textBaseScale_);
 	//座標
-	textBase_->SetPosition({ .x = 0,.y = WINDOW_SIZE.y / 2 });
+	textBase_->SetPosition({ .x = 0,.y = windowSize_.y / 2 });
 }
 
 void StartMainScene::Update() {
@@ -107,6 +106,15 @@ void StartMainScene::Update() {
 	float_t easedT = 0.0f;
 	float_t textBaseEaseT = 0.0f;
 	float_t textBaseT = 0.0f;
+
+	float_t goScaleDownT = 0.0f;
+	float_t goScaleDownEaseT = 0.0f;
+	float_t goTextScale = 0.0f;
+
+	float_t goDeleteT = 0.0f;
+	float_t goDeleteEaseT = 0.0f;
+	
+
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
 	switch (currentState_) {
@@ -143,6 +151,17 @@ void StartMainScene::Update() {
 		scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);
 		mainScene_->SetScorePositionsY(static_cast<int32_t>(scorePositionY));
 
+		//下地
+		//表示
+		textBase_->SetInvisible(false);
+		//スケールの設定
+		textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, startMoveT_);
+		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
+		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
+		textBaseScale_.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(windowSize_.y) * textBaseEaseT;
+		textBase_->SetScale(textBaseScale_);
+
+
 		//指定した時間を超えたらReadyへ
 		if (easedT >= 1.0f) {
 			waitingTimeArray_[UIMove] += DELTA_TIME_;
@@ -153,8 +172,7 @@ void StartMainScene::Update() {
 		break;
 
 	case StartMainSceneState::Ready:
-		//表示
-		textBase_->SetInvisible(false);
+		
 
 		//Readyの表示
 		allReadyStartTime_ += DELTA_TIME_;
@@ -171,14 +189,8 @@ void StartMainScene::Update() {
 			}
 		}
 
-		//スケールの設定
-		textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, allReadyStartTime_);
-		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
-		textBaseEaseT=Easing::EaseInOutQuart(textBaseT);
 		
-		textBaseScale_.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(720) *textBaseEaseT;
-		textBase_->SetScale(textBaseScale_);
-
+		//通常表示
 		if (isNormalDisplayReady_) {
 			readyDisplayTime_ += DELTA_TIME_;
 
@@ -187,6 +199,7 @@ void StartMainScene::Update() {
 			}
 		}
 
+		//Ready
 		if (isScaleDownReady_) {
 			scaleDownTime_ += DELTA_TIME_;
 
@@ -205,6 +218,7 @@ void StartMainScene::Update() {
 
 			waitingTimeArray_[StartMainSceneState::Ready] += DELTA_TIME_;
 			if (waitingTimeArray_[StartMainSceneState::Ready] >= 2.0f) {
+				isScaleDown_ = true;
 				currentState_ = StartMainSceneState::Go;
 			}	
 		}
@@ -213,34 +227,78 @@ void StartMainScene::Update() {
 	case StartMainSceneState::Go:
 
 		//スケールダウンの時間
-		goFirstScaleDownTime_ += DELTA_TIME_;
+		if (isScaleDown_) {
+			goFirstScaleDownTime_ += DELTA_TIME_;
 
+			//線形補間とイージングで滑らかにスケールダウン
+			goScaleDownT = SingleCalculation::InverseLerp(0.0f, GO_SCALE_DOWN_TIME_, goFirstScaleDownTime_);
+			goScaleDownT = std::clamp(goScaleDownT, 0.0f, 1.0f);
+			goScaleDownEaseT = Easing::EaseOutQuart(goScaleDownT);
+			goTextScale = SingleCalculation::Lerp(GO_MAX_SCALE_, GO_NORMAL_SCALE_, goScaleDownEaseT);
+
+			if (goScaleDownT >= 1.0f) {
+				goDisplayTime_ += DELTA_TIME_;	
+			}
+
+			//表示時間が過ぎたらTiPLay
+			if (goDisplayTime_ > GO_DISPLAY_TIME_) {
+				isScaleDown_ = false;
+				isDeleteScaleDown_ = true;
+			}
+		}
+		
+		//消していく
+		if (isDeleteScaleDown_) {
+			goDeleteTime_ += DELTA_TIME_;
+			//線形補間とイージングで滑らかにスケールダウン
+			goDeleteT = SingleCalculation::InverseLerp(0.0f, GO_SCALE_DOWN_TIME_, goDeleteTime_);
+			goDeleteT = std::clamp(goDeleteT, 0.0f, 1.0f);
+			goDeleteEaseT = Easing::EaseOutQuart(goDeleteT);
+			goTextScale = SingleCalculation::Lerp(GO_NORMAL_SCALE_, 0.0f, goDeleteEaseT);
+
+			//消えたらBPMチェックへ
+			if (goDeleteT >= 1.0f) {
+				currentState_ = StartMainSceneState::ChechTempo;
+			}
+		}
+		
 		//スケールダウンの処理
 		for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
-			//線形補間とイージングで滑らかにスケールダウン
-			float_t t = SingleCalculation::InverseLerp(0.0f, GO_FIRST_SCALE_DOWN_TIME_, goFirstScaleDownTime_);
-			t = std::clamp(t, 0.0f, 1.0f);
-			float_t easeT = Easing::EaseOutQuart(t);
-			float_t textScale = SingleCalculation::Lerp(GO_MAX_SCALE_, GO_NORMAL_SCALE_, easeT);
-			
-			goSpriteArray_[i]->SetScale({ .x = 1.0f,.y = textScale});
+			goSpriteArray_[i]->SetScale({ .x = 1.0f,.y = goTextScale });
 		}
 
-
-		//Go!!の表示
 		break;
 
-	case StartMainSceneState::ToPlayScene:
+	case StartMainSceneState::ChechTempo:
+		//時間
+		baseScaleTime_ += DELTA_TIME_;
+		//スケールの設定
+		textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, baseScaleTime_);
+		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
+		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
+		textBaseScale_.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(windowSize_.y) * (1.0f - textBaseEaseT);
+		textBase_->SetScale(textBaseScale_);
+
 		//プレイシーンへ
+		if (textBaseT >= 1.0f) {
+			isProcessEnd_ = true;
+		}
 
 		break;
+	}
+
+	//全ての状態の処理が終わったらいざ遊ぶシーンへ！
+	if (isProcessEnd_) {
+		mainScene_->ChangeMainScene(std::make_unique<PlayMainScene>());
+		return;
 	}
 
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン(開始)");
 	ImGui::InputFloat("時間", &allReadyStartTime_);
 	ImGui::InputFloat("開始線形補間の値", &startMoveT_);
-	ImGui::InputFloat("sss", &scorePositionY);
+	ImGui::InputFloat("Goのスケール", &goTextScale);
+	ImGui::InputFloat("DeleteT", &goDeleteT);
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ

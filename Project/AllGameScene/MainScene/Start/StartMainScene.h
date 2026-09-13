@@ -61,7 +61,7 @@ private:
 		//Go!!
 		Go,
 		//プレイシーンへ
-		ToPlayScene,
+		ChechTempo,
 
 		//この列挙体の量
 		Amount,
@@ -109,10 +109,17 @@ private:
 	const float_t GO_MIN_SCALE_ = 0.0f;
 
 	//最初のスケールダウンの時間
-	const float_t GO_FIRST_SCALE_DOWN_TIME_ = 0.75f;
+	const float_t GO_SCALE_DOWN_TIME_ = 0.75f;
+	//Go!の表示時間
+	const float_t GO_DISPLAY_TIME_ = 1.5f;
+
 
 
 private:
+	//ウィンドウのサイズ
+	Vector2<int32_t> windowSize_ = {};
+
+	//トランジション終了したかどうか
 	bool isEndTransition = false;
 	//Ready用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, READY_TEXTURE_AMOUNT_> readySpriteArray_ = {};
@@ -121,6 +128,7 @@ private:
 	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleDownTime_ = {};
 	
 	//Readyに関する変数
+	float_t baseScaleTime_ = 0.0f;
 	float_t allReadyStartTime_ = 0.0f;
 	bool isNormalDisplayReady_ = false;
 	bool isScaleDaownReady_ = false;
@@ -139,6 +147,11 @@ private:
 	//スケールダウンの時間
 	float_t goFirstScaleDownTime_ = 0.0f;
 	float_t goSecondScaleDownTime_ = 0.0f;
+	float_t goDisplayTime_ = 0.0f;
+	bool isScaleDown_ = false;
+	bool isDeleteScaleDown_ = false;
+	//消す時間
+	float_t goDeleteTime_ = 0.0f;
 
 
 	//UIの移動を待つ時間
@@ -146,6 +159,9 @@ private:
 
 	//線形補間(UI開始の動き)
 	float_t startMoveT_ = 0.0f;
+
+	//全ての状態の処理が終わったかどうか
+	bool isProcessEnd_ = false;
 
 };
 
