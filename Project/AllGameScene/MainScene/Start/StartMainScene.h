@@ -91,6 +91,9 @@ private:
 	//テキストのスケールのオフセット
 	float_t TEXT_OFFSET_SCALE_ = 0.2f;
 
+	//線の数
+	static const uint8_t LINE_AMOUNUT_ = 2u;
+
 	//Ready
 	//テクスチャの量
 	static const uint8_t READY_TEXTURE_AMOUNT_ = 5u;
@@ -145,8 +148,11 @@ private:
 	//Go用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, GO_TEXTURE_AMOUNT_> goSpriteArray_ = {};
 	Vector2<int32_t> goTextureSize = {};
+
 	//ReadyやGo!の下地
 	std::unique_ptr<Elysia::Sprite> textBase_ = nullptr;
+	//難易度によって線の色を変えたい
+	std::array<std::unique_ptr<Elysia::Sprite>, LINE_AMOUNUT_>baseLineSpriteArray_ = {};
 	//スケール
 	Vector2<float_t> textBaseScale_ = { .x = 1.0f,.y = 1.0f };
 	//スケールダウンの時間

@@ -97,6 +97,19 @@ void StartMainScene::Initialize() {
 	textBase_->SetScale(textBaseScale_);
 	//座標
 	textBase_->SetPosition({ .x = windowSize_.x/2,.y = windowSize_.y / 2 });
+
+	float_t baseSizeY = windowSize_.y * textBaseScale_.y;
+	//線
+	for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
+		//生成
+		baseLineSpriteArray_[i] = Elysia::Sprite::Create();
+		baseLineSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+		baseLineSpriteArray_[i]->SetPosition({ .x=windowSize_.x/2,.y = windowSize_.y-i });
+
+	}
+
+	
+
 }
 
 void StartMainScene::Update() {
