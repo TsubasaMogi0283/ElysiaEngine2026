@@ -85,6 +85,11 @@ private:
 	const float_t WAIT_FOR_UI_MOVE_TIME_ = 1.0f;
 	//準備を待つ時間
 	const float_t WAIT_FOR_READY_TIME_ = 2.0f;
+	//UIの移動時間
+	const float_t UI_MOVE_TIME_ = 2.0f;
+
+	//テキストのスケールのオフセット
+	float_t TEXT_OFFSET_SCALE_ = 0.2f;
 
 	//Ready
 	//テクスチャの量
@@ -96,7 +101,7 @@ private:
 	const float_t READY_SCALE_MOVE_TIME_ = 0.75f;
 	//動く間隔
 	const float_t READY_SCALE_MOVE_INTERVAL_ = 0.2f;
-	const float_t READY_DISPLAY_TIME_ = 1.5f;
+	const float_t READY_DISPLAY_TIME_ = 2.0f;
 
 	//Go
 	//テクスチャの量
@@ -158,7 +163,7 @@ private:
 	std::array<float_t, StartMainSceneState::Amount> waitingTimeArray_ = {};
 
 	//線形補間(UI開始の動き)
-	float_t startMoveT_ = 0.0f;
+	float_t startMoveTime_ = 0.0f;
 
 	//全ての状態の処理が終わったかどうか
 	bool isProcessEnd_ = false;

@@ -472,10 +472,6 @@ void MainScene::GenerateNotes() {
 void MainScene::AssignToTexture() {
 
 #pragma region スコア
-	
-#ifdef _DEBUG
-	totalScore_ = 1234567u;
-#endif // _DEBUG
 
 	//各桁に数字を割り当てる
 	uint32_t score = totalScore_;

@@ -90,13 +90,13 @@ void StartMainScene::Initialize() {
 	//最初は非表示
 	textBase_->SetInvisible(true);
 	//アンカーポイントの設定
-	textBase_->SetAnchorPoint({ .x	= 0.0f,.y = 0.5f });
+	textBase_->SetAnchorPoint({ .x	= 0.5f,.y = 0.5f });
 
 	//スケール
 	textBaseScale_ = { .x = 1.0f,.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(windowSize_.y) };
 	textBase_->SetScale(textBaseScale_);
 	//座標
-	textBase_->SetPosition({ .x = 0,.y = windowSize_.y / 2 });
+	textBase_->SetPosition({ .x = windowSize_.x/2,.y = windowSize_.y / 2 });
 }
 
 void StartMainScene::Update() {
@@ -104,6 +104,7 @@ void StartMainScene::Update() {
 	float_t gaugePositionY = 0;
 	float_t scorePositionY = 0;
 	float_t easedT = 0.0f;
+	float_t startMoveT = 0.0f;
 	float_t textBaseEaseT = 0.0f;
 	float_t textBaseT = 0.0f;
 
@@ -137,14 +138,19 @@ void StartMainScene::Update() {
 	case StartMainSceneState::UIMove:
 
 		//線形補間の時間を加算
-		startMoveT_ += DELTA_TIME_ * 2.0f;
-		startMoveT_ = std::clamp(startMoveT_, 0.0f, 1.0f);
+		startMoveTime_ += DELTA_TIME_;
+
+		startMoveT = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, startMoveTime_);
+		startMoveT = std::clamp(startMoveT, 0.0f, 1.0f);
 		//イージング
 		//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
-		easedT = Easing::EaseInOutQuad(startMoveT_);
-
+		easedT = Easing::EaseInOutQuad(startMoveT);
+		
 		//ゲージ
-		gaugePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialGaugePosition().y), static_cast<float_t>(mainScene_->GetGaugeDisplayPosition().y), easedT);
+		gaugePositionY = SingleCalculation::Lerp(
+			static_cast<float_t>(mainScene_->GetInitialGaugePosition().y), 
+			static_cast<float_t>(mainScene_->GetGaugeDisplayPosition().y), 
+			easedT);
 		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, static_cast<int32_t>(gaugePositionY)});
 
 		//スコア
@@ -155,10 +161,10 @@ void StartMainScene::Update() {
 		//表示
 		textBase_->SetInvisible(false);
 		//スケールの設定
-		textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, startMoveT_);
+		textBaseT = SingleCalculation::InverseLerp(0.0f, 2.0f, startMoveTime_);
 		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
 		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
-		textBaseScale_.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(windowSize_.y) * textBaseEaseT;
+		textBaseScale_.x = textBaseEaseT;
 		textBase_->SetScale(textBaseScale_);
 
 
@@ -208,7 +214,7 @@ void StartMainScene::Update() {
 				float_t t = SingleCalculation::InverseLerp(readyScaleDownTime_[i].startTime, readyScaleDownTime_[i].endTime, scaleDownTime_);
 				t = std::clamp(t, 0.0f, 1.0f);
 				float_t easeT = Easing::EaseInQuart(t);
-				readySpriteArray_[i]->SetScale({ .x = 1.0f- easeT,.y = 1.0f - easeT });
+				readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = 1.0f - easeT });
 
 				//Goへ
 				if (t >= 1.0f) {
@@ -245,6 +251,11 @@ void StartMainScene::Update() {
 				isScaleDown_ = false;
 				isDeleteScaleDown_ = true;
 			}
+			//スケールダウンの処理
+			for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
+				goSpriteArray_[i]->SetScale({ .x = goTextScale,.y = goTextScale });
+			}
+
 		}
 		
 		//消していく
@@ -256,15 +267,15 @@ void StartMainScene::Update() {
 			goDeleteEaseT = Easing::EaseOutQuart(goDeleteT);
 			goTextScale = SingleCalculation::Lerp(GO_NORMAL_SCALE_, 0.0f, goDeleteEaseT);
 
+			//スケールダウンの処理
+			for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
+				goSpriteArray_[i]->SetScale({ .x = 1.0f,.y = goTextScale });
+			}
+
 			//消えたらBPMチェックへ
 			if (goDeleteT >= 1.0f) {
 				currentState_ = StartMainSceneState::ChechTempo;
 			}
-		}
-		
-		//スケールダウンの処理
-		for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
-			goSpriteArray_[i]->SetScale({ .x = 1.0f,.y = goTextScale });
 		}
 
 		break;
@@ -276,7 +287,7 @@ void StartMainScene::Update() {
 		textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, baseScaleTime_);
 		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
 		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
-		textBaseScale_.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(windowSize_.y) * (1.0f - textBaseEaseT);
+		textBaseScale_.x = 1.0f - textBaseEaseT;
 		textBase_->SetScale(textBaseScale_);
 
 		//プレイシーンへ
@@ -296,7 +307,7 @@ void StartMainScene::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン(開始)");
 	ImGui::InputFloat("時間", &allReadyStartTime_);
-	ImGui::InputFloat("開始線形補間の値", &startMoveT_);
+	ImGui::InputFloat("開始線形補間の値", &startMoveTime_);
 	ImGui::InputFloat("Goのスケール", &goTextScale);
 	ImGui::InputFloat("DeleteT", &goDeleteT);
 	ImGui::End();
