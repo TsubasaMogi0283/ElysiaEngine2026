@@ -102,7 +102,7 @@ private:
 	static const uint8_t READY_TEXTURE_AMOUNT_ = 5u;
 	//テクスチャの名前
 	const std::string READY_TEXTURE_NAME_ = "Ready";
-	
+
 	//Readyが動いている時間
 	const float_t READY_SCALE_MOVE_TIME_ = 0.75f;
 	//動く間隔
@@ -137,7 +137,7 @@ private:
 	//
 	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleUpTime_ = {};
 	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleDownTime_ = {};
-	
+
 	//Readyに関する変数
 	float_t baseScaleTime_ = 0.0f;
 	float_t allReadyStartTime_ = 0.0f;
@@ -175,7 +175,7 @@ private:
 	float_t startMoveTime_ = 0.0f;
 
 	//楽曲情報
-	float_t bpm_ = 0.0f;
+	int32_t bpm_ = 0;
 	std::string level_ = "";
 
 	//全ての状態の処理が終わったかどうか

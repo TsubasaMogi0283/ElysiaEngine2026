@@ -37,8 +37,8 @@ void StartMainScene::Initialize() {
 
 		//文字の動く時間を設定
 		readyScaleUpTime_[i] = {
-			.startTime= READY_SCALE_MOVE_INTERVAL_ * i,
-			.endTime = READY_SCALE_MOVE_INTERVAL_ * i + READY_SCALE_MOVE_TIME_ 
+			.startTime = READY_SCALE_MOVE_INTERVAL_ * i,
+			.endTime = READY_SCALE_MOVE_INTERVAL_ * i + READY_SCALE_MOVE_TIME_
 		};
 
 		//文字の動く時間を設定
@@ -49,8 +49,8 @@ void StartMainScene::Initialize() {
 
 		//テクスチャサイズ
 		Vector2<int32_t> readyTextureSize = {
-			.x= static_cast<int32_t>(textureManager_->GetTextureWidth(readyTextureHandle)),
-			.y= static_cast<int32_t>(textureManager_->GetTextureHeight(readyTextureHandle))
+			.x = static_cast<int32_t>(textureManager_->GetTextureWidth(readyTextureHandle)),
+			.y = static_cast<int32_t>(textureManager_->GetTextureHeight(readyTextureHandle))
 		};
 
 		//アンカーポイント
@@ -58,7 +58,7 @@ void StartMainScene::Initialize() {
 
 		//座標の設定
 		readySpriteArray_[i]->SetPosition({
-			.x = windowSize_.x / 2 - (2-i) * (readyTextureSize.x),
+			.x = windowSize_.x / 2 - (2 - i) * (readyTextureSize.x),
 			.y = windowSize_.y / 2
 			}
 		);
@@ -71,9 +71,9 @@ void StartMainScene::Initialize() {
 		//パス
 		std::string fullPath = "Resources/Sprite/ReadyGo/Go/" + std::string(1, GO_TEXTURE_NAME_[i]);
 		uint32_t goTextureHandle = textureManager_->Load(fullPath + ".png");
-		
+
 		//サイズ
-		goTextureSize = { 
+		goTextureSize = {
 			.x = static_cast<int32_t>(textureManager_->GetTextureWidth(goTextureHandle)) ,
 			.y = static_cast<int32_t>(textureManager_->GetTextureHeight(goTextureHandle))
 		};
@@ -83,7 +83,7 @@ void StartMainScene::Initialize() {
 		//アンカーポイント
 		goSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 		//座標
-		goSpriteArray_[i]->SetPosition({ .x = windowSize_.x/2-(i-1)* goTextureSize.x,.y = windowSize_.y/2 });
+		goSpriteArray_[i]->SetPosition({ .x = windowSize_.x / 2 - (i - 1) * goTextureSize.x,.y = windowSize_.y / 2 });
 
 	}
 
@@ -92,18 +92,18 @@ void StartMainScene::Initialize() {
 	//最初は非表示
 	textBase_->SetInvisible(true);
 	//アンカーポイントの設定
-	textBase_->SetAnchorPoint({ .x	= 0.5f,.y = 0.5f });
+	textBase_->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 
 	//スケール
 	textBaseScale_ = { .x = 1.0f,.y = static_cast<float_t>(goTextureSize.y) / static_cast<float_t>(windowSize_.y) };
 	textBase_->SetScale(textBaseScale_);
 	//座標
-	textBase_->SetPosition({ .x = windowSize_.x/2,.y = windowSize_.y / 2 });
+	textBase_->SetPosition({ .x = windowSize_.x / 2,.y = windowSize_.y / 2 });
 	//サイズ
 	int32_t baseSizeY = static_cast<int32_t>(static_cast<float_t>(windowSize_.y) * textBaseScale_.y);
 
 	//BPMの取得
-	bpm_ = mainScene_->GetScoreData().musicInformation.bpm;
+	bpm_ = static_cast<int32_t>(mainScene_->GetScoreData().musicInformation.bpm);
 	//レベルの取得
 	level_ = mainScene_->GetScoreData().musicInformation.level;
 
@@ -112,14 +112,11 @@ void StartMainScene::Initialize() {
 	Vector4 levelColor = {};
 	if (level_ == "Easy") {
 		levelColor = Color::Conevert(Color::EASY);
-	}
-	else if (level_ == "Normal") {
+	} else if (level_ == "Normal") {
 		levelColor = Color::Conevert(Color::NORMAL);
-	}
-	else if (level_ == "Hard") {
+	} else if (level_ == "Hard") {
 		levelColor = Color::Conevert(Color::HARD);
-	}
-	else if (level_ == "Special") {
+	} else if (level_ == "Special") {
 		levelColor = Color::Conevert(Color::SPECIAL);
 	}
 
@@ -130,7 +127,7 @@ void StartMainScene::Initialize() {
 		//アンカーポイント
 		baseLineSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 		//座標
-		baseLineSpriteArray_[i]->SetPosition({ .x=windowSize_.x/2,.y = windowSize_.y/2-baseSizeY/2+i* baseSizeY });
+		baseLineSpriteArray_[i]->SetPosition({ .x = windowSize_.x / 2,.y = windowSize_.y / 2 - baseSizeY / 2 + i * baseSizeY });
 		//スケール
 		baseLineSpriteArray_[i]->SetScale({ .x = 0.0f,.y = LINE_SCALE_ });
 		//色
@@ -153,7 +150,7 @@ void StartMainScene::Update() {
 
 	float_t goDeleteT = 0.0f;
 	float_t goDeleteEaseT = 0.0f;
-	
+
 
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
@@ -184,13 +181,13 @@ void StartMainScene::Update() {
 		//イージング
 		//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
 		easedT = Easing::EaseInOutQuad(startMoveT);
-		
+
 		//ゲージ
 		gaugePositionY = SingleCalculation::Lerp(
-			static_cast<float_t>(mainScene_->GetInitialGaugePosition().y), 
-			static_cast<float_t>(mainScene_->GetGaugeDisplayPosition().y), 
+			static_cast<float_t>(mainScene_->GetInitialGaugePosition().y),
+			static_cast<float_t>(mainScene_->GetGaugeDisplayPosition().y),
 			easedT);
-		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, static_cast<int32_t>(gaugePositionY)});
+		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, static_cast<int32_t>(gaugePositionY) });
 
 		//スコア
 		scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);
@@ -221,13 +218,13 @@ void StartMainScene::Update() {
 		break;
 
 	case StartMainSceneState::Ready:
-		
+
 
 		//Readyの表示
 		allReadyStartTime_ += DELTA_TIME_;
 		for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
 			readySpriteArray_[i]->SetInvisible(false);
-			
+
 			float_t t = SingleCalculation::InverseLerp(readyScaleUpTime_[i].startTime, readyScaleUpTime_[i].endTime, allReadyStartTime_);
 			t = std::clamp(t, 0.0f, 1.0f);
 			float_t easeT = Easing::EaseOutBack(t);
@@ -238,7 +235,7 @@ void StartMainScene::Update() {
 			}
 		}
 
-		
+
 		//通常表示
 		if (isNormalDisplayReady_) {
 			readyDisplayTime_ += DELTA_TIME_;
@@ -269,7 +266,7 @@ void StartMainScene::Update() {
 			if (waitingTimeArray_[StartMainSceneState::Ready] >= 2.0f) {
 				isScaleDown_ = true;
 				currentState_ = StartMainSceneState::Go;
-			}	
+			}
 		}
 		break;
 
@@ -286,7 +283,7 @@ void StartMainScene::Update() {
 			goTextScale = SingleCalculation::Lerp(GO_MAX_SCALE_, GO_NORMAL_SCALE_, goScaleDownEaseT);
 
 			if (goScaleDownT >= 1.0f) {
-				goDisplayTime_ += DELTA_TIME_;	
+				goDisplayTime_ += DELTA_TIME_;
 			}
 
 			//表示時間が過ぎたらTiPLay
@@ -300,7 +297,7 @@ void StartMainScene::Update() {
 			}
 
 		}
-		
+
 		//消していく
 		if (isDeleteScaleDown_) {
 			goDeleteTime_ += DELTA_TIME_;
@@ -335,9 +332,8 @@ void StartMainScene::Update() {
 		//線
 		for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
 			//生成
-			baseLineSpriteArray_[i]->SetScale({ .x = 1.0f-textBaseEaseT,.y = LINE_SCALE_ });
+			baseLineSpriteArray_[i]->SetScale({ .x = 1.0f - textBaseEaseT,.y = LINE_SCALE_ });
 		}
-		
 
 		//プレイシーンへ
 		if (textBaseT >= 1.0f) {
@@ -348,7 +344,7 @@ void StartMainScene::Update() {
 		break;
 
 	case StartMainSceneState::ChechTempo:
-		
+
 		break;
 	}
 
