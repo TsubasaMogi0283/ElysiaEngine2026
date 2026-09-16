@@ -39,20 +39,4 @@ namespace Convert {
 		std::string ToString(const std::wstring& text);
 
 	}
-
-	/// <summary>
-	/// 色
-	/// </summary>
-	namespace Color {
-
-		/// <summary>
-		/// 変換(uint32_t→Vector4) 
-		/// </summary>
-		/// <param name="color">色</param>
-		/// <returns>色(Vector4)</returns>
-		Vector4 Adapter(const uint32_t& color);
-
-	}
-	
-
 }

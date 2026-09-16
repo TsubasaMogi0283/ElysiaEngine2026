@@ -1,21 +1,5 @@
 #include "Convert.h"
 
-Vector4 Convert::Color::Adapter(const uint32_t& color) {
-    Vector4 result = {
-        //赤
-       .x = ((color >> 24) & 0xFF) / 255.0f,
-       //緑
-       .y = ((color >> 16) & 0xFF) / 255.0f,
-       //青
-       .z = ((color >> 8) & 0xFF) / 255.0f,
-       //透明度
-       .w = ((color) & 0xFF) / 255.0f
-
-    };
-
-    return result;
-
-}
 
 std::wstring Convert::Text::ToWString(const std::string& text){
     //何もなかったら空を返す

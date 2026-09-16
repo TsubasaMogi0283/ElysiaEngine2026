@@ -54,12 +54,14 @@ private:
 	enum StartMainSceneState {
 		//トランジション
 		Transition,
-		//UIの移動
-		UIMove,
+		//UIの移動(スケールアップ)
+		UIMoveScaleUp,
 		//Ready
 		Ready,
 		//Go!!
 		Go,
+		//UIの移動(スケールダウン)
+		UIMoveScaleDown,
 		//プレイシーンへ
 		ChechTempo,
 
@@ -171,6 +173,10 @@ private:
 
 	//線形補間(UI開始の動き)
 	float_t startMoveTime_ = 0.0f;
+
+	//楽曲情報
+	float_t bpm_ = 0.0f;
+	std::string level_ = "";
 
 	//全ての状態の処理が終わったかどうか
 	bool isProcessEnd_ = false;

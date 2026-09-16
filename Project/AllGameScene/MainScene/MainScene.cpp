@@ -25,6 +25,7 @@ MainScene::MainScene() {
 
 void MainScene::Initialize() {
 	//楽曲譜面情報を取得
+	//今は入らない
 	musicInformation_ = gameManager_->GetMusicInformation();
 #ifdef _DEBUG
 	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();

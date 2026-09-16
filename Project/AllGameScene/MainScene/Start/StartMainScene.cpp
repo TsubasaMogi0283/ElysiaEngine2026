@@ -9,6 +9,7 @@
 #include <TextureManager.h>
 #include <WindowsSetup.h>
 #include <MainScene/Play/PlayMainScene.h>
+#include <Color.h>
 
 StartMainScene::StartMainScene() {
 	//インスタンスの取得
@@ -67,6 +68,7 @@ void StartMainScene::Initialize() {
 
 	//Goのスプライトの生成
 	for (uint8_t i = 0; i < GO_TEXTURE_AMOUNT_; i++) {
+		//パス
 		std::string fullPath = "Resources/Sprite/ReadyGo/Go/" + std::string(1, GO_TEXTURE_NAME_[i]);
 		uint32_t goTextureHandle = textureManager_->Load(fullPath + ".png");
 		
@@ -97,20 +99,43 @@ void StartMainScene::Initialize() {
 	textBase_->SetScale(textBaseScale_);
 	//座標
 	textBase_->SetPosition({ .x = windowSize_.x/2,.y = windowSize_.y / 2 });
-
+	//サイズ
 	int32_t baseSizeY = static_cast<int32_t>(static_cast<float_t>(windowSize_.y) * textBaseScale_.y);
+
+	//BPMの取得
+	bpm_ = mainScene_->GetScoreData().musicInformation.bpm;
+	//レベルの取得
+	level_ = mainScene_->GetScoreData().musicInformation.level;
+
 	//線
+	//レベルによって色を変える
+	Vector4 levelColor = {};
+	if (level_ == "Easy") {
+		levelColor = Color::Conevert(Color::EASY);
+	}
+	else if (level_ == "Normal") {
+		levelColor = Color::Conevert(Color::NORMAL);
+	}
+	else if (level_ == "Hard") {
+		levelColor = Color::Conevert(Color::HARD);
+	}
+	else if (level_ == "Special") {
+		levelColor = Color::Conevert(Color::SPECIAL);
+	}
+
+	//スプライトの設定
 	for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
 		//生成
 		baseLineSpriteArray_[i] = Elysia::Sprite::Create();
+		//アンカーポイント
 		baseLineSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+		//座標
 		baseLineSpriteArray_[i]->SetPosition({ .x=windowSize_.x/2,.y = windowSize_.y/2-baseSizeY/2+i* baseSizeY });
+		//スケール
 		baseLineSpriteArray_[i]->SetScale({ .x = 0.0f,.y = LINE_SCALE_ });
-		baseLineSpriteArray_[i]->SetColor({ .x = 1.0f,.y = 0.0f,.z = 1.0f,.w = 1.0f });
+		//色
+		baseLineSpriteArray_[i]->SetColor(levelColor);
 	}
-
-	
-
 }
 
 void StartMainScene::Update() {
@@ -144,12 +169,12 @@ void StartMainScene::Update() {
 			waitingTimeArray_[Transition] += DELTA_TIME_;
 			if (waitingTimeArray_[Transition] >= WAIT_FOR_UI_MOVE_TIME_) {
 				//トランジションが終わったらUIの移動へ
-				currentState_ = StartMainSceneState::UIMove;
+				currentState_ = StartMainSceneState::UIMoveScaleUp;
 			}
 		}
 		break;
 
-	case StartMainSceneState::UIMove:
+	case StartMainSceneState::UIMoveScaleUp:
 
 		//線形補間の時間を加算
 		startMoveTime_ += DELTA_TIME_;
@@ -188,8 +213,8 @@ void StartMainScene::Update() {
 
 		//指定した時間を超えたらReadyへ
 		if (easedT >= 1.0f) {
-			waitingTimeArray_[UIMove] += DELTA_TIME_;
-			if (waitingTimeArray_[UIMove] >= WAIT_FOR_READY_TIME_) {
+			waitingTimeArray_[UIMoveScaleUp] += DELTA_TIME_;
+			if (waitingTimeArray_[UIMoveScaleUp] >= WAIT_FOR_READY_TIME_) {
 				currentState_ = StartMainSceneState::Ready;
 			}
 		}
@@ -292,13 +317,13 @@ void StartMainScene::Update() {
 
 			//消えたらBPMチェックへ
 			if (goDeleteT >= 1.0f) {
-				currentState_ = StartMainSceneState::ChechTempo;
+				currentState_ = StartMainSceneState::UIMoveScaleDown;
 			}
 		}
 
 		break;
 
-	case StartMainSceneState::ChechTempo:
+	case StartMainSceneState::UIMoveScaleDown:
 		//時間
 		baseScaleTime_ += DELTA_TIME_;
 		//スケールの設定
@@ -312,13 +337,18 @@ void StartMainScene::Update() {
 			//生成
 			baseLineSpriteArray_[i]->SetScale({ .x = 1.0f-textBaseEaseT,.y = LINE_SCALE_ });
 		}
-
+		
 
 		//プレイシーンへ
 		if (textBaseT >= 1.0f) {
-			isProcessEnd_ = true;
+			currentState_ = StartMainSceneState::ChechTempo;
+			//isProcessEnd_ = true;
 		}
 
+		break;
+
+	case StartMainSceneState::ChechTempo:
+		
 		break;
 	}
 
