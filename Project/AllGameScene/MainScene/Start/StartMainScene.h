@@ -46,6 +46,21 @@ public:
 	/// </summary>
 	~StartMainScene()override = default;
 
+private:
+	/// <summary>
+	/// 各状態を実行
+	/// </summary>
+	typedef void (StartMainScene::* function)();
+
+	/// <summary>
+	/// 各状態の関数テーブル
+	/// </summary>
+	static void (StartMainScene::* functionTable[])();
+
+	/// <summary>
+	/// トランジション
+	/// </summary>
+	void Transition();
 
 private:
 	/// <summary>
@@ -71,6 +86,8 @@ private:
 
 	//現在の状態
 	StartMainSceneState currentState_ = StartMainSceneState::Transition;
+
+
 
 
 private:

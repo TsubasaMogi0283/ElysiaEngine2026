@@ -135,6 +135,10 @@ void StartMainScene::Initialize() {
 	}
 }
 
+//void (StartMainScene::* StartMainScene::functionTable[])() = {
+//	&StartMainScene::Transition();
+//};
+
 void StartMainScene::Update() {
 
 	float_t gaugePositionY = 0;
@@ -347,6 +351,9 @@ void StartMainScene::Update() {
 
 		break;
 	}
+	
+	//各状態を実行
+	(this->*function)();
 
 	//全ての状態の処理が終わったらいざ遊ぶシーンへ！
 	if (isProcessEnd_) {
@@ -404,3 +411,4 @@ void StartMainScene::DrawSprite() {
 		break;
 	}
 }
+
