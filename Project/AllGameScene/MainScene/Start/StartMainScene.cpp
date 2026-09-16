@@ -313,6 +313,7 @@ void StartMainScene::Update() {
 			baseLineSpriteArray_[i]->SetScale({ .x = 1.0f-textBaseEaseT,.y = LINE_SCALE_ });
 		}
 
+
 		//プレイシーンへ
 		if (textBaseT >= 1.0f) {
 			isProcessEnd_ = true;
