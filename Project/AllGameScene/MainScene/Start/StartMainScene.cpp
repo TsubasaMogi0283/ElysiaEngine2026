@@ -98,14 +98,15 @@ void StartMainScene::Initialize() {
 	//座標
 	textBase_->SetPosition({ .x = windowSize_.x/2,.y = windowSize_.y / 2 });
 
-	float_t baseSizeY = windowSize_.y * textBaseScale_.y;
+	int32_t baseSizeY = static_cast<int32_t>(static_cast<float_t>(windowSize_.y) * textBaseScale_.y);
 	//線
 	for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
 		//生成
 		baseLineSpriteArray_[i] = Elysia::Sprite::Create();
 		baseLineSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
-		baseLineSpriteArray_[i]->SetPosition({ .x=windowSize_.x/2,.y = windowSize_.y-i });
-
+		baseLineSpriteArray_[i]->SetPosition({ .x=windowSize_.x/2,.y = windowSize_.y/2-baseSizeY/2+i* baseSizeY });
+		baseLineSpriteArray_[i]->SetScale({ .x = 0.0f,.y = LINE_SCALE_ });
+		baseLineSpriteArray_[i]->SetColor({ .x = 1.0f,.y = 0.0f,.z = 1.0f,.w = 1.0f });
 	}
 
 	
@@ -179,7 +180,11 @@ void StartMainScene::Update() {
 		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
 		textBaseScale_.x = textBaseEaseT;
 		textBase_->SetScale(textBaseScale_);
-
+		//線
+		for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
+			//生成
+			baseLineSpriteArray_[i]->SetScale({ .x = textBaseEaseT,.y = LINE_SCALE_ });
+		}
 
 		//指定した時間を超えたらReadyへ
 		if (easedT >= 1.0f) {
@@ -302,6 +307,11 @@ void StartMainScene::Update() {
 		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
 		textBaseScale_.x = 1.0f - textBaseEaseT;
 		textBase_->SetScale(textBaseScale_);
+		//線
+		for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
+			//生成
+			baseLineSpriteArray_[i]->SetScale({ .x = 1.0f-textBaseEaseT,.y = LINE_SCALE_ });
+		}
 
 		//プレイシーンへ
 		if (textBaseT >= 1.0f) {
@@ -342,6 +352,13 @@ void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLig
 void StartMainScene::DrawSprite() {
 	//テキストの下地
 	textBase_->Draw();
+
+	//線
+	for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
+		//生成
+		baseLineSpriteArray_[i]->Draw();
+
+	}
 
 	switch (currentState_) {
 	case StartMainSceneState::Ready:

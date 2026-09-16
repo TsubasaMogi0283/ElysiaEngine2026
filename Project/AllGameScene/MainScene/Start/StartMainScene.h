@@ -93,6 +93,7 @@ private:
 
 	//線の数
 	static const uint8_t LINE_AMOUNUT_ = 2u;
+	const float_t LINE_SCALE_ = 0.025f;
 
 	//Ready
 	//テクスチャの量
