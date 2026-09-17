@@ -444,11 +444,11 @@ void Elysia::DirectXSetup::SetResourceBarrier(const ComPtr<ID3D12Resource>& reso
 	};
 
 	//バリアを張る対象のリソース。現在のバックバッファに対して行う
-	barrier.Transition.pResource = resource.Get();
+	barrier.TransitionS.pResource = resource.Get();
 	//遷移前(現在)のResourceState
-	barrier.Transition.StateBefore = beforeState;
+	barrier.TransitionS.StateBefore = beforeState;
 	//遷移後のResourceState
-	barrier.Transition.StateAfter = afterState;
+	barrier.TransitionS.StateAfter = afterState;
 	//TransitionBarrierを張る
 	DirectXSetup::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier);
 
@@ -470,11 +470,11 @@ void Elysia::DirectXSetup::SetResourceBarrierForSwapChain(const D3D12_RESOURCE_S
 		.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
 	};
 	//バリアを張る対象のリソース。現在のバックバッファに対して行う
-	barrier.Transition.pResource = DirectXSetup::GetInstance()->swapChain_.resource[DirectXSetup::GetInstance()->backBufferIndex_].Get();
+	barrier.TransitionS.pResource = DirectXSetup::GetInstance()->swapChain_.resource[DirectXSetup::GetInstance()->backBufferIndex_].Get();
 	//遷移前(現在)のResourceState
-	barrier.Transition.StateBefore = beforeState;
+	barrier.TransitionS.StateBefore = beforeState;
 	//遷移後のResourceState
-	barrier.Transition.StateAfter = afterState;
+	barrier.TransitionS.StateAfter = afterState;
 	//TransitionBarrierを張る
 	DirectXSetup::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier);
 

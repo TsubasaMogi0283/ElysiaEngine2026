@@ -159,7 +159,7 @@ void StartMainScene::Update() {
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
 	switch (currentState_) {
-	case StartMainSceneState::Transition:
+	case StartMainSceneState::TransitionS:
 
 		//トランジションから始まる
 		if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
@@ -167,8 +167,8 @@ void StartMainScene::Update() {
 		}
 
 		if (isEndTransition) {
-			waitingTimeArray_[Transition] += DELTA_TIME_;
-			if (waitingTimeArray_[Transition] >= WAIT_FOR_UI_MOVE_TIME_) {
+			waitingTimeArray_[TransitionS] += DELTA_TIME_;
+			if (waitingTimeArray_[TransitionS] >= WAIT_FOR_UI_MOVE_TIME_) {
 				//トランジションが終わったらUIの移動へ
 				currentState_ = StartMainSceneState::UIMoveScaleUp;
 			}
@@ -353,7 +353,7 @@ void StartMainScene::Update() {
 	}
 	
 	//各状態を実行
-	(this->*function)();
+	(this->*functionTable[0])();
 
 	//全ての状態の処理が終わったらいざ遊ぶシーンへ！
 	if (isProcessEnd_) {
@@ -410,5 +410,13 @@ void StartMainScene::DrawSprite() {
 
 		break;
 	}
+}
+
+void (StartMainScene::* functionTable[])() = {
+		&StartMainScene::TransitionP,
+};
+
+void StartMainScene::TransitionP(){
+
 }
 

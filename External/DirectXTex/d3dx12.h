@@ -959,7 +959,7 @@ struct CD3DX12_RESOURCE_BARRIER : public D3D12_RESOURCE_BARRIER
     explicit CD3DX12_RESOURCE_BARRIER(const D3D12_RESOURCE_BARRIER &o) noexcept :
         D3D12_RESOURCE_BARRIER(o)
     {}
-    static inline CD3DX12_RESOURCE_BARRIER Transition(
+    static inline CD3DX12_RESOURCE_BARRIER TransitionS(
         _In_ ID3D12Resource* pResource,
         D3D12_RESOURCE_STATES stateBefore,
         D3D12_RESOURCE_STATES stateAfter,
@@ -970,10 +970,10 @@ struct CD3DX12_RESOURCE_BARRIER : public D3D12_RESOURCE_BARRIER
         D3D12_RESOURCE_BARRIER &barrier = result;
         result.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
         result.Flags = flags;
-        barrier.Transition.pResource = pResource;
-        barrier.Transition.StateBefore = stateBefore;
-        barrier.Transition.StateAfter = stateAfter;
-        barrier.Transition.Subresource = subresource;
+        barrier.TransitionS.pResource = pResource;
+        barrier.TransitionS.StateBefore = stateBefore;
+        barrier.TransitionS.StateAfter = stateAfter;
+        barrier.TransitionS.Subresource = subresource;
         return result;
     }
     static inline CD3DX12_RESOURCE_BARRIER Aliasing(

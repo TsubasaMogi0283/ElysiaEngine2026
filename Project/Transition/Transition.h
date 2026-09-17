@@ -18,12 +18,12 @@ class GameManager;
 /// <summary>
 /// トランジション
 /// </summary>
-class Transition{
+class TransitionS{
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Transition() = default;
+	TransitionS() = default;
 
 	/// <summary>
 	/// 初期化
@@ -43,7 +43,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Transition() = default;
+	~TransitionS() = default;
 
 public:
 

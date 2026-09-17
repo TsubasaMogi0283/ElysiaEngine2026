@@ -366,10 +366,10 @@ static void ImGui_ImplDX12_CreateFontsTexture()
         D3D12_RESOURCE_BARRIER barrier = {};
         barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
         barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-        barrier.Transition.pResource   = pTexture;
-        barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
-        barrier.Transition.StateAfter  = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+        barrier.TransitionS.pResource   = pTexture;
+        barrier.TransitionS.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+        barrier.TransitionS.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+        barrier.TransitionS.StateAfter  = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
 
         ID3D12Fence* fence = nullptr;
         hr = bd->pd3dDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));

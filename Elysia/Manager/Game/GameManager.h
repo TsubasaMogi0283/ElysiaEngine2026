@@ -86,7 +86,7 @@ namespace Elysia {
 		/// トランジションクラスを取得
 		/// </summary>
 		/// <returns>トランジションクラス</returns>
-		Transition* GetTransition()const {
+		TransitionS* GetTransition()const {
 			return transition_.get();
 		}
 
@@ -141,7 +141,7 @@ namespace Elysia {
 		//レコード管理クラス
 		std::unique_ptr<RecordManager> recordManager_ = nullptr;
 		//トランジションクラス
-		std::unique_ptr<Transition>transition_ = nullptr;
+		std::unique_ptr<TransitionS>transition_ = nullptr;
 
 	private:
 		//一時保管場所

@@ -46,21 +46,24 @@ public:
 	/// </summary>
 	~StartMainScene()override = default;
 
+public:
+	/// <summary>
+	/// トランジション
+	/// </summary>
+	void TransitionP();
+
 private:
 	/// <summary>
 	/// 各状態を実行
 	/// </summary>
 	typedef void (StartMainScene::* function)();
 
+	
+
 	/// <summary>
 	/// 各状態の関数テーブル
 	/// </summary>
 	static void (StartMainScene::* functionTable[])();
-
-	/// <summary>
-	/// トランジション
-	/// </summary>
-	void Transition();
 
 private:
 	/// <summary>
@@ -68,7 +71,7 @@ private:
 	/// </summary>
 	enum StartMainSceneState {
 		//トランジション
-		Transition,
+		TransitionS,
 		//UIの移動(スケールアップ)
 		UIMoveScaleUp,
 		//Ready
@@ -85,7 +88,7 @@ private:
 	};
 
 	//現在の状態
-	StartMainSceneState currentState_ = StartMainSceneState::Transition;
+	StartMainSceneState currentState_ = StartMainSceneState::TransitionS;
 
 
 

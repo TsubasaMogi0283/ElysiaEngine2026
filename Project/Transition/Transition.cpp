@@ -4,7 +4,7 @@
 #include <Easing.h>
 
 
-void Transition::Initialize(){
+void TransitionS::Initialize(){
 	//テクスチャの読み込み
 	textureHandle_ = Elysia::TextureManager::GetInstance()->Load("Resources/Sprite/Back/White.png");
 
@@ -32,7 +32,7 @@ void Transition::Initialize(){
 	}
 }
 
-void Transition::Update(){
+void TransitionS::Update(){
 
 	for (uint8_t i = 0u;i < DIVIDE_NUMBER_;i++) {
 		spriteArray_[i]->SetScale({ .x = widthScale_, .y = heightScale_ });
@@ -47,13 +47,13 @@ void Transition::Update(){
 
 }
 
-void Transition::DrawSprite(){
+void TransitionS::DrawSprite(){
 	for (uint8_t i = 0u;i < DIVIDE_NUMBER_;i++) {
 		spriteArray_[i]->Draw();
 	}
 }
 
-bool Transition::SetOpenTransition(){
+bool TransitionS::SetOpenTransition(){
 
 	bool isEnd = false;
 

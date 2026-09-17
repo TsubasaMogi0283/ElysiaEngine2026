@@ -107,10 +107,10 @@ namespace
 
         D3D12_RESOURCE_BARRIER desc = {};
         desc.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-        desc.Transition.pResource = resource;
-        desc.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-        desc.Transition.StateBefore = stateBefore;
-        desc.Transition.StateAfter = stateAfter;
+        desc.TransitionS.pResource = resource;
+        desc.TransitionS.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+        desc.TransitionS.StateBefore = stateBefore;
+        desc.TransitionS.StateAfter = stateAfter;
 
         commandList->ResourceBarrier(1, &desc);
     }
