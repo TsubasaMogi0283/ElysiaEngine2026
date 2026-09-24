@@ -141,209 +141,25 @@ void StartMainScene::Initialize() {
 
 void StartMainScene::Update() {
 
-	float_t gaugePositionY = 0;
-	float_t scorePositionY = 0;
-	float_t easedT = 0.0f;
-	float_t startMoveT = 0.0f;
-	float_t textBaseEaseT = 0.0f;
-	float_t textBaseT = 0.0f;
+	
+	
+	
+	
 
-	float_t goScaleDownT = 0.0f;
-	float_t goScaleDownEaseT = 0.0f;
-	float_t goTextScale = 0.0f;
-
-	float_t goDeleteT = 0.0f;
-	float_t goDeleteEaseT = 0.0f;
+	
+	
 
 
 	//状態遷移
 	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
 	switch (currentState_) {
-	case StartMainSceneState::Transition:
-
-		//トランジションから始まる
-		if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
-			isEndTransition = true;
-		}
-
-		if (isEndTransition) {
-			waitingTimeArray_[Transition] += DELTA_TIME_;
-			if (waitingTimeArray_[Transition] >= WAIT_FOR_UI_MOVE_TIME_) {
-				//トランジションが終わったらUIの移動へ
-				currentState_ = StartMainSceneState::UIMoveScaleUp;
-			}
-		}
-		break;
-
-	case StartMainSceneState::UIMoveScaleUp:
-
-		//線形補間の時間を加算
-		startMoveTime_ += DELTA_TIME_;
-
-		startMoveT = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, startMoveTime_);
-		startMoveT = std::clamp(startMoveT, 0.0f, 1.0f);
-		//イージング
-		//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
-		easedT = Easing::EaseInOutQuad(startMoveT);
-
-		//ゲージ
-		gaugePositionY = SingleCalculation::Lerp(
-			static_cast<float_t>(mainScene_->GetInitialGaugePosition().y),
-			static_cast<float_t>(mainScene_->GetGaugeDisplayPosition().y),
-			easedT);
-		mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, static_cast<int32_t>(gaugePositionY) });
-
-		//スコア
-		scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);
-		mainScene_->SetScorePositionsY(static_cast<int32_t>(scorePositionY));
-
-		//下地
-		//表示
-		textBase_->SetInvisible(false);
-		//スケールの設定
-		textBaseT = SingleCalculation::InverseLerp(0.0f, 2.0f, startMoveTime_);
-		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
-		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
-		textBaseScale_.x = textBaseEaseT;
-		textBase_->SetScale(textBaseScale_);
-		//線
-		for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
-			//生成
-			baseLineSpriteArray_[i]->SetScale({ .x = textBaseEaseT,.y = LINE_SCALE_ });
-		}
-
-		//指定した時間を超えたらReadyへ
-		if (easedT >= 1.0f) {
-			waitingTimeArray_[UIMoveScaleUp] += DELTA_TIME_;
-			if (waitingTimeArray_[UIMoveScaleUp] >= WAIT_FOR_READY_TIME_) {
-				currentState_ = StartMainSceneState::Ready;
-			}
-		}
-		break;
-
-	case StartMainSceneState::Ready:
-
-
-		//Readyの表示
-		allReadyStartTime_ += DELTA_TIME_;
-		for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
-			readySpriteArray_[i]->SetInvisible(false);
-
-			float_t t = SingleCalculation::InverseLerp(readyScaleUpTime_[i].startTime, readyScaleUpTime_[i].endTime, allReadyStartTime_);
-			t = std::clamp(t, 0.0f, 1.0f);
-			float_t easeT = Easing::EaseOutBack(t);
-			readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = easeT });
-
-			if (t >= 1.0f) {
-				isNormalDisplayReady_ = true;
-			}
-		}
-
-
-		//通常表示
-		if (isNormalDisplayReady_) {
-			readyDisplayTime_ += DELTA_TIME_;
-
-			if (readyDisplayTime_ >= READY_DISPLAY_TIME_) {
-				isScaleDownReady_ = true;
-			}
-		}
-
-		//Ready
-		if (isScaleDownReady_) {
-			scaleDownTime_ += DELTA_TIME_;
-
-			//スケールダウンの処理
-			for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
-				float_t t = SingleCalculation::InverseLerp(readyScaleDownTime_[i].startTime, readyScaleDownTime_[i].endTime, scaleDownTime_);
-				t = std::clamp(t, 0.0f, 1.0f);
-				float_t easeT = Easing::EaseInQuart(t);
-				readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = 1.0f - easeT });
-
-				//Goへ
-				if (t >= 1.0f) {
-					isReadyWait_ = true;
-				}
-			}
-
-			waitingTimeArray_[StartMainSceneState::Ready] += DELTA_TIME_;
-			if (waitingTimeArray_[StartMainSceneState::Ready] >= 2.0f) {
-				isScaleDown_ = true;
-				currentState_ = StartMainSceneState::Go;
-			}
-		}
-		break;
-
 	case StartMainSceneState::Go:
 
-		//スケールダウンの時間
-		if (isScaleDown_) {
-			goFirstScaleDownTime_ += DELTA_TIME_;
-
-			//線形補間とイージングで滑らかにスケールダウン
-			goScaleDownT = SingleCalculation::InverseLerp(0.0f, GO_SCALE_DOWN_TIME_, goFirstScaleDownTime_);
-			goScaleDownT = std::clamp(goScaleDownT, 0.0f, 1.0f);
-			goScaleDownEaseT = Easing::EaseOutQuart(goScaleDownT);
-			goTextScale = SingleCalculation::Lerp(GO_MAX_SCALE_, GO_NORMAL_SCALE_, goScaleDownEaseT);
-
-			if (goScaleDownT >= 1.0f) {
-				goDisplayTime_ += DELTA_TIME_;
-			}
-
-			//表示時間が過ぎたらTiPLay
-			if (goDisplayTime_ > GO_DISPLAY_TIME_) {
-				isScaleDown_ = false;
-				isDeleteScaleDown_ = true;
-			}
-			//スケールダウンの処理
-			for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
-				goSpriteArray_[i]->SetScale({ .x = goTextScale,.y = goTextScale });
-			}
-
-		}
-
-		//消していく
-		if (isDeleteScaleDown_) {
-			goDeleteTime_ += DELTA_TIME_;
-			//線形補間とイージングで滑らかにスケールダウン
-			goDeleteT = SingleCalculation::InverseLerp(0.0f, GO_SCALE_DOWN_TIME_, goDeleteTime_);
-			goDeleteT = std::clamp(goDeleteT, 0.0f, 1.0f);
-			goDeleteEaseT = Easing::EaseOutQuart(goDeleteT);
-			goTextScale = SingleCalculation::Lerp(GO_NORMAL_SCALE_, 0.0f, goDeleteEaseT);
-
-			//スケールダウンの処理
-			for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
-				goSpriteArray_[i]->SetScale({ .x = 1.0f,.y = goTextScale });
-			}
-
-			//消えたらBPMチェックへ
-			if (goDeleteT >= 1.0f) {
-				currentState_ = StartMainSceneState::UIMoveScaleDown;
-			}
-		}
 
 		break;
 
 	case StartMainSceneState::UIMoveScaleDown:
-		//時間
-		baseScaleTime_ += DELTA_TIME_;
-		//スケールの設定
-		textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, baseScaleTime_);
-		textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
-		textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
-		textBaseScale_.x = 1.0f - textBaseEaseT;
-		textBase_->SetScale(textBaseScale_);
-		//線
-		for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
-			//生成
-			baseLineSpriteArray_[i]->SetScale({ .x = 1.0f - textBaseEaseT,.y = LINE_SCALE_ });
-		}
-
-		//プレイシーンへ
-		if (textBaseT >= 1.0f) {
-			currentState_ = StartMainSceneState::ChechTempo;
-			//isProcessEnd_ = true;
-		}
+		
 
 		break;
 
@@ -351,9 +167,9 @@ void StartMainScene::Update() {
 
 		break;
 	}
-	
+
 	//各状態を実行
-	(this->*function)();
+	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
 	//全ての状態の処理が終わったらいざ遊ぶシーンへ！
 	if (isProcessEnd_) {
@@ -365,8 +181,6 @@ void StartMainScene::Update() {
 	ImGui::Begin("メインシーン(開始)");
 	ImGui::InputFloat("時間", &allReadyStartTime_);
 	ImGui::InputFloat("開始線形補間の値", &startMoveTime_);
-	ImGui::InputFloat("Goのスケール", &goTextScale);
-	ImGui::InputFloat("DeleteT", &goDeleteT);
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
@@ -409,6 +223,194 @@ void StartMainScene::DrawSprite() {
 		}
 
 		break;
+	}
+}
+
+
+
+void StartMainScene::TransitionMove() {
+	//トランジションから始まる
+	if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
+		isEndTransition = true;
+	}
+
+	if (isEndTransition) {
+		waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Transition)] += DELTA_TIME_;
+		if (waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Transition)] >= WAIT_FOR_UI_MOVE_TIME_) {
+			//トランジションが終わったらUIの移動へ 
+			currentState_ = StartMainSceneState::UIMoveScaleUp;
+		}
+	}
+}
+
+void StartMainScene::UIMoveScaleUp(){
+	//線形補間の時間を加算
+	startMoveTime_ += DELTA_TIME_;
+
+	float_t startMoveT = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, startMoveTime_);
+	
+	
+	startMoveT = std::clamp(startMoveT, 0.0f, 1.0f);
+	//イージング
+	//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
+	float_t easedT = Easing::EaseInOutQuad(startMoveT);
+
+	//ゲージ
+	float_t gaugePositionY = SingleCalculation::Lerp(
+		static_cast<float_t>(mainScene_->GetInitialGaugePosition().y),
+		static_cast<float_t>(mainScene_->GetGaugeDisplayPosition().y),
+		easedT);
+	mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, static_cast<int32_t>(gaugePositionY) });
+
+	//スコア
+	float_t scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);
+	mainScene_->SetScorePositionsY(static_cast<int32_t>(scorePositionY));
+
+	//下地
+	//表示
+	textBase_->SetInvisible(false);
+	//スケールの設定
+	float_t textBaseT = SingleCalculation::InverseLerp(0.0f, 2.0f, startMoveTime_);
+	textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
+	float_t textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
+	textBaseScale_.x = textBaseEaseT;
+	textBase_->SetScale(textBaseScale_);
+	//線
+	for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
+		//生成
+		baseLineSpriteArray_[i]->SetScale({ .x = textBaseEaseT,.y = LINE_SCALE_ });
+	}
+
+	//指定した時間を超えたらReadyへ
+	if (easedT >= 1.0f) {
+		waitingTimeArray_[static_cast<size_t>(StartMainSceneState::UIMoveScaleUp)] += DELTA_TIME_;
+		if (waitingTimeArray_[static_cast<size_t>(StartMainSceneState::UIMoveScaleUp)] >= WAIT_FOR_READY_TIME_) {
+			currentState_ = StartMainSceneState::Ready;
+		}
+	}
+}
+
+void StartMainScene::Ready(){
+
+	//Readyの表示
+	allReadyStartTime_ += DELTA_TIME_;
+	for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
+		readySpriteArray_[i]->SetInvisible(false);
+
+		float_t t = SingleCalculation::InverseLerp(readyScaleUpTime_[i].startTime, readyScaleUpTime_[i].endTime, allReadyStartTime_);
+		t = std::clamp(t, 0.0f, 1.0f);
+		float_t easeT = Easing::EaseOutBack(t);
+		readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = easeT });
+
+		if (t >= 1.0f) {
+			isNormalDisplayReady_ = true;
+		}
+	}
+
+
+	//通常表示
+	if (isNormalDisplayReady_) {
+		readyDisplayTime_ += DELTA_TIME_;
+
+		if (readyDisplayTime_ >= READY_DISPLAY_TIME_) {
+			isScaleDownReady_ = true;
+		}
+	}
+
+	//Ready
+	if (isScaleDownReady_) {
+		scaleDownTime_ += DELTA_TIME_;
+
+		//スケールダウンの処理
+		for (uint8_t i = 0u;i < READY_TEXTURE_AMOUNT_;i++) {
+			float_t t = SingleCalculation::InverseLerp(readyScaleDownTime_[i].startTime, readyScaleDownTime_[i].endTime, scaleDownTime_);
+			t = std::clamp(t, 0.0f, 1.0f);
+			float_t easeT = Easing::EaseInQuart(t);
+			readySpriteArray_[i]->SetScale({ .x = 1.0f,.y = 1.0f - easeT });
+
+			//Goへ
+			if (t >= 1.0f) {
+				isReadyWait_ = true;
+			}
+		}
+
+		waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Ready)] += DELTA_TIME_;
+		if (waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Ready)] >= 2.0f) {
+			isScaleDown_ = true;
+			currentState_ = StartMainSceneState::Go;
+		}
+	}
+
+}
+
+void StartMainScene::Go(){
+
+	//スケールダウンの時間
+	if (isScaleDown_) {
+		goFirstScaleDownTime_ += DELTA_TIME_;
+
+		//線形補間とイージングで滑らかにスケールダウン
+		float_t goScaleDownT = SingleCalculation::InverseLerp(0.0f, GO_SCALE_DOWN_TIME_, goFirstScaleDownTime_);
+		goScaleDownT = std::clamp(goScaleDownT, 0.0f, 1.0f);
+		float_t goScaleDownEaseT = Easing::EaseOutQuart(goScaleDownT);
+		float_t goTextScale = SingleCalculation::Lerp(GO_MAX_SCALE_, GO_NORMAL_SCALE_, goScaleDownEaseT);
+
+		if (goScaleDownT >= 1.0f) {
+			goDisplayTime_ += DELTA_TIME_;
+		}
+
+		//表示時間が過ぎたらTiPLay
+		if (goDisplayTime_ > GO_DISPLAY_TIME_) {
+			isScaleDown_ = false;
+			isDeleteScaleDown_ = true;
+		}
+		//スケールダウンの処理
+		for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
+			goSpriteArray_[i]->SetScale({ .x = goTextScale,.y = goTextScale });
+		}
+
+	}
+
+	//消していく
+	if (isDeleteScaleDown_) {
+		goDeleteTime_ += DELTA_TIME_;
+		//線形補間とイージングで滑らかにスケールダウン
+		float_t goDeleteT = SingleCalculation::InverseLerp(0.0f, GO_SCALE_DOWN_TIME_, goDeleteTime_);
+		goDeleteT = std::clamp(goDeleteT, 0.0f, 1.0f);
+		float_t goDeleteEaseT = Easing::EaseOutQuart(goDeleteT);
+		float_t goTextScale = SingleCalculation::Lerp(GO_NORMAL_SCALE_, 0.0f, goDeleteEaseT);
+
+		//スケールダウンの処理
+		for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
+			goSpriteArray_[i]->SetScale({ .x = 1.0f,.y = goTextScale });
+		}
+
+		//消えたらBPMチェックへ
+		if (goDeleteT >= 1.0f) {
+			currentState_ = StartMainSceneState::UIMoveScaleDown;
+		}
+	}
+}
+
+void StartMainScene::UIMoveScaleDown(){
+	//時間
+	baseScaleTime_ += DELTA_TIME_;
+	//スケールの設定
+	textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, baseScaleTime_);
+	textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
+	textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
+	textBaseScale_.x = 1.0f - textBaseEaseT;
+	textBase_->SetScale(textBaseScale_);
+	//線
+	for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
+		//生成
+		baseLineSpriteArray_[i]->SetScale({ .x = 1.0f - textBaseEaseT,.y = LINE_SCALE_ });
+	}
+
+	//プレイシーンへ
+	if (textBaseT >= 1.0f) {
+		currentState_ = StartMainSceneState::ChechTempo;
+		//isProcessEnd_ = true;
 	}
 }
 

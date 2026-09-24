@@ -46,6 +46,32 @@ public:
 	/// </summary>
 	~StartMainScene()override = default;
 
+public:
+	/// <summary>
+	/// トランジション
+	/// </summary>
+	void TransitionMove();
+
+	/// <summary>
+	/// UIの拡大
+	/// </summary>
+	void UIMoveScaleUp();
+
+	/// <summary>
+	/// 準備
+	/// </summary>
+	void Ready();
+
+	/// <summary>
+	/// Go
+	/// </summary>
+	void Go();
+
+	/// <summary>
+	/// UIの縮小
+	/// </summary>
+	void UIMoveScaleDown();
+
 private:
 	/// <summary>
 	/// 各状態を実行
@@ -53,21 +79,23 @@ private:
 	typedef void (StartMainScene::* function)();
 
 	/// <summary>
-	/// 各状態の関数テーブル
+	/// テーブル
 	/// </summary>
-	static void (StartMainScene::* functionTable[])();
+	inline static void (StartMainScene::* functionTable[])() = {
+		&StartMainScene::TransitionMove,
+		&StartMainScene::UIMoveScaleUp,
+		&StartMainScene::Ready,
+		& StartMainScene::Go,
+		& StartMainScene::UIMoveScaleDown,
 
-	/// <summary>
-	/// トランジション
-	/// </summary>
-	void Transition();
+	};
 
 private:
+
 	/// <summary>
 	/// スタートメインシーンの状態
 	/// </summary>
-	enum StartMainSceneState {
-		//トランジション
+	enum class StartMainSceneState {
 		Transition,
 		//UIの移動(スケールアップ)
 		UIMoveScaleUp,
@@ -85,7 +113,7 @@ private:
 	};
 
 	//現在の状態
-	StartMainSceneState currentState_ = StartMainSceneState::Transition;
+	StartMainSceneState currentState_ = StartMainSceneState::Transition();
 
 
 
@@ -186,7 +214,7 @@ private:
 
 
 	//UIの移動を待つ時間
-	std::array<float_t, StartMainSceneState::Amount> waitingTimeArray_ = {};
+	std::array<float_t, static_cast<size_t>(StartMainSceneState::Amount)> waitingTimeArray_ = {};
 
 	//線形補間(UI開始の動き)
 	float_t startMoveTime_ = 0.0f;
