@@ -84,6 +84,8 @@ void StartMainScene::Initialize() {
 		goSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 		//座標
 		goSpriteArray_[i]->SetPosition({ .x = windowSize_.x / 2 - (i - 1) * goTextureSize.x,.y = windowSize_.y / 2 });
+		//非表示
+		goSpriteArray_[i]->SetInvisible(true);
 
 	}
 
@@ -135,38 +137,7 @@ void StartMainScene::Initialize() {
 	}
 }
 
-//void (StartMainScene::* StartMainScene::functionTable[])() = {
-//	&StartMainScene::Transition();
-//};
-
 void StartMainScene::Update() {
-
-	
-	
-	
-	
-
-	
-	
-
-
-	//状態遷移
-	//ローカル変数の宣言がswitchの中でできないの腹立つので関数ポインタでやっていきたい。
-	switch (currentState_) {
-	case StartMainSceneState::Go:
-
-
-		break;
-
-	case StartMainSceneState::UIMoveScaleDown:
-		
-
-		break;
-
-	case StartMainSceneState::ChechTempo:
-
-		break;
-	}
 
 	//各状態を実行
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
@@ -198,6 +169,7 @@ void StartMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLig
 }
 
 void StartMainScene::DrawSprite() {
+
 	//テキストの下地
 	textBase_->Draw();
 
@@ -205,30 +177,21 @@ void StartMainScene::DrawSprite() {
 	for (uint8_t i = 0u;i < LINE_AMOUNUT_;i++) {
 		//生成
 		baseLineSpriteArray_[i]->Draw();
-
 	}
 
-	switch (currentState_) {
-	case StartMainSceneState::Ready:
-		//Readyの描画
-		for (uint8_t i = 0; i < READY_TEXTURE_AMOUNT_; i++) {
-			readySpriteArray_[i]->Draw();
-		}
-
-		break;
-	case StartMainSceneState::Go:
-		//Goのスプライトの描画
-		for (uint8_t i = 0; i < GO_TEXTURE_AMOUNT_; i++) {
-			goSpriteArray_[i]->Draw();
-		}
-
-		break;
+	//Readyの描画
+	for (uint8_t i = 0; i < READY_TEXTURE_AMOUNT_; i++) {
+		readySpriteArray_[i]->Draw();
 	}
+
+	//Goのスプライトの描画
+	for (uint8_t i = 0; i < GO_TEXTURE_AMOUNT_; i++) {
+		goSpriteArray_[i]->Draw();
+	}
+
 }
 
-
-
-void StartMainScene::TransitionMove() {
+void StartMainScene::Transition() {
 	//トランジションから始まる
 	if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
 		isEndTransition = true;
@@ -243,13 +206,10 @@ void StartMainScene::TransitionMove() {
 	}
 }
 
-void StartMainScene::UIMoveScaleUp(){
+void StartMainScene::UIScaleUp(){
 	//線形補間の時間を加算
 	startMoveTime_ += DELTA_TIME_;
-
 	float_t startMoveT = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, startMoveTime_);
-	
-	
 	startMoveT = std::clamp(startMoveT, 0.0f, 1.0f);
 	//イージング
 	//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
@@ -307,7 +267,6 @@ void StartMainScene::Ready(){
 		}
 	}
 
-
 	//通常表示
 	if (isNormalDisplayReady_) {
 		readyDisplayTime_ += DELTA_TIME_;
@@ -347,6 +306,7 @@ void StartMainScene::Go(){
 
 	//スケールダウンの時間
 	if (isScaleDown_) {
+		
 		goFirstScaleDownTime_ += DELTA_TIME_;
 
 		//線形補間とイージングで滑らかにスケールダウン
@@ -366,6 +326,7 @@ void StartMainScene::Go(){
 		}
 		//スケールダウンの処理
 		for (uint8_t i = 0u;i < GO_TEXTURE_AMOUNT_;i++) {
+			goSpriteArray_[i]->SetInvisible(false);
 			goSpriteArray_[i]->SetScale({ .x = goTextScale,.y = goTextScale });
 		}
 
@@ -387,18 +348,18 @@ void StartMainScene::Go(){
 
 		//消えたらBPMチェックへ
 		if (goDeleteT >= 1.0f) {
-			currentState_ = StartMainSceneState::UIMoveScaleDown;
+			currentState_ = StartMainSceneState::UIScaleDown;
 		}
 	}
 }
 
-void StartMainScene::UIMoveScaleDown(){
+void StartMainScene::UIScaleDown(){
 	//時間
 	baseScaleTime_ += DELTA_TIME_;
 	//スケールの設定
-	textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, baseScaleTime_);
+	float_t textBaseT = SingleCalculation::InverseLerp(0.0f, 1.0f, baseScaleTime_);
 	textBaseT = std::clamp(textBaseT, 0.0f, 1.0f);
-	textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
+	float_t textBaseEaseT = Easing::EaseInOutQuart(textBaseT);
 	textBaseScale_.x = 1.0f - textBaseEaseT;
 	textBase_->SetScale(textBaseScale_);
 	//線
@@ -410,7 +371,7 @@ void StartMainScene::UIMoveScaleDown(){
 	//プレイシーンへ
 	if (textBaseT >= 1.0f) {
 		currentState_ = StartMainSceneState::ChechTempo;
-		//isProcessEnd_ = true;
+		isProcessEnd_ = true;
 	}
 }
 

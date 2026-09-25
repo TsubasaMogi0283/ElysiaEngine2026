@@ -46,16 +46,16 @@ public:
 	/// </summary>
 	~StartMainScene()override = default;
 
-public:
+private:
 	/// <summary>
 	/// トランジション
 	/// </summary>
-	void TransitionMove();
+	void Transition();
 
 	/// <summary>
 	/// UIの拡大
 	/// </summary>
-	void UIMoveScaleUp();
+	void UIScaleUp();
 
 	/// <summary>
 	/// 準備
@@ -70,7 +70,7 @@ public:
 	/// <summary>
 	/// UIの縮小
 	/// </summary>
-	void UIMoveScaleDown();
+	void UIScaleDown();
 
 private:
 	/// <summary>
@@ -82,12 +82,11 @@ private:
 	/// テーブル
 	/// </summary>
 	inline static void (StartMainScene::* functionTable[])() = {
-		&StartMainScene::TransitionMove,
-		&StartMainScene::UIMoveScaleUp,
+		&StartMainScene::Transition,
+		&StartMainScene::UIScaleUp,
 		&StartMainScene::Ready,
-		& StartMainScene::Go,
-		& StartMainScene::UIMoveScaleDown,
-
+		&StartMainScene::Go,
+		&StartMainScene::UIScaleDown,
 	};
 
 private:
@@ -104,7 +103,7 @@ private:
 		//Go!!
 		Go,
 		//UIの移動(スケールダウン)
-		UIMoveScaleDown,
+		UIScaleDown,
 		//プレイシーンへ
 		ChechTempo,
 
@@ -113,10 +112,7 @@ private:
 	};
 
 	//現在の状態
-	StartMainSceneState currentState_ = StartMainSceneState::Transition();
-
-
-
+	StartMainSceneState currentState_ = StartMainSceneState::Transition;
 
 private:
 	/// <summary>
