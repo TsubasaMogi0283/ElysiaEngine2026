@@ -41,7 +41,7 @@ namespace CollisionCalculation {
 	/// <param name="fan">扇</param>
 	/// <param name="point">点</param>
 	/// <returns></returns>
-	bool IsFanCollision(const Fan2D& fan, const Vector2& point);
+	bool IsFanCollision(const Fan2D& fan, const Vector2<float_t>& point);
 
 	/// <summary>
 	/// 扇形(3次元)

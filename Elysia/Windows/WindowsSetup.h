@@ -16,6 +16,8 @@
 #include <ImGui/imgui_impl_dx12.h>
 #include <ImGui/imgui_impl_win32.h>
 
+#include <Vector2.h>
+
 //extern...グローバル変数を共有する
 
 /// <summary>
@@ -128,9 +130,8 @@ namespace Elysia {
 		/// 初期化
 		/// </summary>
 		/// <param name="title">タイトル名</param>
-		/// <param name="clientWidth">横サイズ</param>
-		/// <param name="clientHeight">縦サイズ</param>
-		void Initialize(const wchar_t* title,const int32_t& clientWidth,const int32_t& clientHeight);
+		/// <param name="clientSize">クライアントサイズ</param>
+		void Initialize(const wchar_t* title,const Vector2<uint16_t>& clientSize);
 
 		/// <summary>
 		/// メッセージ
@@ -149,20 +150,14 @@ namespace Elysia {
 	public:
 
 		/// <summary>
-		/// クライアントの横幅
+		/// クライアントのサイズを取得
 		/// </summary>
 		/// <returns></returns>
-		inline uint32_t GetClientWidth()const {
-			return clientWidth_;
+		inline Vector2<uint16_t> GetClientSize()const {
+			return clientSize_;
 		}
 
-		/// <summary>
-		/// クライアントの縦幅
-		/// </summary>
-		/// <returns></returns>
-		inline uint32_t GetClientHeight() const{
-			return clientHeight_;
-		}
+		
 
 		/// <summary>
 		/// Hwndの取得
@@ -193,8 +188,7 @@ namespace Elysia {
 
 	public:
 		//クライアントのサイズ
-		uint32_t clientWidth_ = 0u;;
-		uint32_t clientHeight_ = 0u;
+		Vector2<uint16_t> clientSize_ = {};
 
 
 	private:

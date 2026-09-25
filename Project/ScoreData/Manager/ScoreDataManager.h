@@ -78,7 +78,7 @@ public:
 	MusicScoreData GetSampleMusicScoreData() {
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
-		auto it = musicInformation.find("Construction_Easy");
+		auto it = musicInformation.find("Construction_Special");
 		if (it != musicInformation.end()) {
 			musicScoreData = it->second;
 		}

@@ -52,10 +52,10 @@ bool CollisionCalculation::IsCollisionAABBAndPoint(const AABB& aabb, const Vecto
     }
 }
 
-bool CollisionCalculation::IsFanCollision(const Fan2D& fan, const Vector2& point){
+bool CollisionCalculation::IsFanCollision(const Fan2D& fan, const Vector2<float_t>& point){
 
     //扇と点のベクトルを求める
-    Vector2 vectorFanAndPont = { point.x - fan.position.x, point.y - fan.position.y };
+    Vector2<float_t> vectorFanAndPont = { point.x - fan.position.x, point.y - fan.position.y };
     
     //距離を求める
     float_t distance = sqrtf(vectorFanAndPont.x * vectorFanAndPont.x + vectorFanAndPont.y * vectorFanAndPont.y);
@@ -67,19 +67,19 @@ bool CollisionCalculation::IsFanCollision(const Fan2D& fan, const Vector2& point
     }
     
    //向きだけが欲しいので正規化をする
-    Vector2 normalizedFanAndPoint = Vector2::Normalize(vectorFanAndPont);
+    Vector2<float_t> normalizedFanAndPoint = Vector2<float_t>::Normalize(vectorFanAndPont);
     //向いている方向
-    Vector2 direction = Vector2::Normalize(fan.direction);
+    Vector2<float_t> direction = Vector2<float_t>::Normalize(fan.direction);
 
 
     //内積を求める
     //左右一致するはず
     //左側
-    float_t centerAndLSDot = Vector2::Dot(direction, fan.leftVector);
+    float_t centerAndLSDot = Vector2<float_t>::Dot(direction, fan.leftVector);
     //右側
-    float_t centerAndRSDot = Vector2::Dot(direction, fan.rightVector);
+    float_t centerAndRSDot = Vector2<float_t>::Dot(direction, fan.rightVector);
     //ターゲット
-    float_t centerAndTargetDot = Vector2::Dot(direction, normalizedFanAndPoint);
+    float_t centerAndTargetDot = Vector2<float_t>::Dot(direction, normalizedFanAndPoint);
 #ifdef _DEBUG
 
     ImGui::Begin("FanDirection");
@@ -224,11 +224,11 @@ bool CollisionCalculation::IsFanCollision(const Fan3D& fan, const Vector3& point
     Vector2 newZYDirection = { .x = normalizedFanAndPoint.z,.y = normalizedFanAndPoint.y };
 
     //左側
-    float_t dotLS = Vector2::Dot({.x = direction.x,.y = direction.z }, newLeftDirection);
+    float_t dotLS = Vector2<float_t>::Dot({.x = direction.x,.y = direction.z }, newLeftDirection);
     //右側
-    float_t dotRS = Vector2::Dot({.x = direction.x,.y = direction.z }, newRightDirection);
+    float_t dotRS = Vector2<float_t>::Dot({.x = direction.x,.y = direction.z }, newRightDirection);
     //ターゲット
-    float_t dotCenterXZ = Vector2::Dot({ .x = direction.x,.y = direction.z }, newXZDirection);
+    float_t dotCenterXZ = Vector2<float_t>::Dot({ .x = direction.x,.y = direction.z }, newXZDirection);
     //角度を測って当たり判定をとろうと思ったけど一周した後が大変なことになっている
     //内積でやった方が良いことに気づいたのでそちらで計算する
     if (dotCenterXZ < dotLS ||

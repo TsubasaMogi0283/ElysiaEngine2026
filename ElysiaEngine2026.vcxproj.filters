@@ -319,6 +319,9 @@
     <Filter Include="Project\Note\LongNote\TranceGateEigth">
       <UniqueIdentifier>{cbac4696-9032-4430-8778-438dcca527fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\Transition">
+      <UniqueIdentifier>{11c413c0-2250-4daf-8986-08a1b725d173}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
@@ -564,14 +567,17 @@
     <ClCompile Include="Project\PauseAsset\PauseAsset.cpp">
       <Filter>Project\PauseAsset</Filter>
     </ClCompile>
-    <ClCompile Include="Project\JudgementLine\JudgementLine.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.cpp">
       <Filter>Project\Note\LongNote\TranceGateSixteenth</Filter>
     </ClCompile>
     <ClCompile Include="Project\Note\Long\TranceGateEighth\TranceGateEighthLongNote.cpp">
       <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Transition\Transition.cpp">
+      <Filter>Project\Transition</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\JudgementLine\JudgementLine.cpp">
+      <Filter>Project\JudgementLine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -595,9 +601,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Project\CollisionConfig\CollisionConfig.h">
-      <Filter>Project</Filter>
-    </ClInclude>
     <ClInclude Include="Project\AllGameScene\GameSceneFactory.h">
       <Filter>Project\AllGameScene</Filter>
     </ClInclude>
@@ -973,14 +976,17 @@
     <ClInclude Include="Project\PauseAsset\PauseAsset.h">
       <Filter>Project\PauseAsset</Filter>
     </ClInclude>
-    <ClInclude Include="Project\JudgementLine\JudgementLine.h">
-      <Filter>Elysia\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.h">
       <Filter>Project\Note\LongNote\TranceGateSixteenth</Filter>
     </ClInclude>
     <ClInclude Include="Project\Note\Long\TranceGateEighth\TranceGateEighthLongNote.h">
       <Filter>Project\Note\LongNote\TranceGateEigth</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Transition\Transition.h">
+      <Filter>Project\Transition</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\JudgementLine\JudgementLine.h">
+      <Filter>Project\JudgementLine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

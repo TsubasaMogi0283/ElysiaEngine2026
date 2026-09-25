@@ -14,9 +14,9 @@ ComPtr<ID3D12Resource> Elysia::RtvManager::CreateRenderTextureResource(const DXG
 
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//Textureの幅
-	resourceDesc.Width = WindowsSetup::GetInstance()->GetClientWidth();
+	resourceDesc.Width = WindowsSetup::GetInstance()->GetClientSize().x;
 	//Textureの高さ	
-	resourceDesc.Height = WindowsSetup::GetInstance()->GetClientHeight();
+	resourceDesc.Height = WindowsSetup::GetInstance()->GetClientSize().y;
 	//mipmapの数
 	resourceDesc.MipLevels = 1u;
 	//奥行 or 配列Textureの配列数
@@ -64,8 +64,8 @@ ComPtr<ID3D12Resource> Elysia::RtvManager::CreateRenderTextureResource(const DXG
 
 ComPtr<ID3D12Resource>  Elysia::RtvManager::CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4& clearColor){
 
-	uint32_t width = WindowsSetup::GetInstance()->GetClientWidth();
-	uint32_t height = WindowsSetup::GetInstance()->GetClientHeight();
+	uint32_t width = WindowsSetup::GetInstance()->GetClientSize().x;
+	uint32_t height = WindowsSetup::GetInstance()->GetClientSize().y;
 
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//Textureの幅

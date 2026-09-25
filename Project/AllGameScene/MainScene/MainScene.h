@@ -21,9 +21,9 @@
 #include <Sprite.h>
 #include <ScoreData/MusicScoreData.h>
 
-/// <summary>
-/// ElysiaEngine(前方宣言)
-/// </summary>
+ /// <summary>
+ /// ElysiaEngine(前方宣言)
+ /// </summary>
 namespace Elysia {
 	/// <summary>
 	/// レベルエディタ
@@ -60,7 +60,7 @@ namespace Elysia {
 /// <summary>
 /// メインシーン
 /// </summary>
-class MainScene : public Elysia::IGameScene{
+class MainScene : public Elysia::IGameScene {
 public:
 
 	/// <summary>
@@ -105,7 +105,7 @@ public:
 
 
 public:
-	
+
 	/// <summary>
 	/// メインシーンを変更する
 	/// </summary>
@@ -124,7 +124,7 @@ public:
 	/// ゲーム管理クラスを設定
 	/// </summary>
 	/// <param name="gameManager">ゲーム管理クラス</param>
-	inline void SetGameManager(Elysia::GameManager* gameManager) override{
+	inline void SetGameManager(Elysia::GameManager* gameManager) override {
 		this->gameManager_ = gameManager;
 	}
 
@@ -160,14 +160,14 @@ public:
 		return hiSpeed_;
 	}
 
-	
+
 
 private:
 	/// <summary>
 	/// ノーツ生成
 	/// </summary>
 	void GenerateNotes();
-	
+
 	/// <summary>
 	/// 各数値をテクスチャに割り当て
 	/// </summary>
@@ -211,15 +211,29 @@ private:
 	const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 5u;
 	//百万の桁
 	const uint8_t ONE_MILLION_DIGIT_ = 6u;
-	
-private:
-	//移動後のゲージ座標
-	Vector2 initialGaugePosition_ = { .x = 0.0f,.y = 0.0f };
-	//移動後のゲージ座標
-	Vector2 gaugeDisplayPosition_ = { .x = 0.0f,.y = 0.0f };
 
-	//初期スコア座標
-	const std::array<Vector2, SCORE_DIGIT_> INITIAL_SCOREPOSITIONS_ = {};
+private:
+	//初期のゲージ座標
+	Vector2<int32_t> initialGaugePosition_ = {};
+	//通常表示時のゲージ座標
+	Vector2<int32_t> gaugeDisplayPosition_ = {};
+
+	//初期のコンボ座標
+	int32_t initialComboPositionY_ = 0;
+	//通常表示時のコンボ座標
+	int32_t comboDisplayPositionY_ = 0;
+
+	//初期のスコア座標
+	std::array<int32_t, SCORE_DIGIT_> initialScorePositionXArray_ = {};
+	int32_t initialScorePositionY_ = 0;
+	//通常表示時のスコア座標
+	int32_t scoreDisplayPositionY_ = 0;
+	//スコア座標のオフセット
+	int32_t scorePositionOffsetX_ = 1000;
+	//スコアのスケール
+	float_t scoreScale_ = 0.5f;
+
+	Vector2<int32_t> numberTextureSize_ = { .x = 0, .y = 0 };
 
 private:
 	/// <summary>
@@ -227,13 +241,13 @@ private:
 	/// </summary>
 	struct UIInformation {
 		//UI用のスプライト
-		std::unique_ptr<Elysia::Sprite>sprite = nullptr;
+		std::unique_ptr<Elysia::Sprite>sprite;
 		//スプライトの座標
-		Vector2 position = {};
+		Vector2<int32_t> position;
 		//値
-		uint8_t value = 0u;
+		uint16_t value;
 		//テクスチャハンドル
-		uint32_t textureHandle = 0u;
+		uint32_t textureHandle;
 	};
 
 
@@ -242,7 +256,7 @@ public:
 	/// ゲージの座標を設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	inline void SetGaugePosition(const Vector2& position) {
+	inline void SetGaugePosition(const Vector2<int32_t>& position) {
 		this->gauge_.sprite->SetPosition(position);
 	}
 
@@ -250,7 +264,7 @@ public:
 	/// ゲージの通常表示座標を取得
 	/// </summary>
 	/// <returns>ゲージの通常表示座標</returns>
-	inline Vector2 GetGaugeDisplayPosition()const {
+	inline Vector2<int32_t> GetGaugeDisplayPosition()const {
 		return gaugeDisplayPosition_;
 	}
 
@@ -258,68 +272,52 @@ public:
 	/// 初期ゲージ座標を取得
 	/// </summary>
 	/// <returns>初期ゲージ座標</returns>
-	inline Vector2 GetInitialGaugePosition()const {
+	inline Vector2<int32_t> GetInitialGaugePosition()const {
 		return initialGaugePosition_;
 	}
 
 	/// <summary>
-	/// スコアの桁数を取得
+	/// コンボの初期座標を取得
 	/// </summary>
-	/// <returns>桁数</returns>
-	inline uint8_t GetScoreDigit()const {
-		return SCORE_DIGIT_;
+	/// <returns>初期座標</returns>
+	inline int32_t GetInitialComboPositionY()const {
+		return initialComboPositionY_;
+	}
+
+	/// <summary>
+	/// スコアの初期Y座標を取得
+	/// </summary>
+	/// <returns>初期Y座標</returns>
+	inline int32_t GetInitialScorePositionY()const {
+		return initialScorePositionY_;
+	}
+
+	/// <summary>
+	/// スコアの通常表示座標を取得
+	/// </summary>
+	/// <returns>スコアの通常表示座標</returns>
+	inline int32_t GetScoreDisplayPositionY()const {
+		return scoreDisplayPositionY_;
 	}
 
 	/// <summary>
 	/// スコアの座標を設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	inline void SetScorePositions(const std::array<Vector2, SCORE_DIGIT_>& positions) {
+	inline void SetScorePositionsY(const int32_t& positionY) {
 		for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
-			this->scoreArray_[i].position = positions[i];
+			this->scoreArray_[i].sprite->SetPosition({initialScorePositionXArray_[i], positionY});
 		}
 	}
 
 	/// <summary>
-	/// スコアの座標を取得
+	/// コンボのY座標を設定
 	/// </summary>
-	/// <returns>座標</returns>
-	inline  std::array<Vector2, SCORE_DIGIT_> GetScorePositions()const {
-		std::array<Vector2, SCORE_DIGIT_> positionArray = {};
-		for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
-			positionArray[i] = this->scoreArray_[i].position;
-		}
-		return positionArray;
-	}
-
-	/// <summary>
-	/// コンボの桁数を取得
-	/// </summary>
-	/// <returns>桁数</returns>
-	inline uint8_t GetComboDigit()const {
-		return COMBO_DIGIT_;
-	}
-
-	/// <summary>
-	/// コンボの座標を設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	inline void SetComboPositions(const std::array<Vector2, COMBO_DIGIT_>& positions) {
+	/// <param name="positionY">Y座標</param>
+	inline void SetComboPositionsY(const uint16_t& positionY) {
 		for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
-			this->comboArray_[i].position = positions[i];
+			this->comboArray_[i].position.y = positionY;
 		}
-	}
-
-	/// <summary>
-	/// コンボの座標を取得
-	/// </summary>
-	/// <returns>座標</returns>
-	inline  std::array<Vector2, COMBO_DIGIT_> GetComboPositions()const {
-		std::array<Vector2, COMBO_DIGIT_> positionArray = {};
-		for (uint8_t i = 0u; i < COMBO_DIGIT_; i++) {
-			positionArray[i] = this->comboArray_[i].position;
-		}
-		return positionArray;
 	}
 
 
@@ -347,7 +345,7 @@ private:
 	std::array<uint32_t, NUMBER_TEXTURE_AMOUNT_>numberTextureHandlesArray = {};
 	//ゲージ
 	UIInformation gauge_ = {};
-	Vector2 gaugeScale = { .x = 1.0f,.y = 1.0f };
+	Vector2<float_t> gaugeScale = { .x = 1.0f,.y = 1.0f };
 	//スコア
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
 	uint32_t totalScore_ = 0u;
@@ -356,4 +354,11 @@ private:
 	uint16_t totalCombo_ = 0u;
 	//最大コンボ
 	uint16_t maxCombo_ = 0u;
+
+
+
+
+	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
+
+
 };

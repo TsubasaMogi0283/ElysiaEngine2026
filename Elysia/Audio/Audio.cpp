@@ -1,4 +1,5 @@
 #include "Audio.h"
+#include <format>
 
 
 Elysia::Audio* Elysia::Audio::GetInstance() {
@@ -28,6 +29,9 @@ void Elysia::Audio::Initialize() {
 
 	//マスターボイスを生成
 	hResult = xAudio2_->CreateMasteringVoice(&masterVoice_);
+	if (FAILED(hResult)) {
+		OutputDebugStringA(std::format("CreateMasteringVoice failed: 0x{:08X}\n", hResult).c_str());
+	}
 	assert(SUCCEEDED(hResult));
 
 	//スピーカ構成を取得

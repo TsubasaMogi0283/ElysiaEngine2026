@@ -16,6 +16,6 @@
 /// </summary>
 struct VertexData {
 	Vector4 position;
-	Vector2 texCoord;
+	Vector2<float_t> texCoord;
 	Vector3 normal;
 };

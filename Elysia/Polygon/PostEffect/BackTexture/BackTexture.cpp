@@ -51,8 +51,8 @@ void Elysia::BackTexture::PreDraw(){
 		directXSetup_->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0u, nullptr);
 
 	//クライアントサイズの取得
-	uint32_t width = WindowsSetup::GetInstance()->GetClientWidth();
-	uint32_t height = WindowsSetup::GetInstance()->GetClientHeight();
+	uint32_t width = WindowsSetup::GetInstance()->GetClientSize().x;
+	uint32_t height = WindowsSetup::GetInstance()->GetClientSize().y;
 
 	//ビューポート
 	directXSetup_->GenerateViewport(width,height);

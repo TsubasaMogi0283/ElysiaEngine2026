@@ -8,7 +8,7 @@
 
 
 void Elysia::GameManager::Initialize() {
-	
+
 	//シーンファクトリーの生成
 	abstractSceneFactory_ = std::make_unique<GameSceneFactory>();
 	//シーンごとに動作確認したいときはここを変えてね
@@ -22,16 +22,22 @@ void Elysia::GameManager::Initialize() {
 	//譜面データ生成と読み込み
 	scoreDataManager_ = std::make_unique<ScoreDataManager>();
 	scoreDataManager_->Initialize();
-	//初期化
+
+	//各シーン
 	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_->Initialize();
+
+	//トランジション
+	transition_ = std::make_unique<Transition>();
+	transition_->Initialize();
+
 }
 
-void Elysia::GameManager::ChangeScene(const std::string& sceneName){
+void Elysia::GameManager::ChangeScene(const std::string& sceneName) {
 
 	//強制解放
 	if (currentGamaScene_) {
-		currentGamaScene_.reset(); 
+		currentGamaScene_.reset();
 	}
 
 	//新しいシーンに遷移するためにPreの所に入っていたものを入れる
@@ -42,27 +48,31 @@ void Elysia::GameManager::ChangeScene(const std::string& sceneName){
 	//シーンの値を取ってくる
 	currentGamaScene_ = abstractSceneFactory_->CreateScene(currentSceneName_);
 	//空ではない時初期化処理に入る
-	assert(currentGamaScene_ != nullptr);
+	assert(currentGamaScene_);
 	//初期化
 	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_->Initialize();
-	
+
 }
 
 void Elysia::GameManager::Update() {
 	//更新
 	currentGamaScene_->Update();
+	transition_->Update();
 
 #ifdef _DEBUG
 	ImGui::Begin("ゲームシーンの管理");
-	const char* SCENE_NAME[] = {"Title","Main","Win","Lose"};
+	const char* SCENE_NAME[] = { "Title","Main","Win","Lose" };
 	if (ImGui::BeginCombo("シーン", SCENE_NAME[currentSceneNumber_])) {
 		for (uint32_t i = 0u; i < IM_ARRAYSIZE(SCENE_NAME); i++) {
-			bool isSelected = (currentSceneNumber_ == i);
+			bool isSelected = false;
+			if (currentSceneNumber_ == i) {
+				isSelected = true;
+			}
 
-			if (ImGui::Selectable(SCENE_NAME[i], isSelected)){
+			if (ImGui::Selectable(SCENE_NAME[i], isSelected)) {
 				// 選択されたアイテムのインデックスを更新する
-				currentSceneNumber_ = i; 
+				currentSceneNumber_ = i;
 				ChangeScene(SCENE_NAME[i]);
 			}
 
@@ -78,8 +88,6 @@ void Elysia::GameManager::Update() {
 
 	ImGui::End();
 #endif // _DEBUG
-
-
 }
 
 void Elysia::GameManager::DrawObject3D() {
@@ -87,18 +95,20 @@ void Elysia::GameManager::DrawObject3D() {
 	currentGamaScene_->DrawObject3D();
 }
 
-void Elysia::GameManager::DrawSprite(){
+void Elysia::GameManager::DrawSprite() {
 	//スプライトの描画
 	currentGamaScene_->DrawSprite();
+	//トランジションの描画
+	transition_->DrawSprite();
 }
 
-void Elysia::GameManager::PreDrawPostEffect(){
+void Elysia::GameManager::PreDrawPostEffect() {
 	//ポストエフェクト描画処理前
 	currentGamaScene_->PreDrawPostEffect();
 }
 
 
-void Elysia::GameManager::DrawPostEffect(){
+void Elysia::GameManager::DrawPostEffect() {
 	//ポストエフェクト描画前
 	currentGamaScene_->DrawPostEffect();
 }

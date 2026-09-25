@@ -18,7 +18,7 @@
 /// </summary>
 struct Fan2D {
 	//中心座標
-	Vector2 position;
+	Vector2<float_t> position;
 	//長さ
 	float_t length;
 
@@ -26,9 +26,9 @@ struct Fan2D {
 	float_t sideAngle;
 
 	//2等分するベクトル
-	Vector2 direction;
-	Vector2 rightVector;
-	Vector2 leftVector;
+	Vector2<float_t> direction;
+	Vector2<float_t> rightVector;
+	Vector2<float_t> leftVector;
 
 
 	//左側の角度
@@ -63,6 +63,4 @@ struct Fan3D {
 	//中心の角度
 	float_t centerRadian;
 	float_t centerPhi;
-
-
 };

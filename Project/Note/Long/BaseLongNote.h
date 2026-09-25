@@ -25,7 +25,7 @@ public:
 	/// <summary>
 	/// 終点比率の設定
 	/// </summary>
-	/// <param name="ratio"></param>
+	/// <param name="ratio">比率</param>
 	inline void SetEndRatio(const float_t& ratio) {
 		this->endRatio_ = ratio;
 	}
