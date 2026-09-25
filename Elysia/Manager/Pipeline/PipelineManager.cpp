@@ -190,16 +190,7 @@ void Elysia::PipelineManager::GeneratedLinePSO() {
 		PipelineManager::GetInstance()->linePSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->linePSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-
-
-
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[1] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -211,14 +202,6 @@ void Elysia::PipelineManager::GeneratedLinePSO() {
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
-
-
-
-
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
@@ -235,13 +218,6 @@ void Elysia::PipelineManager::GeneratedLinePSO() {
 	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
-
-
-
-
-
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
@@ -253,8 +229,6 @@ void Elysia::PipelineManager::GeneratedLinePSO() {
 	//三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
-
-
 	//ShaderをCompileする
 	PipelineManager::GetInstance()->linePSO_.vertexShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/Line3D/Line3D.VS.hlsl", L"vs_6_0");
 	assert(PipelineManager::GetInstance()->linePSO_.vertexShaderBlob_ != nullptr);
@@ -264,11 +238,7 @@ void Elysia::PipelineManager::GeneratedLinePSO() {
 	PipelineManager::GetInstance()->linePSO_.pixelShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/Line3D/Line3D.PS.hlsl", L"ps_6_0");
 	assert(PipelineManager::GetInstance()->linePSO_.pixelShaderBlob_ != nullptr);
 
-
-
-
-
-	////PSO生成
+	//PSO生成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 
 	graphicsPipelineStateDesc.pRootSignature = PipelineManager::GetInstance()->linePSO_.rootSignature_.Get();
@@ -315,13 +285,10 @@ void Elysia::PipelineManager::GeneratedLinePSO() {
 
 void Elysia::PipelineManager::GenerateSpritePSO() {
 
-	//PSO
-	////RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように間レンズけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-
 
 	//rootParameter生成。複数設定できるので配列。
 	//今回は結果一つだけなので長さ１の配列
@@ -409,7 +376,6 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 
 
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -426,20 +392,10 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 
-
-
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
-
-
-
-
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
@@ -466,10 +422,6 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
-
-
-
-
 		break;
 
 
@@ -479,11 +431,6 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-
-
-
-
-
 
 		break;
 
@@ -514,50 +461,25 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
 
-
-
-
-
-
 		break;
-
-
 	}
 
-
-
-
-
-
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	//三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
-
-
 	//ShaderをCompileする
 	PipelineManager::GetInstance()->spritePSO_.vertexShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/Object2D/Object2d.VS.hlsl", L"vs_6_0");
 	assert(PipelineManager::GetInstance()->spritePSO_.vertexShaderBlob_ != nullptr);
-
-
-
 	PipelineManager::GetInstance()->spritePSO_.pixelShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/Object2D/Object2d.PS.hlsl", L"ps_6_0");
 	assert(PipelineManager::GetInstance()->spritePSO_.pixelShaderBlob_ != nullptr);
 
-
-
-
-
-	////PSO生成
+	//PSO生成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 
 	graphicsPipelineStateDesc.pRootSignature = PipelineManager::GetInstance()->spritePSO_.rootSignature_.Get();
@@ -600,15 +522,10 @@ void Elysia::PipelineManager::GenerateSpritePSO() {
 		IID_PPV_ARGS(&PipelineManager::GetInstance()->spritePSO_.graphicsPipelineState_));
 	assert(SUCCEEDED(hResult));
 
-
-
-
 }
 
 void Elysia::PipelineManager::GenerateModelPSO() {
 
-	//PSO
-	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように間レンズけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
@@ -616,7 +533,6 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 
 
 	//rootParameter生成。複数設定できるので配列。
-	//今回は結果一つだけなので長さ１の配列
 
 	//VSでもCBufferを利用することになったので設定を追加
 	D3D12_ROOT_PARAMETER rootParameters[9] = {};
@@ -722,8 +638,6 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 	rootParameters[8].DescriptorTable.pDescriptorRanges = enviromentDescriptorRange;
 	//Tableで利用する数
 	rootParameters[8].DescriptorTable.NumDescriptorRanges = _countof(enviromentDescriptorRange);
-
-
 
 	//ルートパラメータ配列へのポイント
 	descriptionRootSignature_.pParameters = rootParameters;
@@ -863,8 +777,6 @@ void Elysia::PipelineManager::GenerateModelPSO() {
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -985,10 +897,6 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 	//レジスタ番号2を使う
 	rootParameters[7].Descriptor.ShaderRegister = 4;
 
-
-
-
-
 	D3D12_DESCRIPTOR_RANGE descriptorRangeForWell[1] = {};
 	//0から始まる
 	descriptorRangeForWell[0].BaseShaderRegister = 0;
@@ -1012,9 +920,6 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 	//Tableで利用する数
 	rootParameters[8].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForWell);
 
-
-
-
 	D3D12_DESCRIPTOR_RANGE enviromentDescriptorRange[1] = {};
 	//0から始まる
 	enviromentDescriptorRange[0].BaseShaderRegister = 1;
@@ -1036,7 +941,6 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 	rootParameters[9].DescriptorTable.NumDescriptorRanges = _countof(enviromentDescriptorRange);
 
 
-
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	//バイリニアフィルタ
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -1053,11 +957,8 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 	//PixelShaderで使う
 	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
-
-
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
-
 
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
@@ -1073,12 +974,7 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 		PipelineManager::GetInstance()->animationModelPSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->animationModelPSO_.rootSignature_));
 	assert(SUCCEEDED(hr));
 
-	//InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-
-
-
-	//余分に読み込んでしまうけどこれしか方法が無かった
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[5] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -1110,17 +1006,10 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 
 
 
-
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
-
-
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
@@ -1148,10 +1037,6 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
-
-
-
 		break;
 
 
@@ -1161,12 +1046,6 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-
-
-
-
-
-
 		break;
 
 
@@ -1186,9 +1065,6 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
 
-
-
-
 		break;
 
 	case BlendModeScreen:
@@ -1197,50 +1073,26 @@ void Elysia::PipelineManager::GenerateAnimationModelPSO() {
 		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
 		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-
-
-
-
-
 		break;
-
-
 	}
 
-
-
-
-
-
-
-	//RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	//三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
-
-
 	//ShaderをCompileする
 	PipelineManager::GetInstance()->animationModelPSO_.vertexShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/AnimationObject3D/AnimationObject3D.VS.hlsl", L"vs_6_0");
 	assert(PipelineManager::GetInstance()->animationModelPSO_.vertexShaderBlob_ != nullptr);
 
-
-
 	PipelineManager::GetInstance()->animationModelPSO_.pixelShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/AnimationObject3D/AnimationObject3D.PS.hlsl", L"ps_6_0");
 	assert(PipelineManager::GetInstance()->animationModelPSO_.pixelShaderBlob_ != nullptr);
 
-
-
-
-
-	////PSO生成
+	//PSO生成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	graphicsPipelineStateDesc.pRootSignature = PipelineManager::GetInstance()->animationModelPSO_.rootSignature_.Get();
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;
@@ -1397,8 +1249,6 @@ void Elysia::PipelineManager::GenerateParticle3DPSO() {
 	//レジスタ番号2を使う
 	rootParameters[7].Descriptor.ShaderRegister = 4;
 
-
-
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	//バイリニアフィルタ
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -1432,9 +1282,6 @@ void Elysia::PipelineManager::GenerateParticle3DPSO() {
 		PipelineManager::GetInstance()->particle3DPSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->particle3DPSO_.rootSignature_));
 	assert(SUCCEEDED(hr));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
 	//float4
@@ -1477,8 +1324,6 @@ void Elysia::PipelineManager::GenerateParticle3DPSO() {
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//今回はカリングをオフにする
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
@@ -1534,7 +1379,6 @@ void Elysia::PipelineManager::GenerateParticle3DPSO() {
 
 void Elysia::PipelineManager::GenerateFullScreenPSO() {
 
-	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
@@ -1553,8 +1397,6 @@ void Elysia::PipelineManager::GenerateFullScreenPSO() {
 	//register...Shader上のResource配置情報
 	rootParameters[0].Descriptor.ShaderRegister = 0;
 
-
-
 	//CBVを使う
 	//Vignette
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -1562,12 +1404,6 @@ void Elysia::PipelineManager::GenerateFullScreenPSO() {
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	//register...Shader上のResource配置情報
 	rootParameters[1].Descriptor.ShaderRegister = 1;
-
-
-
-	//応急処置でTextureを無理矢理2番目になるようにする
-	//そろわなくなってしまう
-	//いつか直す
 
 	//Texture
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
@@ -1616,12 +1452,6 @@ void Elysia::PipelineManager::GenerateFullScreenPSO() {
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
@@ -1635,11 +1465,7 @@ void Elysia::PipelineManager::GenerateFullScreenPSO() {
 		PipelineManager::GetInstance()->fullScreenPSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->fullScreenPSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -1655,28 +1481,19 @@ void Elysia::PipelineManager::GenerateFullScreenPSO() {
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	//三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-
 
 	//ShaderをCompileする
 	PipelineManager::GetInstance()->fullScreenPSO_.vertexShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/FullScreen/FullScreen.VS.hlsl", L"vs_6_0");
@@ -1702,7 +1519,6 @@ void Elysia::PipelineManager::GenerateGrayScalePSO(){
 	//今回は結果一つだけなので長さ１の配列
 	D3D12_ROOT_PARAMETER rootParameters[1] = {};
 
-
 	//Texture
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 	descriptorRange[0].BaseShaderRegister = 0;
@@ -1720,8 +1536,6 @@ void Elysia::PipelineManager::GenerateGrayScalePSO(){
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -1742,12 +1556,6 @@ void Elysia::PipelineManager::GenerateGrayScalePSO(){
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hr_ = D3D12SerializeRootSignature(&descriptionRootSignature_,
@@ -1761,11 +1569,7 @@ void Elysia::PipelineManager::GenerateGrayScalePSO(){
 		PipelineManager::GetInstance()->grayScalePSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->grayScalePSO_.rootSignature_));
 	assert(SUCCEEDED(hr_));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -1781,22 +1585,14 @@ void Elysia::PipelineManager::GenerateGrayScalePSO(){
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -1817,9 +1613,7 @@ void Elysia::PipelineManager::GenerateGrayScalePSO(){
 	graphicsPipelineStateDesc.pRootSignature = PipelineManager::GetInstance()->grayScalePSO_.rootSignature_.Get();
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;
 	graphicsPipelineStateDesc.VS = { PipelineManager::GetInstance()->grayScalePSO_.vertexShaderBlob_->GetBufferPointer(),PipelineManager::GetInstance()->grayScalePSO_.vertexShaderBlob_->GetBufferSize() };
-	//vertexShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.PS = { PipelineManager::GetInstance()->grayScalePSO_.pixelShaderBlob_->GetBufferPointer(),PipelineManager::GetInstance()->grayScalePSO_.pixelShaderBlob_->GetBufferSize() };
-	//pixelShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.BlendState = blendDesc;
 	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;
 
@@ -1861,7 +1655,6 @@ void Elysia::PipelineManager::GenerateGrayScalePSO(){
 }
 
 void Elysia::PipelineManager::GenerateSepiaScalePSO(){
-	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
@@ -1870,7 +1663,6 @@ void Elysia::PipelineManager::GenerateSepiaScalePSO(){
 	//rootParameter生成。複数設定できるので配列。
 	//今回は結果一つだけなので長さ１の配列
 	D3D12_ROOT_PARAMETER rootParameters[1] = {};
-
 
 	//Texture
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
@@ -1889,8 +1681,6 @@ void Elysia::PipelineManager::GenerateSepiaScalePSO(){
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -1924,11 +1714,7 @@ void Elysia::PipelineManager::GenerateSepiaScalePSO(){
 		PipelineManager::GetInstance()->sepiaScalePSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->sepiaScalePSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -1944,22 +1730,14 @@ void Elysia::PipelineManager::GenerateSepiaScalePSO(){
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -2046,8 +1824,6 @@ void Elysia::PipelineManager::GenerateVignettePSO(){
 	rootParameters[0].DescriptorTable.pDescriptorRanges = descriptorRange;
 	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 
-
-
 	//CBVを使う
 	//Scale,Pow
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -2061,8 +1837,6 @@ void Elysia::PipelineManager::GenerateVignettePSO(){
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -2096,11 +1870,7 @@ void Elysia::PipelineManager::GenerateVignettePSO(){
 		PipelineManager::GetInstance()->vignettePSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->vignettePSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -2116,28 +1886,19 @@ void Elysia::PipelineManager::GenerateVignettePSO(){
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	//三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-
 
 	//ShaderをCompileする
 	PipelineManager::GetInstance()->vignettePSO_.vertexShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/Vignette/Vignette.VS.hlsl", L"vs_6_0");
@@ -2146,13 +1907,12 @@ void Elysia::PipelineManager::GenerateVignettePSO(){
 	PipelineManager::GetInstance()->vignettePSO_.pixelShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/Vignette/Vignette.PS.hlsl", L"ps_6_0");
 	assert(PipelineManager::GetInstance()->vignettePSO_.pixelShaderBlob_ != nullptr);
 
-
+	//生成
 	GeneratePSO(PipelineManager::GetInstance()->vignettePSO_, inputLayoutDesc, blendDesc, rasterizerDesc);
 
 }
 
 void Elysia::PipelineManager::GenerateBoxFilterPSO(){
-	//RootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
@@ -2176,7 +1936,6 @@ void Elysia::PipelineManager::GenerateBoxFilterPSO(){
 	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 
 
-
 	//CBVを使う
 	//Scale,Pow
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -2190,8 +1949,6 @@ void Elysia::PipelineManager::GenerateBoxFilterPSO(){
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -2225,11 +1982,7 @@ void Elysia::PipelineManager::GenerateBoxFilterPSO(){
 		PipelineManager::GetInstance()->boxFilterPSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->boxFilterPSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -2245,22 +1998,14 @@ void Elysia::PipelineManager::GenerateBoxFilterPSO(){
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -2321,10 +2066,6 @@ void Elysia::PipelineManager::GenerateBoxFilterPSO(){
 		IID_PPV_ARGS(&PipelineManager::GetInstance()->boxFilterPSO_.graphicsPipelineState_));
 	assert(SUCCEEDED(hResult));
 
-
-	
-
-
 }
 
 void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
@@ -2351,8 +2092,6 @@ void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
 	rootParameters[0].DescriptorTable.pDescriptorRanges = descriptorRange;
 	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 
-
-
 	//CBVを使う
 	//Scale,Pow
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -2366,8 +2105,6 @@ void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -2388,12 +2125,6 @@ void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult  = D3D12SerializeRootSignature(&descriptionRootSignature_,
@@ -2407,11 +2138,7 @@ void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
 		PipelineManager::GetInstance()->gaussianFilterPSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->gaussianFilterPSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -2427,22 +2154,14 @@ void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -2506,7 +2225,6 @@ void Elysia::PipelineManager::GenerateGaussianFilterPSO(){
 
 void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 
-	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
@@ -2515,13 +2233,6 @@ void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 	//rootParameter生成。複数設定できるので配列。
 	//今回は結果一つだけなので長さ１の配列
 	D3D12_ROOT_PARAMETER rootParameters[1] = {};
-
-
-
-	//応急処置でTextureを無理矢理2番目になるようにする
-	//そろわなくなってしまう
-	//いつか直す
-
 	//Texture
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 	descriptorRange[0].BaseShaderRegister = 0;
@@ -2561,12 +2272,6 @@ void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = _countof(staticSamplers);
 
-
-
-
-
-
-
 	//シリアライズしてバイナリにする
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hResult = D3D12SerializeRootSignature(&descriptionRootSignature_,
@@ -2580,11 +2285,7 @@ void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 		PipelineManager::GetInstance()->luminanceBasedOutlinePSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->luminanceBasedOutlinePSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -2609,13 +2310,9 @@ void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -2675,12 +2372,6 @@ void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 	hResult = DirectXSetup::GetInstance()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
 		IID_PPV_ARGS(&PipelineManager::GetInstance()->luminanceBasedOutlinePSO_.graphicsPipelineState_));
 	assert(SUCCEEDED(hResult));
-
-
-
-
-
-
 }
 
 void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
@@ -2694,8 +2385,6 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 	//今回は結果一つだけなので長さ１の配列
 	D3D12_ROOT_PARAMETER rootParameters[3] = {};
 
-
-
 	//応急処置でTextureを無理矢理2番目になるようにする
 	//そろわなくなってしまう
 	//いつか直す
@@ -2706,8 +2395,6 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 	descriptorRange[0].NumDescriptors = 1;
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-
 
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
@@ -2723,8 +2410,6 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 	//register...Shader上のResource配置情報
 	rootParameters[1].Descriptor.ShaderRegister = 0;
 
-
-
 	//Depth
 	D3D12_DESCRIPTOR_RANGE descriptorRangeForDepth[1] = {};
 	descriptorRangeForDepth[0].BaseShaderRegister = 1;
@@ -2737,14 +2422,10 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 	rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRangeForDepth;
 	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForDepth);
 
-
-
 	//ルートパラメータ配列へのポイント
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[2] = {};
@@ -2797,11 +2478,7 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 		PipelineManager::GetInstance()->depthBasedOutlinePSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->depthBasedOutlinePSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -2817,22 +2494,14 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -2853,9 +2522,7 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 	graphicsPipelineStateDesc.pRootSignature = PipelineManager::GetInstance()->depthBasedOutlinePSO_.rootSignature_.Get();
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;
 	graphicsPipelineStateDesc.VS = { PipelineManager::GetInstance()->depthBasedOutlinePSO_.vertexShaderBlob_->GetBufferPointer(),PipelineManager::GetInstance()->depthBasedOutlinePSO_.vertexShaderBlob_->GetBufferSize() };
-	//vertexShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.PS = { PipelineManager::GetInstance()->depthBasedOutlinePSO_.pixelShaderBlob_->GetBufferPointer(),PipelineManager::GetInstance()->depthBasedOutlinePSO_.pixelShaderBlob_->GetBufferSize() };
-	//pixelShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.BlendState = blendDesc;
 	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;
 
@@ -2893,8 +2560,6 @@ void Elysia::PipelineManager::GenerateDepthBasedOutlinePSO() {
 		IID_PPV_ARGS(&PipelineManager::GetInstance()->depthBasedOutlinePSO_.graphicsPipelineState_));
 	assert(SUCCEEDED(hResult));
 
-
-
 }
 
 void Elysia::PipelineManager::GenerateRadialBlurPSO() {
@@ -2908,12 +2573,6 @@ void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 	//今回は結果一つだけなので長さ１の配列
 	D3D12_ROOT_PARAMETER rootParameters[1] = {};
 
-
-
-	//応急処置でTextureを無理矢理2番目になるようにする
-	//そろわなくなってしまう
-	//いつか直す
-
 	//Texture
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 	descriptorRange[0].BaseShaderRegister = 0;
@@ -2926,13 +2585,10 @@ void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 	rootParameters[0].DescriptorTable.pDescriptorRanges = descriptorRange;
 	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 
-
 	//ルートパラメータ配列へのポイント
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -2966,11 +2622,7 @@ void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 		PipelineManager::GetInstance()->radialBlurPSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->radialBlurPSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -2986,33 +2638,23 @@ void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
-
-	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	//裏面(時計回り)を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	//三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
-
 	//ShaderをCompileする
 	PipelineManager::GetInstance()->radialBlurPSO_.vertexShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/RadialBlur/RadialBlur.VS.hlsl", L"vs_6_0");
 	assert(PipelineManager::GetInstance()->radialBlurPSO_.vertexShaderBlob_ != nullptr);
-
 	PipelineManager::GetInstance()->radialBlurPSO_.pixelShaderBlob_ = DirectXSetup::GetInstance()->CompileShader(L"Resources/Shader/RadialBlur/RadialBlur.PS.hlsl", L"ps_6_0");
 	assert(PipelineManager::GetInstance()->radialBlurPSO_.pixelShaderBlob_ != nullptr);
 
@@ -3062,13 +2704,10 @@ void Elysia::PipelineManager::GenerateRadialBlurPSO() {
 		IID_PPV_ARGS(&PipelineManager::GetInstance()->radialBlurPSO_.graphicsPipelineState_));
 	assert(SUCCEEDED(hResult));
 
-
-
 }
 
 void Elysia::PipelineManager::GenerateDissolvePSO() {
 
-	///ootSignatureを作成
 	//RootSignature・・ShaderとResourceをどのように関連づけるかを示したオブジェクトである
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 	descriptionRootSignature_.Flags =
@@ -3076,12 +2715,6 @@ void Elysia::PipelineManager::GenerateDissolvePSO() {
 
 	//rootParameter生成。複数設定できるので配列。
 	D3D12_ROOT_PARAMETER rootParameters[3] = {};
-
-
-
-	//応急処置でTextureを無理矢理2番目になるようにする
-	//そろわなくなってしまう
-	//いつか直す
 
 	//Texture
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
@@ -3095,8 +2728,6 @@ void Elysia::PipelineManager::GenerateDissolvePSO() {
 	rootParameters[0].DescriptorTable.pDescriptorRanges = descriptorRange;
 	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 
-
-
 	//MaskTexture
 	D3D12_DESCRIPTOR_RANGE maskTextureDescriptorRange[1] = {};
 	maskTextureDescriptorRange[0].BaseShaderRegister = 1;
@@ -3108,8 +2739,6 @@ void Elysia::PipelineManager::GenerateDissolvePSO() {
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[1].DescriptorTable.pDescriptorRanges = maskTextureDescriptorRange;
 	rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(maskTextureDescriptorRange);
-
-
 
 	//CBVを使う
 	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -3123,8 +2752,6 @@ void Elysia::PipelineManager::GenerateDissolvePSO() {
 	descriptionRootSignature_.pParameters = rootParameters;
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
-
-
 
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -3159,11 +2786,7 @@ void Elysia::PipelineManager::GenerateDissolvePSO() {
 		PipelineManager::GetInstance()->dissolvePSO_.signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&PipelineManager::GetInstance()->dissolvePSO_.rootSignature_));
 	assert(SUCCEEDED(hResult));
 
-
-
-	////InputLayout
 	//InputLayout・・VertexShaderへ渡す頂点データがどのようなものかを指定するオブジェクト
-	//InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
@@ -3179,17 +2802,11 @@ void Elysia::PipelineManager::GenerateDissolvePSO() {
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 
-
-
-
-	////BlendStateの設定を行う
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-
-	////RasterizerState
 	//RasterizerState・・・Rasterizerに対する設定
 	//					  三角形の内部をピクセルに分解して、
 	//					  PixelShaderを起動することでこの処理への設定を行う
@@ -3268,9 +2885,6 @@ void Elysia::PipelineManager::GenerateRandomEffectPSO() {
 	//今回は結果一つだけなので長さ１の配列
 	D3D12_ROOT_PARAMETER rootParameters[2] = {};
 
-
-
-
 	//Texture
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 	descriptorRange[0].BaseShaderRegister = 0;
@@ -3282,9 +2896,6 @@ void Elysia::PipelineManager::GenerateRandomEffectPSO() {
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[0].DescriptorTable.pDescriptorRanges = descriptorRange;
 	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
-
-
-
 
 	//CBVを使う
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -3653,9 +3264,7 @@ void Elysia::PipelineManager::GenerateSkyBoxPSO() {
 	graphicsPipelineStateDesc.pRootSignature = PipelineManager::GetInstance()->skyBoxPSO_.rootSignature_.Get();
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;
 	graphicsPipelineStateDesc.VS = { PipelineManager::GetInstance()->skyBoxPSO_.vertexShaderBlob_->GetBufferPointer(),PipelineManager::GetInstance()->skyBoxPSO_.vertexShaderBlob_->GetBufferSize() };
-	//vertexShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.PS = { PipelineManager::GetInstance()->skyBoxPSO_.pixelShaderBlob_->GetBufferPointer(),PipelineManager::GetInstance()->skyBoxPSO_.pixelShaderBlob_->GetBufferSize() };
-	//pixelShaderBlob_->GetBufferSize();
 	graphicsPipelineStateDesc.BlendState = blendDesc;
 	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;
 
