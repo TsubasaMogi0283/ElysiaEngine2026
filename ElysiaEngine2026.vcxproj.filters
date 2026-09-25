@@ -238,9 +238,6 @@
     <Filter Include="Elysia\リソース ファイル\PostEffect">
       <UniqueIdentifier>{2b0f1932-9869-4547-8202-84c47d750a5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Elysia\リソース ファイル\Object2D">
-      <UniqueIdentifier>{a5cd1da0-7e75-488c-9270-f94b56fdc48d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Elysia\リソース ファイル\3D">
       <UniqueIdentifier>{cb118932-980c-4293-a70f-af631bf7d02a}</UniqueIdentifier>
     </Filter>
@@ -324,6 +321,9 @@
     </Filter>
     <Filter Include="Project\GameSceneManager\Factory\GameScene">
       <UniqueIdentifier>{37a190b0-fc6a-43d6-b2b8-3a11912d1616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elysia\リソース ファイル\2D">
+      <UniqueIdentifier>{a5cd1da0-7e75-488c-9270-f94b56fdc48d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -588,7 +588,7 @@
       <Filter>Elysia</Filter>
     </None>
     <None Include="Resources\Shader\Object2D\Object2d.hlsli">
-      <Filter>Elysia\リソース ファイル\Object2D</Filter>
+      <Filter>Elysia\リソース ファイル\2D</Filter>
     </None>
     <None Include="Resources\Shader\Object3D\Object3d.hlsli">
       <Filter>Elysia\リソース ファイル\3D\Object3D</Filter>
@@ -994,10 +994,10 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\Object2D\Object2d.PS.hlsl">
-      <Filter>Elysia\リソース ファイル\Object2D</Filter>
+      <Filter>Elysia\リソース ファイル\2D</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shader\Object2D\Object2d.VS.hlsl">
-      <Filter>Elysia\リソース ファイル\Object2D</Filter>
+      <Filter>Elysia\リソース ファイル\2D</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shader\Object3D\Object3d.PS.hlsl">
       <Filter>Elysia\リソース ファイル\3D\Object3D</Filter>
