@@ -11,9 +11,6 @@
 
 #include "IGameScene.h"
 
-
-
-
 /// <summary>
 /// シーン工場
 /// </summary>

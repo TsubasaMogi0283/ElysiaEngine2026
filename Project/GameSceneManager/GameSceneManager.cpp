@@ -6,7 +6,6 @@
 
 #include "Factory/GameSceneFactory/GameSceneFactory.h"
 
-
 void Elysia::GameSceneManager::Initialize() {
 
 	//シーンファクトリーの生成
@@ -17,8 +16,9 @@ void Elysia::GameSceneManager::Initialize() {
 #ifdef _DEBUG
 	//デバッグ時はこっちに入れてね
 	currentGamaScene_->SetGameManager(this);
-	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
+	currentGamaScene_ = abstractSceneFactory_->CreateScene("Title");
 #endif // _DEBUG
+
 	//譜面データ生成と読み込み
 	scoreDataManager_ = std::make_unique<ScoreDataManager>();
 	scoreDataManager_->Initialize();

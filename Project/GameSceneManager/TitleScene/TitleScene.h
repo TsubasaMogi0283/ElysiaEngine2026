@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file TitleScene.h
+ * @brief タイトルシーン
+ * @author 茂木翼
+ */
+
 #include <memory>
 #include <array>
 
@@ -14,11 +20,13 @@
 #include "DirectionalLight.h"
 #include <AnimationModel.h>
 #include <Dissolve.h>
+#include <TitleScene/BaseTitleScene.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
 /// </summary>
 namespace Elysia {
+	
 	/// <summary>
 	/// レベルエディタ
 	/// </summary>
@@ -127,29 +135,15 @@ private:
 	//背景
 	std::unique_ptr<Elysia::BackTexture>backTexture_ = nullptr;
 
-	//仮プレイヤー
-	std::unique_ptr<Elysia::Model>playerModel_ = nullptr;
-	WorldTransform playerWorldTransform_ = {};
-	std::unique_ptr<Elysia::AnimationModel>playerAnimationModel_ = nullptr;
-	WorldTransform playerAnimationWorldTransform_ = {};
-	float_t animationTime_ = 0.0f;
-	AABB playerAABB_ = {};
-	Vector3 playerCenterPosition_ = {};
-
-	//パーティクル
-	std::unique_ptr<Elysia::Particle3D>deadParticle_ = nullptr;
-	std::unique_ptr<Elysia::Particle3D>particle2_ = nullptr;
-
-	//四隅
-	static const uint32_t COUNER_QUANTITY_ = 4u;
-	std::array<std::unique_ptr<Elysia::Model>, COUNER_QUANTITY_>playerCornerModel_ = {};
-	std::array<WorldTransform, COUNER_QUANTITY_>playerCornerWorldTransform_ = {};
-
 	//カメラ
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
 	//マテリアル
 	Material playerMaterial_ = {};
+
+
+	//各シーン
+	std::unique_ptr<BaseTitleScene>baseTitleScene_ = nullptr;
 
 };

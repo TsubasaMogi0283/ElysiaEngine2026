@@ -325,6 +325,15 @@
     <Filter Include="Elysia\リソース ファイル\2D">
       <UniqueIdentifier>{a5cd1da0-7e75-488c-9270-f94b56fdc48d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Title\Start">
+      <UniqueIdentifier>{f5019578-f70b-4b3a-bb13-89d22c275211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Title\End">
+      <UniqueIdentifier>{677ac252-da8c-47a9-bd31-ddc11aed6579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Title\Display">
+      <UniqueIdentifier>{dfbbdbec-0959-45e6-a852-c3b097256b61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elysia\Audio\Audio.cpp">
@@ -581,6 +590,12 @@
     </ClCompile>
     <ClCompile Include="Project\GameSceneManager\GameSceneManager.cpp">
       <Filter>Project\GameSceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\TitleScene\BaseTitleScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -990,6 +1005,12 @@
     </ClInclude>
     <ClInclude Include="Project\GameSceneManager\GameSceneManager.h">
       <Filter>Project\GameSceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\TitleScene\BaseTitleScene.h">
+      <Filter>Project\GameSceneManager\Selection\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.h">
+      <Filter>Elysia\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
