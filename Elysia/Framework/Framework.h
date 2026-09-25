@@ -8,7 +8,7 @@
 
 #include "WindowsSetup.h"
 #include "DirectXSetup.h"
-#include "GameManager.h"
+#include "GameSceneManager.h"
 #include "IAbstractSceneFactory.h"
 #include "EngineManagers.h"
 
@@ -121,7 +121,7 @@ namespace Elysia {
 
 	private:
 		//ゲームの管理クラス
-		std::unique_ptr<GameManager> gameManager_ = nullptr;
+		std::unique_ptr<GameSceneManager> gameManager_ = nullptr;
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> sceneFactory_ = nullptr;
 

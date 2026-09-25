@@ -26,7 +26,7 @@ namespace Elysia {
 	/// <summary>
 	/// ゲーム管理クラス
 	/// </summary>
-	class GameManager;
+	class GameSceneManager;
 
 	/// <summary>
 	/// テクスチャ管理クラス

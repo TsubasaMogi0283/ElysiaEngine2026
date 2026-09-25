@@ -6,7 +6,7 @@
 #include <Audio.h>
 #include <ModelManager.h>
 #include <MainScene/MainScene.h>
-#include <GameManager.h>
+#include "GameSceneManager.h"
 #include <MainScene/End/EndMainScene.h>
 #include <Windows/WindowsSetup.h>
 #include <TextureManager.h>

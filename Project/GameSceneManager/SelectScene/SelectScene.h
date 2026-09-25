@@ -47,15 +47,15 @@ namespace Elysia {
 }
 
 /// <summary>
-/// 結果シーン
+/// 選択シーン
 /// </summary>
-class ResultScene : public Elysia::IGameScene{
+class SelectScene : public Elysia::IGameScene{
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	ResultScene();
+	SelectScene();
 
 	/// <summary>
 	/// 初期化
@@ -90,14 +90,14 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~ResultScene() = default;
+	~SelectScene() = default;
 
 public:
 	/// <summary>
 	/// ゲーム管理クラスを設定
 	/// </summary>
 	/// <param name="gameManager"></param>
-	void SetGameManager(Elysia::GameManager* gameManager) override {
+	void SetGameManager(Elysia::GameSceneManager* gameManager) override {
 		this->gameManager_ = gameManager;
 	}
 
@@ -113,7 +113,7 @@ private:
 	//アニメーション管理クラス
 	Elysia::AnimationManager* animationManager_ = nullptr;
 	//ゲーム管理クラス
-	Elysia::GameManager* gameManager_ = nullptr;
+	Elysia::GameSceneManager* gameManager_ = nullptr;
 
 
 private:
@@ -136,15 +136,6 @@ private:
 	float_t animationTime_ = 0.0f;
 	AABB playerAABB_ = {};
 	Vector3 playerCenterPosition_ = {};
-
-	//パーティクル
-	std::unique_ptr<Elysia::Particle3D>deadParticle_ = nullptr;
-	std::unique_ptr<Elysia::Particle3D>particle2_ = nullptr;
-
-	//四隅
-	static const uint32_t COUNER_QUANTITY_ = 4u;
-	std::array<std::unique_ptr<Elysia::Model>, COUNER_QUANTITY_>playerCornerModel_ = {};
-	std::array<WorldTransform, COUNER_QUANTITY_>playerCornerWorldTransform_ = {};
 
 	//カメラ
 	Camera camera_ = {};

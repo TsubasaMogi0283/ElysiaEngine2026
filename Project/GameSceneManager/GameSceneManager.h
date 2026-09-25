@@ -1,7 +1,7 @@
 #pragma once
 /**
- * @file GameManager.h
- * @brief ゲーム管理クラス
+ * @file GameSceneManager.h
+ * @brief ゲームシーン管理クラス
  * @author 茂木翼
  */
 
@@ -22,15 +22,15 @@
 namespace Elysia {
 
 	/// <summary>
-	/// ゲーム管理クラス
+	/// ゲームシーン管理クラス
 	/// </summary>
-	class GameManager {
+	class GameSceneManager {
 	public:
 
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		GameManager() = default;
+		GameSceneManager() = default;
 
 		/// <summary>
 		/// 初期化
@@ -71,7 +71,7 @@ namespace Elysia {
 		/// <summary>
 		/// デストラクタ
 		/// </summary>
-		~GameManager() = default;
+		~GameSceneManager() = default;
 
 	public:
 		/// <summary>

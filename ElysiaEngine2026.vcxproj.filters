@@ -19,9 +19,6 @@
     <Filter Include="Project">
       <UniqueIdentifier>{ed7a5829-f449-4cd8-9481-3ff3fa608ab8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Project\AllGameScene">
-      <UniqueIdentifier>{d6f796fa-7bb8-4cdf-8773-48f91a98a341}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Elysia\ヘッダー ファイル\Audio">
       <UniqueIdentifier>{f7014dc7-5497-477b-9a59-58e1fcd60fa5}</UniqueIdentifier>
     </Filter>
@@ -172,12 +169,6 @@
     <Filter Include="Elysia\ヘッダー ファイル\Manager\Collision">
       <UniqueIdentifier>{5006744d-c635-4c6b-b15e-0032183e62d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Elysia\ヘッダー ファイル\Manager\Game">
-      <UniqueIdentifier>{6629ad91-2269-4eed-b43c-7fac157291a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elysia\ソース ファイル\Manager\Game">
-      <UniqueIdentifier>{047641a2-f6d9-42ff-9ac5-0b6097afd3a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Elysia\ソース ファイル\Manager\ImGui">
       <UniqueIdentifier>{b63f5cef-a23f-4566-a0bd-cad42d349163}</UniqueIdentifier>
     </Filter>
@@ -234,30 +225,6 @@
     </Filter>
     <Filter Include="Elysia\ソース ファイル\Polygone\PostEffct">
       <UniqueIdentifier>{651686b2-090a-4838-8c6e-6aa69d7778a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Title">
-      <UniqueIdentifier>{f3ef983f-02d4-4c91-b7d5-d5ef2297b5c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Test">
-      <UniqueIdentifier>{01460683-b958-4bdb-a31e-fa2def280545}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Select">
-      <UniqueIdentifier>{9a3213da-3711-4f17-b412-5e545b46ce47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Result">
-      <UniqueIdentifier>{31b20574-7b15-4359-9d9b-8467a9cd8108}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Main">
-      <UniqueIdentifier>{7fc58e19-5db5-45c9-9ec3-d94102977edc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Main\Start">
-      <UniqueIdentifier>{4b745dfe-98f5-4fe9-be80-45e1e2418db4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Main\Play">
-      <UniqueIdentifier>{a14e81c6-b79a-42a3-b241-e9c21316efdb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\AllGameScene\Main\End">
-      <UniqueIdentifier>{dcf25551-9061-4235-a56d-8cb045c67449}</UniqueIdentifier>
     </Filter>
     <Filter Include="Project\Note">
       <UniqueIdentifier>{b1b75ae0-58c8-4a39-95a3-926d1e2010a4}</UniqueIdentifier>
@@ -322,11 +289,44 @@
     <Filter Include="Project\Transition">
       <UniqueIdentifier>{11c413c0-2250-4daf-8986-08a1b725d173}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\GameSceneManager">
+      <UniqueIdentifier>{d6f796fa-7bb8-4cdf-8773-48f91a98a341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Factory">
+      <UniqueIdentifier>{a342c810-388a-4950-9c61-842656ae66c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection">
+      <UniqueIdentifier>{7c54838f-6293-4020-b46f-50a23b90701b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Result">
+      <UniqueIdentifier>{31b20574-7b15-4359-9d9b-8467a9cd8108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Main">
+      <UniqueIdentifier>{7fc58e19-5db5-45c9-9ec3-d94102977edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Main\Start">
+      <UniqueIdentifier>{4b745dfe-98f5-4fe9-be80-45e1e2418db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Main\Play">
+      <UniqueIdentifier>{a14e81c6-b79a-42a3-b241-e9c21316efdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Main\End">
+      <UniqueIdentifier>{dcf25551-9061-4235-a56d-8cb045c67449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Select">
+      <UniqueIdentifier>{9a3213da-3711-4f17-b412-5e545b46ce47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Test">
+      <UniqueIdentifier>{01460683-b958-4bdb-a31e-fa2def280545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Title">
+      <UniqueIdentifier>{f3ef983f-02d4-4c91-b7d5-d5ef2297b5c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Factory\GameScene">
+      <UniqueIdentifier>{37a190b0-fc6a-43d6-b2b8-3a11912d1616}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Project\AllGameScene\GameSceneFactory.cpp">
-      <Filter>Project\AllGameScene</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Audio\Audio.cpp">
       <Filter>Elysia\ソース ファイル\Audio</Filter>
     </ClCompile>
@@ -462,9 +462,6 @@
     <ClCompile Include="Elysia\Manager\Collision\CollisionManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Manager\Game\GameManager.cpp">
-      <Filter>Elysia\ヘッダー ファイル\Manager\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Manager\ImGui\ImGuiManager.cpp">
       <Filter>Elysia\ソース ファイル\Manager\ImGui</Filter>
     </ClCompile>
@@ -516,35 +513,8 @@
     <ClCompile Include="Elysia\Math\Vector\Vector3.cpp">
       <Filter>Elysia\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Project\AllGameScene\TestScene\TestScene.cpp">
-      <Filter>Project\AllGameScene\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\TitleScene\TitleScene.cpp">
-      <Filter>Project\AllGameScene\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\SelectScene\SelectScene.cpp">
-      <Filter>Project\AllGameScene\Select</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\ResultScene\ResultScene.cpp">
-      <Filter>Project\AllGameScene\Result</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\MainScene\MainScene.cpp">
-      <Filter>Project\AllGameScene\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\MainScene\Start\StartMainScene.cpp">
-      <Filter>Project\AllGameScene\Main\Start</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\MainScene\BaseMainScene.cpp">
-      <Filter>Project\AllGameScene\Main</Filter>
-    </ClCompile>
     <ClCompile Include="Project\Note\BaseNote.cpp">
       <Filter>Project\Note</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\MainScene\Play\PlayMainScene.cpp">
-      <Filter>Project\AllGameScene\Main\Play</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\AllGameScene\MainScene\End\EndMainScene.cpp">
-      <Filter>Project\AllGameScene\Main\End</Filter>
     </ClCompile>
     <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp">
       <Filter>Project\Note\NormalTapNote</Filter>
@@ -579,6 +549,39 @@
     <ClCompile Include="Project\JudgementLine\JudgementLine.cpp">
       <Filter>Project\JudgementLine</Filter>
     </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\ResultScene\ResultScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\SelectScene\SelectScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\TestScene\TestScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\TitleScene\TitleScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\MainScene\BaseMainScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\MainScene\MainScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\MainScene\End\EndMainScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Main\End</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\MainScene\Play\PlayMainScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Main\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\MainScene\Start\StartMainScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Main\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\Factory\GameSceneFactory\GameSceneFactory.cpp">
+      <Filter>Project\GameSceneManager\Factory\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\GameSceneManager.cpp">
+      <Filter>Project\GameSceneManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig">
@@ -601,9 +604,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Project\AllGameScene\GameSceneFactory.h">
-      <Filter>Project\AllGameScene</Filter>
-    </ClInclude>
     <ClInclude Include="Elysia\Audio\Audio.h">
       <Filter>Elysia\ヘッダー ファイル\Audio</Filter>
     </ClInclude>
@@ -835,15 +835,6 @@
     <ClInclude Include="Elysia\Manager\Collision\CollisionManager.h">
       <Filter>Elysia\ヘッダー ファイル\Manager\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Elysia\Manager\Game\GameManager.h">
-      <Filter>Elysia\ソース ファイル\Manager\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\Game\IAbstractSceneFactory.h">
-      <Filter>Elysia\ソース ファイル\Manager\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Manager\Game\IGameScene.h">
-      <Filter>Elysia\ソース ファイル\Manager\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Elysia\Manager\ImGui\ImGuiManager.h">
       <Filter>Elysia\ヘッダー ファイル\Manager\ImGui</Filter>
     </ClInclude>
@@ -901,35 +892,8 @@
     <ClInclude Include="Elysia\DirectX\BufferResource.h">
       <Filter>Elysia\ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Project\AllGameScene\TestScene\TestScene.h">
-      <Filter>Project\AllGameScene\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\TitleScene\TitleScene.h">
-      <Filter>Project\AllGameScene\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\SelectScene\SelectScene.h">
-      <Filter>Project\AllGameScene\Select</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\ResultScene\ResultScene.h">
-      <Filter>Project\AllGameScene\Result</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\MainScene\MainScene.h">
-      <Filter>Project\AllGameScene\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\MainScene\Start\StartMainScene.h">
-      <Filter>Project\AllGameScene\Main\Start</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\MainScene\BaseMainScene.h">
-      <Filter>Project\AllGameScene\Main</Filter>
-    </ClInclude>
     <ClInclude Include="Project\Note\BaseNote.h">
       <Filter>Project\Note</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\MainScene\Play\PlayMainScene.h">
-      <Filter>Project\AllGameScene\Main\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\AllGameScene\MainScene\End\EndMainScene.h">
-      <Filter>Project\AllGameScene\Main\End</Filter>
     </ClInclude>
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h">
       <Filter>Project\Note\NormalTapNote</Filter>
@@ -987,6 +951,45 @@
     </ClInclude>
     <ClInclude Include="Project\JudgementLine\JudgementLine.h">
       <Filter>Project\JudgementLine</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\ResultScene\ResultScene.h">
+      <Filter>Project\GameSceneManager\Selection\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\SelectScene\SelectScene.h">
+      <Filter>Project\GameSceneManager\Selection\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\TestScene\TestScene.h">
+      <Filter>Project\GameSceneManager\Selection\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\TitleScene\TitleScene.h">
+      <Filter>Project\GameSceneManager\Selection\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\MainScene\BaseMainScene.h">
+      <Filter>Project\GameSceneManager\Selection\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\MainScene\MainScene.h">
+      <Filter>Project\GameSceneManager\Selection\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\MainScene\End\EndMainScene.h">
+      <Filter>Project\GameSceneManager\Selection\Main\End</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\MainScene\Play\PlayMainScene.h">
+      <Filter>Project\GameSceneManager\Selection\Main\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\MainScene\Start\StartMainScene.h">
+      <Filter>Project\GameSceneManager\Selection\Main\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\Factory\IAbstractSceneFactory.h">
+      <Filter>Project\GameSceneManager\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\Factory\GameSceneFactory\GameSceneFactory.h">
+      <Filter>Project\GameSceneManager\Factory\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\IGameScene.h">
+      <Filter>Project\GameSceneManager\Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\GameSceneManager.h">
+      <Filter>Project\GameSceneManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

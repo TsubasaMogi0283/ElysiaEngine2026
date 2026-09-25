@@ -1,13 +1,13 @@
-#include "GameManager.h"
+#include "GameSceneManager.h"
 
 #include <cassert>
 #include <imgui.h>
 #include <vector>
 
-#include "GameSceneFactory.h"
+#include "Factory/GameSceneFactory/GameSceneFactory.h"
 
 
-void Elysia::GameManager::Initialize() {
+void Elysia::GameSceneManager::Initialize() {
 
 	//シーンファクトリーの生成
 	abstractSceneFactory_ = std::make_unique<GameSceneFactory>();
@@ -33,7 +33,7 @@ void Elysia::GameManager::Initialize() {
 
 }
 
-void Elysia::GameManager::ChangeScene(const std::string& sceneName) {
+void Elysia::GameSceneManager::ChangeScene(const std::string& sceneName) {
 
 	//強制解放
 	if (currentGamaScene_) {
@@ -55,7 +55,7 @@ void Elysia::GameManager::ChangeScene(const std::string& sceneName) {
 
 }
 
-void Elysia::GameManager::Update() {
+void Elysia::GameSceneManager::Update() {
 	//更新
 	currentGamaScene_->Update();
 	transition_->Update();
@@ -90,25 +90,25 @@ void Elysia::GameManager::Update() {
 #endif // _DEBUG
 }
 
-void Elysia::GameManager::DrawObject3D() {
+void Elysia::GameSceneManager::DrawObject3D() {
 	//3Dオブジェクトの描画
 	currentGamaScene_->DrawObject3D();
 }
 
-void Elysia::GameManager::DrawSprite() {
+void Elysia::GameSceneManager::DrawSprite() {
 	//スプライトの描画
 	currentGamaScene_->DrawSprite();
 	//トランジションの描画
 	transition_->DrawSprite();
 }
 
-void Elysia::GameManager::PreDrawPostEffect() {
+void Elysia::GameSceneManager::PreDrawPostEffect() {
 	//ポストエフェクト描画処理前
 	currentGamaScene_->PreDrawPostEffect();
 }
 
 
-void Elysia::GameManager::DrawPostEffect() {
+void Elysia::GameSceneManager::DrawPostEffect() {
 	//ポストエフェクト描画前
 	currentGamaScene_->DrawPostEffect();
 }

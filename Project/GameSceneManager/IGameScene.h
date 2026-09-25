@@ -14,7 +14,7 @@ namespace Elysia {
 	/// <summary>
 	/// ゲーム管理クラス
 	/// </summary>
-	class GameManager;
+	class GameSceneManager;
 
 	/// <summary>
 	/// ゲームシーンのインターフェイス
@@ -61,7 +61,7 @@ namespace Elysia {
 		/// ゲーム管理クラスを設定
 		/// </summary>
 		/// <param name="gameManager"></param>
-		virtual void SetGameManager(Elysia::GameManager* gameManager) = 0;
+		virtual void SetGameManager(Elysia::GameSceneManager* gameManager) = 0;
 	};
 }
 

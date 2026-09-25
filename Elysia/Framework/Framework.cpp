@@ -41,11 +41,11 @@ void Elysia::Framework::Initialize() {
 	//ここでタイトルバーの名前を決めてね
 	const wchar_t* TITLE_BAR_NAME = L"DA・DA・PA!!!";
 	//ウィンドウのサイズを決める
-	Vector2<uint16_t> windowSize_ = { .x = 1280, .y = 720 };
+	Vector2<uint16_t> windowSize = { .x = 1280, .y = 720 };
 
 	//初期化
 	//ウィンドウ
-	engineManagers_.windowsSetup_->Initialize(TITLE_BAR_NAME, windowSize_);
+	engineManagers_.windowsSetup_->Initialize(TITLE_BAR_NAME, windowSize);
 
 	//COMの初期化
 	//COM...ComponentObjectModel、Microsoftの提唱する設計技術の１つ
@@ -78,7 +78,7 @@ void Elysia::Framework::Initialize() {
 	//JSON読み込みの初期化
 	engineManagers_.globalVariables_->LoadAllFile();
 	//ゲームシーン管理クラスの生成
-	gameManager_ = std::make_unique<GameManager>();
+	gameManager_ = std::make_unique<GameSceneManager>();
 	//初期化
 	gameManager_->Initialize();
 }

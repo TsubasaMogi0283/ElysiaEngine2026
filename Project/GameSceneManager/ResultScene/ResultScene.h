@@ -47,15 +47,15 @@ namespace Elysia {
 }
 
 /// <summary>
-/// テストシーン
+/// 結果シーン
 /// </summary>
-class TestScene : public Elysia::IGameScene{
+class ResultScene : public Elysia::IGameScene{
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	TestScene();
+	ResultScene();
 
 	/// <summary>
 	/// 初期化
@@ -90,14 +90,14 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~TestScene() = default;
+	~ResultScene() = default;
 
 public:
 	/// <summary>
 	/// ゲーム管理クラスを設定
 	/// </summary>
 	/// <param name="gameManager"></param>
-	void SetGameManager(Elysia::GameManager* gameManager) override {
+	void SetGameManager(Elysia::GameSceneManager* gameManager) override {
 		this->gameManager_ = gameManager;
 	}
 
@@ -113,7 +113,8 @@ private:
 	//アニメーション管理クラス
 	Elysia::AnimationManager* animationManager_ = nullptr;
 	//ゲーム管理クラス
-	Elysia::GameManager* gameManager_ = nullptr;
+	Elysia::GameSceneManager* gameManager_ = nullptr;
+
 
 private:
 	//スピード

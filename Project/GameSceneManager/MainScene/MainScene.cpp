@@ -8,7 +8,7 @@
 #include "ModelManager.h"
 #include "LevelDataManager.h"
 #include <TextureManager.h>
-#include <GameManager.h>
+#include "GameSceneManager.h"
 #include <MainScene/Start/StartMainScene.h>
 #include <MainScene/Play/PlayMainScene.h>
 #include <Note/NoteJudgement.h>

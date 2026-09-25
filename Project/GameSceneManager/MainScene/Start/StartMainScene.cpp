@@ -5,7 +5,7 @@
 #include <Input.h>
 #include <Easing.h>
 #include <MainScene/MainScene.h>
-#include <GameManager.h>
+#include "GameSceneManager.h"
 #include <TextureManager.h>
 #include <WindowsSetup.h>
 #include <MainScene/Play/PlayMainScene.h>
