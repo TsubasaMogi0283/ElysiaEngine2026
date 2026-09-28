@@ -47,31 +47,45 @@ public:
 	~StartTitleScene() = default;
 
 private:
-private:
 	/// <summary>
-	/// トランジション
+	/// 開けるトランジション
 	/// </summary>
-	void Transition();
+	void OpenTransition();
 
 	/// <summary>
-	/// UIの拡大
+	/// テキストの移動
 	/// </summary>
-	void UIScaleUp();
+	void TextMove();
 
 	/// <summary>
-	/// 準備
+	/// キャラクターの登場
 	/// </summary>
-	void Ready();
+	void ApperCharacter();
 
 	/// <summary>
-	/// Go
+	/// スタートするかどうか
 	/// </summary>
-	void Go();
+	void StartSelect();
 
 	/// <summary>
-	/// UIの縮小
+	/// 決定
 	/// </summary>
-	void UIScaleDown();
+	void Decide();
+
+	/// <summary>
+	/// セレクトに行く移動
+	/// </summary>
+	void ToSelect();
+
+	/// <summary>
+	/// ゲームを止める
+	/// </summary>
+	void QuitGame();
+
+	/// <summary>
+	/// 閉めるトランジション
+	/// </summary>
+	void CloseTransition();
 
 private:
 	/// <summary>
@@ -83,11 +97,14 @@ private:
 	/// テーブル
 	/// </summary>
 	inline static void (StartTitleScene::* functionTable[])() = {
-		&StartTitleScene::Transition,
-		& StartTitleScene::UIScaleUp,
-		& StartTitleScene::Ready,
-		& StartTitleScene::Go,
-		& StartTitleScene::UIScaleDown,
+		&StartTitleScene::OpenTransition,
+		&StartTitleScene::TextMove,
+		&StartTitleScene::ApperCharacter,
+		&StartTitleScene::StartSelect,
+		&StartTitleScene::Decide,
+		&StartTitleScene::ToSelect,
+		&StartTitleScene::QuitGame,
+		&StartTitleScene::CloseTransition,
 	};
 
 private:
@@ -96,25 +113,40 @@ private:
 	/// スタートメインシーンの状態
 	/// </summary>
 	enum class StartMainSceneState {
-		Transition,
-		//UIの移動(スケールアップ)
-		UIMoveScaleUp,
-		//Ready
-		Ready,
-		//Go!!
-		Go,
-		//UIの移動(スケールダウン)
-		UIScaleDown,
-		//プレイシーンへ
-		ChechTempo,
+		//開けるトランジション
+		OpenTransition,
+		//テキストの移動
+		TextMove,
+		//キャラクターの登場
+		ApperCharacter,
+		//スタートするかどうか
+		StartSelect,
+		//決定
+		Decide,
+		//セレクトに行く移動
+		ToSelect,
+		//ゲームを止める
+		QuitGame,
+		//閉めるトランジション
+		CloseTransition,
 
 		//この列挙体の量
 		Amount,
 	};
 
 	//現在の状態
-	StartMainSceneState currentState_ = StartMainSceneState::Transition;
+	StartMainSceneState currentState_ = StartMainSceneState::OpenTransition;
 
 
+private:
+	const float_t NEXT_WAIT_TIME_ = 1.0f;
+
+private:
+
+	//待機時間
+	std::array<float_t, static_cast<size_t>(StartMainSceneState::Amount)>waitingTimeArray_ = {};
+
+	//トランジション終了したかどうか
+	bool isEndTransition_ = false;
 };
 
