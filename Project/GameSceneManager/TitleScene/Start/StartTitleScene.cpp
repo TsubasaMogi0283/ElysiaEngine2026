@@ -9,7 +9,10 @@ void StartTitleScene::Initialize(){
 
 void StartTitleScene::Update(){
 
-	titleScene_->GetGameSceneManager()->GetTransition()->SetOpenTransition();
+	//開いたら次の状態へ
+	if (titleScene_->GetGameSceneManager()->GetTransition()->SetOpenTransition()) {
+
+	}
 
 	if (false) {
 		titleScene_->ChangeMainScene(std::make_unique<DisplayTitleScene>());
