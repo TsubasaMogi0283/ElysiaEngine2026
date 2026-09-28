@@ -46,7 +46,8 @@ public:
 	~EndTitleScene() = default;
 
 private:
-
+	//閉めるトランジション
+	CloseTransition,
 
 
 };

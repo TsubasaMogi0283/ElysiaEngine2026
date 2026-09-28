@@ -112,39 +112,30 @@ private:
 	/// <summary>
 	/// スタートメインシーンの状態
 	/// </summary>
-	enum class StartMainSceneState {
+	enum class StartTitleSceneState {
 		//開けるトランジション
 		OpenTransition,
 		//テキストの移動
 		TextMove,
 		//キャラクターの登場
 		ApperCharacter,
-		//スタートするかどうか
-		StartSelect,
-		//決定
-		Decide,
-		//セレクトに行く移動
-		ToSelect,
-		//ゲームを止める
-		QuitGame,
-		//閉めるトランジション
-		CloseTransition,
-
+		
 		//この列挙体の量
 		Amount,
 	};
 
 	//現在の状態
-	StartMainSceneState currentState_ = StartMainSceneState::OpenTransition;
+	StartTitleSceneState currentState_ = StartTitleSceneState::OpenTransition;
 
 
 private:
+	//次の状態屁の待機時間
 	const float_t NEXT_WAIT_TIME_ = 1.0f;
 
 private:
 
 	//待機時間
-	std::array<float_t, static_cast<size_t>(StartMainSceneState::Amount)>waitingTimeArray_ = {};
+	std::array<float_t, static_cast<size_t>(StartTitleSceneState::Amount)>waitingTimeArray_ = {};
 
 	//トランジション終了したかどうか
 	bool isEndTransition_ = false;

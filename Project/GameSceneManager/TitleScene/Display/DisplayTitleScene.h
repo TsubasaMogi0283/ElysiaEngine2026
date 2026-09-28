@@ -45,8 +45,85 @@ public:
 	/// </summary>
 	~DisplayTitleScene() = default;
 
+
+
 private:
 
+	/// <summary>
+	/// スタートするかどうか
+	/// </summary>
+	void StartSelect();
+
+	/// <summary>
+	/// 決定
+	/// </summary>
+	void Decide();
+
+	/// <summary>
+	/// セレクトに行く移動
+	/// </summary>
+	void ToSelect();
+
+	/// <summary>
+	/// ゲームを止める
+	/// </summary>
+	void QuitGame();
+private:
+	/// <summary>
+	/// 各状態を実行
+	/// </summary>
+	typedef void (DisplayTitleScene::* function)();
+
+	/// <summary>
+	/// テーブル
+	/// </summary>
+	inline static void (DisplayTitleScene::* functionTable[])() = {
+		&DisplayTitleScene::StartSelect,
+		&DisplayTitleScene::Decide,
+		&DisplayTitleScene::ToSelect,
+		&DisplayTitleScene::QuitGame,
+	};
+
+
+	/// <summary>
+	/// スタートメインシーンの状態
+	/// </summary>
+	enum class DisplayTitleSceneState {
+		//スタートするかどうか
+		StartSelect,
+		//決定
+		Decide,
+		//セレクトに行く移動
+		ToSelect,
+		//ゲームを止める
+		QuitGame,
+
+		//この列挙体の量
+		Amount,
+	};
+
+	//現在の状態
+	DisplayTitleSceneState currentState_ = DisplayTitleSceneState::StartSelect;
+
+
+private:
+	/// <summary>
+	/// スタートメインシーンの状態
+	/// </summary>
+	enum class StartMainSceneState {
+		//開けるトランジション
+		OpenTransition,
+		//テキストの移動
+		TextMove,
+		//キャラクターの登場
+		ApperCharacter,
+
+		//この列挙体の量
+		Amount,
+	};
+
+	//現在の状態
+	StartMainSceneState currentState_ = StartMainSceneState::OpenTransition;
 
 
 

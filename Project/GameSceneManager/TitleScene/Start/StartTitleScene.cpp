@@ -8,10 +8,10 @@ void StartTitleScene::Initialize(){
 }
 
 void StartTitleScene::Update(){
-
+	//各状態の更新
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
-	
+	//表示タイトルシーン
 	if (false) {
 		titleScene_->ChangeMainScene(std::make_unique<DisplayTitleScene>());
 	}
@@ -35,10 +35,10 @@ void StartTitleScene::OpenTransition(){
 	}
 
 	if (isEndTransition_) {
-		waitingTimeArray_[static_cast<size_t>(StartMainSceneState::OpenTransition)] += DELTA_TIME_;
-		if (waitingTimeArray_[static_cast<size_t>(StartMainSceneState::OpenTransition)] >= NEXT_WAIT_TIME_) {
+		waitingTimeArray_[static_cast<size_t>(StartTitleSceneState::OpenTransition)] += DELTA_TIME_;
+		if (waitingTimeArray_[static_cast<size_t>(StartTitleSceneState::OpenTransition)] >= NEXT_WAIT_TIME_) {
 			//トランジションが終わったらUIの移動へ 
-			currentState_ = StartMainSceneState::TextMove;
+			currentState_ = StartTitleSceneState::TextMove;
 		}
 	}
 }
@@ -56,22 +56,23 @@ void StartTitleScene::ApperCharacter(){
 
 }
 
-void StartTitleScene::StartSelect()
-{
+void StartTitleScene::StartSelect(){
+
 }
 
-void StartTitleScene::Decide()
-{
+void StartTitleScene::Decide(){
+
 }
 
-void StartTitleScene::ToSelect()
-{
+void StartTitleScene::ToSelect(){
+
 }
 
-void StartTitleScene::QuitGame()
-{
+void StartTitleScene::QuitGame(){
+
 }
 
-void StartTitleScene::CloseTransition()
-{
+void StartTitleScene::CloseTransition(){
+
+
 }
