@@ -33,6 +33,7 @@ namespace Elysia {
 		~PipelineManager() = default;
 
 	public:
+
 		/// <summary>
 		/// インスタンスの取得
 		/// </summary>

@@ -121,7 +121,7 @@ namespace Elysia {
 
 	private:
 		//ゲームの管理クラス
-		std::unique_ptr<GameSceneManager> gameManager_ = nullptr;
+		std::unique_ptr<GameSceneManager> gameSceneManager_ = nullptr;
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> sceneFactory_ = nullptr;
 

@@ -106,8 +106,30 @@ public:
 	/// </summary>
 	/// <param name="gameManager"></param>
 	void SetGameManager(Elysia::GameSceneManager* gameManager) override {
-		this->gameManager_ = gameManager;
+		this->gameSceneManager_ = gameManager;
 	}
+
+	/// <summary>
+	/// ゲーム管理クラスを取得
+	/// </summary>
+	/// <returns>ゲーム管理クラス</returns>
+	inline Elysia::GameSceneManager* GetGameSceneManager()const {
+		return gameSceneManager_;
+	}
+
+	/// <summary>
+	/// タイトルシーンを変更する
+	/// </summary>
+	/// <param name="newMainScene">新しいタイトルシーン</param>
+	inline void ChangeMainScene(std::unique_ptr<BaseTitleScene> newMainScene) {
+		if (baseTitleScene_ != newMainScene) {
+			//新しいシーンをセット
+			baseTitleScene_ = std::move(newMainScene);
+			//初期化
+			baseTitleScene_->SetTitleScene(this);
+			baseTitleScene_->Initialize();
+		}
+	};
 
 private:
 	//入力
@@ -121,7 +143,7 @@ private:
 	//アニメーション管理クラス
 	Elysia::AnimationManager* animationManager_ = nullptr;
 	//ゲーム管理クラス
-	Elysia::GameSceneManager* gameManager_ = nullptr;
+	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 
 private:
 	//スピード

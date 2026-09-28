@@ -78,9 +78,9 @@ void Elysia::Framework::Initialize() {
 	//JSON読み込みの初期化
 	engineManagers_.globalVariables_->LoadAllFile();
 	//ゲームシーン管理クラスの生成
-	gameManager_ = std::make_unique<GameSceneManager>();
+	gameSceneManager_ = std::make_unique<GameSceneManager>();
 	//初期化
-	gameManager_->Initialize();
+	gameSceneManager_->Initialize();
 }
 
 #pragma region ゲームループ内の関数
@@ -103,21 +103,21 @@ void Elysia::Framework::Update() {
 	//入力の更新
 	engineManagers_.input_->Update();
 	//ゲームシーンの更新
-	gameManager_->Update();
+	gameSceneManager_->Update();
 }
 
 void Elysia::Framework::Draw() {
 
 	//PostEffectの描画前処理
-	gameManager_->PreDrawPostEffect();
+	gameSceneManager_->PreDrawPostEffect();
 	//3Dオブジェクトの描画
-	gameManager_->DrawObject3D();
+	gameSceneManager_->DrawObject3D();
 	//描画始め(スワップチェイン)
 	engineManagers_.directXSetup_->StartDraw();
 	//PostEffectの描画
-	gameManager_->DrawPostEffect();
+	gameSceneManager_->DrawPostEffect();
 	//スプライトの描画
-	gameManager_->DrawSprite();
+	gameSceneManager_->DrawSprite();
 
 #ifdef _DEBUG
 	//ImGuiの描画

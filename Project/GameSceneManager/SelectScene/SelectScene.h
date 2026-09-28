@@ -98,7 +98,7 @@ public:
 	/// </summary>
 	/// <param name="gameManager"></param>
 	void SetGameManager(Elysia::GameSceneManager* gameManager) override {
-		this->gameManager_ = gameManager;
+		this->gameSceneManager_ = gameManager;
 	}
 
 private:
@@ -113,7 +113,7 @@ private:
 	//アニメーション管理クラス
 	Elysia::AnimationManager* animationManager_ = nullptr;
 	//ゲーム管理クラス
-	Elysia::GameSceneManager* gameManager_ = nullptr;
+	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 
 
 private:

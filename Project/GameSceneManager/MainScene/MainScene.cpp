@@ -26,9 +26,9 @@ MainScene::MainScene() {
 void MainScene::Initialize() {
 	//楽曲譜面情報を取得
 	//今は入らない
-	musicInformation_ = gameManager_->GetMusicInformation();
+	musicInformation_ = gameSceneManager_->GetMusicInformation();
 #ifdef _DEBUG
-	musicScoreData_ = gameManager_->GetScoreDataManager()->GetSampleMusicScoreData();
+	musicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 #endif // _DEBUG
 
 	//ノーツの生成
@@ -137,7 +137,7 @@ void MainScene::Update() {
 
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
-		gameManager_->ChangeScene("Result");
+		gameSceneManager_->ChangeScene("Result");
 		return;
 	}
 

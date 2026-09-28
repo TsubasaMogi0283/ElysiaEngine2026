@@ -193,7 +193,7 @@ void StartMainScene::DrawSprite() {
 
 void StartMainScene::Transition() {
 	//トランジションから始まる
-	if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
+	if (mainScene_->GetGameSceneManager()->GetTransition()->SetOpenTransition()) {
 		isEndTransition = true;
 	}
 

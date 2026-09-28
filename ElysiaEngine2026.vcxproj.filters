@@ -595,6 +595,12 @@
       <Filter>Project\GameSceneManager\Selection\Title</Filter>
     </ClCompile>
     <ClCompile Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Title\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\TitleScene\Display\DisplayTitleScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Title\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\TitleScene\End\EndTitleScene.cpp">
       <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1010,6 +1016,12 @@
       <Filter>Project\GameSceneManager\Selection\Title</Filter>
     </ClInclude>
     <ClInclude Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.h">
+      <Filter>Project\GameSceneManager\Selection\Title\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\TitleScene\Display\DisplayTitleScene.h">
+      <Filter>Project\GameSceneManager\Selection\Title\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\TitleScene\End\EndTitleScene.h">
       <Filter>Elysia\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
