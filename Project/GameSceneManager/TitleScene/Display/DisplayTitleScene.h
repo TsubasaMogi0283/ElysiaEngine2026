@@ -45,8 +45,6 @@ public:
 	/// </summary>
 	~DisplayTitleScene() = default;
 
-
-
 private:
 
 	/// <summary>
@@ -104,27 +102,6 @@ private:
 
 	//現在の状態
 	DisplayTitleSceneState currentState_ = DisplayTitleSceneState::StartSelect;
-
-
-private:
-	/// <summary>
-	/// スタートメインシーンの状態
-	/// </summary>
-	enum class StartMainSceneState {
-		//開けるトランジション
-		OpenTransition,
-		//テキストの移動
-		TextMove,
-		//キャラクターの登場
-		ApperCharacter,
-
-		//この列挙体の量
-		Amount,
-	};
-
-	//現在の状態
-	StartMainSceneState currentState_ = StartMainSceneState::OpenTransition;
-
 
 
 };

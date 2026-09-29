@@ -47,7 +47,7 @@ public:
 
 private:
 	//閉めるトランジション
-	CloseTransition,
+	//CloseTransition;
 
 
 };
