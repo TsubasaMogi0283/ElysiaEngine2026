@@ -193,11 +193,11 @@ void StartMainScene::DrawSprite() {
 
 void StartMainScene::Transition() {
 	//トランジションから始まる
-	if (mainScene_->GetGameManager()->GetTransition()->SetOpenTransition()) {
-		isEndTransition = true;
+	if (mainScene_->GetGameSceneManager()->GetTransition()->SetOpenTransition()) {
+		isEndTransition_ = true;
 	}
 
-	if (isEndTransition) {
+	if (isEndTransition_) {
 		waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Transition)] += DELTA_TIME_;
 		if (waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Transition)] >= WAIT_FOR_UI_MOVE_TIME_) {
 			//トランジションが終わったらUIの移動へ 

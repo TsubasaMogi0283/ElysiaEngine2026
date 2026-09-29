@@ -125,15 +125,15 @@ public:
 	/// </summary>
 	/// <param name="gameManager">ゲーム管理クラス</param>
 	inline void SetGameManager(Elysia::GameSceneManager* gameManager) override {
-		this->gameManager_ = gameManager;
+		this->gameSceneManager_ = gameManager;
 	}
 
 	/// <summary>
 	/// ゲーム管理クラスを取得
 	/// </summary>
 	/// <returns>ゲーム管理クラス</returns>
-	inline Elysia::GameSceneManager* GetGameManager()const {
-		return gameManager_;
+	inline Elysia::GameSceneManager* GetGameSceneManager()const {
+		return gameSceneManager_;
 	}
 
 	/// <summary>
@@ -181,7 +181,7 @@ private:
 	//ハンドル
 	uint32_t levelHandle_ = 0u;
 	//ゲーム管理クラス
-	Elysia::GameSceneManager* gameManager_ = nullptr;
+	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
 

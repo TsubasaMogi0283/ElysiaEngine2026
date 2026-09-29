@@ -2223,8 +2223,6 @@ void Elysia::PipelineManager::GenerateLuminanceBasedOutlinePSO() {
 	//配列の長さ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters);
 
-
-
 	//Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	//バイリニアフィルタ

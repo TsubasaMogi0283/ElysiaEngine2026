@@ -30,7 +30,7 @@ void TitleScene::Initialize(){
 
 	//カメラ
 	camera_.Initialize();
-	camera_.rotate.x = std::numbers::pi_v<float>/6.0f;
+	camera_.rotate.x = std::numbers::pi_v<float_t> / 6.0f;
 	camera_.translate = { .x = 0.0f,.y = 21.0f,.z = -40.0f };
 	//平行光源の初期化
 	directionalLight_.Initialize();
@@ -52,14 +52,12 @@ void TitleScene::Update(){
 
 	//レベルエディタの更新
 	levelDataManager_->Update(levelHandle_);
-	std::vector<AABB> objects = levelDataManager_->GetObjectAABBs(levelHandle_,"Stage");
-
 	camera_.Update();
 	directionalLight_.Update();
 
 	//処理が終わったら次のシーンへ
 	if (baseTitleScene_->GetIsEnd()) {
-		gameManager_->ChangeScene("Select");
+		gameSceneManager_->ChangeScene("Select");
 	}
 
 }

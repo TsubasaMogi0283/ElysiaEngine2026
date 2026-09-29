@@ -75,3 +75,25 @@ bool Transition::SetOpenTransition(){
 	}
 	return isEnd;
 }
+
+bool Transition::SetCloseTransition(){
+	bool isEnd = false;
+
+	//閉じている状態の時に開く
+	if (!isClosed_&&isOpened_) {
+
+		//イージングで滑らかに開ける
+		closeT_ += DELTA_TIME_;
+		//最大値になったら開いた状態にする
+		if (closeT_ >= 1.0f) {
+			isOpened_ = false;
+			isClosed_ = true;
+			closeT_ = 1.0f;
+			isEnd = true;
+		}
+		widthScale_ = Easing::EaseInOutQuad(closeT_);
+		widthScale_ = std::clamp(widthScale_, 0.0f, 1.0f);
+
+	}
+	return isEnd;
+}

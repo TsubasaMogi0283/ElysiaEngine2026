@@ -52,6 +52,12 @@ public:
 	/// </summary>
 	bool SetOpenTransition();
 
+	/// <summary>
+	/// トランジション(閉める)するかどうかを設定
+	/// </summary>
+	/// <returns></returns>
+	bool SetCloseTransition();
+
 private:
 
 	//トランジション用の画像の分割数
@@ -78,5 +84,6 @@ private:
 
 	//トランジションの進行度
 	float_t openT_ = 0.0f;
+	float_t closeT_ = 0.0f;
 };
 

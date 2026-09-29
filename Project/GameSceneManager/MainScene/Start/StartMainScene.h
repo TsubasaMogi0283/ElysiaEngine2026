@@ -172,7 +172,7 @@ private:
 	Vector2<int32_t> windowSize_ = {};
 
 	//トランジション終了したかどうか
-	bool isEndTransition = false;
+	bool isEndTransition_ = false;
 	//Ready用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, READY_TEXTURE_AMOUNT_> readySpriteArray_ = {};
 	//
