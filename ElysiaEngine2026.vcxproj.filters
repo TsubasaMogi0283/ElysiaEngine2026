@@ -262,9 +262,6 @@
     <Filter Include="Project\Record">
       <UniqueIdentifier>{f505dbd1-5554-4b9b-90a5-e2ad27a6dde9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Project\Note\LongNote\HiPass">
-      <UniqueIdentifier>{5736b2a0-5f7f-4387-989f-a2d2e86a24d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Project\Note\LongNote\LowPass">
       <UniqueIdentifier>{7311e3cf-6887-4ddf-8cc3-b11b149f21a7}</UniqueIdentifier>
     </Filter>
@@ -333,6 +330,9 @@
     </Filter>
     <Filter Include="Project\GameSceneManager\Selection\Title\Display">
       <UniqueIdentifier>{dfbbdbec-0959-45e6-a852-c3b097256b61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Note\LongNote\HighPass">
+      <UniqueIdentifier>{5736b2a0-5f7f-4387-989f-a2d2e86a24d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -538,7 +538,7 @@
       <Filter>Project\Record</Filter>
     </ClCompile>
     <ClCompile Include="Project\Note\Long\HighPass\HighPassLongNote.cpp">
-      <Filter>Project\Note\LongNote\HiPass</Filter>
+      <Filter>Project\Note\LongNote\HighPass</Filter>
     </ClCompile>
     <ClCompile Include="Project\Note\Long\LowPass\LowPassLongNote.cpp">
       <Filter>Project\Note\LongNote\LowPass</Filter>
@@ -953,7 +953,7 @@
       <Filter>Project\Note</Filter>
     </ClInclude>
     <ClInclude Include="Project\Note\Long\HighPass\HighPassLongNote.h">
-      <Filter>Project\Note\LongNote\HiPass</Filter>
+      <Filter>Project\Note\LongNote\HighPass</Filter>
     </ClInclude>
     <ClInclude Include="Project\Note\Long\LowPass\LowPassLongNote.h">
       <Filter>Project\Note\LongNote\LowPass</Filter>

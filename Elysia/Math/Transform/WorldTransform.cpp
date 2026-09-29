@@ -24,7 +24,7 @@ void WorldTransform::Update() {
 	//アンカーポイント用の行列を作る
 	Vector3 anchorPointInverse = { .x = -anchorPoint.x,.y = -anchorPoint.y,.z = -anchorPoint.z };
 	Matrix4x4 anchorMatrix = Matrix4x4::MakeTranslateMatrix(anchorPointInverse);
-	Matrix4x4 postTranslateMatrix = Matrix4x4::MakeTranslateMatrix(anchorPoint);
+	//Matrix4x4 postTranslateMatrix = Matrix4x4::MakeTranslateMatrix(anchorPoint);
 	//クォータニオンを使う場合
 	if (isUseQuaternion_) {
 		
@@ -39,7 +39,7 @@ void WorldTransform::Update() {
 		worldMatrix = anchorMatrix;
 		worldMatrix = Matrix4x4::Multiply(worldMatrix, scaleMatrix);
 		worldMatrix = Matrix4x4::Multiply(worldMatrix, rotateMatrix);
-		worldMatrix = Matrix4x4::Multiply(worldMatrix, postTranslateMatrix);
+		//worldMatrix = Matrix4x4::Multiply(worldMatrix, postTranslateMatrix);
 		worldMatrix = Matrix4x4::Multiply(worldMatrix, translateMatrix);
 
 	}
@@ -55,7 +55,7 @@ void WorldTransform::Update() {
 		worldMatrix = anchorMatrix;
 		worldMatrix = Matrix4x4::Multiply(worldMatrix, scaleMatrix);
 		worldMatrix = Matrix4x4::Multiply(worldMatrix, rotateMatrix);
-		worldMatrix = Matrix4x4::Multiply(worldMatrix, postTranslateMatrix);
+		//worldMatrix = Matrix4x4::Multiply(worldMatrix, postTranslateMatrix);
 		worldMatrix = Matrix4x4::Multiply(worldMatrix, translateMatrix);
 
 

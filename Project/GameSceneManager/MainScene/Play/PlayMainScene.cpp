@@ -214,6 +214,8 @@ void PlayMainScene::Update() {
 }
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight) {
+	longNoteSmaple_->DrawObject3D(camera, baseLight);
+
 	//通常ノーツの設定
 	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
 		if (normalTapNoteArray_[i]->GetIsUsed()) {
@@ -441,6 +443,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		//使用時
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 
+			//開始ノーツのインデックスを探す
 			size_t startIndex = 0u;
 			for (size_t j = 0u; j < noteInformations.size(); j++) {
 				if (noteInformations[j].type == NoteType::HiPassLongStart) {
@@ -637,12 +640,6 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			bool isConfirmJudgement = false;
 
 			
-			if (highPassLongNoteArray_[targetNote.poolIndex]->GetEndRatio() < 1.0f) {
-				
-				
-			} else {
-				isConfirmJudgement = true;
-			}
 
 			//判定が確定したらフラグを立てる
 			if (isConfirmJudgement) {

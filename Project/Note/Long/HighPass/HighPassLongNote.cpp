@@ -9,6 +9,7 @@ void HighPassLongNote::Initialize(const uint32_t& modelHandle){
 	worldTransform_.Initialize();
 	worldTransform_.scale.x = 0.4f;
 	worldTransform_.scale.y = 3.0;
+	worldTransform_.anchorPoint.x = -1.0f;
 	//マテリアルの初期化
 	material_.Initialize();
 	material_.lightingKinds = LightingType::DirectionalLighting;
@@ -44,17 +45,17 @@ void HighPassLongNote::Update(){
 	//終点座標
 	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
 	//半分の所でスケールを伸ばしていきたい
-	worldTransform_.translate.x= (startPositionX + endPositionX) / 2.0f;
+	worldTransform_.translate.x= 0.0f;
 	worldTransform_.translate.y = lanePositionY_;
 
-	//スケールの計算
-	//裏返り厳禁！
-	worldTransform_.scale.x = (abs(endPositionX - startPositionX) / 2.0f)* SCALE_OFFSET;
-
-	//最後までいったら未使用状態にする
-	if (endRatio_ >= 1.0f) {
-		isUsed_ = false;
-	}
+	////スケールの計算
+	////裏返り厳禁！
+	//worldTransform_.scale.x = (abs(endPositionX - startPositionX) / 2.0f)* SCALE_OFFSET;
+	//
+	////最後までいったら未使用状態にする
+	//if (endRatio_ >= 1.0f) {
+	//	isUsed_ = false;
+	//}
 
 #ifdef _DEBUG
 	ImGui::Begin("ハイパス用ロングノーツ");

@@ -161,6 +161,8 @@ private:
 
 	//サンプル
 	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
+	
+
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
 
