@@ -26,12 +26,19 @@ void HighPassLongNote::Update(){
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
 
 	//始点座標
-	float_t startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
+	float_t startPositionX = 0.0f;
 	//ホールドされていたら
 	if (isHold_) {
-		startPositionX = judgmentPositionX_;
+		if (musicTime_ >= startMoveTime_ &&
+			musicTime_ <= arriveLineTime_) {
+			startPositionX = judgmentPositionX_;
+		} else {
+			startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
+		}
+		
 	}
 	else {
+		
 		startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
 	}
 	//終点座標

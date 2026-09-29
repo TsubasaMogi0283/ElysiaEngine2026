@@ -451,7 +451,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			for (size_t j = startIndex; j < noteInformations.size(); j++) {
 				//現在の比率を計算
 				//そこから座標を求めていく
-				//終了地点を見つけたら探すのをやめる。
 				if (noteInformations[j].type == NoteType::LongEnd) {
 					//現在の比率を計算し設定
 					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
@@ -639,10 +638,7 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 
 			
 			if (highPassLongNoteArray_[targetNote.poolIndex]->GetEndRatio() < 1.0f) {
-				//ホールドしている状態
-				if (laneCondition.isHold) {
-					highPassLongNoteArray_[targetNote.poolIndex]->SetIsHold(true);
-				}
+				
 				
 			} else {
 				isConfirmJudgement = true;
