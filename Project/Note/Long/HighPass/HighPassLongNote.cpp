@@ -13,6 +13,10 @@ void HighPassLongNote::Initialize(const uint32_t& modelHandle){
 	material_.Initialize();
 	material_.lightingKinds = LightingType::DirectionalLighting;
 	material_.color = { .x = 1.0f,.y = 0.4f,.z = 0.6f,.w = 1.0f };
+
+	//色
+	notHoldColor_ = { .x = DEFAULT_COLOR_.x-0.3f,.y = DEFAULT_COLOR_.y - 0.3f,.z = DEFAULT_COLOR_.z - 0.3f,.w = DEFAULT_COLOR_.w - 0.3f };
+
 }
 
 void HighPassLongNote::Update(){
@@ -23,6 +27,13 @@ void HighPassLongNote::Update(){
 
 	//始点座標
 	float_t startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
+	//ホールドされていたら
+	if (isHold_) {
+		startPositionX = judgmentPositionX_;
+	}
+	else {
+		startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
+	}
 	//終点座標
 	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
 	//半分の所でスケールを伸ばしていきたい

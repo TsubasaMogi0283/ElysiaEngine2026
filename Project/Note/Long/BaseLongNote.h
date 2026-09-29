@@ -23,6 +23,14 @@ public:
 
 public:
 	/// <summary>
+	/// 終点の比率を取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetEndRatio()const {
+		return endRatio_;
+	}
+	
+	/// <summary>
 	/// 終点比率の設定
 	/// </summary>
 	/// <param name="ratio">比率</param>

@@ -346,8 +346,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 				break;
 
-
-
 			case NoteType::TranceGate8LongStart:
 				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; j++) {
 					//未使用時
@@ -397,7 +395,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		
 
 		//タップ系
-		if (note.type == NoteType::NormalTap) {
+		if (note.type == NoteType::NormalTap ||
+			note.type == NoteType::HiPassLongStart) {
 			//入力されたとき
 			if (laneCondition.isHit) {
 				//最も近いノーツのインデックスを記録
@@ -631,6 +630,30 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 				//また初期値に戻す
 				normalTapNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
 				normalTapNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
+				targetNote.poolIndex = -1;
+			}
+		}
+		else if (targetNote.type == NoteType::HiPassLongStart) {
+			//判定の確定
+			bool isConfirmJudgement = false;
+
+			
+			if (highPassLongNoteArray_[targetNote.poolIndex]->GetEndRatio() < 1.0f) {
+				//ホールドしている状態
+				if (laneCondition.isHold) {
+					highPassLongNoteArray_[targetNote.poolIndex]->SetIsHold(true);
+				}
+				
+			} else {
+				isConfirmJudgement = true;
+			}
+
+			//判定が確定したらフラグを立てる
+			if (isConfirmJudgement) {
+				targetNote.isJudged = true;
+				//また初期値に戻す
+				highPassLongNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
+				highPassLongNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
 				targetNote.poolIndex = -1;
 			}
 		}
