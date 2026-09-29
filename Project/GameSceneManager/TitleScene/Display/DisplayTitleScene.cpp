@@ -11,7 +11,6 @@ void DisplayTitleScene::Update(){
 	//各状態の更新
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
-
 	if (false) {
 		titleScene_->ChangeMainScene(std::make_unique<EndTitleScene>());
 	}

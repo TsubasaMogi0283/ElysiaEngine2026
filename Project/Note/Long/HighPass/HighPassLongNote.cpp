@@ -27,9 +27,10 @@ void HighPassLongNote::Update(){
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
 
 	//始点座標
-	float_t startPositionX = 0.0f;
+	float_t startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
+	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
 	//ホールドされていたら
-	if (isHold_) {
+	/*if (isHold_) {
 		if (musicTime_ >= startMoveTime_ &&
 			musicTime_ <= arriveLineTime_) {
 			startPositionX = judgmentPositionX_;
@@ -40,22 +41,21 @@ void HighPassLongNote::Update(){
 	}
 	else {
 		
-		startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
-	}
-	//終点座標
-	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
+		
+	}*/
+
 	//半分の所でスケールを伸ばしていきたい
-	worldTransform_.translate.x= 0.0f;
+	worldTransform_.translate.x= startPositionX;
 	worldTransform_.translate.y = lanePositionY_;
 
-	////スケールの計算
-	////裏返り厳禁！
-	//worldTransform_.scale.x = (abs(endPositionX - startPositionX) / 2.0f)* SCALE_OFFSET;
-	//
-	////最後までいったら未使用状態にする
-	//if (endRatio_ >= 1.0f) {
-	//	isUsed_ = false;
-	//}
+	//スケールの計算
+	//裏返り厳禁！
+	worldTransform_.scale.x = ;
+
+	//最後までいったら未使用状態にする
+	if (endRatio_ >= 1.0f) {
+		isUsed_ = false;
+	}
 
 #ifdef _DEBUG
 	ImGui::Begin("ハイパス用ロングノーツ");

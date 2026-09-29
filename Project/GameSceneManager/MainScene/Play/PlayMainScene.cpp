@@ -211,10 +211,11 @@ void PlayMainScene::Update() {
 	}
 
 #endif // _DEBUG
+
 }
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight) {
-	longNoteSmaple_->DrawObject3D(camera, baseLight);
+	//longNoteSmaple_->DrawObject3D(camera, baseLight);
 
 	//通常ノーツの設定
 	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
@@ -392,7 +393,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 				break;
 			}
-
 		}
 		
 
@@ -457,11 +457,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				if (noteInformations[j].type == NoteType::LongEnd) {
 					//現在の比率を計算し設定
 					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
-					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
 					highPassLongNoteArray_[i]->SetEndRatio(currentRatio);
 					break;
 				}
 			}
+
 			//楽曲時間を設定
 			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
 			//更新
@@ -638,8 +638,6 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 		else if (targetNote.type == NoteType::HiPassLongStart) {
 			//判定の確定
 			bool isConfirmJudgement = false;
-
-			
 
 			//判定が確定したらフラグを立てる
 			if (isConfirmJudgement) {
