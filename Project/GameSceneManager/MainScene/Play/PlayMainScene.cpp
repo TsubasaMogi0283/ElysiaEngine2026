@@ -427,6 +427,18 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		//ロング系
 		else if (startNote.type == NoteType::HiPassLongStart) {
 
+			//見過ごし用
+			//開始が指定した時間を超えたらミス
+			float_t overlookValue = musicTime_ - startNote.arriveLineTime;
+			if (overlookValue >= NoteJudgement::Time::MISS) {
+				//ミス
+				startNote.judgement = NoteJudgement::Selection::Miss;
+				record_.miss++;
+				//判定が確定したらフラグを立てる
+				startNote.isJudged = true;
+			}
+
+
 			float_t ratio = SingleCalculation::InverseLerp(startNote.endStartMoveTime_, startNote.endArriveMoveTime_, musicTime_);
 			if (ratio >= 1.0f) {
 				laneCondition.isHitLongNote = false;
