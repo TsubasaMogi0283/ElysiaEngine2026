@@ -82,7 +82,7 @@ public:
 	/// 終点の移動開始時間を設定
 	/// </summary>
 	/// <param name="startTime">移動開始時間</param>
-	inline void SetEndStartTime(const float_t& startTime) {
+	inline void SetEndStartMoveTime(const float_t& startTime) {
 		this->endStartTime_ = startTime;
 	}
 
@@ -90,7 +90,7 @@ public:
 	/// 判定に到着する時間を設定
 	/// </summary>
 	/// <param name="arriveTime">到着時間</param>
-	inline void SetEndArriveTime(const float_t& arriveTime) {
+	inline void SetEndArriveLineTime(const float_t& arriveTime) {
 		this->endArriveTime_ = arriveTime;
 	}
 

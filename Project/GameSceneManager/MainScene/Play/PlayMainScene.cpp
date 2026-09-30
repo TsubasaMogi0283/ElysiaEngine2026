@@ -267,39 +267,39 @@ void PlayMainScene::DrawSprite() {
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition) {
 	int32_t closestNoteIndex = -1;
 	for (size_t i = 0u; i < noteInformations.size(); i++) {
-		NoteInformation& note = noteInformations[i];
+		NoteInformation& startNote = noteInformations[i];
 
 		//判定済みは処理せず次へ
-		if (note.isJudged) {
+		if (startNote.isJudged) {
 			continue;
 		}
 		//まだ動き始める時間になっていないので処理をしない
-		if (note.startMoveTime > musicTime_) {
+		if (startNote.startMoveTime > musicTime_) {
 			break;
 		}
 
 
-		if (!note.isAssigned) {
+		if (!startNote.isAssigned) {
 			//ノーツの種類によってオブジェクトプールから割り当てる
-			switch (note.type) {
+			switch (startNote.type) {
 			case NoteType::NormalTap:
 				//通常ノーツの設定
 				for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
 						//開始時間を設定
-						normalTapNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						normalTapNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
-						normalTapNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						normalTapNoteArray_[j]->SetArriveLineTime(startNote.arriveLineTime);
 						//使用中に設定
 						normalTapNoteArray_[j]->SetIsUsed(true);
 						//インデックスを保存
 						normalTapNoteArray_[j]->SetPoolIndex(j);
-						note.poolIndex = j;
+						startNote.poolIndex = j;
 						//割り当て済みにする
-						note.isAssigned = true;
+						startNote.isAssigned = true;
 						break;
 					}
 				}
@@ -310,18 +310,28 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
 						//開始時間を設定
-						highPassLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						highPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
-						highPassLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						highPassLongNoteArray_[j]->SetArriveLineTime(startNote.arriveLineTime);
 						//使用中に設定
 						highPassLongNoteArray_[j]->SetIsUsed(true);
 						//インデックスを保存
 						highPassLongNoteArray_[j]->SetPoolIndex(j);
-						note.poolIndex = j;
+						//終点ノーツを探す
+						for (size_t k = i; k < noteInformations.size(); k++) {
+							if (noteInformations[k].type == NoteType::LongEnd) {
+								//移動開始時間と到着時間を設定
+								highPassLongNoteArray_[j]->SetEndStartMoveTime(noteInformations[k].startMoveTime);
+								highPassLongNoteArray_[j]->SetEndArriveLineTime(noteInformations[k].arriveLineTime);
+								break;
+							}
+						}
+						//オブジェクトプールを記録する
+						startNote.poolIndex = j;
 						//割り当て済みにする
-						note.isAssigned = true;
+						startNote.isAssigned = true;
 						break;
 					}
 				}
@@ -332,18 +342,18 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
 						//開始時間を設定
-						lowPassLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						lowPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
-						lowPassLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						lowPassLongNoteArray_[j]->SetArriveLineTime(startNote.arriveLineTime);
 						//使用中に設定
 						lowPassLongNoteArray_[j]->SetIsUsed(true);
 						//インデックスを保存
 						lowPassLongNoteArray_[j]->SetPoolIndex(j);
-						note.poolIndex = j;
+						startNote.poolIndex = j;
 						//割り当て済みにする
-						note.isAssigned = true;
+						startNote.isAssigned = true;
 						break;
 					}
 				}
@@ -354,18 +364,18 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
 						//開始時間を設定
-						transGateEighthLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						transGateEighthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
-						transGateEighthLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						transGateEighthLongNoteArray_[j]->SetArriveLineTime(startNote.arriveLineTime);
 						//使用中に設定
 						transGateEighthLongNoteArray_[j]->SetIsUsed(true);
 						//インデックスを保存
 						transGateEighthLongNoteArray_[j]->SetPoolIndex(j);
-						note.poolIndex = j;
+						startNote.poolIndex = j;
 						//割り当て済みにする
-						note.isAssigned = true;
+						startNote.isAssigned = true;
 						break;
 					}
 				}
@@ -376,18 +386,18 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[note.place]);
+						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
 						//開始時間を設定
-						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(note.startMoveTime);
+						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
-						transGateSixteenthLongNoteArray_[j]->SetArriveLineTime(note.arriveLineTime);
+						transGateSixteenthLongNoteArray_[j]->SetArriveLineTime(startNote.arriveLineTime);
 						//使用中に設定
 						transGateSixteenthLongNoteArray_[j]->SetIsUsed(true);
 						//インデックスを保存
 						transGateSixteenthLongNoteArray_[j]->SetPoolIndex(j);
-						note.poolIndex = j;
+						startNote.poolIndex = j;
 						//割り当て済みにする
-						note.isAssigned = true;
+						startNote.isAssigned = true;
 						break;
 					}
 				}
@@ -397,8 +407,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		
 
 		//タップ系
-		if (note.type == NoteType::NormalTap ||
-			note.type == NoteType::HiPassLongStart) {
+		if (startNote.type == NoteType::NormalTap ||
+			startNote.type == NoteType::HiPassLongStart) {
 			//入力されたとき
 			if (laneCondition.isHit) {
 				//最も近いノーツのインデックスを記録
@@ -407,21 +417,21 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			}
 
 			//見過ごし用
-			float_t overlookValue = musicTime_ - note.arriveLineTime;
+			float_t overlookValue = musicTime_ - startNote.arriveLineTime;
 			if (overlookValue >= NoteJudgement::Time::MISS) {
 				//ミス
-				note.judgement = NoteJudgement::Selection::Miss;
+				startNote.judgement = NoteJudgement::Selection::Miss;
 				record_.miss++;
 				//判定が確定したらフラグを立てる
-				note.isJudged = true;
+				startNote.isJudged = true;
 			}
 		}
 		//ロング終点
-		else if (note.type == NoteType::LongEnd) {
-			note.moveRatio = SingleCalculation::InverseLerp(note.startMoveTime, note.arriveLineTime, musicTime_);
-			if (note.moveRatio >= 1.0f) {
+		else if (startNote.type == NoteType::LongEnd) {
+			startNote.moveRatio = SingleCalculation::InverseLerp(startNote.startMoveTime, startNote.arriveLineTime, musicTime_);
+			if (startNote.moveRatio >= 1.0f) {
 				laneCondition.isHitLongNote = false;
-				note.isJudged = true;
+				startNote.isJudged = true;
 			}
 		}
 	}
@@ -451,15 +461,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 			}
 
-			//終点ノーツを探す
-			for (size_t j = startIndex; j < noteInformations.size(); j++) {
-				if (noteInformations[j].type == NoteType::LongEnd) {
-					//移動開始時間と到着時間を設定
-					highPassLongNoteArray_[i]->SetEndStartTime(noteInformations[j].startMoveTime);
-					highPassLongNoteArray_[i]->SetEndArriveTime(noteInformations[j].arriveLineTime);
-					break;
-				}
-			}
+			
 
 			//楽曲時間を設定
 			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
