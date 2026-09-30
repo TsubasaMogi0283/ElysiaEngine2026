@@ -116,6 +116,7 @@ void MainScene::Initialize() {
 #ifdef _DEBUG
 	baseMainScene_ = std::make_unique<StartMainScene>();
 #endif // _DEBUG
+
 	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
 
