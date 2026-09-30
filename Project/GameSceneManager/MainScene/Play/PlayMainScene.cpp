@@ -188,7 +188,6 @@ void PlayMainScene::Update() {
 		ImGui::TreePop();
 	}
 
-
 	if (ImGui::TreeNode("上レーン")) {
 		for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
 			bool isUsed = normalTapNoteArray_[i]->GetIsUsed();
@@ -278,7 +277,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			break;
 		}
 
-
 		if (!startNote.isAssigned) {
 			//ノーツの種類によってオブジェクトプールから割り当てる
 			switch (startNote.type) {
@@ -323,8 +321,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						for (size_t k = i; k < noteInformations.size(); k++) {
 							if (noteInformations[k].type == NoteType::LongEnd) {
 								//移動開始時間と到着時間を設定
-								highPassLongNoteArray_[j]->SetEndStartMoveTime(noteInformations[k].startMoveTime);
-								highPassLongNoteArray_[j]->SetEndArriveLineTime(noteInformations[k].arriveLineTime);
+								startNote.endStartMoveTime_ = noteInformations[k].startMoveTime;
+								startNote.endArriveMoveTime_ = noteInformations[k].arriveLineTime;
+								highPassLongNoteArray_[j]->SetEndStartMoveTime(startNote.endStartMoveTime_);
+								highPassLongNoteArray_[j]->SetEndArriveLineTime(startNote.endArriveMoveTime_);
 								break;
 							}
 						}
@@ -405,10 +405,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			}
 		}
 		
-
 		//タップ系
-		if (startNote.type == NoteType::NormalTap ||
-			startNote.type == NoteType::HiPassLongStart) {
+		if (startNote.type == NoteType::NormalTap) {
 			//入力されたとき
 			if (laneCondition.isHit) {
 				//最も近いノーツのインデックスを記録
@@ -426,10 +424,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				startNote.isJudged = true;
 			}
 		}
-		//ロング終点
-		else if (startNote.type == NoteType::LongEnd) {
-			startNote.moveRatio = SingleCalculation::InverseLerp(startNote.startMoveTime, startNote.arriveLineTime, musicTime_);
-			if (startNote.moveRatio >= 1.0f) {
+		//ロング系
+		else if (startNote.type == NoteType::HiPassLongStart) {
+
+			float_t ratio = SingleCalculation::InverseLerp(startNote.endStartMoveTime_, startNote.endArriveMoveTime_, musicTime_);
+			if (ratio >= 1.0f) {
 				laneCondition.isHitLongNote = false;
 				startNote.isJudged = true;
 			}
@@ -460,8 +459,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					startIndex = j;
 				}
 			}
-
-			
 
 			//楽曲時間を設定
 			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
@@ -639,6 +636,11 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 		else if (targetNote.type == NoteType::HiPassLongStart) {
 			//判定の確定
 			bool isConfirmJudgement = false;
+			//ホールド中
+			if (laneCondition.isHold) {
+
+			}
+
 
 			//判定が確定したらフラグを立てる
 			if (isConfirmJudgement) {

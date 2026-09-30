@@ -96,7 +96,7 @@ public:
 
 protected:
 	//スケールのオフセット
-	float SCALE_OFFSET = 1.2f;
+	float_t SCALE_OFFSET = 1.2f;
 
 protected:
 	//終点比率
