@@ -427,6 +427,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		//ロング系
 		else if (startNote.type == NoteType::HiPassLongStart) {
 
+			//入力されたとき
+			if (laneCondition.isHit) {
+				//最も近いノーツのインデックスを記録
+				closestNoteIndex = static_cast<int32_t>(i);
+				break;
+			}
+
+
 			//見過ごし用
 			//開始が指定した時間を超えたらミス
 			float_t overlookValue = musicTime_ - startNote.arriveLineTime;
@@ -436,6 +444,12 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				record_.miss++;
 				//判定が確定したらフラグを立てる
 				startNote.isJudged = true;
+				//未使用に戻す
+				//また初期値に戻す
+				//normalTapNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
+				//normalTapNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
+				//targetNote.poolIndex = -1;
+
 			}
 
 
@@ -537,7 +551,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			transGateEighthLongNoteArray_[i]->Update();
 		}
 	}
-
 
 	//トランスゲート16ノーツの設定
 	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {

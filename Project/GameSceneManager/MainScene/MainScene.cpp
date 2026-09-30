@@ -223,7 +223,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -243,7 +242,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -265,7 +263,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::HiPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -285,7 +282,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::HiPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -307,7 +303,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::LowPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -327,7 +322,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::LowPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -350,7 +344,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::TranceGate8LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -370,7 +363,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::TranceGate8LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -396,7 +388,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::TranceGate16LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -416,7 +407,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::TranceGate16LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -438,7 +428,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
@@ -456,7 +445,6 @@ void MainScene::GenerateNotes() {
 					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
 					.arriveLineTime = totalTime + i * noteInterval,
-					.moveRatio = 0.0f,
 					.judgement = NoteJudgement::Selection::None,
 					.isJudged = false,
 					.isAssigned = false
