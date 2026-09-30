@@ -30,20 +30,7 @@ void HighPassLongNote::Update(){
 	//終点
 	endRatio_= SingleCalculation::InverseLerp(endStartTime_, endArriveTime_, musicTime_);
 	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
-	//ホールドされていたら
-	/*if (isHold_) {
-		if (musicTime_ >= startMoveTime_ &&
-			musicTime_ <= arriveLineTime_) {
-			startPositionX = judgmentPositionX_;
-		} else {
-			startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
-		}
-		
-	}
-	else {
-		
-		
-	}*/
+	
 
 	//半分の所でスケールを伸ばしていきたい
 	worldTransform_.translate.x= startPositionX;
