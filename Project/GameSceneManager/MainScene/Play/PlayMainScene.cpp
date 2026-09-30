@@ -451,13 +451,12 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 			}
 
+			//終点ノーツを探す
 			for (size_t j = startIndex; j < noteInformations.size(); j++) {
-				//現在の比率を計算
-				//そこから座標を求めていく
 				if (noteInformations[j].type == NoteType::LongEnd) {
-					//現在の比率を計算し設定
-					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
-					highPassLongNoteArray_[i]->SetEndRatio(currentRatio);
+					//移動開始時間と到着時間を設定
+					highPassLongNoteArray_[i]->SetEndStartTime(noteInformations[j].startMoveTime);
+					highPassLongNoteArray_[i]->SetEndArriveTime(noteInformations[j].arriveLineTime);
 					break;
 				}
 			}

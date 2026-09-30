@@ -23,11 +23,12 @@ void HighPassLongNote::Initialize(const uint32_t& modelHandle){
 void HighPassLongNote::Update(){
 
 
-	//開始の比率を計算
+	//各地点の比率を計算し座標を求める
+	//開始
 	ratio_ = SingleCalculation::InverseLerp(startMoveTime_, arriveLineTime_, musicTime_);
-
-	//始点座標
 	float_t startPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, ratio_);
+	//終点
+	endRatio_= SingleCalculation::InverseLerp(endStartTime_, endArriveTime_, musicTime_);
 	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
 	//ホールドされていたら
 	/*if (isHold_) {
@@ -50,7 +51,7 @@ void HighPassLongNote::Update(){
 
 	//スケールの計算
 	//裏返り厳禁！
-	worldTransform_.scale.x = ;
+	worldTransform_.scale.x = (endPositionX - startPositionX) / 2.0f;
 
 	//最後までいったら未使用状態にする
 	if (endRatio_ >= 1.0f) {
