@@ -20,6 +20,7 @@
 #include <Audio.h>
 #include <Sprite.h>
 #include <ScoreData/MusicScoreData.h>
+#include <Gauge/Gauge.h>
 
  /// <summary>
  /// ElysiaEngine(前方宣言)
@@ -160,7 +161,13 @@ public:
 		return hiSpeed_;
 	}
 
-
+	/// <summary>
+	/// ゲージを取得
+	/// </summary>
+	/// <returns></returns>
+	inline Gauge* GetGauge()const {
+		return gauge_.get();
+	}
 
 private:
 	/// <summary>
@@ -213,10 +220,6 @@ private:
 	const uint8_t ONE_MILLION_DIGIT_ = 6u;
 
 private:
-	//初期のゲージ座標
-	Vector2<int32_t> initialGaugePosition_ = {};
-	//通常表示時のゲージ座標
-	Vector2<int32_t> gaugeDisplayPosition_ = {};
 
 	//初期のコンボ座標
 	int32_t initialComboPositionY_ = 0;
@@ -252,29 +255,9 @@ private:
 
 
 public:
-	/// <summary>
-	/// ゲージの座標を設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	inline void SetGaugePosition(const Vector2<int32_t>& position) {
-		this->gauge_.sprite->SetPosition(position);
-	}
+	
 
-	/// <summary>
-	/// ゲージの通常表示座標を取得
-	/// </summary>
-	/// <returns>ゲージの通常表示座標</returns>
-	inline Vector2<int32_t> GetGaugeDisplayPosition()const {
-		return gaugeDisplayPosition_;
-	}
-
-	/// <summary>
-	/// 初期ゲージ座標を取得
-	/// </summary>
-	/// <returns>初期ゲージ座標</returns>
-	inline Vector2<int32_t> GetInitialGaugePosition()const {
-		return initialGaugePosition_;
-	}
+	
 
 	/// <summary>
 	/// コンボの初期座標を取得
@@ -343,9 +326,7 @@ private:
 	//UI
 	//数字のテクスチャハンドル
 	std::array<uint32_t, NUMBER_TEXTURE_AMOUNT_>numberTextureHandlesArray = {};
-	//ゲージ
-	UIInformation gauge_ = {};
-	Vector2<float_t> gaugeScale = { .x = 1.0f,.y = 1.0f };
+	
 	//スコア
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
 	uint32_t totalScore_ = 0u;
@@ -354,11 +335,9 @@ private:
 	uint16_t totalCombo_ = 0u;
 	//最大コンボ
 	uint16_t maxCombo_ = 0u;
+	//ゲージ
+	std::unique_ptr<Gauge>gauge_ = nullptr;
 
-
-
-
-	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 
 };

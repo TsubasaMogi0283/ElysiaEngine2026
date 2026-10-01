@@ -210,17 +210,16 @@ void StartMainScene::UIScaleUp(){
 	//線形補間の時間を加算
 	startMoveTime_ += DELTA_TIME_;
 	float_t startMoveT = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, startMoveTime_);
+
 	startMoveT = std::clamp(startMoveT, 0.0f, 1.0f);
 	//イージング
 	//種類はそろえた方が統一感が出るのでEaseInOutQuadに統一する
 	float_t easedT = Easing::EaseInOutQuad(startMoveT);
-
-	//ゲージ
 	float_t gaugePositionY = SingleCalculation::Lerp(
-		static_cast<float_t>(mainScene_->GetInitialGaugePosition().y),
-		static_cast<float_t>(mainScene_->GetGaugeDisplayPosition().y),
+		static_cast<float_t>(mainScene_->GetGauge()->GetInitialPosition().y),
+		static_cast<float_t>(mainScene_->GetGauge()->GetGaugePosition().y),
 		easedT);
-	mainScene_->SetGaugePosition({ mainScene_->GetGaugeDisplayPosition().x, static_cast<int32_t>(gaugePositionY) });
+	mainScene_->GetGauge()->SetGaugePositionY(gaugePositionY);
 
 	//スコア
 	float_t scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);

@@ -56,21 +56,10 @@ void MainScene::Initialize() {
 
 	//ゲージ
 	uint32_t gaugeTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Gauge.png");
-	gauge_.sprite = Elysia::Sprite::Create(gaugeTextureHandle);
-	//画像サイズ
-	Vector2<uint64_t> gaugeTextureSize = {
-		.x= textureManager_->GetTextureWidth(gaugeTextureHandle),
-		.y= textureManager_->GetTextureHeight(gaugeTextureHandle)
-	};
-
-	//通常表示座標
-	gaugeDisplayPosition_ = { .x = 640 - static_cast<int32_t>(gaugeTextureSize.x / 2u),.y = 720 - static_cast<int32_t>(gaugeTextureSize.y) };
-	//初期座標
-	initialGaugePosition_ = { .x = gaugeDisplayPosition_.x,.y = gaugeDisplayPosition_.y + static_cast<int32_t>(gaugeTextureSize.y) };
-
-	//初期設定
-	gauge_.sprite->SetPosition(initialGaugePosition_);
-	gauge_.sprite->SetScale(gaugeScale);
+	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Frame.png");
+	gauge_ = std::make_unique<Gauge>();
+	gauge_->Initialize(gaugeTextureHandle, frameTextureHandle);
+	gauge_->SetTotalNotes(musicScoreData_.totalNote_);
 
 	//数字のテクスチャの読み込み
 	uint32_t numberTextureHandle[NUMBER_TEXTURE_AMOUNT_] = {};
@@ -127,14 +116,10 @@ void MainScene::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("メインシーン");
 	ImGui::SliderFloat3("平行光源", &directionalLight_.direction.x, -1.0f, 1.0f);
-	ImGui::SliderFloat2("ゲージのスケール", &gaugeScale.x, 0.0f, 1.0f);
-	ImGui::SliderFloat4("色", &color_.x, 0.0f, 1.0f);
 	ImGui::SliderFloat("スコアのスケール", &scoreScale_, 0.0f, 2.0f);
 	int32_t scorePositionOffsetXInt = static_cast<int32_t>(scorePositionOffsetX_);
 	ImGui::SliderInt("スコアの座標オフセット", &scorePositionOffsetXInt, 0, 1000);
 	ImGui::End();
-	gauge_.sprite->SetScale(gaugeScale);
-	gauge_.sprite->SetColor(color_);
 
 	//リザルトへ
 	if (input_->IsTriggerKey(DIK_N)) {
@@ -146,6 +131,9 @@ void MainScene::Update() {
 
 	//テクスチャ割り当て
 	AssignToTexture();
+
+	//ゲージの更新
+	gauge_->Update();
 
 	//更新
 	levelDataManager_->Update(levelHandle_);
@@ -176,7 +164,7 @@ void MainScene::DrawPostEffect() {
 void MainScene::DrawSprite() {
 	
 	//ゲージ
-	gauge_.sprite->Draw();
+	gauge_->DrawSprite();
 
 	//スコア
 	for (uint8_t i = 0u;i < SCORE_DIGIT_;i++) {

@@ -334,6 +334,9 @@
     <Filter Include="Project\Note\LongNote\HighPass">
       <UniqueIdentifier>{5736b2a0-5f7f-4387-989f-a2d2e86a24d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\Gauge">
+      <UniqueIdentifier>{838a521d-bf5a-40fb-ab5e-6586afdeefac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elysia\Audio\Audio.cpp">
@@ -602,6 +605,9 @@
     </ClCompile>
     <ClCompile Include="Project\GameSceneManager\TitleScene\End\EndTitleScene.cpp">
       <Filter>Project\GameSceneManager\Selection\Title\End</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Gauge\Gauge.cpp">
+      <Filter>Project\Gauge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1023,6 +1029,9 @@
     </ClInclude>
     <ClInclude Include="Project\GameSceneManager\TitleScene\End\EndTitleScene.h">
       <Filter>Project\GameSceneManager\Selection\Title\End</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Gauge\Gauge.h">
+      <Filter>Project\Gauge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
