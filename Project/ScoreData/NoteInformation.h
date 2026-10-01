@@ -31,6 +31,8 @@ struct NoteInformation {
 	float_t endStartMoveTime_ = 0.0f;
 	//到着時間
 	float_t endArriveMoveTime_ = 0.0f;
+	//始点の判定をしたかどうか
+	bool isLongStartJugged = false;
 
 	//判定
 	uint8_t judgement = 0u;

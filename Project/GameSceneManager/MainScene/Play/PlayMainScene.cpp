@@ -420,6 +420,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//ミス
 				startNote.judgement = NoteJudgement::Selection::Miss;
 				record_.miss++;
+				record_.combo = 0u;
 				//判定が確定したらフラグを立てる
 				startNote.isJudged = true;
 			}
@@ -441,6 +442,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//ミス
 				startNote.judgement = NoteJudgement::Selection::Miss;
 				record_.miss++;
+				record_.combo = 0u;
 				//判定が確定したらフラグを立てる
 				startNote.isJudged = true;
 				//未使用に戻す
@@ -527,22 +529,74 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			}
 		}
 		else if (targetNote.type == NoteType::HiPassLongStart) {
+			
 			//判定の確定
 			bool isConfirmJudgement = false;
+			if (!targetNote.isLongStartJugged) {
+				//Perfect用
+				if (absoluteJudgementTime < NoteJudgement::Time::PERFECT) {
 
-			//ホールド中
+					//判定の設定
+					record_.perfect++;
+					//コンボを増やす
+					record_.combo++;
+					//スコアを加算
+					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
+					//始点を判定済みにする
+					targetNote.isLongStartJugged = true;
+
+				}
+				//Great用
+				else if (absoluteJudgementTime < NoteJudgement::Time::GREAT) {
+
+					//判定の設定
+					record_.great++;
+					//コンボを増やす
+					record_.combo++;
+					//スコアを加算
+					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
+					//始点を判定済みにする
+					targetNote.isLongStartJugged = true;
+				}
+				//Good用
+				else if (absoluteJudgementTime < NoteJudgement::Time::GOOD) {
+
+					//判定の設定
+					record_.good++;
+					//コンボを増やす
+					record_.combo++;
+					//スコアを加算
+					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
+					//始点を判定済みにする
+					targetNote.isLongStartJugged = true;
+				}
+				//Miss用
+				else if (absoluteJudgementTime < NoteJudgement::Time::MISS) {
+
+					//判定の設定
+					record_.miss++;
+					//コンボを0に戻す
+					record_.combo = 0u;
+					//スコアの倍率を初期化
+					comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
+					//始点を判定済みにする
+					targetNote.isLongStartJugged = true;
+				}
+			}
+
+
+			//ホールド中スコアが増加
 			if (laneCondition.isHold&&
 				(targetNote.arriveLineTime <= musicTime_&& musicTime_ <= targetNote.endArriveMoveTime_)) {
 				laneCondition.isHoldLongNote = true;
-				record_.score += 100u;
+				record_.score += LONG_NOTE_SCORE_INCREASE_VALUE_;
 			}
 			//比率を計算し、1.0f以上になったら判定済みにする
 			float_t endRatio = SingleCalculation::InverseLerp(targetNote.endStartMoveTime_, targetNote.endArriveMoveTime_, musicTime_);
 			if (endRatio >= 1.0f) {
-				
-				
 				isConfirmJudgement = true;
 			}
+
 			//判定が確定したらフラグを立てる
 			if (isConfirmJudgement) {
 				laneCondition.isHoldLongNote = false;
@@ -550,6 +604,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 				//パーフェクトで判定する
 				record_.perfect++;
+				//コンボを増やす
+				record_.combo++;
 				//また初期値に戻す
 				highPassLongNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
 				highPassLongNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);

@@ -132,7 +132,8 @@ private:
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
-	
+	//ロングノーツのスコア増加量
+	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;;
 private:
 
 	//譜面情報
