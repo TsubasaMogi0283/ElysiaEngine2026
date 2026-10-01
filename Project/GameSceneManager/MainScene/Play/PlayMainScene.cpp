@@ -201,7 +201,6 @@ void PlayMainScene::Update() {
 		}
 		ImGui::TreePop();
 	}
-
 	ImGui::End();
 
 	//デバッグ用でNを押したらプレイシーンへ
@@ -420,6 +419,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//ミス
 				startNote.judgement = NoteJudgement::Selection::Miss;
 				record_.miss++;
+				mainScene_->GetGauge()->SetIncreaseValue(startNote.judgement);
 				record_.combo = 0u;
 				//判定が確定したらフラグを立てる
 				startNote.isJudged = true;
@@ -442,6 +442,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//ミス
 				startNote.judgement = NoteJudgement::Selection::Miss;
 				record_.miss++;
+				mainScene_->GetGauge()->SetIncreaseValue(startNote.judgement);
 				record_.combo = 0u;
 				//判定が確定したらフラグを立てる
 				startNote.isJudged = true;
@@ -471,6 +472,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 				//判定の設定
 				record_.perfect++;
+				mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Perfect);
 				targetNote.judgement = NoteJudgement::Selection::Perfect;
 				isConfirmJudgement = true;
 
@@ -484,6 +486,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 				//判定の設定
 				record_.great++;
+				mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Great);
 				targetNote.judgement = NoteJudgement::Selection::Great;
 				isConfirmJudgement = true;
 
@@ -498,6 +501,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//判定の設定
 				record_.good++;
 				targetNote.judgement = NoteJudgement::Selection::Good;
+				mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Good);
 				isConfirmJudgement = true;
 
 				//コンボを増やす
@@ -511,6 +515,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				//判定の設定
 				record_.miss++;
 				targetNote.judgement = NoteJudgement::Selection::Miss;
+				mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Miss);
 				isConfirmJudgement = true;
 
 				//コンボを0に戻す
@@ -538,6 +543,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 					//判定の設定
 					record_.perfect++;
+					mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Perfect);
 					//コンボを増やす
 					record_.combo++;
 					//スコアを加算
@@ -551,6 +557,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 					//判定の設定
 					record_.great++;
+					mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Great);
 					//コンボを増やす
 					record_.combo++;
 					//スコアを加算
@@ -563,6 +570,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 					//判定の設定
 					record_.good++;
+					mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Good);
 					//コンボを増やす
 					record_.combo++;
 					//スコアを加算
@@ -575,6 +583,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 					//判定の設定
 					record_.miss++;
+					mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Miss);
 					//コンボを0に戻す
 					record_.combo = 0u;
 					//スコアの倍率を初期化
@@ -604,6 +613,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 				//パーフェクトで判定する
 				record_.perfect++;
+				mainScene_->GetGauge()->SetIncreaseValue(NoteJudgement::Selection::Perfect);
 				//コンボを増やす
 				record_.combo++;
 				//また初期値に戻す

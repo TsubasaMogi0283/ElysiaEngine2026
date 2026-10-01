@@ -172,7 +172,6 @@ private:
 	//コンボのボーナス倍率
 	float_t comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
 
-
 	//判定線
 	std::unique_ptr<JudgementLine> judgementLine_ = nullptr;
 

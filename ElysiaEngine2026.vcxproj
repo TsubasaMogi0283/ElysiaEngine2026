@@ -213,6 +213,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\GameSceneManager\TitleScene\End\EndTitleScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\TitleScene\TitleScene.cpp" />
+    <ClCompile Include="Project\Gauge\Gauge.cpp" />
     <ClCompile Include="Project\JudgementLine\JudgementLine.cpp" />
     <ClCompile Include="Project\Note\BaseNote.cpp" />
     <ClCompile Include="Project\Note\Long\BaseLongNote.cpp" />
@@ -352,6 +353,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\GameSceneManager\TitleScene\End\EndTitleScene.h" />
     <ClInclude Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.h" />
     <ClInclude Include="Project\GameSceneManager\TitleScene\TitleScene.h" />
+    <ClInclude Include="Project\Gauge\Gauge.h" />
     <ClInclude Include="Project\JudgementLine\JudgementLine.h" />
     <ClInclude Include="Project\Note\BaseNote.h" />
     <ClInclude Include="Project\Note\Long\BaseLongNote.h" />
