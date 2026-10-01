@@ -47,13 +47,11 @@ void Gauge::Update(){
 	//最大値と最小値の範囲内にする
 	currentValue_ = std::clamp(currentValue_, MIN_VALUE_, MAX_VALUE_);
 
-	
-	
 	if (scale_ < 0.7f) {
 		mainColor_ = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
 	}
 	else if (scale_ <1.0f) {
-		mainColor_ = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
+		mainColor_ = { .x = 1.0f,.y = 1.0f,.z = 0.0f,.w = 1.0f };
 	} 
 	else {
 		mainColor_ = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
