@@ -71,7 +71,7 @@ private:
 		//入力されたかどうか
 		bool isHit = false;
 		//ロングノーツが入力されたかどうか
-		bool isHitLongNote = false;
+		bool isHoldLongNote = false;
 		//タッチ時間
 		float_t touchTime = 0.0f;
 
@@ -88,14 +88,6 @@ private:
 	void NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition);
 
 	/// <summary>
-	/// 判定
-	/// </summary>
-	/// <param name="noteInformation"></param>
-	/// <param name="laneCondition"></param>
-	/// <param name="closestNoteIndex"></param>
-	void Judge(std::vector<NoteInformation>& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex);
-
-	/// <summary>
 	/// ポーズ処理
 	/// </summary>
 	void Pause();
@@ -105,7 +97,6 @@ private:
 	/// </summary>
 	void Stop();
 
-	
 	/// <summary>
 	/// 入力処理
 	/// </summary>

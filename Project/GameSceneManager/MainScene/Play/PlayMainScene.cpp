@@ -426,14 +426,13 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 		//ロング系
 		else if (startNote.type == NoteType::HiPassLongStart) {
-
+			
 			//入力されたとき
-			if (laneCondition.isHit) {
+			if (laneCondition.isHold) {
 				//最も近いノーツのインデックスを記録
 				closestNoteIndex = static_cast<int32_t>(i);
 				break;
 			}
-
 
 			//見過ごし用
 			//開始が指定した時間を超えたらミス
@@ -449,145 +448,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				highPassLongNoteArray_[startNote.poolIndex]->SetIsUsed(false);
 				highPassLongNoteArray_[startNote.poolIndex]->SetPoolIndex(-1);
 				startNote.poolIndex = -1;
-
-			}
-
-
-			float_t ratio = SingleCalculation::InverseLerp(startNote.endStartMoveTime_, startNote.endArriveMoveTime_, musicTime_);
-			if (ratio >= 1.0f) {
-				laneCondition.isHitLongNote = false;
-				startNote.isJudged = true;
 			}
 		}
 	}
-	//判定
-	Judge(noteInformations, laneCondition, closestNoteIndex);
 
-	//通常ノーツの設定
-	for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
-		//使用時
-		if (normalTapNoteArray_[j]->GetIsUsed()) {
-			//楽曲時間を設定
-			normalTapNoteArray_[j]->SetMusicTime(musicTime_);
-			//更新
-			normalTapNoteArray_[j]->Update();
-		}
-	}
-	//ハイパスロングノーツの設定
-	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
-		//使用時
-		if (highPassLongNoteArray_[i]->GetIsUsed()) {
-
-			////開始ノーツのインデックスを探す
-			//size_t startIndex = 0u;
-			//for (size_t j = 0u; j < noteInformations.size(); j++) {
-			//	if (noteInformations[j].type == NoteType::HiPassLongStart) {
-			//		startIndex = j;
-			//	}
-			//}
-
-			//楽曲時間を設定
-			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
-			//更新
-			highPassLongNoteArray_[i]->Update();
-		}
-	}
-	//ローパスロングノーツの設定
-	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
-		//使用時
-		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
-			size_t startIndex = 0u;
-			for (size_t j = 0u; j < noteInformations.size(); j++) {
-				if (noteInformations[j].type == NoteType::LowPassLongStart) {
-					startIndex = j;
-				}
-			}
-
-			for (size_t j = startIndex; j < noteInformations.size(); j++) {
-				//現在の比率を計算
-				//そこから座標を求めていく
-				//終了地点を見つけたら探すのをやめる。
-				if (noteInformations[j].type == NoteType::LongEnd) {
-					//現在の比率を計算し設定
-					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
-					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
-					lowPassLongNoteArray_[i]->SetEndRatio(currentRatio);
-					break;
-				}
-			}
-			//楽曲時間を設定
-			lowPassLongNoteArray_[i]->SetMusicTime(musicTime_);
-			//更新
-			lowPassLongNoteArray_[i]->Update();
-		}
-	}
-
-	//トランスゲート8ノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
-		//使用時
-		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
-			size_t startIndex = 0u;
-			for (size_t j = 0u; j < noteInformations.size(); j++) {
-				if (noteInformations[j].type == NoteType::TranceGate8LongStart) {
-					startIndex = j;
-				}
-			}
-
-			for (size_t j = startIndex; j < noteInformations.size(); j++) {
-				//現在の比率を計算
-				//そこから座標を求めていく
-				//終了地点を見つけたら探すのをやめる。
-				if (noteInformations[j].type == NoteType::LongEnd) {
-					//現在の比率を計算し設定
-					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
-					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
-					transGateEighthLongNoteArray_[i]->SetEndRatio(currentRatio);
-					break;
-				}
-			}
-			//楽曲時間を設定
-			transGateEighthLongNoteArray_[i]->SetMusicTime(musicTime_);
-			//更新
-			transGateEighthLongNoteArray_[i]->Update();
-		}
-	}
-
-	//トランスゲート16ノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
-		//使用時
-		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
-			size_t startIndex = 0u;
-			for (size_t j = 0u; j < noteInformations.size(); j++) {
-				if (noteInformations[j].type == NoteType::TranceGate16LongStart) {
-					startIndex = j;
-				}
-			}
-
-			for (size_t j = startIndex; j < noteInformations.size(); j++) {
-				//現在の比率を計算
-				//そこから座標を求めていく
-				//終了地点を見つけたら探すのをやめる。
-				if (noteInformations[j].type == NoteType::LongEnd) {
-					//現在の比率を計算し設定
-					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
-					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
-					transGateSixteenthLongNoteArray_[i]->SetEndRatio(currentRatio);
-					break;
-				}
-			}
-			//楽曲時間を設定
-			transGateSixteenthLongNoteArray_[i]->SetMusicTime(musicTime_);
-			//更新
-			transGateSixteenthLongNoteArray_[i]->Update();
-		}
-	}
-}
-
-void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCondition& laneCondition, const int32_t& closestNoteIndex) {
 	//近いノーツを判定
 	if (closestNoteIndex != -1) {
 		//対象のノーツ
-		NoteInformation& targetNote = noteInformation[closestNoteIndex];
+		NoteInformation& targetNote = noteInformations[closestNoteIndex];
 		//判定時間の差分(絶対値)
 		float_t absoluteJudgementTime = std::abs(laneCondition.touchTime - targetNote.arriveLineTime);
 		//通常タップ専用
@@ -661,15 +529,27 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 		else if (targetNote.type == NoteType::HiPassLongStart) {
 			//判定の確定
 			bool isConfirmJudgement = false;
+
 			//ホールド中
-			if (laneCondition.isHold) {
-
+			if (laneCondition.isHold&&
+				(targetNote.arriveLineTime <= musicTime_&& musicTime_ <= targetNote.endArriveMoveTime_)) {
+				laneCondition.isHoldLongNote = true;
+				record_.score += 100u;
 			}
-
-
+			//比率を計算し、1.0f以上になったら判定済みにする
+			float_t endRatio = SingleCalculation::InverseLerp(targetNote.endStartMoveTime_, targetNote.endArriveMoveTime_, musicTime_);
+			if (endRatio >= 1.0f) {
+				
+				
+				isConfirmJudgement = true;
+			}
 			//判定が確定したらフラグを立てる
 			if (isConfirmJudgement) {
+				laneCondition.isHoldLongNote = false;
 				targetNote.isJudged = true;
+
+				//パーフェクトで判定する
+				record_.perfect++;
 				//また初期値に戻す
 				highPassLongNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
 				highPassLongNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
@@ -677,6 +557,119 @@ void PlayMainScene::Judge(std::vector<NoteInformation>& noteInformation, LaneCon
 			}
 		}
 	}
+#pragma region 各ノーツの更新
+	//通常ノーツの設定
+	for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
+		//使用時
+		if (normalTapNoteArray_[j]->GetIsUsed()) {
+			//楽曲時間を設定
+			normalTapNoteArray_[j]->SetMusicTime(musicTime_);
+			//更新
+			normalTapNoteArray_[j]->Update();
+		}
+	}
+	//ハイパスロングノーツの設定
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (highPassLongNoteArray_[i]->GetIsUsed()) {
+			//楽曲時間を設定
+			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			highPassLongNoteArray_[i]->Update();
+		}
+	}
+
+	//ToDo:ハイパスをもとに貼り換え
+	//ローパスロングノーツの設定
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::LowPassLongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					lowPassLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			lowPassLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			lowPassLongNoteArray_[i]->Update();
+		}
+	}
+	//トランスゲート8ノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::TranceGate8LongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					transGateEighthLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			transGateEighthLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			transGateEighthLongNoteArray_[i]->Update();
+		}
+	}
+	//トランスゲート16ノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+		//使用時
+		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
+			size_t startIndex = 0u;
+			for (size_t j = 0u; j < noteInformations.size(); j++) {
+				if (noteInformations[j].type == NoteType::TranceGate16LongStart) {
+					startIndex = j;
+				}
+			}
+
+			for (size_t j = startIndex; j < noteInformations.size(); j++) {
+				//現在の比率を計算
+				//そこから座標を求めていく
+				//終了地点を見つけたら探すのをやめる。
+				if (noteInformations[j].type == NoteType::LongEnd) {
+					//現在の比率を計算し設定
+					float_t currentRatio = SingleCalculation::InverseLerp(noteInformations[j].startMoveTime, noteInformations[j].arriveLineTime, musicTime_);
+					currentRatio = std::clamp(currentRatio, 0.0f, 1.0f);
+					transGateSixteenthLongNoteArray_[i]->SetEndRatio(currentRatio);
+					break;
+				}
+			}
+			//楽曲時間を設定
+			transGateSixteenthLongNoteArray_[i]->SetMusicTime(musicTime_);
+			//更新
+			transGateSixteenthLongNoteArray_[i]->Update();
+		}
+	}
+
+#pragma endregion
+
 }
 
 void PlayMainScene::Pause() {
@@ -727,6 +720,7 @@ void PlayMainScene::Stop() {
 }
 
 void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight) {
+
 	//トリガー
 	if (input_->IsTriggerKey(inputLeft) || input_->IsTriggerKey(inputRight)) {
 		laneCondition.isHit = true;
