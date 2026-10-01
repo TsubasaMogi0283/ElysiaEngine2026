@@ -446,9 +446,9 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				startNote.isJudged = true;
 				//未使用に戻す
 				//また初期値に戻す
-				//normalTapNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
-				//normalTapNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
-				//targetNote.poolIndex = -1;
+				highPassLongNoteArray_[startNote.poolIndex]->SetIsUsed(false);
+				highPassLongNoteArray_[startNote.poolIndex]->SetPoolIndex(-1);
+				startNote.poolIndex = -1;
 
 			}
 
@@ -478,13 +478,13 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		//使用時
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 
-			//開始ノーツのインデックスを探す
-			size_t startIndex = 0u;
-			for (size_t j = 0u; j < noteInformations.size(); j++) {
-				if (noteInformations[j].type == NoteType::HiPassLongStart) {
-					startIndex = j;
-				}
-			}
+			////開始ノーツのインデックスを探す
+			//size_t startIndex = 0u;
+			//for (size_t j = 0u; j < noteInformations.size(); j++) {
+			//	if (noteInformations[j].type == NoteType::HiPassLongStart) {
+			//		startIndex = j;
+			//	}
+			//}
 
 			//楽曲時間を設定
 			highPassLongNoteArray_[i]->SetMusicTime(musicTime_);
