@@ -17,6 +17,12 @@ void EndMainScene::Initialize(){
 }
 
 void EndMainScene::Update(){
+	//待機時間
+	waitingTimeFormMain_ += DELTA_TIME_;
+
+
+
+
 #ifdef _DEBUG
 	ImGui::Begin("EndScene");
 	ImGui::End();

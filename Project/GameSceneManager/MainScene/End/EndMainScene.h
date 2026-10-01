@@ -44,5 +44,12 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~EndMainScene()override = default;
+
+
+private:
+	//待機時間
+	float_t waitingTimeFormMain_ = 0.0f;
+
+
 };
 
