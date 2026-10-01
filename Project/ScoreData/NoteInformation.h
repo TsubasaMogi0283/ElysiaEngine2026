@@ -25,8 +25,14 @@ struct NoteInformation {
 	float_t startMoveTime = 0.0f;
 	//到着時間
 	float_t arriveLineTime = 0.0f;
-	//動いているときの比率
-	float_t moveRatio = 0.0f;
+
+	//ロングノーツ用
+	//移動開始時間
+	float_t endStartMoveTime_ = 0.0f;
+	//到着時間
+	float_t endArriveMoveTime_ = 0.0f;
+	//始点の判定をしたかどうか
+	bool isLongStartJugged = false;
 
 	//判定
 	uint8_t judgement = 0u;

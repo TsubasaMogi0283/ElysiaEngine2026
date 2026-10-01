@@ -29,5 +29,11 @@ public:
 	/// </summary>
 	void Update()override;
 
-};
+private:
+	const Vector4 DEFAULT_COLOR_ = { .x = 1.0f,.y = 0.4f,.z = 0.6f,.w = 1.0f  };
 
+
+private:
+	Vector4 notHoldColor_ = {};
+
+};

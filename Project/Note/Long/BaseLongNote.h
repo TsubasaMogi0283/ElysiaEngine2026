@@ -23,6 +23,14 @@ public:
 
 public:
 	/// <summary>
+	/// 終点の比率を取得
+	/// </summary>
+	/// <returns></returns>
+	inline float_t GetEndRatio()const {
+		return endRatio_;
+	}
+	
+	/// <summary>
 	/// 終点比率の設定
 	/// </summary>
 	/// <param name="ratio">比率</param>
@@ -70,9 +78,25 @@ public:
 		return isMiss_;
 	}
 
+	/// <summary>
+	/// 終点の移動開始時間を設定
+	/// </summary>
+	/// <param name="startTime">移動開始時間</param>
+	inline void SetEndStartMoveTime(const float_t& startTime) {
+		this->endStartTime_ = startTime;
+	}
+
+	/// <summary>
+	/// 判定に到着する時間を設定
+	/// </summary>
+	/// <param name="arriveTime">到着時間</param>
+	inline void SetEndArriveLineTime(const float_t& arriveTime) {
+		this->endArriveTime_ = arriveTime;
+	}
+
 protected:
 	//スケールのオフセット
-	float SCALE_OFFSET = 1.2f;
+	float_t SCALE_OFFSET = 1.2f;
 
 protected:
 	//終点比率
@@ -82,5 +106,12 @@ protected:
 	bool isHold_ = false;
 	//失敗時
 	bool isMiss_ = false;
+
+	//終点の時間
+	float_t endStartTime_ = 0.0f;
+	float_t endArriveTime_ = 0.0f;
+	
+
+
 };
 
