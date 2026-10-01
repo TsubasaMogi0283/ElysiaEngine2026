@@ -20,8 +20,6 @@ void EndMainScene::Update(){
 #ifdef _DEBUG
 	ImGui::Begin("EndScene");
 	ImGui::End();
-
-
 #endif // _DEBUG
 }
 
