@@ -95,13 +95,8 @@ void PlayMainScene::Initialize() {
 		transGateSixteenthLongNoteArray_[i] = std::move(tranceGateSixteenthLongNote);
 	}
 
-	
-
 #pragma endregion	
 
-	//ロングノーツサンプル
-	longNoteSmaple_ = std::make_unique<HighPassLongNote>();
-	longNoteSmaple_->Initialize(normalNoteModelHandle);
 #pragma region ポーズ
 	//ポーズ
 	uint32_t blackTextureHandle = textureManager_->Load("Resources/Sprite/Back/Black.png");
@@ -127,10 +122,14 @@ void PlayMainScene::Initialize() {
 void PlayMainScene::Update() {
 	//再生時間を取得
 	musicTime_ = audio_->GetPlayCurrentTime(musicScoreData_.musicHandle);
+	//楽曲を再生し終わったとき
+	if (audio_->IsEnd(musicScoreData_.musicHandle)) {
+		isPlay_ = false;
+	}
 
 	//プレイ中
 	if (isPlay_) {
-
+		
 		//入力処理
 		//上
 		Touch(upLaneCondition, DIK_R, DIK_I);
@@ -146,19 +145,14 @@ void PlayMainScene::Update() {
 		//ポーズ処理
 		Pause();
 
-		//楽曲を再生し終わったとき
-		if (musicLength_ < musicTime_) {
-			isPlay_ = false;
-		}
-	} else {
+	} 
+	else {
 		//楽曲停止
 		audio_->Stop(musicScoreData_.musicHandle);
 		//終了シーンへ
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;
 	}
-	//ロングノーツのサンプルの更新
-	longNoteSmaple_->Update();
 	//判定線の更新
 	judgementLine_->Update();
 
@@ -213,7 +207,6 @@ void PlayMainScene::Update() {
 }
 
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight) {
-	//longNoteSmaple_->DrawObject3D(camera, baseLight);
 
 	//通常ノーツの設定
 	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {

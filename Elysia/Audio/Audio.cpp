@@ -7,8 +7,6 @@ Elysia::Audio* Elysia::Audio::GetInstance() {
 	return &instance;
 }
 
-
-
 void Elysia::Audio::CreateSubmixVoice(const uint32_t& channel) {
 	//44100Hz固定
 	uint32_t sampleRate = 44100u;
@@ -932,6 +930,20 @@ float_t Elysia::Audio::GetAudioLength(const uint32_t& audioHandle){
 
 	//長さを計算し返す
 	return static_cast<float_t>(totalBytes) / static_cast<float_t>(avgBytesPerSec);
+}
+
+bool Elysia::Audio::IsEnd(const uint32_t& audioHandle) {
+	std::string fileKey = GetAudioInformationKey(audioHandle);
+
+	//状態を取得
+	XAUDIO2_VOICE_STATE state;
+	audioInformation_[fileKey].sourceVoice->GetState(&state);
+
+	// 再生し終わった
+	if(state.BuffersQueued == 0) {
+		return true;
+	}
+	return false;
 }
 
 void Elysia::Audio::SendChannels(const uint32_t& audioHandle, const uint32_t& channelNumber) {

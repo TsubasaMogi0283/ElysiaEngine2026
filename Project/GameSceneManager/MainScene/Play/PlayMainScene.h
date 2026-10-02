@@ -151,10 +151,6 @@ private:
 	//ロング(トランスゲート16)開始ノーツ
 	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_> transGateSixteenthLongNoteArray_ = {};
 
-	//サンプル
-	std::unique_ptr<BaseLongNote> longNoteSmaple_ = nullptr;
-	
-
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
 
