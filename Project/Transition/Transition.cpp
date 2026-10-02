@@ -91,7 +91,7 @@ bool Transition::SetCloseTransition(){
 		if (closeT_ >= 1.0f) {
 			isOpened_ = false;
 			isClosed_ = true;
-			closeT_ = .0f;
+			closeT_ = 1.0f;
 			isEnd = true;
 		}
 		

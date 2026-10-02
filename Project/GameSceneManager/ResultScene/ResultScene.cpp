@@ -16,14 +16,9 @@ ResultScene::ResultScene(){
 	input_ = Elysia::Input::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
-	//レベルエディタ管理クラス
-	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 }
 
 void ResultScene::Initialize(){
-	//ハンドルの取得
-	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
-
 	//カメラ
 	camera_.Initialize();
 	camera_.rotate.x = std::numbers::pi_v<float>/6.0f;
@@ -38,26 +33,10 @@ void ResultScene::Initialize(){
 
 void ResultScene::Update(){
 
-
-	//再読み込み
-	if (input_->IsTriggerKey(DIK_R)) {
-		levelDataManager_->Reload(levelHandle_);
-	}
-
-	//レベルエディタの更新
-	levelDataManager_->Update(levelHandle_);
-	std::vector<AABB> objects = levelDataManager_->GetObjectAABBs(levelHandle_,"Stage");
-
-
-
 	camera_.Update();
 	directionalLight_.Update();
 
-
-
 #ifdef _DEBUG
-
-
 	ImGui::Begin("テストシーンカメラ");
 	ImGui::SliderFloat3("回転", &camera_.rotate.x, -3.0f, 3.0f);
 	ImGui::SliderFloat3("座標", &camera_.translate.x, -30.0f, 30.0f);
