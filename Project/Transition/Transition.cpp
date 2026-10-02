@@ -62,6 +62,7 @@ bool Transition::SetOpenTransition(){
 		
 		//イージングで滑らかに開ける
 		openT_ += DELTA_TIME_;
+		openT_ = std::clamp(openT_, 0.0f, 1.0f);
 		//最大値になったら開いた状態にする
 		if (openT_ >= 1.0f) {
 			isOpened_ = true;
@@ -69,8 +70,9 @@ bool Transition::SetOpenTransition(){
 			openT_ = 1.0f;
 			isEnd = true;
 		}
+		
 		widthScale_ = 1.0f - Easing::EaseInOutQuad(openT_);
-		widthScale_ = std::clamp(widthScale_, 0.0f, 1.0f);
+		
 
 	}
 	return isEnd;
@@ -84,15 +86,17 @@ bool Transition::SetCloseTransition(){
 
 		//イージングで滑らかに開ける
 		closeT_ += DELTA_TIME_;
+		closeT_ = std::clamp(closeT_, 0.0f, 1.0f);
 		//最大値になったら開いた状態にする
 		if (closeT_ >= 1.0f) {
 			isOpened_ = false;
 			isClosed_ = true;
-			closeT_ = 1.0f;
+			closeT_ = .0f;
 			isEnd = true;
 		}
+		
 		widthScale_ = Easing::EaseInOutQuad(closeT_);
-		widthScale_ = std::clamp(widthScale_, 0.0f, 1.0f);
+		
 
 	}
 	return isEnd;

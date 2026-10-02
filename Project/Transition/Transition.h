@@ -48,12 +48,12 @@ public:
 public:
 
 	/// <summary>
-	/// トランジション(開ける)するかどうかを設定
+	/// トランジションを開けるかどうかを設定
 	/// </summary>
 	bool SetOpenTransition();
 
 	/// <summary>
-	/// トランジション(閉める)するかどうかを設定
+	/// トランジションを閉めるかどうかを設定
 	/// </summary>
 	/// <returns></returns>
 	bool SetCloseTransition();

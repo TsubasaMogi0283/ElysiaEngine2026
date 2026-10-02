@@ -120,7 +120,6 @@ private:
 	const uint32_t MAX_VALUE_ = 500u;
 	//最小
 	const uint32_t MIN_VALUE_ = 0u;
-	
 private:
 	//バックグラウンドスプライト
 	std::unique_ptr<Elysia::Sprite>back_ = nullptr;
