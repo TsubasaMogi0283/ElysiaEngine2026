@@ -21,15 +21,17 @@ struct Matrix4x4;
 /// </summary>
 struct Quaternion;
 
+template <typename Type>
+
 /// <summary>
 /// ベクトル(3D)
 /// </summary>
 struct Vector3 {
 	
 	// 要素
-	float_t x;
-	float_t y;
-	float_t z;
+	Type x;
+	Type y;
+	Type z;
 
 #pragma region 四則演算
 
@@ -106,21 +108,21 @@ struct Vector3 {
 #pragma endregion
 
 	/// <summary>
-	/// 長さを求める(Vector3)
+	/// 長さ
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns>長さ</returns>
-	static inline float_t Length(const Vector3& v) {
+	static inline float_t Length(const Vector3<float_t>& v) {
 		return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 	};
 
 	/// <summary>
-	/// 内積(Vector3)
+	/// 内積
 	/// </summary>
 	/// <param name="v1">ベクトル1</param>
 	/// <param name="v2">べクトル2</param>
 	/// <returns>内積の計算結果</returns>
-	static inline float_t Dot(const Vector3& v1, const Vector3& v2) {
+	static inline float_t Dot(const Vector3<float_t>& v1, const Vector3<float_t>& v2) {
 		return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 	};
 
@@ -129,7 +131,7 @@ struct Vector3 {
 	/// </summary>
 	/// <param name="v"></param>
 	/// <returns></returns>
-	static inline Vector3 Normalize(const Vector3& v) {
+	static inline Vector3<float_t> Normalize(const Vector3<float_t>& v) {
 		//長さを求める
 		float_t length = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 		//仮で入れる
@@ -144,7 +146,7 @@ struct Vector3 {
 
 		}
 		//最終結果
-		Vector3 result = {
+		Vector3<float_t> result = {
 			.x = newX,
 			.y = newY,
 			.z = newZ,
@@ -159,8 +161,8 @@ struct Vector3 {
 	/// <param name="v1">ベクトル1</param>
 	/// <param name="v2">ベクトル2</param>
 	/// <param name="t">t</param>
-	/// <returns></returns>
-	static inline Vector3 Lerp(const Vector3& v1, const Vector3& v2, const float_t& t) {
+	/// <returns>結果</returns>
+	static inline Vector3<float_t> Lerp(const Vector3<float_t>& v1, const Vector3<float_t>& v2, const float_t& t) {
 		Vector3 result = {
 			.x = (1.0f - t) * v1.x + t * v2.x,
 			.y = (1.0f - t) * v1.y + t * v2.y,
@@ -177,12 +179,12 @@ struct Vector3 {
 	/// <param name="v2">ベクトル2</param>
 	/// <param name="t">t</param>
 	/// <returns></returns>
-	static inline Vector3 Slerp(const Vector3& v1, const Vector3& v2, const float_t& t) {
+	static inline Vector3<float_t> Slerp(const Vector3<float_t>& v1, const Vector3<float_t>& v2, const float_t& t) {
 		float_t newT = std::clamp(t, 0.0f, 1.0f);
 
 		//正規化
-		Vector3 normalizeV1 = Normalize(v1);
-		Vector3 normalizeV2 = Normalize(v2);
+		Vector3<float_t> normalizeV1 = Normalize(v1);
+		Vector3<float_t> normalizeV2 = Normalize(v2);
 
 		//内積
 		float_t dot = Dot(normalizeV1, normalizeV2);
@@ -190,18 +192,18 @@ struct Vector3 {
 		float_t theta = std::acosf(dot) * newT;
 
 		//差分
-		Vector3 subtractVector = v2- v1;
+		Vector3<float_t> subtractVector = v2- v1;
 
 		//差分にnewTをかける
-		Vector3 newSubtractVector = {
+		Vector3<float_t> newSubtractVector = {
 			subtractVector.x * newT,
 			subtractVector.y * newT,
 			subtractVector.z * newT };
 
 		//正規化
-		Vector3 relativeVector = Normalize(newSubtractVector);
+		Vector3<float_t> relativeVector = Normalize(newSubtractVector);
 
-		Vector3 result = {
+		Vector3<float_t> result = {
 			v1.x * std::cos(theta) + relativeVector.x * std::sin(theta),
 			v1.y * std::cos(theta) + relativeVector.y * std::sin(theta),
 			v1.z * std::cos(theta) + relativeVector.z * std::sin(theta)
@@ -216,11 +218,11 @@ struct Vector3 {
 	/// <param name="v1">ベクトル1</param>
 	/// <param name="v2">ベクトル2</param>
 	/// <returns></returns>
-	static inline Vector3 Cross(const Vector3& v1, const Vector3& v2) {
-		Vector3 result = {
-		.x = v1.y * v2.z - v1.z * v2.y,
-		.y = v1.z * v2.x - v1.x * v2.z,
-		.z = v1.x * v2.y - v1.y * v2.x
+	static inline Vector3<float_t> Cross(const Vector3<float_t>& v1, const Vector3<float_t>& v2) {
+		Vector3<float_t> result = {
+			.x = v1.y * v2.z - v1.z * v2.y,
+			.y = v1.z * v2.x - v1.x * v2.z,
+			.z = v1.x * v2.y - v1.y * v2.x
 		};
 		return result;
 	};
@@ -232,14 +234,14 @@ struct Vector3 {
 	/// <param name="v1">ベクトル1</param>
 	/// <param name="v2">ベクトル2</param>
 	/// <returns></returns>
-	static inline Vector3 Project(const Vector3& v1, const Vector3& v2) {
+	static inline Vector3<float_t> Project(const Vector3<float_t>& v1, const Vector3<float_t>& v2) {
 		//内積
 		float_t dot = Dot(v1, v2);
 		//長さ
 		float_t length = Length(v2);
 		float_t t = dot / (length * length);
 		//最終結果
-		Vector3 result = {
+		Vector3<float_t> result = {
 			.x = t * v2.x,
 			.y = t * v2.y,
 			.z = t * v2.z
@@ -253,7 +255,7 @@ struct Vector3 {
 	/// <param name="v">ベクトル</param>
 	/// <param name="m">行列</param>
 	/// <returns></returns>
-	static inline Vector3 TransformCalculation(const Vector3& v, const Matrix4x4& m);
+	static inline Vector3<float_t> TransformCalculation(const Vector3<float_t>& v, const Matrix4x4& m);
 
 
 	/// <summary>
@@ -265,11 +267,11 @@ struct Vector3 {
 	/// <param name="p3"></param>
 	/// <param name="t"></param>
 	/// <returns></returns>
-	static inline Vector3 CatmullRom(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, const float_t& t) {
+	static inline Vector3<float_t> CatmullRom(const Vector3<float_t>& p0, const Vector3<float_t>& p1, const Vector3<float_t>& p2, const Vector3<float_t>& p3, const float_t& t) {
 		//半分
 		const float_t HALF = 1.0f / 2.0f;
 		//計算
-		Vector3 result = {
+		Vector3<float_t> result = {
 			.x = HALF * (
 			(-1.0f * p0.x + 3.0f * p1.x - 3.0f * p2.x + p3.x) * (t * t * t) +
 			(2.0f * p0.x - 5.0f * p1.x + 4.0f * p2.x - p3.x) * (t * t) +
@@ -297,6 +299,6 @@ struct Vector3 {
 	/// <param name="vector"></param>
 	/// <param name="quaternion"></param>
 	/// <returns></returns>
-	static inline Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
+	static inline Vector3<float_t> RotateVector(const Vector3<float_t>& vector, const Quaternion& quaternion);
 
 };

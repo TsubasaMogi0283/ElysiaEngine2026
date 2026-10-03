@@ -23,8 +23,8 @@ struct Vector2 {
 	/// <summary>
 	/// 加算
 	/// </summary>
-	/// <param name="other"></param>
-	/// <returns></returns>
+	/// <param name="other">加算するベクトル</param>
+	/// <returns>計算結果</returns>
 	inline Vector2 operator+(const Vector2& other) const {
 		Vector2 result = {
 			.x = this->x + other.x,
@@ -36,8 +36,8 @@ struct Vector2 {
 	/// <summary>
 	/// 減算
 	/// </summary>
-	/// <param name="other"></param>
-	/// <returns></returns>
+	/// <param name="other">減算するベクトル</param>
+	/// <returns>計算結果</returns>
 	inline Vector2 operator-(const Vector2& other) const {
 		Vector2 result = {
 			.x = this->x - other.x,
@@ -49,8 +49,8 @@ struct Vector2 {
 	/// <summary>
 	/// 乗算
 	/// </summary>
-	/// <param name="other"></param>
-	/// <returns></returns>
+	/// <param name="other">乗算するベクトル</param>
+	/// <returns>計算結果</returns>
 	inline Vector2 operator*(const Vector2& other) const {
 		Vector2 result = {
 			.x = this->x * other.x,
@@ -62,8 +62,8 @@ struct Vector2 {
 	/// <summary>
 	/// 除算
 	/// </summary>
-	/// <param name="other"></param>
-	/// <returns></returns>
+	/// <param name="other">除算するベクトル</param>
+	/// <returns>計算結果</returns>
 	inline Vector2 operator/(const Vector2& other) const {
 		Vector2 result = {
 			.x = this->x / other.x,
@@ -78,7 +78,7 @@ struct Vector2 {
 	/// 正規化(Vector2)
 	/// </summary>
 	/// <param name="v">ベクトル</param>
-	/// <returns></returns>
+	/// <returns>正規化されたベクトル</returns>
 	static inline Vector2<float_t> Normalize(const Vector2& v) {
 		//長さを求める
 		Type length = sqrtf(v.x * v.x + v.y * v.y);
@@ -103,10 +103,10 @@ struct Vector2 {
 	/// <summary>
 	/// 線形補間(Vector2)
 	/// </summary>
-	/// <param name="v1"></param>
-	/// <param name="v2"></param>
-	/// <param name="t"></param>
-	/// <returns></returns>
+	/// <param name="v1">ベクトル1</param>
+	/// <param name="v2">ベクトル2</param>
+	/// <param name="t">t</param>
+	/// <returns>結果</returns>
 	static inline Vector2 Lerp(const Vector2& v1, const Vector2& v2, const Type& t) {
 		Vector2 result = {
 			.x = (1.0f - t) * v1.x + t * v2.x,
