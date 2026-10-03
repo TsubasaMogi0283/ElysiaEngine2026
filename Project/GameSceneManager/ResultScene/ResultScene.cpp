@@ -4,11 +4,9 @@
 #include <numbers>
 
 #include "Input.h"
-#include "ModelManager.h"
 #include "LevelDataManager.h"
-#include "CollisionCalculation.h"
-#include "PushBackCalculation.h"
-#include <AnimationManager.h>
+#include <ModelManager.h>
+#include <GameSceneManager.h>
 
 ResultScene::ResultScene(){
 	//インスタンスの取得	
@@ -32,6 +30,11 @@ void ResultScene::Initialize(){
 }
 
 void ResultScene::Update(){
+
+	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
+
+	}
+
 
 	camera_.Update();
 	directionalLight_.Update();
@@ -64,5 +67,3 @@ void ResultScene::DrawPostEffect(){
 void ResultScene::DrawSprite(){
 
 }
-
-
