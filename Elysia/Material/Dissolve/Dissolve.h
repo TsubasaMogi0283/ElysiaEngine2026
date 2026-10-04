@@ -34,7 +34,7 @@ private:
 		//Edgeを使うかどうか
 		bool isUseEdge;
 		//Edgeの色
-		Vector3 edgeColor;
+		Vector3<float_t> edgeColor;
 		//Edgeの厚さ
 		float_t edgeThickness;
 		//閾値
@@ -51,7 +51,7 @@ public:
 	//Edgeを使うかどうか
 	bool isUseEdge = false;
 	//Edgeの色
-	Vector3 edgeColor = {};
+	Vector3<float_t> edgeColor = {};
 	//Edgeの厚さ
 	float_t edgeThinkness=0.0f;
 	//閾値

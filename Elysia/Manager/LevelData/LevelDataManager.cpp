@@ -129,7 +129,7 @@ void Elysia::LevelDataManager::Place(nlohmann::json& objects, LevelData& levelDa
 				//AABB
 				else if (objectData.colliderType == "AABB") {
 
-					Vector3 center = {};
+					Vector3<float_t> center = {};
 					center.x = static_cast<float_t>(collider["center"][0]);
 					center.y = static_cast<float_t>(collider["center"][2]);
 					center.z = static_cast<float_t>(collider["center"][1]);
@@ -443,10 +443,6 @@ void Elysia::LevelDataManager::Reload(const uint32_t& levelDataHandle) {
 }
 
 void Elysia::LevelDataManager::Update(const uint32_t& levelDataHandle) {
-
-	//この書き方はC++17からの構造化束縛というものらしい
-	//イテレータではなくこっちでやった方が良いかな
-	//ファイル名とかで指定したい時はkeyを使ったら楽だね。今回はハンドルだけどね。
 	for (auto& [key, levelData] : levelData_) {
 		if (levelData->handle == levelDataHandle) {
 
@@ -468,7 +464,7 @@ void Elysia::LevelDataManager::Update(const uint32_t& levelDataHandle) {
 					//更新
 					object.objectForLeveEditor->SetIsListenerMove(isListenerMove);
 					object.objectForLeveEditor->Update();
-					Vector3 objectWorldPosition = object.objectForLeveEditor->GetWorldPosition();
+					Vector3<float_t> objectWorldPosition = object.objectForLeveEditor->GetWorldPosition();
 
 					//衝突判定の設定
 					if (object.isHavingCollider) {

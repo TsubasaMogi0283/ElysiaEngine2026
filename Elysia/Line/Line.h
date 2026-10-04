@@ -56,7 +56,7 @@ namespace Elysia {
 		/// <param name="start">始点</param>
 		/// <param name="end">終点</param>
 		/// <param name="camera">カメラ</param>
-		void Draw(const Vector3& start, const Vector3& end, const Camera& camera);
+		void Draw(const Vector3<float_t>& start, const Vector3<float_t>& end, const Camera& camera);
 
 
 		/// <summary>

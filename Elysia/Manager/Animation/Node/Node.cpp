@@ -1,5 +1,7 @@
 #include "Node.h"
 
+#include <Vector3.h>
+
 Node Node::Read(aiNode* node){
     Node result = {};
 
@@ -15,7 +17,7 @@ Node Node::Read(aiNode* node){
     //translate
     result.transform.translate = { -translate.x,translate.y,translate.z };
 
-    Vector3 newRotate = { result.transform.rotate.x, result.transform.rotate.y, result.transform.rotate.z };
+    Vector3<float_t> newRotate = { result.transform.rotate.x, result.transform.rotate.y, result.transform.rotate.z };
     result.localMatrix = Matrix4x4::MakeAffineMatrix(result.transform.scale, newRotate, result.transform.translate);
 
 

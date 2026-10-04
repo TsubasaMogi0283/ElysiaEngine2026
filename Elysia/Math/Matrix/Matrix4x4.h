@@ -7,11 +7,7 @@
 
 #include <cassert>
 #include <cmath>
-
-/// <summary>
-/// ベクトル(3D)
-/// </summary>
-struct Vector3;
+#include <Vector3.h>
 
 /// <summary>
 /// クォータニオン
@@ -48,7 +44,7 @@ public:
 	/// </summary>
 	/// <param name="scale"></param>
 	/// <returns></returns>
-	static Matrix4x4 MakeScaleMatrix(const Vector3& scale);
+	static Matrix4x4 MakeScaleMatrix(const Vector3<float_t>& scale);
 
 #pragma region 個別の回転行列
 	/// <summary>
@@ -96,7 +92,7 @@ public:
 	/// </summary>
 	/// <param name="translate"></param>
 	/// <returns></returns>
-	static Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
+	static Matrix4x4 MakeTranslateMatrix(const Vector3<float_t>& translate);
 
 	/// <summary>
 	/// アフィン行列
@@ -105,7 +101,7 @@ public:
 	/// <param name="rotate"></param>
 	/// <param name="translate"></param>
 	/// <returns></returns>
-	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+	static Matrix4x4 MakeAffineMatrix(const Vector3<float_t>& scale, const Vector3<float_t>& rotate, const Vector3<float_t>& translate);
 
 	/// <summary>
 	/// 逆行列

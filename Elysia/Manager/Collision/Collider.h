@@ -46,7 +46,7 @@ public:
 	/// ワールド座標を取得
 	/// </summary>
 	/// <returns></returns>
-	virtual Vector3 GetWorldPosition() = 0;
+	virtual Vector3<float_t> GetWorldPosition() = 0;
 
 public:
 	/// <summary>

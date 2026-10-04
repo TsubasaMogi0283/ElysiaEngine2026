@@ -17,7 +17,7 @@ struct DirectionalLightData {
 	//ライトの色
 	Vector4 color;
 	//ライトの向き
-	Vector3 direction;
+	Vector3<float_t> direction;
 	//輝度
 	float_t intensity;
 };
@@ -44,7 +44,7 @@ struct DirectionalLight : public BaseLight{
 #pragma region メンバ変数
 
 	//ライトの向き
-	Vector3 direction = {.x = 0.0f,.y = -1.0f,.z = 0.0f};
+	Vector3<float_t> direction = {.x = 0.0f,.y = -1.0f,.z = 0.0f};
 
 	//書き込みデータ
 	DirectionalLightData* directionalLightData_ = nullptr;

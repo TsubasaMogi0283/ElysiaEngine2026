@@ -36,7 +36,7 @@ private:
 		//乗
 		float_t pow;
 		//色
-		Vector3 color;
+		Vector3<float_t> color;
 
 	private:
 		float_t padding[3];
@@ -55,6 +55,6 @@ public:
 	//乗
 	float_t pow=0.0f;
 	//色
-	Vector3 color = {};
+	Vector3<float_t> color = {};
 
 };

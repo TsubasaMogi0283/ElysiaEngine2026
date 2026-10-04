@@ -50,8 +50,7 @@ void AudioObjectForLevelEditorCollider::OffCollision(){
 	isTouch_ = false;;
 }
 
-Vector3 AudioObjectForLevelEditorCollider::GetWorldPosition(){
-	
+Vector3<float_t> AudioObjectForLevelEditorCollider::GetWorldPosition(){
 	return objectPosition_;
 }
 

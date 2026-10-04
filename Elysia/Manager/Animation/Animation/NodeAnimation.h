@@ -24,9 +24,9 @@ struct AnimationCurve {
 /// </summary>
 struct NodeAnimation {
 	//スケール
-	AnimationCurve<Vector3> scale;
+	AnimationCurve<Vector3<float_t>> scale;
 	//回転
 	AnimationCurve<Quaternion> rotate;
 	//座標
-	AnimationCurve<Vector3> translate;
+	AnimationCurve<Vector3<float_t>> translate;
 };

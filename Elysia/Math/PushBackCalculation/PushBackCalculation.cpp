@@ -5,20 +5,20 @@
 
 #include "CollisionCalculation.h"
 
-Vector3 PushBackCalculation::AABBPushBack(const AABB& aabb1, const AABB& aabb2){
+Vector3<float_t> PushBackCalculation::AABBPushBack(const AABB& aabb1, const AABB& aabb2){
 	//手前側(左・下・前)
-	Vector3 differenceFront = aabb2.max- aabb1.min;
+	Vector3<float_t> differenceFront = aabb2.max- aabb1.min;
 	//奥側(右・上・奥)
-	Vector3 differenceBack = aabb1.max- aabb2.min;
+	Vector3<float_t> differenceBack = aabb1.max- aabb2.min;
 
 	//最小の押し戻し量を求める
-	Vector3 minPush = {
+	Vector3<float_t> minPush = {
 		.x = (differenceFront.x < differenceBack.x) ? differenceFront.x : -differenceBack.x,
 		.y = (differenceFront.y < differenceBack.y) ? differenceFront.y : -differenceBack.y,
 		.z = (differenceFront.z < differenceBack.z) ? differenceFront.z : -differenceBack.z
 	};
 
-	Vector3 result = {};
+	Vector3<float_t> result = {};
 	// 一番押し戻し量が少ない軸で処理する
 	if (std::abs(minPush.x) <= std::abs(minPush.y) &&
 		std::abs(minPush.x) <= std::abs(minPush.z)) {
@@ -36,15 +36,15 @@ Vector3 PushBackCalculation::AABBPushBack(const AABB& aabb1, const AABB& aabb2){
 	return result;
 }
 
-void PushBackCalculation::FixPosition(Vector3& centerPosition, AABB& mainAABB, const AABB& targetAABB) {
+void PushBackCalculation::FixPosition(Vector3<float_t>& centerPosition, AABB& mainAABB, const AABB& targetAABB) {
 	if (CollisionCalculation::IsCollisionAABBPair(mainAABB, targetAABB)) {
 		//押し出し距離
-		Vector3 pushBack = PushBackCalculation::AABBPushBack(mainAABB, targetAABB);
+		Vector3<float_t> pushBack = PushBackCalculation::AABBPushBack(mainAABB, targetAABB);
 		//プレイヤーの中心座標を更新
 		centerPosition = centerPosition + pushBack;
 
 		//縦横高さそれぞれの幅を計算
-		Vector3 mainAABBSize = mainAABB.max - targetAABB.min;
+		Vector3<float_t> mainAABBSize = mainAABB.max - targetAABB.min;
 		mainAABBSize = { .x = mainAABBSize.x / 2.0f,.y = mainAABBSize.y / 2.0f,.z = mainAABBSize.z };
 		//AABBを更新
 		mainAABB.max = centerPosition+ mainAABBSize;

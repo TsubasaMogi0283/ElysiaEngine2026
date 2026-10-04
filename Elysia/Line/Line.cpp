@@ -39,7 +39,7 @@ void Elysia::Line::Initialize() {
 
 
 //描画
-void Elysia::Line::Draw(const Vector3& start, const Vector3& end, const Camera& camera) {
+void Elysia::Line::Draw(const Vector3<float_t>& start, const Vector3<float_t>& end, const Camera& camera) {
 
 	
 	//データ

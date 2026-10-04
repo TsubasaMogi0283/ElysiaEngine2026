@@ -8,10 +8,7 @@
 
 #include <cmath>
 
-/// <summary>
-/// ベクトル(3D)
-/// </summary>
-struct Vector3;
+#include <Vector3.h>
 
 /// <summary>
 /// クォータニオン
@@ -108,7 +105,7 @@ public:
 	/// <param name="axis"></param>
 	/// <param name="angle"></param>
 	/// <returns></returns>
-	static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float_t angle);
+	static Quaternion MakeRotateAxisAngleQuaternion(const Vector3<float_t>& axis, float_t angle);
 	
 	/// <summary>
 	/// 回転の補間

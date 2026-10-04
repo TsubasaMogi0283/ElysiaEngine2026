@@ -36,7 +36,7 @@ void PauseAsset::Update() {
 		//時間を減らす
 		timer_ -= DELTA_TIME_;
 		//透明度の設定
-		transparencyT = (SingleCalculation::InverseLerp<float_t>(TRANSPARENCY_START_TIME_,0.0f ,timer_));
+		transparencyT = (SingleCalculation::InverseLerp(TRANSPARENCY_START_TIME_,0.0f ,timer_));
 		transparencyT = std::clamp(transparencyT, 0.0f, 1.0f);
 		backSprite_->SetTransparency(PAUSE_TRANSPARENCY_ * (1.0f - transparencyT));
 

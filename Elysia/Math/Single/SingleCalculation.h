@@ -14,8 +14,6 @@
 /// </summary>
 namespace SingleCalculation{
 
-	
-
 	/// <summary>
 	/// コタンジェント
 	/// </summary>
@@ -36,8 +34,6 @@ namespace SingleCalculation{
 		return (1.0f - t) * start + t * end;
 	};
 
-	template <typename Type>
-
 	/// <summary>
 	/// 割合を求める(線形補間の逆)
 	/// </summary>
@@ -45,7 +41,7 @@ namespace SingleCalculation{
 	/// <param name="end">終点</param>
 	/// <param name="value">値</param>
 	/// <returns>割合</returns>
-	static inline Type InverseLerp(const Type& start, const Type& end, const Type& value) {
-		return static_cast<Type>(value - start) / static_cast<Type>(end - start);
+	static inline float_t InverseLerp(const float_t& start, const float_t& end, const float_t& value) {
+		return (value - start) / (end - start);
 	};
 };

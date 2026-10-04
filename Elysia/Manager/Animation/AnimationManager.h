@@ -65,7 +65,7 @@ namespace Elysia {
 		/// <param name="keyFrames">キーフレーム</param>
 		/// <param name="time">時間</param>
 		/// <returns>値</returns>
-		static Vector3 CalculationValue(const std::vector<KeyFrameVector3>& keyFrames, const float& time);
+		static Vector3<float_t> CalculationValue(const std::vector<KeyFrameVector3>& keyFrames, const float& time);
 
 		/// <summary>
 		/// 任意の時刻の値を取得(Quaternion版)

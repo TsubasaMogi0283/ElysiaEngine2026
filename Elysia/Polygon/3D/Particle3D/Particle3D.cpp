@@ -66,7 +66,7 @@ std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& m
 	//SRVの作成
 	particle3D->srvManager_->CreateSRVForStructuredBuffer(particle3D->instancingIndex_, particle3D->instancingResource_.Get(), particle3D->MAX_INSTANCE_NUMBER_, sizeof(ParticleForGPU));
 	//カメラ
-	particle3D->cameraResource_ = particle3D->directXSetup_->CreateBufferResource(sizeof(Vector3));
+	particle3D->cameraResource_ = particle3D->directXSetup_->CreateBufferResource(sizeof(Vector3<float_t>));
 
 	return particle3D;
 
@@ -106,7 +106,7 @@ std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& m
 	particle3D->srvManager_->CreateSRVForStructuredBuffer(particle3D->instancingIndex_, particle3D->instancingResource_.Get(), particle3D->MAX_INSTANCE_NUMBER_, sizeof(ParticleForGPU));
 	
 	//カメラ
-	particle3D->cameraResource_ = particle3D->directXSetup_->CreateBufferResource(sizeof(Vector3));
+	particle3D->cameraResource_ = particle3D->directXSetup_->CreateBufferResource(sizeof(Vector3<float_t>));
 
 	return particle3D;
 
@@ -214,7 +214,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 		Matrix4x4 translateMatrix = {};
 		Matrix4x4 billBoardMatrix = {};
 		//
-		Vector3 absorbPosition = {};
+		Vector3<float_t> absorbPosition = {};
 
 		///時間経過
 		particleIterator->currentTime += DELTA_TIME_;
@@ -369,7 +369,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			particleIterator->absorbT += T_INCREASE_VALUE_;
 			
 			//線形補間でやって綺麗に集まるようにする
-			absorbPosition = Vector3::Lerp(releasePositionForAbsorb_+ particleIterator->transform.translate, absorbPosition_, particleIterator->absorbT);
+			absorbPosition = Vector3<float_t>::Lerp(releasePositionForAbsorb_+ particleIterator->transform.translate, absorbPosition_, particleIterator->absorbT);
 
 			//カメラの回転を適用する
 			billBoardMatrix = camera.viewMatrix;

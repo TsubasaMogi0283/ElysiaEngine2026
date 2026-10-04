@@ -79,8 +79,8 @@ ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileName
 
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
 			//オリジナルの型へ
-			Vector3 scaleAfter = { scale.x,scale.y,scale.z };
-			Vector3 translateAfter = { -translate.x,translate.y,translate.z };
+			Vector3<float_t> scaleAfter = { scale.x,scale.y,scale.z };
+			Vector3<float_t> translateAfter = { -translate.x,translate.y,translate.z };
 			Quaternion rotateQuaternion = { rotate.x,-rotate.y,-rotate.z,rotate.w };
 
 			//SRTから行列を作る
@@ -217,8 +217,8 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
 
 			//SRTの作成
-			Vector3 scaleAfter = { scale.x,scale.y,scale.z };
-			Vector3 translateAfter = { -translate.x,translate.y,translate.z };
+			Vector3<float_t> scaleAfter = { scale.x,scale.y,scale.z };
+			Vector3<float_t> translateAfter = { -translate.x,translate.y,translate.z };
 			Quaternion rotateQuaternion = { rotate.x,-rotate.y,-rotate.z,rotate.w };
 			
 			//行列を作る

@@ -11,6 +11,6 @@
 /// 球
 /// </summary>
 struct SphereShape {
-	Vector3 center;
+	Vector3<float_t> center;
 	float_t radius;
 };

@@ -42,8 +42,8 @@ public:
 	/// ワールド座標を取得
 	/// </summary>
 	/// <returns></returns>
-	inline Vector3 GetWorldPosition()const {
-		Vector3 position = {
+	inline Vector3<float_t> GetWorldPosition()const {
+		Vector3<float_t> position = {
 			.x = worldMatrix.m[3][0],
 			.y = worldMatrix.m[3][1],
 			.z = worldMatrix.m[3][2],
@@ -62,14 +62,14 @@ private:
 public:
 
 	//スケール
-	Vector3 scale = {.x = 1.0f,.y = 1.0f,.z = 1.0f };
+	Vector3<float_t> scale = {.x = 1.0f,.y = 1.0f,.z = 1.0f };
 	//回転
-	Vector3 rotate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
+	Vector3<float_t> rotate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
 	//座標
-	Vector3 translate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
+	Vector3<float_t> translate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
 
 	//アンカーポイント
-	Vector3 anchorPoint = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
+	Vector3<float_t> anchorPoint = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 
 	//クォータニオンを使うかどうか
 	bool isUseQuaternion_ = false;

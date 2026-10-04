@@ -14,28 +14,28 @@ bool CollisionCalculation::IsCollisionAABBPair(const AABB& aabb1, const AABB& aa
     return false;
 }
 
-bool CollisionCalculation::IsCollisionAABBAndPoint(const AABB& aabb, const Vector3& point){
+bool CollisionCalculation::IsCollisionAABBAndPoint(const AABB& aabb, const Vector3<float_t>& point){
 #pragma region 手前
     //左上
-    Vector3 frontLeftTop = { aabb.min.x,aabb .max.y,aabb .min.z};
+    Vector3<float_t> frontLeftTop = { aabb.min.x,aabb .max.y,aabb .min.z};
     //右上
-    Vector3 frontRightTop = { aabb.max.x,aabb.max.y,aabb.min.z };
+    Vector3<float_t> frontRightTop = { aabb.max.x,aabb.max.y,aabb.min.z };
     //右下
-    Vector3 frontRightBottom= { aabb.max.x,aabb.min.y,aabb.min.z };
+    Vector3<float_t> frontRightBottom= { aabb.max.x,aabb.min.y,aabb.min.z };
     //左下
-    Vector3 frontLeftBottom = { aabb.min.x,aabb.min.y,aabb.min.z };
+    Vector3<float_t> frontLeftBottom = { aabb.min.x,aabb.min.y,aabb.min.z };
     
 #pragma endregion
 
 #pragma region 奥
     //左上
-    Vector3 backLeftTop = { aabb.min.x,aabb.max.y,aabb.max.z };
+    Vector3<float_t> backLeftTop = { aabb.min.x,aabb.max.y,aabb.max.z };
     //右上
-    Vector3 backRightTop = { aabb.max.x,aabb.max.y,aabb.max.z };
+    Vector3<float_t> backRightTop = { aabb.max.x,aabb.max.y,aabb.max.z };
     //右下
-    Vector3 backRightBottom = { aabb.max.x,aabb.min.y,aabb.max.z };
+    Vector3<float_t> backRightBottom = { aabb.max.x,aabb.min.y,aabb.max.z };
     //左下
-    Vector3 backLeftBottom = { aabb.min.x,aabb.min.y,aabb.max.z };
+    Vector3<float_t> backLeftBottom = { aabb.min.x,aabb.min.y,aabb.max.z };
 
 #pragma endregion
 
@@ -146,10 +146,10 @@ bool CollisionCalculation::IsFanCollision(const Fan2D& fan, const Vector2<float_
     return true;
 }
 
-bool CollisionCalculation::IsFanCollision(const Fan3D& fan, const Vector3& point){
+bool CollisionCalculation::IsFanCollision(const Fan3D& fan, const Vector3<float_t>& point){
     
     //扇と点のベクトルを求める
-    Vector3 vectorFanAndPont = { 
+    Vector3<float_t> vectorFanAndPont = {
         .x = point.x - fan.position.x, 
         .y = point.y - fan.position.y, 
         .z = point.z - fan.position.z 
@@ -165,21 +165,21 @@ bool CollisionCalculation::IsFanCollision(const Fan3D& fan, const Vector3& point
     }
 
     //向きだけが欲しいので正規化をする
-    Vector3 normalizedFanAndPoint = Vector3::Normalize(vectorFanAndPont);
+    Vector3<float_t> normalizedFanAndPoint = Vector3<float_t>::Normalize(vectorFanAndPont);
 
     //向いている方向
-    Vector3 direction = Vector3::Normalize(fan.direction);
+    Vector3<float_t> direction = Vector3<float_t>::Normalize(fan.direction);
 
     
     //横方向
     //左
-    Vector3 leftOriginDirection = {
+    Vector3<float_t> leftOriginDirection = {
         .x = std::cosf(fan.centerRadian + fan.sideThetaAngle),
         .y = std::sinf(fan.centerPhi),
         .z = std::sinf(fan.centerRadian + fan.sideThetaAngle)
     };
     //右
-    Vector3 rightOriginDirection = { 
+    Vector3<float_t> rightOriginDirection = { 
         .x = std::cosf(fan.centerRadian - fan.sideThetaAngle),
         .y = std::sinf(fan.centerPhi),
         .z = std::sinf(fan.centerRadian - fan.sideThetaAngle)
@@ -210,10 +210,10 @@ bool CollisionCalculation::IsFanCollision(const Fan3D& fan, const Vector3& point
     };
 
     //それぞれを正規化する
-    Vector3 rightDirection = Vector3::Normalize(rightOriginDirection);
-    Vector3 leftDirection = Vector3::Normalize(leftOriginDirection);
-    Vector3 upDirection = Vector3::Normalize(upOriginDirection);
-    Vector3 downDirection = Vector3::Normalize(downOriginDirection);
+    Vector3<float_t> rightDirection = Vector3<float_t>::Normalize(rightOriginDirection);
+    Vector3<float_t> leftDirection = Vector3<float_t>::Normalize(leftOriginDirection);
+    Vector3<float_t> upDirection = Vector3<float_t>::Normalize(upOriginDirection);
+    Vector3<float_t> downDirection = Vector3<float_t>::Normalize(downOriginDirection);
 
     //新しく変数を作る
     Vector2 newLeftDirection = { .x = leftDirection.x,.y = leftDirection.z };
@@ -239,7 +239,7 @@ bool CollisionCalculation::IsFanCollision(const Fan3D& fan, const Vector3& point
 }
 
 
-bool CollisionCalculation::IsCollisionPlaneAndPoint(const Vector3& position, const Plane& plane){
+bool CollisionCalculation::IsCollisionPlaneAndPoint(const Vector3<float_t>& position, const Plane& plane){
     //平面上にいない時除外する
     if (position.y < plane.position.y) {
         return false;

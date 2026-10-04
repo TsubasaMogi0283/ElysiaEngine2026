@@ -102,7 +102,7 @@ namespace Elysia {
 		/// <param name="groupName">グループ名</param>
 		/// <param name="key">キー</param>
 		/// <param name="value">値</param>
-		void SetValue(const std::string& groupName, const std::string& key, const Vector3& value);
+		void SetValue(const std::string& groupName, const std::string& key, const Vector3<float_t>& value);
 
 
 #pragma endregion
@@ -146,7 +146,7 @@ namespace Elysia {
 		/// <param name="groupName">グループ名</param>
 		/// <param name="key"></param>
 		/// <param name="value">値</param>
-		void AddItem(const std::string& groupName, const std::string& key, const Vector3& value);
+		void AddItem(const std::string& groupName, const std::string& key, const Vector3<float_t>& value);
 
 
 
@@ -185,7 +185,7 @@ namespace Elysia {
 		/// <param name="groupName"></param>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		Vector3 GetVector3Value(const std::string& groupName, const std::string& key);
+		Vector3<float_t> GetVector3Value(const std::string& groupName, const std::string& key);
 
 #pragma endregion
 
@@ -223,7 +223,7 @@ namespace Elysia {
 			//項目の値
 			//variantは複数種類の型のデータを入れることが出来る万能なもの
 			//欲しいものを追加していこう！
-			std::variant<int32_t, float,Vector2<float>, Vector3 >value;
+			std::variant<int32_t, float_t,Vector2<float_t>, Vector3<float_t> >value;
 		};
 
 		/// <summary>
@@ -242,9 +242,6 @@ namespace Elysia {
 	private:
 		//全データ
 		std::map<std::string, Group>datas_;
-
-
-
 	};
 
 };

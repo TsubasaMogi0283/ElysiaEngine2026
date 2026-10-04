@@ -45,7 +45,7 @@ public:
 	/// ワールド座標の取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3 GetWorldPosition()override;
+	Vector3<float_t> GetWorldPosition()override;
 
 private:
 

@@ -66,7 +66,7 @@ public:
 	/// ワールド座標の取得
 	/// </summary>
 	/// <returns></returns>
-	virtual Vector3 GetWorldPosition()const {
+	virtual Vector3<float_t> GetWorldPosition()const {
 		return worldTransform_.GetWorldPosition();
 	};
 
@@ -103,7 +103,7 @@ public:
 	/// 拡縮
 	/// </summary>
 	/// <param name="scale"></param>
-	inline void SetScale(const Vector3& scale) {
+	inline void SetScale(const Vector3<float_t>& scale) {
 		this->worldTransform_.scale = scale;
 	}
 
@@ -111,7 +111,7 @@ public:
 	/// 回転
 	/// </summary>
 	/// <param name="rotate"></param>
-	inline void SetRotate(const Vector3& rotate) {
+	inline void SetRotate(const Vector3<float_t>& rotate) {
 		this->worldTransform_.rotate = rotate;
 	}
 
@@ -119,7 +119,7 @@ public:
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position"></param>
-	inline void SetPosition(const Vector3& position) {
+	inline void SetPosition(const Vector3<float_t>& position) {
 		this->worldTransform_.translate = position;
 	}
 

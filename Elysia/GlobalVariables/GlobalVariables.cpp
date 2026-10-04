@@ -54,7 +54,7 @@ void Elysia::GlobalVariables::SetValue(const std::string& groupName, const std::
     group.items[key] = newItem;
 }
 
-void Elysia::GlobalVariables::SetValue(const std::string& groupName, const std::string& key, const Vector3& value){
+void Elysia::GlobalVariables::SetValue(const std::string& groupName, const std::string& key, const Vector3<float_t>& value){
     //グループの参照
     Group& group = datas_[groupName];
 
@@ -121,7 +121,7 @@ void Elysia::GlobalVariables::AddItem(const std::string& groupName, const std::s
     }
 }
 
-void Elysia::GlobalVariables::AddItem(const std::string& groupName, const std::string& key, const Vector3& value){
+void Elysia::GlobalVariables::AddItem(const std::string& groupName, const std::string& key, const Vector3<float_t>& value){
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
 
@@ -192,7 +192,7 @@ Vector2<float_t> Elysia::GlobalVariables::GetVector2Value(const std::string& gro
 
 }
 
-Vector3 Elysia::GlobalVariables::GetVector3Value(const std::string& groupName, const std::string& key) {
+Vector3<float_t> Elysia::GlobalVariables::GetVector3Value(const std::string& groupName, const std::string& key) {
     //グループを検索
     std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
     
@@ -205,7 +205,7 @@ Vector3 Elysia::GlobalVariables::GetVector3Value(const std::string& groupName, c
     //無かったら止める
     assert(itKey != group.items.end());
     //SaveFileより
-    return std::get<Vector3>(itKey->second.value);
+    return std::get<Vector3<float_t>>(itKey->second.value);
 
 
 }
@@ -246,13 +246,13 @@ void Elysia::GlobalVariables::SaveFile(const std::string& groupName){
         //Vector2の場合
         else if (std::holds_alternative<Vector2<float_t>>(item.value)) {
             //float型のjson配列登録
-            Vector2 value = std::get<Vector2<float_t>>(item.value);
+            Vector2<float_t> value = std::get<Vector2<float_t>>(item.value);
             root[groupName][itemName] = nlohmann::json::array({ value.x, value.y});
         }
         //Vector3の場合
-        else if (std::holds_alternative<Vector3>(item.value)) {
+        else if (std::holds_alternative<Vector3<float_t>>(item.value)) {
             //float型のjson配列登録
-            Vector3 value = std::get<Vector3>(item.value);
+            Vector3<float_t> value = std::get<Vector3<float_t>>(item.value);
             root[groupName][itemName] = nlohmann::json::array({value.x, value.y, value.z});
         }
 
@@ -451,9 +451,9 @@ void Elysia::GlobalVariables::Update(){
                 ImGui::InputFloat2(itItemName.c_str(), reinterpret_cast<float*>(ptr));
             }
             //Vector3型を持っている場合
-            else if (std::holds_alternative<Vector3>(item.value)==true) {
+            else if (std::holds_alternative<Vector3<float_t>>(item.value)==true) {
                 //ポインタの取得
-                Vector3* ptr = std::get_if<Vector3>(&item.value);
+                Vector3<float_t>* ptr = std::get_if<Vector3<float_t>   >(&item.value);
                 //ここではVector3をfloatの配列ということにする
                 ImGui::InputFloat3(itItemName.c_str(), reinterpret_cast<float*>(ptr));
             }

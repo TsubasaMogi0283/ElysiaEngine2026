@@ -210,7 +210,7 @@ void Elysia::Sprite::Draw(){
 	transformationMatrixResource_->Map(0u, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 
 	//座標の再設定
-	Vector3 newPosition = {};
+	Vector3<float_t> newPosition = {};
 	if (isBack_) {
 		newPosition = { .x = position_.x,.y = position_.y,.z = 1.0f };
 	} else {
@@ -364,7 +364,7 @@ void Elysia::Sprite::Draw(const uint32_t& textureHandle){
 	transformationMatrixResource_->Map(0u, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 
 	//座標の再設定
-	Vector3 newPosition = {};
+	Vector3<float_t> newPosition = {};
 	if (isBack_) {
 		newPosition = { .x = position_.x,.y = position_.y,.z = 1.0f };
 	}
