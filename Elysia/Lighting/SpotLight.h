@@ -15,7 +15,7 @@
 /// </summary>
 struct SpotLightData {
 	//ライトの色
-	Vector4 color = {};
+	Vector4<float_t> color = {};
 	//ライトの位置
 	Vector3<float_t> position = {};
 	//輝度

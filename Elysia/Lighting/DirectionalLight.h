@@ -15,7 +15,7 @@
 /// </summary>
 struct DirectionalLightData {
 	//ライトの色
-	Vector4 color;
+	Vector4<float_t> color;
 	//ライトの向き
 	Vector3<float_t> direction;
 	//輝度

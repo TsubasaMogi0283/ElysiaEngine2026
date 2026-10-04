@@ -31,7 +31,7 @@ struct BaseLight {
 	//ライトの種類
 	LightingType lightingType = LightingType::DirectionalLighting;
 	//ライトの色
-	Vector4 color = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
+	Vector4<float_t> color = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 	//輝度
 	float_t intensity = 5.0f;
 	//定数バッファ

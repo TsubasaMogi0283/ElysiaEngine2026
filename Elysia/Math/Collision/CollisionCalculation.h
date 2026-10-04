@@ -3,7 +3,20 @@
 #include "Fan.h"
 #include "Plane.h"
 #include "Vector2.h"
-#include "Vector3.h"
+
+template <typename Type>
+
+/// <summary>
+/// ベクトル(2D)
+/// </summary>
+struct Vector2;
+
+template <typename Type>
+
+/// <summary>
+/// ベクトル(3D)
+/// </summary>
+struct Vector3;
 
 /// <summary>
 /// 衝突判定の計算

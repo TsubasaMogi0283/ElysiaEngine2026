@@ -81,7 +81,7 @@ namespace Elysia {
 		/// マテリアル
 		/// </summary>
 		struct SkyBoxMaterial {
-			Vector4 color;
+			Vector4<float_t> color;
 			Matrix4x4 uvTransform;
 		};
 

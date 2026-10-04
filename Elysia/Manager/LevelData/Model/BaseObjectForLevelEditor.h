@@ -127,7 +127,7 @@ public:
 	/// 色の設定
 	/// </summary>
 	/// <param name="color"></param>
-	void SetColor(const Vector4& color) {
+	void SetColor(const Vector4<float_t>& color) {
 		this->material_.color = color;
 	}
 

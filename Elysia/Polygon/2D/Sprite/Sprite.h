@@ -90,7 +90,7 @@ namespace Elysia {
 		/// 色の設定
 		/// </summary>
 		/// <param name="color">色</param>
-		inline void SetColor(const Vector4& color) {
+		inline void SetColor(const Vector4<float_t>& color) {
 			this->color_ = color;
 		}
 
@@ -261,7 +261,7 @@ namespace Elysia {
 		//アンカーポイント
 		Vector2<float_t> anchorPoint_ = {};
 		//色
-		Vector4 color_ = {};
+		Vector4<float_t> color_ = {};
 
 		//左右フリップ
 		bool isFlipX_ = false;

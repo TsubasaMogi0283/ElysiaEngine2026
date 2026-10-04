@@ -30,10 +30,13 @@ public:
 	void Update()override;
 
 private:
-	const Vector4 DEFAULT_COLOR_ = { .x = 1.0f,.y = 0.4f,.z = 0.6f,.w = 1.0f  };
 
+	//基本の色
+	const Vector4<float_t> DEFAULT_COLOR_ = { .x = 1.0f,.y = 0.4f,.z = 0.6f,.w = 1.0f  };
 
 private:
-	Vector4 notHoldColor_ = {};
+
+	//ホールドしていない時の色
+	Vector4<float_t> notHoldColor_ = {};
 
 };

@@ -58,7 +58,7 @@ namespace Elysia {
 		/// <param name="viewMatrix"></param>
 		/// <param name="projectionMatrix"></param>
 		/// <param name="color"></param>
-		void Draw(SphereShape sphereCondtion, Transform transform, Matrix4x4 viewMatrix, Matrix4x4 projectionMatrix, Vector4 color);
+		void Draw(SphereShape sphereCondtion, Transform transform, Matrix4x4 viewMatrix, Matrix4x4 projectionMatrix, Vector4<float_t> color);
 
 		/// <summary>
 		/// デストラクタ

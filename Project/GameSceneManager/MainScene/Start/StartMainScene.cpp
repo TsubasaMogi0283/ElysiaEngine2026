@@ -111,7 +111,7 @@ void StartMainScene::Initialize() {
 
 	//線
 	//レベルによって色を変える
-	Vector4 levelColor = {};
+	Vector4<float_t> levelColor = {};
 	if (level_ == "Easy") {
 		levelColor = Color::Conevert(Color::EASY);
 	} else if (level_ == "Normal") {

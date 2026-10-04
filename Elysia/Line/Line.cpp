@@ -17,7 +17,7 @@ void Elysia::Line::Initialize() {
 	//頂点を6に増やす
 	vertexResouce_ = directXSetup_->CreateBufferResource(sizeof(LineVertexData) * 2);
 	////マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-	materialResource_ = directXSetup_->CreateBufferResource(sizeof(Vector4));
+	materialResource_ = directXSetup_->CreateBufferResource(sizeof(Vector4<float_t>));
 
 	color_ = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 
@@ -55,13 +55,13 @@ void Elysia::Line::Draw(const Vector3<float_t>& start, const Vector3<float_t>& e
 	//マテリアルにデータを書き込む
 	//書き込むためのアドレスを取得
 	//reinterpret_cast...char* から int* へ、One_class* から Unrelated_class* へなどの変換に使用
-	Vector4* materialData_ = nullptr;
+	Vector4<float_t>* materialData_ = nullptr;
 	materialResource_->Map(0u, nullptr, reinterpret_cast<void**>(&materialData_));
 	*materialData_ = color_;
 	materialResource_->Unmap(0u, nullptr);
 
-	Vector3 scale = {.x = 1.0f,.y = 1.0f,.z = 1.0f };
-	Vector3 rotate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
+	Vector3<float_t> scale = {.x = 1.0f,.y = 1.0f,.z = 1.0f };
+	Vector3<float_t> rotate = {.x = 0.0f,.y = 0.0f,.z = 0.0f };
 	Matrix4x4 worldMatrix = Matrix4x4::MakeAffineMatrix(scale, rotate, start);
 
 	//書き込む為のアドレスを取得

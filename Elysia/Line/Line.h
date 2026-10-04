@@ -70,7 +70,7 @@ namespace Elysia {
 		/// 色の設定
 		/// </summary>
 		/// <param name="color"></param>
-		void SetColor(const Vector4& color) {
+		void SetColor(const Vector4<float_t>& color) {
 			this->color_ = color;
 		}
 
@@ -87,7 +87,7 @@ namespace Elysia {
 		/// 頂点データの拡張
 		/// </summary>
 		struct LineVertexData {
-			Vector4 position;
+			Vector4<float_t> position;
 		};
 
 
@@ -115,7 +115,7 @@ namespace Elysia {
 		LineTransformMatrix* wvpData_ = nullptr;
 
 		//色
-		Vector4 color_ = {};
+		Vector4<float_t> color_ = {};
 	};
 
 };

@@ -6,15 +6,17 @@
  * @author 茂木翼
  */
 
+template <typename Type>
+
  /// <summary>
  /// ベクトル(4D)
  /// </summary>
 struct Vector4 {
 	//要素
-	float_t x;
-	float_t y;
-	float_t z;
-	float_t w;
+	Type x;
+	Type y;
+	Type z;
+	Type w;
 
 #pragma region 四則演算
 
@@ -79,8 +81,5 @@ struct Vector4 {
 	}
 
 #pragma endregion
-
-
-
 
 };

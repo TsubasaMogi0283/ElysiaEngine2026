@@ -15,7 +15,7 @@
 /// 頂点データ
 /// </summary>
 struct VertexData {
-	Vector4 position;
+	Vector4<float_t> position;
 	Vector2<float_t> texCoord;
 	Vector3<float_t> normal;
 };

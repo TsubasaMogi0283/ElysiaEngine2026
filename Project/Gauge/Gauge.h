@@ -139,7 +139,7 @@ private:
 	//総ノーツ数
 	uint16_t totalNotes_ = 0u;
 
-	Vector4 mainColor_ = {};
+	Vector4<float_t> mainColor_ = {};
 
 	//スケールを設定
 	float_t scale_ = static_cast<float_t>(currentValue_) / static_cast<float_t>(MAX_VALUE_);

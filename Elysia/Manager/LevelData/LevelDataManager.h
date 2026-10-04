@@ -444,7 +444,7 @@ namespace Elysia {
 		/// <param name="handle"></param>
 		/// <param name="name"></param>
 		/// <param name="color"></param>
-		inline void SetColor(const uint32_t& handle, const std::string& name, const Vector4& color) {
+		inline void SetColor(const uint32_t& handle, const std::string& name, const Vector4<float_t>& color) {
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
 

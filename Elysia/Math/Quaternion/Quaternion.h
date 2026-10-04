@@ -8,7 +8,12 @@
 
 #include <cmath>
 
-#include <Vector3.h>
+template <typename Type>
+
+/// <summary>
+/// ベクトル(3D)
+/// </summary>
+struct Vector3;
 
 /// <summary>
 /// クォータニオン
