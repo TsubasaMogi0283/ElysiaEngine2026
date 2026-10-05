@@ -19,7 +19,7 @@ ResultScene::ResultScene(){
 void ResultScene::Initialize(){
 	//カメラ
 	camera_.Initialize();
-	camera_.rotate.x = std::numbers::pi_v<float>/6.0f;
+	camera_.rotate.x = std::numbers::pi_v<float_t> / 6.0f;
 	camera_.translate = { .x = 0.0f,.y = 21.0f,.z = -40.0f };
 	//平行光源の初期化
 	directionalLight_.Initialize();
@@ -27,13 +27,23 @@ void ResultScene::Initialize(){
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
+
+	ScoreDataManager* u = gameSceneManager_->GetScoreDataManager();
+	musicInformation_;
+
+	//タイトルのスプライト
+	musicTitleSprite_ = Elysia::Sprite::Create();
+	//作曲社のスプライト
+	musicComposerSprite_ = Elysia::Sprite::Create();
+
+
 }
 
 void ResultScene::Update(){
 
-	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
-
-	}
+	
+	//各状態の処理を実行
+	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
 
 	camera_.Update();
@@ -65,5 +75,18 @@ void ResultScene::DrawPostEffect(){
 }
 
 void ResultScene::DrawSprite(){
+	musicTitleSprite_->Draw();
+
+
+}
+
+void ResultScene::Transition(){
+	//トランジションを開く
+	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
+		currentState_ = ResultSceneState::IncreaseValue;
+	}
+}
+
+void ResultScene::IncreaseValue(){
 
 }
