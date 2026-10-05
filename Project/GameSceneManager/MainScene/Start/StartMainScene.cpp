@@ -111,7 +111,7 @@ void StartMainScene::Initialize() {
 
 	//線
 	//レベルによって色を変える
-	Vector4 levelColor = {};
+	Vector4<float_t> levelColor = {};
 	if (level_ == "Easy") {
 		levelColor = Color::Conevert(Color::EASY);
 	} else if (level_ == "Normal") {
@@ -139,7 +139,7 @@ void StartMainScene::Initialize() {
 
 void StartMainScene::Update() {
 
-	//各状態を実行
+	//各状態の処理を実行
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
 	//全ての状態の処理が終わったらいざ遊ぶシーンへ！

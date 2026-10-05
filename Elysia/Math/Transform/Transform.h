@@ -12,10 +12,10 @@
 /// </summary>
 struct Transform {
 	//スケール
-	Vector3 scale;
+	Vector3<float_t> scale;
 	//回転
-	Vector3 rotate;
+	Vector3<float_t> rotate;
 	//座標
-	Vector3 translate;
+	Vector3<float_t> translate;
 
 };

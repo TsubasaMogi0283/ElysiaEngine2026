@@ -20,7 +20,7 @@
 /// </summary>
 struct MaterialData {
 	//色
-	Vector4 color;
+	Vector4<float_t> color;
 	//ライティングの種類
 	LightingType lightingKinds = LightingType::DirectionalLighting;
 	float_t padding[3];
@@ -53,7 +53,7 @@ public:
 public:
 
 	//色
-	Vector4 color = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f};
+	Vector4<float_t> color = {.x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f};
 	//Lightingの種類
 	LightingType lightingKinds = LightingType::DirectionalLighting;
 	//UV行列

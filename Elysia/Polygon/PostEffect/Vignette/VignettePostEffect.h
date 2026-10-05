@@ -9,6 +9,8 @@
 #include "Vector3.h"
 #include <BasePostEffect.h>
 
+template <typename Type>
+
 /// <summary>
 /// ベクトル(4次元)
 /// </summary>

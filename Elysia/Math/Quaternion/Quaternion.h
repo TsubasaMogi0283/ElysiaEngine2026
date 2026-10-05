@@ -8,6 +8,8 @@
 
 #include <cmath>
 
+template <typename Type>
+
 /// <summary>
 /// ベクトル(3D)
 /// </summary>
@@ -108,7 +110,7 @@ public:
 	/// <param name="axis"></param>
 	/// <param name="angle"></param>
 	/// <returns></returns>
-	static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float_t angle);
+	static Quaternion MakeRotateAxisAngleQuaternion(const Vector3<float_t>& axis, float_t angle);
 	
 	/// <summary>
 	/// 回転の補間

@@ -9,7 +9,7 @@ Elysia::RtvManager* Elysia::RtvManager::GetInstance(){
 }
 
 
-ComPtr<ID3D12Resource> Elysia::RtvManager::CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4& clearColor) {
+ComPtr<ID3D12Resource> Elysia::RtvManager::CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4<float_t>& clearColor) {
 
 
 	D3D12_RESOURCE_DESC resourceDesc{};
@@ -62,7 +62,7 @@ ComPtr<ID3D12Resource> Elysia::RtvManager::CreateRenderTextureResource(const DXG
 	return resource;
 }
 
-ComPtr<ID3D12Resource>  Elysia::RtvManager::CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4& clearColor){
+ComPtr<ID3D12Resource>  Elysia::RtvManager::CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4<float_t>& clearColor){
 
 	uint32_t width = WindowsSetup::GetInstance()->GetClientSize().x;
 	uint32_t height = WindowsSetup::GetInstance()->GetClientSize().y;

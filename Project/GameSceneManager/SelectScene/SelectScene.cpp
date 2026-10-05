@@ -75,7 +75,7 @@ void SelectScene::Update(){
 
 
 	//方向
-	Vector3 direction = {};
+	Vector3<float_t> direction = {};
 
 	//入力
 	if (input_->IsPushKey(DIK_UP)&& input_->IsPushKey(DIK_RIGHT)) {

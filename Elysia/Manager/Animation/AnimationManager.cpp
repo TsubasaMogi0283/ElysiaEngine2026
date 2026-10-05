@@ -13,7 +13,7 @@ Elysia::AnimationManager* Elysia::AnimationManager::GetInstance() {
     return &instance;
 }
 
-Vector3 Elysia::AnimationManager::CalculationValue(const std::vector<KeyFrameVector3>& keyFrames, const float_t& time) {
+Vector3<float_t> Elysia::AnimationManager::CalculationValue(const std::vector<KeyFrameVector3>& keyFrames, const float_t& time) {
     //特殊なケースを除外
     //キーが無いものは✕
     assert(!keyFrames.empty());
@@ -29,7 +29,7 @@ Vector3 Elysia::AnimationManager::CalculationValue(const std::vector<KeyFrameVec
             //範囲内を補間する
             float_t t = (time - keyFrames[index].time) / (keyFrames[nextIndex].time - keyFrames[index].time);
             //Vector3 だと線形補間
-            return Vector3::Lerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
+            return Vector3 <float_t>::Lerp(keyFrames[index].value, keyFrames[nextIndex].value, t);
         }
     }
 

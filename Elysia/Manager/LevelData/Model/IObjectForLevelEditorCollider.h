@@ -28,7 +28,7 @@ public:
 	/// オブジェクトの座標を取得
 	/// </summary>
 	/// <param name="position"></param>
-	virtual void SetObjectPosition(const Vector3& position) {
+	virtual void SetObjectPosition(const Vector3<float_t>& position) {
 		this->objectPosition_ = position;
 	};
 
@@ -44,7 +44,7 @@ public:
 	/// 中心座標
 	/// </summary>
 	/// <param name="size"></param>
-	virtual void SetCenterPosition(const Vector3& centerPosition) {
+	virtual void SetCenterPosition(const Vector3<float_t>& centerPosition) {
 		this->centerPosition_ = centerPosition;
 	}
 
@@ -52,7 +52,7 @@ public:
 	/// サイズの設定
 	/// </summary>
 	/// <param name="size"></param>
-	virtual void SetSize(const Vector3& size) {
+	virtual void SetSize(const Vector3<float_t>& size) {
 		this->size_ = size;
 	}
 
@@ -66,13 +66,13 @@ public:
 
 protected:
 	//オブジェクトの座標
-	Vector3 objectPosition_ = {};
+	Vector3<float_t> objectPosition_ = {};
 
 	//中心座標
-	Vector3 centerPosition_ = {};
+	Vector3<float_t> centerPosition_ = {};
 
 	//サイズ
-	Vector3 size_ = {};
+	Vector3<float_t> size_ = {};
 
 	//衝突したかどうか
 	bool isTouch_ = false;

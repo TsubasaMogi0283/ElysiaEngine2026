@@ -2,9 +2,9 @@
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 
-inline Vector3 Vector3::TransformCalculation(const Vector3& v, const Matrix4x4& m){
+Vector3<float_t> Vector3<float_t>::TransformCalculation(const Vector3<float_t>& v, const Matrix4x4& m){
 	
-	Vector3 result = {
+	Vector3<float_t> result = {
 		.x = (v.x * m.m[0][0]) + (v.y * m.m[1][0]) + (v.z * m.m[2][0]) + (1.0f * m.m[3][0]),
 		.y = (v.x * m.m[0][1]) + (v.y * m.m[1][1]) + (v.z * m.m[2][1]) + (1.0f * m.m[3][1]),
 		.z = (v.x * m.m[0][2]) + (v.y * m.m[1][2]) + (v.z * m.m[2][2]) + (1.0f * m.m[3][2])
@@ -21,7 +21,7 @@ inline Vector3 Vector3::TransformCalculation(const Vector3& v, const Matrix4x4& 
 	return result;
 }
 
-Vector3 Vector3::RotateVector(const Vector3& vector, const Quaternion& quaternion){
+Vector3<float_t> Vector3<float_t>::RotateVector(const Vector3<float_t>& vector, const Quaternion& quaternion){
     //wはいらない
     Quaternion convertQuaternion = {
         .x = vector.x,

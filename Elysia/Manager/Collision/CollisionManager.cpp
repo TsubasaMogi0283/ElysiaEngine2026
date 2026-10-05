@@ -11,9 +11,9 @@ void Elysia::CollisionManager::RegisterList(Collider* collider) {
 void Elysia::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, Collider* colliderB) {
 
 	//コライダーAのワールド座標を取得
-	Vector3 colliderPositionA = colliderA->GetWorldPosition();
+	Vector3<float_t> colliderPositionA = colliderA->GetWorldPosition();
 	//コライダーBのワールド座標を取得
-	Vector3 colliderPositionB = colliderB->GetWorldPosition();
+	Vector3<float_t> colliderPositionB = colliderB->GetWorldPosition();
 
 	//衝突フィルタリング
 	//ビット演算だから&で
@@ -24,7 +24,7 @@ void Elysia::CollisionManager::CheckSphereCollisionPair(Collider* colliderA, Col
 	}
 
 	//AとBの差分ベクトルを求める
-	Vector3 difference = colliderPositionA - colliderPositionB;
+	Vector3<float_t> difference = colliderPositionA - colliderPositionB;
 
 	//距離を計算
 	float_t distance = sqrtf((difference.x * difference.x) +

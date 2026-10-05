@@ -15,9 +15,9 @@
 /// </summary>
 struct PointLightData {
 	//ライトの色
-	Vector4 color;
+	Vector4<float_t> color;
 	//ライトの位置
-	Vector3 position;
+	Vector3<float_t> position;
 	//輝度
 	float_t intensity;
 
@@ -50,7 +50,7 @@ struct PointLight : public BaseLight {
 #pragma region メンバ変数
 
 	//位置
-	Vector3 position = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
+	Vector3<float_t> position = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 	//ライトに届く最大距離
 	float_t radius = 5.0f;
 	//減衰率

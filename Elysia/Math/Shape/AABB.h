@@ -14,7 +14,7 @@
 /// </summary>
 struct AABB {
 	//最小点(手前の左下)
-	Vector3 min;
+	Vector3<float_t> min;
 	//最大点(奥の右上)
-	Vector3 max;
+	Vector3<float_t> max;
 };

@@ -89,8 +89,6 @@ private:
 		&StartMainScene::UIScaleDown,
 	};
 
-private:
-
 	/// <summary>
 	/// スタートメインシーンの状態
 	/// </summary>

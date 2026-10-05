@@ -120,7 +120,6 @@ private:
 	const uint32_t MAX_VALUE_ = 500u;
 	//最小
 	const uint32_t MIN_VALUE_ = 0u;
-	
 private:
 	//バックグラウンドスプライト
 	std::unique_ptr<Elysia::Sprite>back_ = nullptr;
@@ -140,7 +139,7 @@ private:
 	//総ノーツ数
 	uint16_t totalNotes_ = 0u;
 
-	Vector4 mainColor_ = {};
+	Vector4<float_t> mainColor_ = {};
 
 	//スケールを設定
 	float_t scale_ = static_cast<float_t>(currentValue_) / static_cast<float_t>(MAX_VALUE_);

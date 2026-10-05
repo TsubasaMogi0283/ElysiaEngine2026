@@ -57,7 +57,7 @@ void Elysia::Sphere::Initialize() {
 
 //描画
 //左上、右上、左下、右下
-void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix4x4 viewMatrix,Matrix4x4 projectionMatrix ,Vector4 color) {
+void Elysia::Sphere::Draw(SphereShape sphereCondtion, Transform transform,Matrix4x4 viewMatrix,Matrix4x4 projectionMatrix ,Vector4<float_t> color) {
 
 	
 	//書き込み用のアドレスを取得

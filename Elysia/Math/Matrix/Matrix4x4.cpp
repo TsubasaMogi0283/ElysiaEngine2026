@@ -56,7 +56,7 @@ Matrix4x4 Matrix4x4::Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 
 }
 
-Matrix4x4 Matrix4x4::MakeScaleMatrix(const Vector3& scale) {
+Matrix4x4 Matrix4x4::MakeScaleMatrix(const Vector3<float_t>& scale) {
 	Matrix4x4 result = {
 		result.m[0][0] = scale.x,
 		result.m[0][1] = 0.0f,
@@ -208,7 +208,7 @@ Matrix4x4 Matrix4x4::MakeRotateMatrix(const Quaternion& quaternion){
 }
 
 
-Matrix4x4 Matrix4x4::MakeTranslateMatrix(const Vector3& translate) {
+Matrix4x4 Matrix4x4::MakeTranslateMatrix(const Vector3<float_t>& translate) {
 	Matrix4x4 result = {};
 	result.m[0][0] = 1.0f;
 	result.m[0][1] = 0.0f;
@@ -235,7 +235,7 @@ Matrix4x4 Matrix4x4::MakeTranslateMatrix(const Vector3& translate) {
 	return result;
 }
 
-Matrix4x4 Matrix4x4::MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
+Matrix4x4 Matrix4x4::MakeAffineMatrix(const Vector3<float_t>& scale, const Vector3<float_t>& rotate, const Vector3<float_t>& translate) {
 
 	//Scale
 	Matrix4x4 scaleMatrix = Matrix4x4::MakeScaleMatrix(scale);

@@ -138,6 +138,11 @@ void MainScene::Update() {
 	//更新
 	levelDataManager_->Update(levelHandle_);
 	baseMainScene_->Update();
+	//全て終わったら結果シーンへ
+	if (baseMainScene_->GetIsEnd()) {
+		gameSceneManager_->ChangeScene("Result");
+		return;
+	}
 	directionalLight_.Update();
 	camera_.Update();
 }

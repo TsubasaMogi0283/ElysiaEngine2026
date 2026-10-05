@@ -13,7 +13,7 @@
 /// </summary>
 struct Listener {
 	//位置
-	Vector3 position;
+	Vector3<float_t> position;
 	//動き
-	Vector3 move;
+	Vector3<float_t> move;
 };

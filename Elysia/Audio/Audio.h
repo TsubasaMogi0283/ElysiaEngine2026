@@ -340,6 +340,13 @@ namespace Elysia {
 		float_t GetAudioLength(const uint32_t& audioHandle);
 
 		/// <summary>
+		/// 再生が終わったかどうかを取得
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <returns>終了状態</returns>
+		bool IsEnd(const uint32_t& audioHandle);
+
+		/// <summary>
 		/// サブミックスボイスの作成
 		/// </summary>
 		/// <param name="channel">チャンネル</param>

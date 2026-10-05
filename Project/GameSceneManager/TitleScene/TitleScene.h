@@ -151,7 +151,7 @@ private:
 	//斜め補正
 	const float_t DIAGONAL_SCALE_ = 0.7f;
 	const float_t SIZE = 1.0f;
-	const Vector3 CUBE_SIZE = { .x = SIZE ,.y = SIZE ,.z = SIZE };
+	const Vector3<float_t> CUBE_SIZE = { .x = SIZE ,.y = SIZE ,.z = SIZE };
 private:
 
 	//背景

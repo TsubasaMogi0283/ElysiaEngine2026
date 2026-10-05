@@ -50,7 +50,7 @@ public:
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	inline void SetPosition(const Vector3& position) {
+	inline void SetPosition(const Vector3<float_t>& position) {
 		this->worldTransform_.translate = position;
 	}
 

@@ -50,7 +50,7 @@ void Triangle::Initialize() {
 
 
 //描画
-void Triangle::Draw(const Transform& transform, const Vector4& color) {
+void Triangle::Draw(const Transform& transform, const Vector4<float_t>& color) {
 
 	//TextureCoordinate(テクスチャ座標系)
 	//TexCoord,UV座標系とも呼ばれている

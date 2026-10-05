@@ -1,11 +1,10 @@
 #pragma once
 
 /**
- * @file ParticleInformation.h
+ * @file Particle.h
  * @brief パーティクル
  * @author 茂木翼
  */
-
 
 #include "Transform.h"
 #include "Vector4.h"
@@ -20,9 +19,9 @@ struct ParticleInformation {
 	//初期トランスフォーム
 	Transform initialTransform;
 	//速度
-	Vector3  velocity;
+	Vector3<float_t> velocity;
 	//色
-	Vector4 color;
+	Vector4<float_t> color;
 	//生存時間
 	float_t lifeTime;
 	//現在の時間
@@ -42,5 +41,5 @@ struct ParticleForGPU {
 	//ワールド座標
 	Matrix4x4  world;
 	//色
-	Vector4 color;
+	Vector4<float_t> color;
 };

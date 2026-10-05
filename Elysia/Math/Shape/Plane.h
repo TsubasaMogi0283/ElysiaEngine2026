@@ -12,7 +12,7 @@
 /// </summary>
 struct Plane {
 	//位置
-	Vector3 position;
+	Vector3<float_t> position;
 	//縦
 	float_t length;
 	//横

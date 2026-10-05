@@ -52,9 +52,9 @@ namespace Color {
 	/// </summary>
 	/// <param name="colorCode">カラーコード(RGBA)</param>
 	/// <returns>Vector4色情報</returns>
-	inline Vector4 Conevert(const uint32_t& colorCode) {
+	inline Vector4<float_t> Conevert(const uint32_t& colorCode) {
 		
-		Vector4 result = {
+		Vector4<float_t> result = {
 			//赤
 		   .x = ((colorCode >> 24) & 0xFF) / 255.0f,
 		   //緑

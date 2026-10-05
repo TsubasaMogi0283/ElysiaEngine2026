@@ -162,8 +162,8 @@ namespace Elysia {
 		/// <param name="handle">ハンドル</param>
 		/// <param name="objectType">タイプ</param>
 		/// <returns></returns>
-		inline std::vector<Vector3> GetObjectPositions(const uint32_t& handle, const std::string& objectType) {
-			std::vector<Vector3> positions = {};
+		inline std::vector<Vector3<float_t>> GetObjectPositions(const uint32_t& handle, const std::string& objectType) {
+			std::vector<Vector3<float_t>> positions = {};
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
 
@@ -282,13 +282,13 @@ namespace Elysia {
 			std::string colliderType;
 
 			//Sphere,Box
-			Vector3 center;
-			Vector3 size;
+			Vector3<float_t> center;
+			Vector3<float_t> size;
 
 			//AABB
 			AABB aabb;
-			Vector3 upSize;
-			Vector3 downSize;
+			Vector3<float_t> upSize;
+			Vector3<float_t> downSize;
 
 
 			//非表示設定
@@ -359,7 +359,7 @@ namespace Elysia {
 		/// <param name="handle"></param>
 		/// <param name="name"></param>
 		/// <param name="scale"></param>
-		inline void SetScale(const uint32_t& handle, const std::string& name, const Vector3& scale) {
+		inline void SetScale(const uint32_t& handle, const std::string& name, const Vector3<float_t>& scale) {
 
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
@@ -386,7 +386,7 @@ namespace Elysia {
 		/// <param name="handle"></param>
 		/// <param name="name"></param>
 		/// <param name="rotate"></param>
-		inline void SetRotate(const uint32_t& handle, const std::string& name, const Vector3& rotate) {
+		inline void SetRotate(const uint32_t& handle, const std::string& name, const Vector3<float_t>& rotate) {
 
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
@@ -415,7 +415,7 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="handle"></param>
 		/// <param name="name"></param>
-		inline void SetTranslate(const uint32_t& handle, const std::string& name, const Vector3& translate) {
+		inline void SetTranslate(const uint32_t& handle, const std::string& name, const Vector3<float_t>& translate) {
 
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
@@ -444,7 +444,7 @@ namespace Elysia {
 		/// <param name="handle"></param>
 		/// <param name="name"></param>
 		/// <param name="color"></param>
-		inline void SetColor(const uint32_t& handle, const std::string& name, const Vector4& color) {
+		inline void SetColor(const uint32_t& handle, const std::string& name, const Vector4<float_t>& color) {
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
 
@@ -494,8 +494,8 @@ namespace Elysia {
 		/// <param name="handle">ハンドル</param>
 		/// <param name="name">名前</param>
 		/// <returns>スケール</returns>
-		inline Vector3 GetInitialScale(const uint32_t& handle, const std::string& name) {
-			Vector3 result = {};
+		inline Vector3<float_t> GetInitialScale(const uint32_t& handle, const std::string& name) {
+			Vector3<float_t> result = {};
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
 
@@ -521,8 +521,8 @@ namespace Elysia {
 		/// <param name="handle">ハンドル</param>
 		/// <param name="name">名前</param>
 		/// <returns>回転</returns>
-		inline Vector3 GetInitialRotate(const uint32_t& handle, const std::string& name) {
-			Vector3 result = {};
+		inline Vector3<float_t> GetInitialRotate(const uint32_t& handle, const std::string& name) {
+			Vector3<float_t> result = {};
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
 
@@ -548,8 +548,8 @@ namespace Elysia {
 		/// <param name="handle">ハンドル</param>
 		/// <param name="name">名前</param>
 		/// <returns>座標</returns>
-		inline Vector3 GetInitialTranslate(const uint32_t& handle, const std::string& name) {
-			Vector3 result = {};
+		inline Vector3<float_t> GetInitialTranslate(const uint32_t& handle, const std::string& name) {
+			Vector3<float_t> result = {};
 			for (const auto& [key, levelData] : levelData_) {
 				if (levelData->handle == handle) {
 

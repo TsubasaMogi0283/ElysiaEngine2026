@@ -25,7 +25,7 @@ struct CameraMatrixData {
 /// GPUに送る座標データ
 /// </summary>
 struct CameraForGPU {
-	Vector3 worldPosition;
+	Vector3<float_t> worldPosition;
 };
 
 /// <summary>
@@ -56,8 +56,8 @@ public:
 	/// ワールド座標の取得
 	/// </summary>
 	/// <returns>ワールド座標</returns>
-	Vector3 GetWorldPosition() const{
-		Vector3 worldPosition = {
+	Vector3<float_t> GetWorldPosition() const{
+		Vector3<float_t> worldPosition = {
 			.x = worldMatrix.m[3][0],
 			.y = worldMatrix.m[3][1],
 			.z = worldMatrix.m[3][2],
@@ -81,9 +81,9 @@ public:
 	float_t farClip = 1000.0f;
 
 	//回転
-	Vector3 rotate = {};
+	Vector3<float_t> rotate = {};
 	//移動
-	Vector3 translate = {};
+	Vector3<float_t> translate = {};
 
 
 	//ワールド列
@@ -99,6 +99,6 @@ public:
 
 private:
 	//スケール
-	Vector3 scale = {.x= 1.0f,.y= 1.0f,.z= 1.0f };
+	Vector3<float_t> scale = {.x= 1.0f,.y= 1.0f,.z= 1.0f };
 
 };

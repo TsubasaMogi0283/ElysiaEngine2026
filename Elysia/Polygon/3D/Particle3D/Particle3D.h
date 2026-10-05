@@ -227,7 +227,7 @@ namespace Elysia {
 		/// 吸収し集まる座標を設定する
 		/// </summary>
 		/// <param name="position">座標</param>
-		inline void SetAbsorbPosition(const Vector3& position) {
+		inline void SetAbsorbPosition(const Vector3<float_t>& position) {
 			this->absorbPosition_ = position;
 		}
 
@@ -243,7 +243,7 @@ namespace Elysia {
 		/// 吸収用の発生座標を設定
 		/// </summary>
 		/// <param name="position">座標</param>
-		inline void SetReleasePositionForAbsorb(const Vector3& position) {
+		inline void SetReleasePositionForAbsorb(const Vector3<float_t>& position) {
 			this->releasePositionForAbsorb_ = position;
 		}
 
@@ -251,7 +251,7 @@ namespace Elysia {
 		/// 追従座標の設定
 		/// </summary>
 		/// <param name="position"></param>
-		inline void SetTrackingPosition(const Vector3& position) {
+		inline void SetTrackingPosition(const Vector3<float_t>& position) {
 			this->trackingPosition_ = position;
 		}
 
@@ -262,7 +262,7 @@ namespace Elysia {
 		/// スケールの設定
 		/// </summary>
 		/// <param name="scale">スケール</param>
-		inline void SetScale(const Vector3& scale) {
+		inline void SetScale(const Vector3<float_t>& scale) {
 			this->emitter_.transform.scale = scale;
 		}
 
@@ -270,14 +270,14 @@ namespace Elysia {
 		/// 回転の設定
 		/// </summary>
 		/// <param name="rotate">回転</param>
-		inline void SetRotate(const Vector3& rotate) {
+		inline void SetRotate(const Vector3<float_t>& rotate) {
 			this->emitter_.transform.rotate = rotate;
 		}
 		/// <summary>
 		/// 回転の取得
 		/// </summary>
 		/// <returns>回転</returns>
-		inline Vector3 GetRotate() const {
+		inline Vector3<float_t> GetRotate() const {
 			return emitter_.transform.rotate;
 		}
 
@@ -285,14 +285,14 @@ namespace Elysia {
 		/// 座標の設定
 		/// </summary>
 		/// <param name="translate">座標</param>
-		inline void SetTranslate(const Vector3& translate) {
+		inline void SetTranslate(const Vector3<float_t>& translate) {
 			this->emitter_.transform.translate = translate;
 		}
 		/// <summary>
 		/// 座標の取得
 		/// </summary>
 		/// <returns>座標</returns>
-		inline Vector3 GetTranslate() const {
+		inline Vector3<float_t> GetTranslate() const {
 			return emitter_.transform.translate;
 		}
 
@@ -358,9 +358,9 @@ namespace Elysia {
 		//リソース
 		ComPtr<ID3D12Resource>cameraResource_ = nullptr;
 		//カメラデータ
-		Vector3* cameraPositionData_ = {};
+		Vector3<float_t>* cameraPositionData_ = {};
 		//座標
-		Vector3 cameraPosition_ = {};
+		Vector3<float_t> cameraPosition_ = {};
 
 
 		//最大数
@@ -406,11 +406,11 @@ namespace Elysia {
 
 		
 		//吸収し集まる場所
-		Vector3 absorbPosition_ = {};
+		Vector3<float_t> absorbPosition_ = {};
 		//吸収用の発生座標
-		Vector3 releasePositionForAbsorb_ = {};
+		Vector3<float_t> releasePositionForAbsorb_ = {};
 		//追従座標
-		Vector3 trackingPosition_ = {};
+		Vector3<float_t> trackingPosition_ = {};
 	};
 
 };

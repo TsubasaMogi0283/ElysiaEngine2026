@@ -87,9 +87,9 @@ inline Quaternion Quaternion::Inverse(const Quaternion& quaternion){
     return result;
 }
 
-Quaternion Quaternion::MakeRotateAxisAngleQuaternion(const Vector3& axis, float_t angle){
+Quaternion Quaternion::MakeRotateAxisAngleQuaternion(const Vector3<float_t>& axis, float_t angle){
     //q=(cos/2,n*sin/2)
-    Vector3 n = Vector3::Normalize(axis);
+    Vector3<float_t> n = Vector3<float_t>::Normalize(axis);
 
     //結果
     Quaternion result = {

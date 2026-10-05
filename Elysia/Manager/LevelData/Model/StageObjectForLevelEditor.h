@@ -22,8 +22,8 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="modelhandle"></param>
-	/// <param name="transform"></param>
+	/// <param name="modelhandle">モデルハンドル</param>
+	/// <param name="transform">トランスフォーム</param>
 	void Initialize(const uint32_t& modelhandle, const Transform& transform) override;
 
 	/// <summary>
@@ -36,14 +36,14 @@ public:
 	/// <summary>
 	/// AABB用のサイズを設定。コライダーのサイズから取得してね。
 	/// </summary>
-	/// <param name="size"></param>
-	inline void SetSize(const Vector3& size) {
+	/// <param name="size">サイズ</param>
+	inline void SetSize(const Vector3<float_t>& size) {
 		this->size_ = size;
 	}
 
 private:
 	//AABB用のサイズ
-	Vector3 size_ = {};
+	Vector3<float_t> size_ = {};
 
 
 };

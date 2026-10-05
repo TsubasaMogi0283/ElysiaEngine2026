@@ -15,13 +15,13 @@
 /// </summary>
 struct SpotLightData {
 	//ライトの色
-	Vector4 color = {};
+	Vector4<float_t> color = {};
 	//ライトの位置
-	Vector3 position = {};
+	Vector3<float_t> position = {};
 	//輝度
 	float_t intensity = 0.0f;
 	//スポットライトの方向
-	Vector3 direction = {};
+	Vector3<float_t> direction = {};
 	//ライトの届く最大距離
 	float_t distance = 0.0f;
 	//減衰率
@@ -58,9 +58,9 @@ struct SpotLight : public BaseLight {
 #pragma region メンバ変数
 
 	//ライトの位置
-	Vector3 position = {};
+	Vector3<float_t> position = {};
 	//方向
-	Vector3 direction = {};
+	Vector3<float_t> direction = {};
 	//届く最大距離
 	float_t distance = 0.0f;
 	//減衰率

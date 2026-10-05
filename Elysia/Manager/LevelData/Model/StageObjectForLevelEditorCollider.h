@@ -39,13 +39,13 @@ public:
 	/// ワールド座標の取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3 GetWorldPosition()override;
+	Vector3<float_t> GetWorldPosition()override;
 
 	/// <summary>
 	/// ワールド座標を取得
 	/// </summary>
 	/// <param name="position"></param>
-	inline void SetWorldPosition(const Vector3& position) {
+	inline void SetWorldPosition(const Vector3<float_t>& position) {
 		this->objectPosition_ = position;
 	}
 

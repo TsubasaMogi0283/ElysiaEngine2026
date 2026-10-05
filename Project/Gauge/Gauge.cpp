@@ -27,7 +27,7 @@ void Gauge::Initialize(const uint32_t& mainTextureHandle, const uint32_t& frameT
 	//通常表示座標
 	gaugePosition_ = {
 		.x = static_cast<int32_t>(windowsSetup_->GetClientSize().x/2u) - static_cast<int32_t>(textureSize.x / 2u),
-		.y = windowsSetup_->GetClientSize().y - static_cast<int32_t>(textureSize.y)
+		.y = windowsSetup_->GetClientSize().y - static_cast<int32_t>(textureSize.y)-50
 	};
 
 	//初期座標

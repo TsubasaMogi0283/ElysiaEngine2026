@@ -10,7 +10,7 @@ void Transition::Initialize(){
 
 	//テクスチャの縦幅を取得
 	uint64_t textureHeight = Elysia::TextureManager::GetInstance()->GetTextureHeight(textureHandle_);
-	heightScale_ = 1.0f / static_cast<float_t>(DIVIDE_NUMBER_);
+	heightScale_ = 1.0f / static_cast<float_t>(DIVIDE_NUMBER_)+0.01f;
 	//スプライトの生成
 	for (uint8_t i = 0u;i < DIVIDE_NUMBER_;i++) {
 		spriteArray_[i] = Elysia::Sprite::Create(textureHandle_);
@@ -61,16 +61,18 @@ bool Transition::SetOpenTransition(){
 	if (!isOpened_&& isClosed_) {
 		
 		//イージングで滑らかに開ける
-		openT_ += DELTA_TIME_;
+		sideT_ += DELTA_TIME_;
+		sideT_ = std::clamp(sideT_, 0.0f, 1.0f);
 		//最大値になったら開いた状態にする
-		if (openT_ >= 1.0f) {
+		if (sideT_ >= 1.0f) {
 			isOpened_ = true;
 			isClosed_ = false;
-			openT_ = 1.0f;
+			sideT_ = 1.0f;
 			isEnd = true;
 		}
-		widthScale_ = 1.0f - Easing::EaseInOutQuad(openT_);
-		widthScale_ = std::clamp(widthScale_, 0.0f, 1.0f);
+		
+		widthScale_ = 1.0f - Easing::EaseInOutQuad(sideT_);
+		
 
 	}
 	return isEnd;
@@ -83,16 +85,18 @@ bool Transition::SetCloseTransition(){
 	if (!isClosed_&&isOpened_) {
 
 		//イージングで滑らかに開ける
-		closeT_ += DELTA_TIME_;
+		sideT_ -= DELTA_TIME_;
+		sideT_ = std::clamp(sideT_, 0.0f, 1.0f);
 		//最大値になったら開いた状態にする
-		if (closeT_ >= 1.0f) {
+		if (sideT_ <= 0.0f) {
 			isOpened_ = false;
 			isClosed_ = true;
-			closeT_ = 1.0f;
+			sideT_ = 0.0f;
 			isEnd = true;
 		}
-		widthScale_ = Easing::EaseInOutQuad(closeT_);
-		widthScale_ = std::clamp(widthScale_, 0.0f, 1.0f);
+		
+		widthScale_ = 1.0f-Easing::EaseInOutQuad(sideT_);
+		
 
 	}
 	return isEnd;

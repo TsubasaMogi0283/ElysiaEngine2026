@@ -24,7 +24,7 @@ struct KeyFrame {
 
 //テンプレートを作っておくと拡張が楽になるよ！
 //Vector3版
-using KeyFrameVector3 = KeyFrame<Vector3>;
+using KeyFrameVector3 = KeyFrame<Vector3<float_t>>;
 //Quaternion
 using KeyFrameQuaternion = KeyFrame<Quaternion>;
 

@@ -12,7 +12,7 @@
 /// クォータニオンのトランスフォーム
 /// </summary>
 struct QuaternionTransform {
-	Vector3 scale;
+	Vector3<float_t> scale;
 	Quaternion rotate;
-	Vector3 translate;
+	Vector3<float_t> translate;
 };

@@ -46,7 +46,7 @@ struct Fan2D {
 /// </summary>
 struct Fan3D {
 	//中心座標
-	Vector3 position;
+	Vector3<float_t> position;
 	//長さ
 	float_t length;
 
@@ -55,9 +55,9 @@ struct Fan3D {
 	float_t sidePhiAngleSize;
 
 	//2等分するベクトル
-	Vector3 direction;
-	Vector3 rightVector;
-	Vector3 leftVector;
+	Vector3<float_t> direction;
+	Vector3<float_t> rightVector;
+	Vector3<float_t> leftVector;
 
 
 	//中心の角度

@@ -3,6 +3,9 @@
 #include "Vector3.h"
 #include "Transform.h"
 
+/// <summary>
+/// パーティクスのエミッタ
+/// </summary>
 class ParticleEmitter{
 public:
 
@@ -42,7 +45,7 @@ private:
 	//Emitter newEmitter_ = {};
 	const float DELTA_TIME = 1.0f / 60.0f;
 
-	Vector3 transform_ = {};
+	Vector3<float_t> transform_ = {};
 	std::string name_ = {};
 	uint32_t count_ = 10;
 

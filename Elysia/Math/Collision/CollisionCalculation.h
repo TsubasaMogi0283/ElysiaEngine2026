@@ -3,7 +3,20 @@
 #include "Fan.h"
 #include "Plane.h"
 #include "Vector2.h"
-#include "Vector3.h"
+
+template <typename Type>
+
+/// <summary>
+/// ベクトル(2D)
+/// </summary>
+struct Vector2;
+
+template <typename Type>
+
+/// <summary>
+/// ベクトル(3D)
+/// </summary>
+struct Vector3;
 
 /// <summary>
 /// 衝突判定の計算
@@ -25,7 +38,7 @@ namespace CollisionCalculation {
 	/// <param name="aabb">AABB</param>
 	/// <param name="point">点</param>
 	/// <returns></returns>
-	bool IsCollisionAABBAndPoint(const AABB& aabb, const Vector3& point);
+	bool IsCollisionAABBAndPoint(const AABB& aabb, const Vector3<float_t>& point);
 
 	/// <summary>
 	/// 平面と点の判定
@@ -33,7 +46,7 @@ namespace CollisionCalculation {
 	/// <param name="position">点</param>
 	/// <param name="plane">平面座標</param>
 	/// <returns></returns>
-	bool IsCollisionPlaneAndPoint(const Vector3& position, const Plane& plane);
+	bool IsCollisionPlaneAndPoint(const Vector3<float_t>& position, const Plane& plane);
 
 	/// <summary>
 	/// 扇形(2次元)
@@ -49,6 +62,6 @@ namespace CollisionCalculation {
 	/// <param name="fan">扇</param>
 	/// <param name="point">点</param>
 	/// <returns></returns>
-	bool IsFanCollision(const Fan3D& fan, const Vector3& point);
+	bool IsFanCollision(const Fan3D& fan, const Vector3<float_t>& point);
 
 }

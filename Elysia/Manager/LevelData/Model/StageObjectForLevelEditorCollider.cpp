@@ -49,6 +49,6 @@ void StageObjectForLevelEditorCollider::OffCollision(){
 	isTouch_ = false;
 }
 
-Vector3 StageObjectForLevelEditorCollider::GetWorldPosition() {
+Vector3<float_t> StageObjectForLevelEditorCollider::GetWorldPosition() {
 	return objectPosition_;
 }

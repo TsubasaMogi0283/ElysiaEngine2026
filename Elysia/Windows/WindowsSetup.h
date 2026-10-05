@@ -154,16 +154,16 @@ namespace Elysia {
 		/// </summary>
 		/// <returns></returns>
 		inline Vector2<uint16_t> GetClientSize()const {
+			assert(this);
 			return clientSize_;
 		}
-
-		
 
 		/// <summary>
 		/// Hwndの取得
 		/// </summary>
 		/// <returns></returns>
 		inline HWND GetHwnd()const {
+			assert(this);
 			return hwnd_;
 		}
 
@@ -172,6 +172,7 @@ namespace Elysia {
 		/// </summary>
 		/// <returns></returns>
 		inline HINSTANCE GetHInstance() const {
+			assert(this);
 			return windowClass_.hInstance;
 		}
 

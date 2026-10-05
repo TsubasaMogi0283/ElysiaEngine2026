@@ -9,13 +9,9 @@
 #include <array>
 #include <string>
 
-
+#include <Vector4.h>
 #include "DirectXSetup.h"
 
-/// <summary>
-/// ベクトル(4次元)
-/// </summary>
-struct Vector4;
 
 /// <summary>
 /// ElysiaEngine
@@ -63,7 +59,7 @@ namespace Elysia {
 		/// <param name="format">フォーマットクリアカラー</param>
 		/// <param name="clearColor"></param>
 		/// <returns>リソース</returns>
-		static ComPtr<ID3D12Resource> CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4& clearColor);
+		static ComPtr<ID3D12Resource> CreateRenderTextureResource(const DXGI_FORMAT& format, const Vector4<float_t>& clearColor);
 
 		/// <summary>
 		/// RenderTextureを作る(Depth版)
@@ -71,7 +67,7 @@ namespace Elysia {
 		/// <param name="format">フォーマット</param>
 		/// <param name="clearColor">クリアカラー</param>
 		/// <returns>リソース</returns>
-		static ComPtr<ID3D12Resource> CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4& clearColor);
+		static ComPtr<ID3D12Resource> CreateRenderTextureResourceForDepth(const DXGI_FORMAT& format, const Vector4<float_t>& clearColor);
 
 		/// <summary>
 		/// ディスクリプタヒープの取得

@@ -48,12 +48,12 @@ public:
 public:
 
 	/// <summary>
-	/// トランジション(開ける)するかどうかを設定
+	/// トランジションを開けるかどうかを設定
 	/// </summary>
 	bool SetOpenTransition();
 
 	/// <summary>
-	/// トランジション(閉める)するかどうかを設定
+	/// トランジションを閉めるかどうかを設定
 	/// </summary>
 	/// <returns></returns>
 	bool SetCloseTransition();
@@ -83,7 +83,6 @@ private:
 	bool isClosed_ = true;
 
 	//トランジションの進行度
-	float_t openT_ = 0.0f;
-	float_t closeT_ = 0.0f;
+	float_t sideT_ = 0.0f;
 };
 
