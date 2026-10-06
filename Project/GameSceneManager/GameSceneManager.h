@@ -110,7 +110,7 @@ namespace Elysia {
 		/// 判定結果の設定
 		/// </summary>
 		/// <param name="m"></param>
-		inline void SetRecord(const NoteJudgement::Record& noteJudgementResult) {
+		inline void SettemporaryRecord(const NoteJudgement::Record& noteJudgementResult) {
 			this->temporaryRecord_ = noteJudgementResult;
 		}
 
@@ -121,8 +121,6 @@ namespace Elysia {
 		inline NoteJudgement::Record GetNoteJudgementResult()const {
 			return temporaryRecord_;
 		}
-
-		
 
 	private:
 		//シーンファクトリー

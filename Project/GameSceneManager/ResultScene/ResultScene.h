@@ -5,15 +5,13 @@
 
 #include "IGameScene.h"
 #include "BackTexture.h"
+#include <Sprite.h>
 #include "Model.h"
-#include "Particle3D.h"
 #include "WorldTransform.h"
-#include "AABB.h"
-#include "Camera.h"
+#include <Camera.h>
 #include "Material.h"
 #include "DirectionalLight.h"
-#include <AnimationModel.h>
-#include <Dissolve.h>
+#include <ScoreData/MusicInformation.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -108,13 +106,27 @@ private:
 	/// <summary>
 	/// トランジション
 	/// </summary>
-	void Transition();
+	void Open();
 
 	/// <summary>
 	/// 値が増えていく
 	/// </summary>
 	void IncreaseValue();
 
+	/// <summary>
+	/// 表示
+	/// </summary>
+	void Display();
+
+	/// <summary>
+	/// 戻る
+	/// </summary>
+	void Return();
+
+	/// <summary>
+	/// 閉める
+	/// </summary>
+	void Close();
 
 private:
 
@@ -127,8 +139,11 @@ private:
 	/// テーブル
 	/// </summary>
 	inline static void (ResultScene::* functionTable[])() = {
-		&ResultScene::Transition,
-		& ResultScene::IncreaseValue,
+		&ResultScene::Open,
+		&ResultScene::IncreaseValue,
+		&ResultScene::Display,
+		&ResultScene::Return,
+		&ResultScene::Close,
 	};
 
 	/// <summary>
@@ -139,7 +154,12 @@ private:
 		Transition,
 		//値が増えていく
 		IncreaseValue,
-
+		//表示
+		Display,
+		//戻る
+		Return,
+		//閉める
+		Close,
 
 		//この列挙体の量
 		Amount,
@@ -152,11 +172,15 @@ private:
 	/// <summary>
 	/// 数値UI情報
 	/// </summary>
-	struct ValueUIInformation {
+	struct ValueDigitInformation {
 		//スプライト
 		std::unique_ptr<Elysia::Sprite> sprite = nullptr;
+		//スプライトの座標
+		Vector2<int32_t> position;
 		//値
 		uint16_t value;
+		//テクスチャハンドル
+		uint32_t textureHandle;
 	};
 
 private:
@@ -170,7 +194,8 @@ private:
 	uint32_t levelHandle_ = 0u;
 	//ゲーム管理クラス
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
-
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
 private:
 
 	//一の桁
@@ -187,6 +212,14 @@ private:
 	static const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 5u;
 	//百万の桁
 	static const uint8_t ONE_MILLION_DIGIT_ = 6u;
+
+	//数字の数
+	static const uint8_t NUMBER_AMOUNT_ = 10u;
+
+private:
+	//各数値の座標オフセット
+	//最大コンボ
+	Vector2<int32_t> comboOffsetPosition_ = {};
 
 private:
 
@@ -206,19 +239,34 @@ private:
 	//作曲者名のスプライト
 	std::unique_ptr<Elysia::Sprite> musicComposerSprite_ = nullptr;
 
-	//判定
-	std::array<ValueUIInformation, ONE_HUNDRED_DIGIT_>perfect_ = {};
-	std::array<ValueUIInformation, ONE_HUNDRED_DIGIT_> great_ = {};
-	std::array<ValueUIInformation, ONE_HUNDRED_DIGIT_> good_ = {};
-	std::array<ValueUIInformation, ONE_HUNDRED_DIGIT_> miss_ = {};
+	//判定の各桁の情報
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_>perfect_ = {};
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> great_ = {};
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> good_ = {};
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> miss_ = {};
+	//結果
+	uint16_t perfectResult_ = 0u;
+	uint16_t greatResult_ = 0u;
+	uint16_t goodResult_ = 0u;
+	uint16_t missResult_ = 0u;
 
 	//スコア
-	std::array<ValueUIInformation, ONE_MILLION_DIGIT_> score_ = {};
+	std::array<ValueDigitInformation, ONE_MILLION_DIGIT_> score_ = {};
+	uint16_t scoreResult_ = 0u;
+
 	//最大コンボ数
-	std::array<ValueUIInformation, ONE_THOUSAND_DIGIT_> maxCombo_ = {};
+	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxCombo_ = {};
+	uint16_t maxResultResult_ = 0u;
+
+	//数字のテクスチャハンドル
+	std::array<uint32_t, NUMBER_AMOUNT_> numberTextureHandle_ = {};
+	//数のスケール
+	float_t numberScale_ = 1.0f;
 
 	//一時取得場所
 	MusicInformation musicInformation_ = {};
+	NoteJudgement::Record record_ = {};
 
-
+	//処理終了
+	bool isEnd_ = false;
 };

@@ -149,6 +149,8 @@ void PlayMainScene::Update() {
 	else {
 		//楽曲停止
 		audio_->Stop(musicScoreData_.musicHandle);
+		//結果を記録
+		mainScene_->GetGameSceneManager()->SettemporaryRecord(record_);
 		//終了シーンへ
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;

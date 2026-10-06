@@ -7,6 +7,7 @@
 #include "LevelDataManager.h"
 #include <ModelManager.h>
 #include <GameSceneManager.h>
+#include <TextureManager.h>
 
 ResultScene::ResultScene(){
 	//インスタンスの取得	
@@ -14,6 +15,8 @@ ResultScene::ResultScene(){
 	input_ = Elysia::Input::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
+	//テクスチャ管理クラス
+	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
 void ResultScene::Initialize(){
@@ -28,25 +31,65 @@ void ResultScene::Initialize(){
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
 
-	ScoreDataManager* u = gameSceneManager_->GetScoreDataManager();
-	musicInformation_;
+
+	//メインシーンで記録したものを取得
+	musicInformation_ = gameSceneManager_->GetMusicInformation();
+	record_ = gameSceneManager_->GetNoteJudgementResult();
+
 
 	//タイトルのスプライト
 	musicTitleSprite_ = Elysia::Sprite::Create();
 	//作曲社のスプライト
 	musicComposerSprite_ = Elysia::Sprite::Create();
 
+	//数字のテクスチャを読み込む
+	const std::string NUMBER_PATH = "Resources/Sprite/Number/";
+	for (uint8_t i = 0u;i < NUMBER_AMOUNT_;i++) {
+		numberTextureHandle_[i] = textureManager_->Load(NUMBER_PATH + std::to_string(i) + ".png");
+	}
+	
+	//数字のテクスチャの横幅を取得
+	Vector2<int32_t> numberTextureSize_ = { .x = 0, .y = 0 };
+	numberTextureSize_.x = static_cast<uint32_t>(textureManager_->GetTextureWidth(numberTextureHandle_[0]));
+	numberTextureSize_.y = static_cast<uint32_t>(textureManager_->GetTextureHeight(numberTextureHandle_[0]));
+
+
+	//判定
+	//0で初期化
+	const uint8_t INITIAL_NUMBER_ = 0u;
+	for (uint8_t i = 0u;i < ONE_HUNDRED_DIGIT_;i++) {
+		perfect_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		great_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		good_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		miss_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+	}
+	
+	//スコア
+	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+		score_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+	}
+	//最大コンボ数
+	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
+		maxCombo_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		//座標の設定
+		maxCombo_[i].position = {
+			.x = (ONE_THOUSAND_DIGIT_ - i - 3) * numberTextureSize_.x + 640,
+			.y = 0
+		};
+		maxCombo_[i].sprite->SetPosition(maxCombo_[i].position);
+	}
 
 }
 
 void ResultScene::Update(){
 
-	
 	//各状態の処理を実行
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
-
+	//更新
+	//カメラ
 	camera_.Update();
+	//平行光源
 	directionalLight_.Update();
 
 #ifdef _DEBUG
@@ -76,11 +119,28 @@ void ResultScene::DrawPostEffect(){
 
 void ResultScene::DrawSprite(){
 	musicTitleSprite_->Draw();
+	musicComposerSprite_->Draw();
+
+	for (uint8_t i = 0u;i < ONE_HUNDRED_DIGIT_;i++) {
+		perfect_[i].sprite->Draw(perfect_[i].value);
+		great_[i].sprite->Draw(great_[i].value);
+		good_[i].sprite->Draw(good_[i].value);
+		miss_[i].sprite->Draw(miss_[i].value);
+	}
+
+	//スコア
+	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+		score_[i].sprite->Draw(score_[i].value);
+	}
+	//最大コンボ数
+	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
+		maxCombo_[i].sprite->Draw(maxCombo_[i].value);
+	}
 
 
 }
 
-void ResultScene::Transition(){
+void ResultScene::Open(){
 	//トランジションを開く
 	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
 		currentState_ = ResultSceneState::IncreaseValue;
@@ -89,4 +149,25 @@ void ResultScene::Transition(){
 
 void ResultScene::IncreaseValue(){
 
+
+	currentState_ = ResultSceneState::Display;
+
+}
+
+void ResultScene::Display(){
+	if (input_->IsTriggerKey(DIK_SPACE)) {
+		currentState_ = ResultSceneState::Return;
+	}
+}
+
+void ResultScene::Return(){
+
+}
+
+void ResultScene::Close(){
+	//トランジションを開く
+	if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
+		isEnd_ = true;
+	}
+	
 }

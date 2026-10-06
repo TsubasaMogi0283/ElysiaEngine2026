@@ -256,9 +256,6 @@ private:
 
 public:
 	
-
-	
-
 	/// <summary>
 	/// コンボの初期座標を取得
 	/// </summary>
@@ -338,6 +335,6 @@ private:
 	//ゲージ
 	std::unique_ptr<Gauge>gauge_ = nullptr;
 
-
-
+	//一時記録用
+	NoteJudgement::Record temporaryRecord_ = {};
 };
