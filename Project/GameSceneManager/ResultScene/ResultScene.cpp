@@ -34,16 +34,39 @@ void ResultScene::Initialize(){
 
 	//メインシーンで記録したものを取得
 	musicInformation_ = gameSceneManager_->GetMusicInformation();
-	record_ = gameSceneManager_->GetNoteJudgementResult();
+	temporaryRecievedRecord_ = gameSceneManager_->GetNoteJudgementResult();
 
 
+#ifdef _DEBUG
+	temporaryRecievedRecord_.perfect = 1000u;
+	temporaryRecievedRecord_.great = 1000u;
+	temporaryRecievedRecord_.good = 1000u;
+	temporaryRecievedRecord_.miss = 1000u;
 
+	temporaryRecievedRecord_.maxCombo = 1000u;
+	temporaryRecievedRecord_.score = 1000000u;
+	temporaryRecievedRecord_.gaugeRatio = 0.8f;
+#endif // _DEBUG
 
+	//下地
+	baseSprite_ = Elysia::Sprite::Create();
+	baseSprite_->SetScale({ .x = 0.8f,.y = 1.0f });
 
 	//タイトルのスプライト
 	musicTitleSprite_ = Elysia::Sprite::Create();
-	//作曲社のスプライト
+	//作曲者のスプライト
 	musicComposerSprite_ = Elysia::Sprite::Create();
+
+	//ゲージ
+	//テクスチャの読み込み
+	uint32_t gaugeTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Gauge.png");
+	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Frame.png");
+	gauge_ = std::make_unique<Gauge>();
+	gauge_->Initialize(gaugeTextureHandle, frameTextureHandle);
+	gauge_->SetTotalNotes(temporaryRecievedRecord_.totalNotes);
+
+	gauge_->SetGaugeScale(0.8f)
+
 
 	//数字のテクスチャを読み込む
 	const std::string NUMBER_PATH = "Resources/Sprite/Number/";
@@ -118,24 +141,29 @@ void ResultScene::DrawPostEffect(){
 }
 
 void ResultScene::DrawSprite(){
-	musicTitleSprite_->Draw();
-	musicComposerSprite_->Draw();
+	//下地用
+	baseSprite_->Draw();
 
-	for (uint8_t i = 0u;i < ONE_HUNDRED_DIGIT_;i++) {
-		perfect_[i].sprite->Draw(perfect_[i].value);
-		great_[i].sprite->Draw(great_[i].value);
-		good_[i].sprite->Draw(good_[i].value);
-		miss_[i].sprite->Draw(miss_[i].value);
-	}
+	//musicTitleSprite_->Draw();
+	//musicComposerSprite_->Draw();
+	//ゲージ
+	gauge_->DrawSprite();
 
-	//スコア
-	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
-		score_[i].sprite->Draw(score_[i].value);
-	}
-	//最大コンボ数
-	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
-		maxCombo_[i].sprite->Draw(maxCombo_[i].value);
-	}
+	//for (uint8_t i = 0u;i < ONE_HUNDRED_DIGIT_;i++) {
+	//	perfect_[i].sprite->Draw(perfect_[i].value);
+	//	great_[i].sprite->Draw(great_[i].value);
+	//	good_[i].sprite->Draw(good_[i].value);
+	//	miss_[i].sprite->Draw(miss_[i].value);
+	//}
+	//
+	////スコア
+	//for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+	//	score_[i].sprite->Draw(score_[i].value);
+	//}
+	////最大コンボ数
+	//for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
+	//	maxCombo_[i].sprite->Draw(maxCombo_[i].value);
+	//}
 
 
 }

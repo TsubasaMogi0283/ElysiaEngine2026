@@ -13,6 +13,7 @@
 #include "DirectionalLight.h"
 #include <ScoreData/MusicInformation.h>
 #include <Note/NoteJudgement.h>
+#include <Gauge/Gauge.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -217,6 +218,10 @@ private:
 	//数字の数
 	static const uint8_t NUMBER_AMOUNT_ = 10u;
 
+	//最小値
+	const uint16_t MIN_VALUE_ = 0u;
+	//ゲージ
+	const float_t GAUGE_MIN_RATIO_ = 0.0f;
 private:
 	//各数値の座標オフセット
 	//最大コンボ
@@ -234,38 +239,37 @@ private:
 	//マテリアル
 	Material playerMaterial_ = {};
 
-
+	//リザルト数値などの背景用
+	std::unique_ptr<Elysia::Sprite> baseSprite_ = nullptr;
 	//楽曲名のスプライト
 	std::unique_ptr<Elysia::Sprite> musicTitleSprite_ = nullptr;
 	//作曲者名のスプライト
 	std::unique_ptr<Elysia::Sprite> musicComposerSprite_ = nullptr;
+	//ゲージ
+	std::unique_ptr<Gauge> gauge_ = nullptr;
+
 
 	//判定の各桁の情報
 	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_>perfect_ = {};
 	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> great_ = {};
 	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> good_ = {};
 	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> miss_ = {};
-	//結果
-	uint16_t perfectResult_ = 0u;
-	uint16_t greatResult_ = 0u;
-	uint16_t goodResult_ = 0u;
-	uint16_t missResult_ = 0u;
 
 	//スコア
 	std::array<ValueDigitInformation, ONE_MILLION_DIGIT_> score_ = {};
-	uint16_t scoreResult_ = 0u;
-
 	//最大コンボ数
 	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxCombo_ = {};
-	uint16_t maxResultResult_ = 0u;
+	
+
 
 	//数字のテクスチャハンドル
 	std::array<uint32_t, NUMBER_AMOUNT_> numberTextureHandle_ = {};
 	//数のスケール
 	float_t numberScale_ = 1.0f;
 
-	//一時取得場所
+	//受け取り用
 	MusicInformation musicInformation_ = {};
+	NoteJudgement::Record temporaryRecievedRecord_ = {};
 	NoteJudgement::Record record_ = {};
 
 	//処理終了

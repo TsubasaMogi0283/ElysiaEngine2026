@@ -16,7 +16,7 @@ void Elysia::GameSceneManager::Initialize() {
 #ifdef _DEBUG
 	//デバッグ時はこっちに入れてね
 	currentGamaScene_->SetGameManager(this);
-	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
+	currentGamaScene_ = abstractSceneFactory_->CreateScene("Result");
 #endif // _DEBUG
 
 	//譜面データ生成と読み込み

@@ -7,6 +7,7 @@
  */
 
 #include <Sprite.h>
+#include <Vector2.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -67,15 +68,37 @@ public:
 		this->frame_->SetPosition({ .x = initialPosition_.x, .y = static_cast<int32_t>(positionY) });
 	}
 
+
+	/// <summary>
+	/// 初期の座標を設定
+	/// </summary>
+	inline void SetGaugePosition(const Vector2<int32_t>& position) {
+		initialPosition_ = position;
+		this->back_->SetPosition(initialPosition_);
+		this->main_->SetPosition(initialPosition_);
+		this->frame_->SetPosition(initialPosition_);
+	}
+
 	/// <summary>
 	/// ゲージのスケールを設定
 	/// </summary>
 	/// <param name="scale">スケール</param>
-	inline void SetGaugeScale(const Vector2<float_t>& scale) {
+	inline void SetAllScale(const Vector2<float_t>& scale) {
 		this->back_->SetScale(scale);
 		this->main_->SetScale(scale);
 		this->frame_->SetScale(scale);
 	}
+
+	
+	inline void SetMainScale(const Vector2<float_t>& scale) {
+		this->back_->SetScale(scale);
+		this->main_->SetScale(scale);
+	}
+
+	inline void SetFrameScale(const Vector2<float_t>& scale) {
+		this->frame_->SetScale(scale);
+	}
+
 
 	/// <summary>
 	/// 初期ゲージ座標を取得
