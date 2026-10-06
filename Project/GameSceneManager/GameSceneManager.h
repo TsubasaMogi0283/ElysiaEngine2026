@@ -15,7 +15,6 @@
 #include <Note/NoteJudgement.h>
 #include <Transition/Transition.h>
 
-
 /// <summary>
 /// ElysiaEngine
 /// </summary>

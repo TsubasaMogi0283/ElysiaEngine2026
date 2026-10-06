@@ -21,6 +21,7 @@
 #include <Sprite.h>
 #include <ScoreData/MusicScoreData.h>
 #include <Gauge/Gauge.h>
+#include <Note/NoteJudgement.h>
 
  /// <summary>
  /// ElysiaEngine(前方宣言)

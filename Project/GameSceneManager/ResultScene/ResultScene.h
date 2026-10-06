@@ -12,6 +12,7 @@
 #include "Material.h"
 #include "DirectionalLight.h"
 #include <ScoreData/MusicInformation.h>
+#include <Note/NoteJudgement.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)

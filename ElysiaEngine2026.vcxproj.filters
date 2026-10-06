@@ -268,9 +268,6 @@
     <Filter Include="Project\PauseAsset">
       <UniqueIdentifier>{7cb24404-1b20-4742-92c5-5fafcf6123b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Project\Result">
-      <UniqueIdentifier>{2781eaa7-4811-4520-b8ee-6b5e3f8e9877}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Project\JudgementLine">
       <UniqueIdentifier>{23969ba5-a305-4a6b-8936-187c231f1a2b}</UniqueIdentifier>
     </Filter>

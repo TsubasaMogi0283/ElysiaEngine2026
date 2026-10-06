@@ -37,6 +37,9 @@ void ResultScene::Initialize(){
 	record_ = gameSceneManager_->GetNoteJudgementResult();
 
 
+
+
+
 	//タイトルのスプライト
 	musicTitleSprite_ = Elysia::Sprite::Create();
 	//作曲社のスプライト
@@ -78,7 +81,6 @@ void ResultScene::Initialize(){
 		};
 		maxCombo_[i].sprite->SetPosition(maxCombo_[i].position);
 	}
-
 }
 
 void ResultScene::Update(){
@@ -98,8 +100,6 @@ void ResultScene::Update(){
 	ImGui::SliderFloat3("座標", &camera_.translate.x, -30.0f, 30.0f);
 	ImGui::End();
 #endif // _DEBUG
-
-
 }
 
 void ResultScene::DrawObject3D(){
