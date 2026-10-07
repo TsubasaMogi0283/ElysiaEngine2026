@@ -22,7 +22,7 @@ ResultScene::ResultScene(){
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }
 
-void ResultScene::Initialize(){
+void ResultScene::Initialize() {
 	//カメラ
 	camera_.Initialize();
 	camera_.rotate.x = std::numbers::pi_v<float_t> / 6.0f;
@@ -61,6 +61,10 @@ void ResultScene::Initialize(){
 	//作曲者のスプライト
 	musicComposerSprite_ = Elysia::Sprite::Create();
 
+	//スコアボードの中心座標
+	const float_t SCORE_BORD_SIZE = static_cast<float_t>(windowsSetup_->GetClientSize().x) * 0.75f;
+	const int32_t SCORE_BOARD_CENTER_POSITION_X = static_cast<int32_t>(SCORE_BORD_SIZE) / 2;
+
 	//ゲージ
 	//テクスチャの読み込み
 	uint32_t gaugeTextureHandle = textureManager_->Load("Resources/Sprite/Gauge/Gauge.png");
@@ -68,36 +72,76 @@ void ResultScene::Initialize(){
 	gauge_ = std::make_unique<Gauge>();
 	gauge_->Initialize(gaugeTextureHandle, frameTextureHandle);
 	gauge_->SetTotalNotes(temporaryRecievedRecord_.totalNotes);
-	gaugeMainScale_ = { .x = temporaryRecievedRecord_.gaugeRatio,.y = GAUGE_MAX_SCALE_.y };
+	gaugeMainScale_ = { .x = GAUGE_MAX_SCALE_.x - (1.0f - temporaryRecievedRecord_.gaugeRatio),.y = GAUGE_MAX_SCALE_.y };
 	gauge_->SetAllScale(GAUGE_MAX_SCALE_);
 	gauge_->SetMainScale(gaugeMainScale_);
-	gauge_->SetInitialPosition({ .x = 100,.y=200 });
+	gauge_->SetInitialPosition({ .x = SCORE_BOARD_CENTER_POSITION_X / 2-140 ,.y = 175 });
 	//数字のテクスチャを読み込む
 	const std::string NUMBER_PATH = "Resources/Sprite/Number/";
-	for (uint8_t i = 0u;i < NUMBER_AMOUNT_;i++) {
+	for (uint8_t i = 0u; i < NUMBER_AMOUNT_; i++) {
 		numberTextureHandle_[i] = textureManager_->Load(NUMBER_PATH + std::to_string(i) + ".png");
 	}
-	
+
 	//数字のテクスチャの横幅を取得
-	Vector2<int32_t> numberTextureSize = { 
+	Vector2<int32_t> numberTextureSize = {
 		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(numberTextureHandle_[0])),
 		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(numberTextureHandle_[0]))
 	};
-	
 
 	//判定
 	//0で初期化
 	const uint8_t INITIAL_NUMBER_ = 0u;
-	for (uint8_t i = 0u;i < ONE_HUNDRED_DIGIT_;i++) {
-		perfect_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
-		great_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
-		good_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
-		miss_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+	for (uint8_t i = 0u; i < ONE_HUNDRED_DIGIT_; i++) {
+		perfectDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		greatDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		goodDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		missDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+	}
+
+	//判定のテクスチャの読み込み
+	std::array<uint32_t, static_cast<size_t>(NoteJudgement::Selection::Size)> judgementTextureHandle = {};
+	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)] = textureManager_->Load("Resources/Sprite/Judgement/Miss.png");
+	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Good)] = textureManager_->Load("Resources/Sprite/Judgement/Good.png");
+	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Great)] = textureManager_->Load("Resources/Sprite/Judgement/Great.png");
+	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Perfect)] = textureManager_->Load("Resources/Sprite/Judgement/Perfect.png");
+	//サイズを取得
+	Vector2<int32_t> judgementTextureSize = {
+		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)])),
+		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)])),
+	};
+
+
+	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
+		//スプライトの生成
+		judgementSpriteArray_[i] = Elysia::Sprite::Create(judgementTextureHandle[i]);
+		//スケールの設定
+		judgementSpriteArray_[i]->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
+	}
+
+	//座標の設定
+	const int32_t JUDGEMEBT_POSITION_Y = 250;
+	const int32_t LEFT_JUDGEMENT_POSITIN_X = 50;
+	const int32_t JUDGEMEBT_OFFSET_POSITION_X = 10;
+	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++){
+		Vector2<int32_t> position = {
+			.x = LEFT_JUDGEMENT_POSITIN_X,
+			.y = JUDGEMEBT_POSITION_Y + (judgementTextureSize.y+ JUDGEMEBT_OFFSET_POSITION_X) * static_cast<int32_t>(static_cast<size_t>(NoteJudgement::Selection::Size) - i)
+		};
+		judgementSpriteArray_[i]->SetPosition(position);
 	}
 	
+
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
 		score_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
+		score_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+		//座標の設定
+		Vector2<int32_t>digitPosition = { 
+			.x = static_cast<int32_t>(static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) + SCORE_BOARD_CENTER_POSITION_X/2,
+			.y = 250 
+		};
+		score_[i].sprite->SetPosition(digitPosition);
+		score_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER_];
 	}
 	//最大コンボ数
 	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
@@ -155,20 +199,25 @@ void ResultScene::DrawSprite(){
 	gauge_->DrawSprite();
 
 	//for (uint8_t i = 0u;i < ONE_HUNDRED_DIGIT_;i++) {
-	//	perfect_[i].sprite->Draw(perfect_[i].value);
-	//	great_[i].sprite->Draw(great_[i].value);
-	//	good_[i].sprite->Draw(good_[i].value);
-	//	miss_[i].sprite->Draw(miss_[i].value);
+	//	perfectDigit_[i].sprite->Draw(perfectDigit_[i].value);
+	//	greatDigit_[i].sprite->Draw(greatDigit_[i].value);
+	//	goodDigit_[i].sprite->Draw(goodDigit_[i].value);
+	//	missDigit_[i].sprite->Draw(missDigit_[i].value);
 	//}
 	//
-	////スコア
-	//for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
-	//	score_[i].sprite->Draw(score_[i].value);
-	//}
+	//スコア
+	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+		score_[i].sprite->Draw(score_[i].textureHandle);
+	}
 	////最大コンボ数
 	//for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
 	//	maxCombo_[i].sprite->Draw(maxCombo_[i].value);
 	//}
+	
+	//判定
+	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
+		judgementSpriteArray_[i]->Draw();
+	}
 
 
 }

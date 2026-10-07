@@ -41,9 +41,7 @@ namespace NoteJudgement {
 	/// <summary>
 	/// 判定の選択
 	/// </summary>
-	enum Selection {
-		//無し
-		None,
+	enum class Selection {
 		//ミス
 		Miss,
 		//グッド
@@ -52,9 +50,11 @@ namespace NoteJudgement {
 		Great,
 		//パーフェクト
 		Perfect,
-
 		//サイズ
-		Size
+		Size,
+
+		//無し
+		None,
 	};
 
 	/// <summary>

@@ -107,7 +107,6 @@ public:
 		this->gameSceneManager_ = gameManager;
 	}
 
-
 private:
 
 	/// <summary>
@@ -189,7 +188,6 @@ private:
 		//テクスチャハンドル
 		uint32_t textureHandle;
 	};
-
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -230,9 +228,15 @@ private:
 	const uint16_t MIN_VALUE_ = 0u;
 	//ゲージ
 	const float_t GAUGE_MIN_RATIO_ = 0.0f;
+	const float_t GAUGE_OFFSET_SCALE_ = 0.3f;
 
-	//げ字の最大サイズ
+	//ゲージの最大サイズ
 	Vector2<float_t> GAUGE_MAX_SCALE_ = { .x = 0.7f,.y = 1.0f };
+	//スコアの座標のオフセット
+	const int32_t SCORE_POSITION_OFFSET_X_ = 50;
+
+	//判定のテクスチャのスケール
+	const float_t JUDGEMENT_TEXTURE_SCALE_ = 0.8f;
 
 private:
 	//各数値の座標オフセット
@@ -259,18 +263,20 @@ private:
 	std::unique_ptr<Elysia::Sprite> musicComposerSprite_ = nullptr;
 	//ゲージ
 	std::unique_ptr<Gauge> gauge_ = nullptr;
-	
+	//メインのスケール
 	Vector2<float_t> gaugeMainScale_ = {};
-	const float_t GAUGE_OFFSET_SCALE_ = 0.3f;
-
+	
 	//判定の各桁の情報
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_>perfect_ = {};
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> great_ = {};
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> good_ = {};
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> miss_ = {};
-
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> perfectDigit_ = {};
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> greatDigit_ = {};
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> goodDigit_ = {};
+	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> missDigit_ = {};
+	//テクスチャ
+	std::array<std::unique_ptr<Elysia::Sprite>, 4u>judgementSpriteArray_ = {};
+	
 	//スコア
 	std::array<ValueDigitInformation, ONE_MILLION_DIGIT_> score_ = {};
+	float_t scoreScale_ = 1.0f;
 	//最大コンボ数
 	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxCombo_ = {};
 	

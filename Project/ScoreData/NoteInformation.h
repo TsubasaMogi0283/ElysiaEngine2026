@@ -10,6 +10,7 @@
 #include <cmath>
 #include <Note/BaseNote.h>
 #include <Note/NoteType.h>
+#include <Note/NoteJudgement.h>
 
 /// <summary>
 /// ノーツの情報
@@ -35,7 +36,7 @@ struct NoteInformation {
 	bool isLongStartJugged = false;
 
 	//判定
-	uint8_t judgement = 0u;
+	NoteJudgement::Selection judgement = NoteJudgement::Selection::None;
 	//判定したかどうか
 	bool isJudged = false;
 	//割り当てられたかどうか

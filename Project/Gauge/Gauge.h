@@ -80,11 +80,16 @@ public:
 		this->frame_->SetPosition(position_);
 	}
 
-	inline void SetPositionY(const int32_t& positionY) {
-		this->back_->SetPosition({.x=initialPosition_.x,.y=positionY});
-		this->main_->SetPosition(position_);
-		this->frame_->SetPosition(position_);
+	/// <summary>
+	/// 初期のY座標を設定
+	/// </summary>
+	/// /// <param name="position">Y座標</param>
+	inline void SetInitialPositionY(const int32_t& positionY) {
+		this->back_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
+		this->main_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
+		this->frame_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
 	}
+
 
 	/// <summary>
 	/// ゲージのスケールを設定
@@ -136,7 +141,7 @@ public:
 	/// ゲージの値を増加させる
 	/// </summary>
 	/// <param name="result">判定結果</param>
-	void SetIncreaseValue(const int32_t& result);
+	void SetIncreaseValue(const size_t& result);
 
 
 private:

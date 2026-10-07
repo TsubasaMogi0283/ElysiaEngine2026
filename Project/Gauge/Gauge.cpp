@@ -61,21 +61,21 @@ void Gauge::DrawSprite(){
 	frame_->Draw();
 }
 
-void Gauge::SetIncreaseValue(const int32_t& result){
+void Gauge::SetIncreaseValue(const size_t& result){
 
 	switch (result){
-	case NoteJudgement::Selection::Perfect:
+	case static_cast<size_t>(NoteJudgement::Selection::Perfect):
 		currentValue_ += 4u;
 		break;
 
-	case NoteJudgement::Selection::Great:
+	case static_cast<size_t>(NoteJudgement::Selection::Great):
 		currentValue_ += 2u;
 		break;
-	case NoteJudgement::Selection::Good:
+	case static_cast<size_t>(NoteJudgement::Selection::Good):
 		currentValue_++;
 		break;
 
-	case NoteJudgement::Selection::Miss:
+	case static_cast<size_t>(NoteJudgement::Selection::Miss):
 		currentValue_ -= 3u;
 		break;
 	}
