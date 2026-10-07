@@ -8,6 +8,7 @@
 #include <ModelManager.h>
 #include <GameSceneManager.h>
 #include <TextureManager.h>
+#include <WindowsSetup.h>
 
 ResultScene::ResultScene(){
 	//インスタンスの取得	
@@ -17,6 +18,8 @@ ResultScene::ResultScene(){
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
+	//ウィンドウクラス
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }
 
 void ResultScene::Initialize(){
@@ -50,7 +53,8 @@ void ResultScene::Initialize(){
 
 	//下地
 	baseSprite_ = Elysia::Sprite::Create();
-	baseSprite_->SetScale({ .x = 0.8f,.y = 1.0f });
+	baseSprite_->SetScale({ .x = 0.75f,.y = 1.0f });
+	baseSprite_->SetTransparency(0.25f);
 
 	//タイトルのスプライト
 	musicTitleSprite_ = Elysia::Sprite::Create();
@@ -64,10 +68,10 @@ void ResultScene::Initialize(){
 	gauge_ = std::make_unique<Gauge>();
 	gauge_->Initialize(gaugeTextureHandle, frameTextureHandle);
 	gauge_->SetTotalNotes(temporaryRecievedRecord_.totalNotes);
-
-	gauge_->SetGaugeScale(0.8f)
-
-
+	gaugeMainScale_ = { .x = temporaryRecievedRecord_.gaugeRatio,.y = GAUGE_MAX_SCALE_.y };
+	gauge_->SetAllScale(GAUGE_MAX_SCALE_);
+	gauge_->SetMainScale(gaugeMainScale_);
+	gauge_->SetInitialPosition({ .x = 100,.y=200 });
 	//数字のテクスチャを読み込む
 	const std::string NUMBER_PATH = "Resources/Sprite/Number/";
 	for (uint8_t i = 0u;i < NUMBER_AMOUNT_;i++) {
@@ -75,10 +79,11 @@ void ResultScene::Initialize(){
 	}
 	
 	//数字のテクスチャの横幅を取得
-	Vector2<int32_t> numberTextureSize_ = { .x = 0, .y = 0 };
-	numberTextureSize_.x = static_cast<uint32_t>(textureManager_->GetTextureWidth(numberTextureHandle_[0]));
-	numberTextureSize_.y = static_cast<uint32_t>(textureManager_->GetTextureHeight(numberTextureHandle_[0]));
-
+	Vector2<int32_t> numberTextureSize = { 
+		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(numberTextureHandle_[0])),
+		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(numberTextureHandle_[0]))
+	};
+	
 
 	//判定
 	//0で初期化
@@ -99,7 +104,7 @@ void ResultScene::Initialize(){
 		maxCombo_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER_]);
 		//座標の設定
 		maxCombo_[i].position = {
-			.x = (ONE_THOUSAND_DIGIT_ - i - 3) * numberTextureSize_.x + 640,
+			.x = (ONE_THOUSAND_DIGIT_ - i - 3) * numberTextureSize.x + 640,
 			.y = 0
 		};
 		maxCombo_[i].sprite->SetPosition(maxCombo_[i].position);

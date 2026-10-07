@@ -219,7 +219,7 @@ void StartMainScene::UIScaleUp(){
 		static_cast<float_t>(mainScene_->GetGauge()->GetInitialPosition().y),
 		static_cast<float_t>(mainScene_->GetGauge()->GetGaugePosition().y),
 		easedT);
-	mainScene_->GetGauge()->SetGaugePositionY(gaugePositionY);
+	mainScene_->GetGauge()->SetPositionY(static_cast<int32_t>(gaugePositionY));
 
 	//スコア
 	float_t scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);

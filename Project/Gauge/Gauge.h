@@ -59,24 +59,31 @@ public:
 public:
 
 	/// <summary>
-	/// ゲージの座標を設定
+	/// 初期の座標を設定
 	/// </summary>
-	/// <param name="positionY">Y座標</param>
-	inline void SetGaugePositionY(const float_t & positionY) {
-		this->back_->SetPosition({ .x = initialPosition_.x, .y = static_cast<int32_t>(positionY) });
-		this->main_->SetPosition({.x=initialPosition_.x, .y=static_cast<int32_t>(positionY)});
-		this->frame_->SetPosition({ .x = initialPosition_.x, .y = static_cast<int32_t>(positionY) });
+	/// <param name="position">座標</param>
+	inline void SetInitialPosition(const Vector2<int32_t>& position) {
+		this->initialPosition_ = position;
+		this->back_->SetPosition(initialPosition_);
+		this->main_->SetPosition(initialPosition_);
+		this->frame_->SetPosition(initialPosition_);
 	}
-
 
 	/// <summary>
 	/// 初期の座標を設定
 	/// </summary>
-	inline void SetGaugePosition(const Vector2<int32_t>& position) {
-		initialPosition_ = position;
-		this->back_->SetPosition(initialPosition_);
-		this->main_->SetPosition(initialPosition_);
-		this->frame_->SetPosition(initialPosition_);
+	/// <param name="position">座標</param>
+	inline void SetPosition(const Vector2<int32_t>& position) {
+		this->position_ = position;
+		this->back_->SetPosition(position_);
+		this->main_->SetPosition(position_);
+		this->frame_->SetPosition(position_);
+	}
+
+	inline void SetPositionY(const int32_t& positionY) {
+		this->back_->SetPosition({.x=initialPosition_.x,.y=positionY});
+		this->main_->SetPosition(position_);
+		this->frame_->SetPosition(position_);
 	}
 
 	/// <summary>
@@ -113,7 +120,7 @@ public:
 	/// </summary>
 	/// <returns>ゲージの通常表示座標</returns>
 	inline Vector2<int32_t> GetGaugePosition()const {
-		return gaugePosition_;
+		return position_;
 	}
 
 	/// <summary>
@@ -139,8 +146,6 @@ private:
 	Elysia::TextureManager* textureManager_ = nullptr;
 
 private:
-	//最大
-	const uint32_t MAX_VALUE_ = 500u;
 	//最小
 	const uint32_t MIN_VALUE_ = 0u;
 private:
@@ -157,15 +162,19 @@ private:
 	//初期座標
 	Vector2<int32_t>initialPosition_ = {};
 	//通常座標
-	Vector2<int32_t>gaugePosition_ = {};
+	Vector2<int32_t>position_ = {};
 
 	//総ノーツ数
 	uint16_t totalNotes_ = 0u;
-
+	//ゲージの色
 	Vector4<float_t> mainColor_ = {};
 
 	//スケールを設定
-	float_t scale_ = static_cast<float_t>(currentValue_) / static_cast<float_t>(MAX_VALUE_);
+	float_t scale_ = static_cast<float_t>(currentValue_) / static_cast<float_t>(maxValue_);
+
+	//ゲージの最大値
+	//難易度によって値を変える
+	uint32_t maxValue_ = 500u;
 
 };
 

@@ -57,6 +57,11 @@ namespace Elysia {
 	/// </summary>
 	class Input;
 
+	/// <summary>
+	/// ウィンドウクラス
+	/// </summary>
+	class WindowsSetup;
+
 }
 
 /// <summary>
@@ -192,6 +197,8 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
+	//ウィンドウ管理クラス
+	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 
 private:
 	//開始オフセット

@@ -44,6 +44,11 @@ namespace Elysia {
 	/// </summary>
 	class Input;
 
+	/// <summary>
+	/// ウィンドウクラス
+	/// </summary>
+	class WindowsSetup;
+
 }
 
 /// <summary>
@@ -198,6 +203,9 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
+	//ウィンドウクラス
+	Elysia::WindowsSetup* windowsSetup_ = nullptr;
+
 private:
 
 	//一の桁
@@ -222,6 +230,10 @@ private:
 	const uint16_t MIN_VALUE_ = 0u;
 	//ゲージ
 	const float_t GAUGE_MIN_RATIO_ = 0.0f;
+
+	//げ字の最大サイズ
+	Vector2<float_t> GAUGE_MAX_SCALE_ = { .x = 0.7f,.y = 1.0f };
+
 private:
 	//各数値の座標オフセット
 	//最大コンボ
@@ -247,7 +259,9 @@ private:
 	std::unique_ptr<Elysia::Sprite> musicComposerSprite_ = nullptr;
 	//ゲージ
 	std::unique_ptr<Gauge> gauge_ = nullptr;
-
+	
+	Vector2<float_t> gaugeMainScale_ = {};
+	const float_t GAUGE_OFFSET_SCALE_ = 0.3f;
 
 	//判定の各桁の情報
 	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_>perfect_ = {};
@@ -260,8 +274,6 @@ private:
 	//最大コンボ数
 	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxCombo_ = {};
 	
-
-
 	//数字のテクスチャハンドル
 	std::array<uint32_t, NUMBER_AMOUNT_> numberTextureHandle_ = {};
 	//数のスケール
