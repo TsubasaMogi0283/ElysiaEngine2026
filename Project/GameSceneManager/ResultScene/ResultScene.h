@@ -180,7 +180,7 @@ private:
 	/// </summary>
 	struct ValueDigitInformation {
 		//スプライト
-		std::unique_ptr<Elysia::Sprite> sprite = nullptr;
+		std::unique_ptr<Elysia::Sprite> sprite;
 		//スプライトの座標
 		Vector2<int32_t> position;
 		//値
@@ -188,6 +188,30 @@ private:
 		//テクスチャハンドル
 		uint32_t textureHandle;
 	};
+	
+	/// <summary>
+	/// ランク
+	/// </summary>
+	enum class RankSelection {
+		//AllPerfect
+		P,
+		//FullCombo
+		F,
+		//Sランク
+		S,
+		//Aランク
+		A,
+		//Bランク
+		B,
+		//Cランク
+		C,
+		//Dランク
+		D,
+
+		//量
+		Size,
+	};
+
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -247,13 +271,10 @@ private:
 
 	//背景
 	std::unique_ptr<Elysia::BackTexture>backTexture_ = nullptr;
-
 	//カメラ
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
-	//マテリアル
-	Material playerMaterial_ = {};
 
 	//リザルト数値などの背景用
 	std::unique_ptr<Elysia::Sprite> baseSprite_ = nullptr;
@@ -265,13 +286,9 @@ private:
 	std::unique_ptr<Gauge> gauge_ = nullptr;
 	//メインのスケール
 	Vector2<float_t> gaugeMainScale_ = {};
-	
 	//判定の各桁の情報
-	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> perfectDigit_ = {};
-	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> greatDigit_ = {};
-	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> goodDigit_ = {};
-	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> missDigit_ = {};
-	std::array<std::unique_ptr<Elysia::Sprite>, 4u>judgementSpriteArray_ = {};
+	std::array<std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_>, static_cast<uint8_t>(NoteJudgement::Selection::Size) > judgementDigit_;
+	std::array<std::unique_ptr<Elysia::Sprite>, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementSpriteArray_ = {};
 	
 	//スコア
 	std::array<ValueDigitInformation, ONE_MILLION_DIGIT_> score_ = {};
@@ -279,6 +296,9 @@ private:
 	//最大コンボ数
 	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxComboDigit_ = {};
 	std::unique_ptr<Elysia::Sprite>maxComboSprite_ = nullptr;
+
+	//ランク
+	std::unique_ptr<Elysia::Sprite>rankSprite_ = nullptr;
 
 	//数字のテクスチャハンドル
 	std::array<uint32_t, NUMBER_AMOUNT_> numberTextureHandle_ = {};
