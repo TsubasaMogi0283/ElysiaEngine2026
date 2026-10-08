@@ -311,11 +311,7 @@ void ResultScene::IncreaseValue(){
 	else {
 		judgementIncreaseTime += DELTA_TIME_;
 		for (uint8_t i = 0u;i<static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
-			//指定時間を超えた物はパス
-			/*if (judgementIncreaseTime >= judgementIncreaseEndTimeArray_[i]) {
-				continue;
-			}*/
-
+			
 			float_t t = SingleCalculation::InverseLerp(judgementIncreaseStartTimeArray_[i], judgementIncreaseEndTimeArray_[i], judgementIncreaseTime);
 			t = std::clamp(t, 0.0f, 1.0f);
 			//各桁の値を求めていく
@@ -330,10 +326,6 @@ void ResultScene::IncreaseValue(){
 			}
 		}
 	}
-
-
-	//currentState_ = ResultSceneState::Display;
-
 	
 }
 
