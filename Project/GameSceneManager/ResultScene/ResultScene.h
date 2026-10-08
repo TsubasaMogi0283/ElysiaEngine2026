@@ -311,7 +311,8 @@ private:
 	std::array<std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_>, static_cast<uint8_t>(NoteJudgement::Selection::Size) > judgementDigitArray_ = {};
 	std::array<std::unique_ptr<Elysia::Sprite>, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementSpriteArray_ = {};
 	float_t judgementIncreaseTime = 0.0f;
-	std::array<float_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementIncreaseTimeArray_ = {};
+	std::array<float_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>maxJudgementIncreaseTimeArray_ = {};
+	std::array<uint16_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementValue_ = {};
 
 	//スコア
 	std::array<ValueDigitInformation, ONE_MILLION_DIGIT_> scoreDigit_ = {};
@@ -333,7 +334,7 @@ private:
 	//受け取り用
 	MusicInformation musicInformation_ = {};
 	NoteJudgement::Record temporaryRecievedRecord_ = {};
-	NoteJudgement::Record record_ = {};
+	//NoteJudgement::Record record_ = {};
 
 	//処理終了
 	bool isEnd_ = false;

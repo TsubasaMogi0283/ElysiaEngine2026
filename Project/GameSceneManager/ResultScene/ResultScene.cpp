@@ -108,6 +108,8 @@ void ResultScene::Initialize() {
 	const int32_t DIDIT_INTERVAL_POSITION_X = 100;
 	//コンボの座標(記録用)
 	Vector2<int32_t> comboPosition = {};
+	//0で初期化
+	const uint8_t INITIAL_NUMBER = 0u;
 	//判定の文字のスプライト
 	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
 		//スプライトの生成
@@ -129,26 +131,27 @@ void ResultScene::Initialize() {
 				.y = position.y + judgementTextureSize.y
 			};
 		}
-	}
 
-	//判定
-	//0で初期化
-	const uint8_t INITIAL_NUMBER = 0u;
-	for (uint8_t j = 0u; j < static_cast<uint8_t>(NoteJudgement::Selection::Size);j++) {
-		Vector2<int32_t>position = {};
-		position.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + 8) * static_cast<int32_t>(j);
-		for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
+		//各桁
+		Vector2<int32_t> digitPosition = {};
+		digitPosition.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + 8) * static_cast<int32_t>(i);
+		for (uint8_t j = 0u; j < ONE_THOUSAND_DIGIT_; j++) {
 			//生成
-			judgementDigitArray_[j][i].sprite=Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
-			judgementDigitArray_[j][i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
-			position.x = (ONE_THOUSAND_DIGIT_ - i - 3) * numberTextureSize.x + JUDGEMENT_POSITION.x + judgementTextureSize.x + DIDIT_INTERVAL_POSITION_X;
+			judgementDigitArray_[i][j].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
+			judgementDigitArray_[i][j].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
+			digitPosition.x = (ONE_THOUSAND_DIGIT_ - j - 3) * numberTextureSize.x + JUDGEMENT_POSITION.x + judgementTextureSize.x + DIDIT_INTERVAL_POSITION_X;
 			//0で初期化
-			judgementDigitArray_[j][i].sprite->SetPosition(position);
+			judgementDigitArray_[i][j].sprite->SetPosition(digitPosition);
 		}
-		judgementIncreaseTimeArray_[j] = MAX_JUDGEMENT_INCREASE_TIME_ * static_cast<float_t>(j + 1u);
+		maxJudgementIncreaseTimeArray_[i] = MAX_JUDGEMENT_INCREASE_TIME_ * static_cast<float_t>(i + 1u);
 	}
 
-	
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Perfect)] = temporaryRecievedRecord_.perfect;
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Great)] = temporaryRecievedRecord_.great;
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Good)] = temporaryRecievedRecord_.good;
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] = temporaryRecievedRecord_.miss;
+
+
 	//最大コンボ数
 	uint32_t comboTextureHandle = textureManager_->Load("Resources/Sprite/Judgement/Combo.png");
 	maxComboSprite_ = Elysia::Sprite::Create(comboTextureHandle);
@@ -304,14 +307,27 @@ void ResultScene::IncreaseValue(){
 	//判定の上昇
 	else {
 		judgementIncreaseTime += DELTA_TIME_;
+		for (uint8_t i = 0u;i<static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
+			//指定時間を超えた物はパス
+			/*if (judgementIncreaseTime >= maxJudgementIncreaseTimeArray_[i]) {
+				continue;
+			}*/
+
+			float_t t = SingleCalculation::InverseLerp(0.0f, maxJudgementIncreaseTimeArray_[i], judgementIncreaseTime);
+			t = std::clamp(t, 0.0f, 1.0f);
+			//各桁の値を求めていく
+			uint32_t value = static_cast<uint32_t>(static_cast<float_t>(judgementValue_[i] * t));
+
+			for (uint8_t j = 0u;j < ONE_THOUSAND_DIGIT_;j++) {
+				//各桁の数字を求める
+				uint8_t digit = value % 10;
+				judgementDigitArray_[i][j].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
+				//10で割っていく
+				value /= 10;
+			}
+		}
 	}
 
-
-	temporaryRecievedRecord_.perfect = 1000u;
-	temporaryRecievedRecord_.great = 1000u;
-	temporaryRecievedRecord_.good = 1000u;
-	temporaryRecievedRecord_.miss = 1000u;
-	temporaryRecievedRecord_.maxCombo = 1000u;
 
 	//currentState_ = ResultSceneState::Display;
 
