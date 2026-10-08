@@ -169,6 +169,7 @@ void ResultScene::Initialize() {
 			.y = comboPosition.y
 		};
 		maxComboDigit_[i].sprite->SetPosition(maxComboDigit_[i].position);
+		maxComboDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 	}
 
 	//スコア
@@ -324,6 +325,34 @@ void ResultScene::IncreaseValue(){
 				//10で割っていく
 				value /= 10;
 			}
+		}
+
+
+		if (judgementIncreaseTime >= judgementIncreaseEndTimeArray_[static_cast<uint8_t>(NoteJudgement::Selection::Miss)]) {
+			isIncreaseMaxCombo_ = true;
+		}
+		
+	}
+
+
+	if (isIncreaseMaxCombo_) {
+		increaseMaxComboTime_ += DELTA_TIME_;
+		float_t t = SingleCalculation::InverseLerp(0.0f, MAX_COMBO_INCREASE_TIME_, increaseMaxComboTime_);
+		t = std::clamp(t, 0.0f, 1.0f);
+		//各桁の値を求めていく
+		uint32_t value = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.maxCombo * t));
+
+		for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
+			//各桁の数字を求める
+			uint8_t digit = value % 10;
+			maxComboDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
+			//10で割っていく
+			value /= 10;
+		}
+
+		//ランクへ
+		if (t >= 1.0f) {
+			currentState_= ResultSceneState::MoveRank;
 		}
 	}
 	

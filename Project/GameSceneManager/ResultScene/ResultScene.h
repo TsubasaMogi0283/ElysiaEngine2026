@@ -280,6 +280,10 @@ private:
 	const float_t JUDGEMENT_TEXTURE_SCALE_ = 0.75f;
 	const float_t MAX_JUDGEMENT_INCREASE_TIME_ = 1.0f;
 
+	//コンボ
+	const float_t MAX_COMBO_INCREASE_TIME_ = 1.0f;
+
+
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 private:
@@ -324,7 +328,8 @@ private:
 	//最大コンボ数
 	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxComboDigit_ = {};
 	std::unique_ptr<Elysia::Sprite>maxComboSprite_ = nullptr;
-
+	bool isIncreaseMaxCombo_ = false;
+	float_t increaseMaxComboTime_ = 0.0f;
 	//ランク
 	std::unique_ptr<Elysia::Sprite>rankSprite_ = nullptr;
 
@@ -336,8 +341,7 @@ private:
 	//受け取り用
 	MusicInformation musicInformation_ = {};
 	NoteJudgement::Record temporaryRecievedRecord_ = {};
-	//NoteJudgement::Record record_ = {};
-
+	
 	//処理終了
 	bool isEnd_ = false;
 };
