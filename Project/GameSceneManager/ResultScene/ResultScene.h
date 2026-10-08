@@ -207,19 +207,19 @@ private:
 private:
 
 	//一の桁
-	static const uint8_t ONE_DIGIT_ = 0u;
+	static const uint8_t ONE_DIGIT_ = 1u;
 	//十の桁
-	static const uint8_t TEN_DIGIT_ = 1u;
+	static const uint8_t TEN_DIGIT_ = 2u;
 	//百の桁
-	static const uint8_t ONE_HUNDRED_DIGIT_ = 2u;
+	static const uint8_t ONE_HUNDRED_DIGIT_ = 3u;
 	//千の桁
-	static const uint8_t ONE_THOUSAND_DIGIT_ = 3u;
+	static const uint8_t ONE_THOUSAND_DIGIT_ = 4u;
 	//一万の桁
-	static const uint8_t TEN_THOUSAND_DIGIT_ = 4u;
+	static const uint8_t TEN_THOUSAND_DIGIT_ = 5u;
 	//十万の桁
-	static const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 5u;
+	static const uint8_t ONE_HUNDRED_THOUSAND_DIGIT_ = 6u;
 	//百万の桁
-	static const uint8_t ONE_MILLION_DIGIT_ = 6u;
+	static const uint8_t ONE_MILLION_DIGIT_ = 7u;
 
 	//数字の数
 	static const uint8_t NUMBER_AMOUNT_ = 10u;
@@ -236,7 +236,7 @@ private:
 	const int32_t SCORE_POSITION_OFFSET_X_ = 50;
 
 	//判定のテクスチャのスケール
-	const float_t JUDGEMENT_TEXTURE_SCALE_ = 0.8f;
+	const float_t JUDGEMENT_TEXTURE_SCALE_ = 0.75f;
 
 private:
 	//各数値の座標オフセット
@@ -267,19 +267,19 @@ private:
 	Vector2<float_t> gaugeMainScale_ = {};
 	
 	//判定の各桁の情報
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> perfectDigit_ = {};
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> greatDigit_ = {};
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> goodDigit_ = {};
-	std::array<ValueDigitInformation, ONE_HUNDRED_DIGIT_> missDigit_ = {};
-	//テクスチャ
+	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> perfectDigit_ = {};
+	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> greatDigit_ = {};
+	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> goodDigit_ = {};
+	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> missDigit_ = {};
 	std::array<std::unique_ptr<Elysia::Sprite>, 4u>judgementSpriteArray_ = {};
 	
 	//スコア
 	std::array<ValueDigitInformation, ONE_MILLION_DIGIT_> score_ = {};
 	float_t scoreScale_ = 1.0f;
 	//最大コンボ数
-	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxCombo_ = {};
-	
+	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxComboDigit_ = {};
+	std::unique_ptr<Elysia::Sprite>maxComboSprite_ = nullptr;
+
 	//数字のテクスチャハンドル
 	std::array<uint32_t, NUMBER_AMOUNT_> numberTextureHandle_ = {};
 	//数のスケール
