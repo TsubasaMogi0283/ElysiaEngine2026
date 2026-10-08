@@ -278,6 +278,8 @@ private:
 
 	//判定のテクスチャのスケール
 	const float_t JUDGEMENT_TEXTURE_SCALE_ = 0.75f;
+	const float_t MAX_JUDGEMENT_INCREASE_TIME_ = 1.0f;
+
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 private:
@@ -306,13 +308,16 @@ private:
 	float_t gaugeIncreaseTime_ = 0.0f;
 
 	//判定の各桁の情報
-	std::array<std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_>, static_cast<uint8_t>(NoteJudgement::Selection::Size) > judgementDigit_;
+	std::array<std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_>, static_cast<uint8_t>(NoteJudgement::Selection::Size) > judgementDigitArray_ = {};
 	std::array<std::unique_ptr<Elysia::Sprite>, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementSpriteArray_ = {};
-	
+	float_t judgementIncreaseTime = 0.0f;
+	std::array<float_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementIncreaseTimeArray_ = {};
+
 	//スコア
 	std::array<ValueDigitInformation, ONE_MILLION_DIGIT_> scoreDigit_ = {};
 	float_t scoreScale_ = 1.0f;
 	float_t scoreIncreaseTime_ = 0.0f;
+	bool isEndIncreaseScore_ = false;
 	//最大コンボ数
 	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxComboDigit_ = {};
 	std::unique_ptr<Elysia::Sprite>maxComboSprite_ = nullptr;

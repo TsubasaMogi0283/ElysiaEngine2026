@@ -101,7 +101,7 @@ void ResultScene::Initialize() {
 	};
 
 	//判定の座標
-	const Vector2<int32_t> JUDGEMENT_POSITION = { .x = 50,.y = 210 };
+	const Vector2<int32_t> JUDGEMENT_POSITION = { .x = 50,.y = 300 };
 	//判定のオフセットX座標
 	const int32_t JUDGEMENT_OFFSET_POSITION_Y = 10;
 	//文字と値の間隔
@@ -118,7 +118,7 @@ void ResultScene::Initialize() {
 		//座標の設定
 		Vector2<int32_t> position = {
 			.x = JUDGEMENT_POSITION.x,
-			.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<int32_t>(static_cast<size_t>(NoteJudgement::Selection::Size) - i)
+			.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<int32_t>(i)
 		};
 		judgementSpriteArray_[i]->SetPosition(position);
 
@@ -136,17 +136,18 @@ void ResultScene::Initialize() {
 	const uint8_t INITIAL_NUMBER = 0u;
 	for (uint8_t j = 0u; j < static_cast<uint8_t>(NoteJudgement::Selection::Size);j++) {
 		Vector2<int32_t>position = {};
-		position.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + 8) * static_cast<int32_t>(static_cast<size_t>(NoteJudgement::Selection::Size) - j);
+		position.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + 8) * static_cast<int32_t>(j);
 		for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
 			//生成
-			judgementDigit_[j][i].sprite=Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
-			judgementDigit_[j][i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
+			judgementDigitArray_[j][i].sprite=Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
+			judgementDigitArray_[j][i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 			position.x = (ONE_THOUSAND_DIGIT_ - i - 3) * numberTextureSize.x + JUDGEMENT_POSITION.x + judgementTextureSize.x + DIDIT_INTERVAL_POSITION_X;
 			//0で初期化
-			judgementDigit_[j][i].sprite->SetPosition(position);
-
+			judgementDigitArray_[j][i].sprite->SetPosition(position);
 		}
+		judgementIncreaseTimeArray_[j] = MAX_JUDGEMENT_INCREASE_TIME_ * static_cast<float_t>(j + 1u);
 	}
+
 	
 	//最大コンボ数
 	uint32_t comboTextureHandle = textureManager_->Load("Resources/Sprite/Judgement/Combo.png");
@@ -252,7 +253,7 @@ void ResultScene::DrawSprite(){
 	//桁
 	for (uint8_t j = 0u; j < static_cast<uint8_t>(NoteJudgement::Selection::Size);j++) {
 		for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
-			judgementDigit_[j][i].sprite->Draw(judgementDigit_[j][i].textureHandle);
+			judgementDigitArray_[j][i].sprite->Draw(judgementDigitArray_[j][i].textureHandle);
 		}
 	}
 
@@ -282,24 +283,28 @@ void ResultScene::IncreaseGauge(){
 
 void ResultScene::IncreaseValue(){
 
-	scoreIncreaseTime_ += DELTA_TIME_;
-	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, scoreIncreaseTime_);
-	t = std::clamp(t, 0.0f, 1.0f);
-	//各桁の値を求めていく
-	uint32_t score = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.score * t));
-	//score = temporaryRecievedRecord_.score;
-	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
-		//各桁の数字を求める
-		uint8_t digit= score%10;
-		scoreDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
-		//10で割っていく
-		score /= 10;
+	//スコアの上昇
+	if (!isEndIncreaseScore_) {
+		scoreIncreaseTime_ += DELTA_TIME_;
+		float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, scoreIncreaseTime_);
+		t = std::clamp(t, 0.0f, 1.0f);
+		//各桁の値を求めていく
+		uint32_t score = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.score * t));
+		for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+			//各桁の数字を求める
+			uint8_t digit = score % 10;
+			scoreDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
+			//10で割っていく
+			score /= 10;
+		}
+		if (t >= 1.0f) {
+			isEndIncreaseScore_ = true;
+		}
 	}
-	
-	if (t >= 1.0f) {
-
+	//判定の上昇
+	else {
+		judgementIncreaseTime += DELTA_TIME_;
 	}
-
 
 
 	temporaryRecievedRecord_.perfect = 1000u;

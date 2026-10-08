@@ -42,14 +42,14 @@ namespace NoteJudgement {
 	/// 判定の選択
 	/// </summary>
 	enum class Selection {
-		//ミス
-		Miss,
-		//グッド
-		Good,
-		//グレート
-		Great,
 		//パーフェクト
 		Perfect,
+		//グレート
+		Great,
+		//グッド
+		Good,
+		//ミス
+		Miss,
 		//サイズ
 		Size,
 
