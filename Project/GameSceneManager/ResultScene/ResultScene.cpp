@@ -143,7 +143,10 @@ void ResultScene::Initialize() {
 			//0で初期化
 			judgementDigitArray_[i][j].sprite->SetPosition(digitPosition);
 		}
-		maxJudgementIncreaseTimeArray_[i] = MAX_JUDGEMENT_INCREASE_TIME_ * static_cast<float_t>(i + 1u);
+		//増加開始時間
+		judgementIncreaseStartTimeArray_[i] = MAX_JUDGEMENT_INCREASE_TIME_ * static_cast<float_t>(i + 1u)-0.5f;
+		//増加終了時間
+		judgementIncreaseEndTimeArray_[i] = judgementIncreaseStartTimeArray_[i] + MAX_JUDGEMENT_INCREASE_TIME_;
 	}
 
 	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Perfect)] = temporaryRecievedRecord_.perfect;
@@ -309,11 +312,11 @@ void ResultScene::IncreaseValue(){
 		judgementIncreaseTime += DELTA_TIME_;
 		for (uint8_t i = 0u;i<static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
 			//指定時間を超えた物はパス
-			/*if (judgementIncreaseTime >= maxJudgementIncreaseTimeArray_[i]) {
+			/*if (judgementIncreaseTime >= judgementIncreaseEndTimeArray_[i]) {
 				continue;
 			}*/
 
-			float_t t = SingleCalculation::InverseLerp(0.0f, maxJudgementIncreaseTimeArray_[i], judgementIncreaseTime);
+			float_t t = SingleCalculation::InverseLerp(judgementIncreaseStartTimeArray_[i], judgementIncreaseEndTimeArray_[i], judgementIncreaseTime);
 			t = std::clamp(t, 0.0f, 1.0f);
 			//各桁の値を求めていく
 			uint32_t value = static_cast<uint32_t>(static_cast<float_t>(judgementValue_[i] * t));

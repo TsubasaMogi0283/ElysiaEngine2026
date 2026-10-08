@@ -311,7 +311,9 @@ private:
 	std::array<std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_>, static_cast<uint8_t>(NoteJudgement::Selection::Size) > judgementDigitArray_ = {};
 	std::array<std::unique_ptr<Elysia::Sprite>, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementSpriteArray_ = {};
 	float_t judgementIncreaseTime = 0.0f;
-	std::array<float_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>maxJudgementIncreaseTimeArray_ = {};
+	std::array<float_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementIncreaseStartTimeArray_ = {};
+	std::array<float_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementIncreaseEndTimeArray_ = {};
+
 	std::array<uint16_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementValue_ = {};
 
 	//スコア
