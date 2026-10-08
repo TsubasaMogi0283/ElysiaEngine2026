@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <numbers>
 
+#include <Easing.h>
 #include "Input.h"
 #include "LevelDataManager.h"
 #include <ModelManager.h>
@@ -47,7 +48,7 @@ void ResultScene::Initialize() {
 	temporaryRecievedRecord_.miss = 1000u;
 
 	temporaryRecievedRecord_.maxCombo = 1000u;
-	temporaryRecievedRecord_.score = 1000000u;
+	temporaryRecievedRecord_.score = 1234567u;
 	temporaryRecievedRecord_.gaugeRatio = 0.8f;
 #endif // _DEBUG
 
@@ -72,9 +73,8 @@ void ResultScene::Initialize() {
 	gauge_ = std::make_unique<Gauge>();
 	gauge_->Initialize(gaugeTextureHandle, frameTextureHandle);
 	gauge_->SetTotalNotes(temporaryRecievedRecord_.totalNotes);
-	gaugeMainScale_ = { .x = GAUGE_MAX_SCALE_.x - (1.0f - temporaryRecievedRecord_.gaugeRatio),.y = GAUGE_MAX_SCALE_.y };
 	gauge_->SetAllScale(GAUGE_MAX_SCALE_);
-	gauge_->SetMainScale(gaugeMainScale_);
+	gauge_->SetMainScale({ .x = 0.0f,.y = 0.0f });
 	gauge_->SetInitialPosition({ .x = SCORE_BOARD_CENTER_POSITION_X / 2-140 ,.y = 225 });
 	//数字のテクスチャを読み込む
 	const std::string NUMBER_PATH = "Resources/Sprite/Number/";
@@ -87,8 +87,6 @@ void ResultScene::Initialize() {
 		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(numberTextureHandle_[0])),
 		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(numberTextureHandle_[0]))
 	};
-
-	
 
 	//判定のテクスチャの読み込み
 	std::array<uint32_t, static_cast<size_t>(NoteJudgement::Selection::Size)> judgementTextureHandle = {};
@@ -165,24 +163,32 @@ void ResultScene::Initialize() {
 		};
 		maxComboDigit_[i].sprite->SetPosition(maxComboDigit_[i].position);
 	}
-	//std::string(magic_enum::enum_name(State::Run));
+
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
-		score_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
-		score_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+		scoreDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
+		scoreDigit_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 		//座標の設定
 		Vector2<int32_t>digitPosition = { 
 			.x = static_cast<int32_t>(static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) + SCORE_BOARD_CENTER_POSITION_X/2,
 			.y = 175 
 		};
-		score_[i].sprite->SetPosition(digitPosition);
-		score_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
+		scoreDigit_[i].sprite->SetPosition(digitPosition);
+		scoreDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 	}
 	
 	//ランク
 	uint32_t rankTexturehHandle[static_cast<uint8_t>(RankSelection::Size)] = {};
-	rankSprite_=Elysia::Sprite::Create()
-
+	rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)] = textureManager_->Load("Resources/Sprite/Result/Rank/S.png");
+	rankTexturehHandle[static_cast<uint8_t>(RankSelection::A)] = textureManager_->Load("Resources/Sprite/Result/Rank/A.png");
+	rankTexturehHandle[static_cast<uint8_t>(RankSelection::B)] = textureManager_->Load("Resources/Sprite/Result/Rank/B.png");
+	rankTexturehHandle[static_cast<uint8_t>(RankSelection::C)] = textureManager_->Load("Resources/Sprite/Result/Rank/C.png");
+	rankTexturehHandle[static_cast<uint8_t>(RankSelection::D)] = textureManager_->Load("Resources/Sprite/Result/Rank/D.png");
+	//生成
+	rankSprite_ = Elysia::Sprite::Create(rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)]);
+	rankSprite_->SetInvisible(true);
+	rankSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+	rankSprite_->SetPosition({ .x = SCORE_BOARD_CENTER_POSITION_X + 250,.y = 475 });
 }
 
 void ResultScene::Update(){
@@ -228,16 +234,14 @@ void ResultScene::DrawSprite(){
 	//ゲージ
 	gauge_->DrawSprite();
 
-	
-	
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
-		score_[i].sprite->Draw(score_[i].textureHandle);
+		scoreDigit_[i].sprite->Draw(scoreDigit_[i].textureHandle);
 	}
 
 	//最大コンボ数
 	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
-		maxComboDigit_[i].sprite->Draw(maxComboDigit_[i].value);
+		maxComboDigit_[i].sprite->Draw(maxComboDigit_[i].textureHandle);
 	}
 	maxComboSprite_->Draw();
 	
@@ -246,31 +250,72 @@ void ResultScene::DrawSprite(){
 		judgementSpriteArray_[i]->Draw();
 	}
 	//桁
-	//for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
-	//	perfectDigit_[i].sprite->Draw(perfectDigit_[i].textureHandle);
-	//	greatDigit_[i].sprite->Draw(greatDigit_[i].textureHandle);
-	//	goodDigit_[i].sprite->Draw(goodDigit_[i].textureHandle);
-	//	missDigit_[i].sprite->Draw(missDigit_[i].textureHandle);
-	//}
 	for (uint8_t j = 0u; j < static_cast<uint8_t>(NoteJudgement::Selection::Size);j++) {
 		for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
 			judgementDigit_[j][i].sprite->Draw(judgementDigit_[j][i].textureHandle);
 		}
 	}
+
+	//ランクの表示
+	rankSprite_->Draw();
 }
 
 void ResultScene::Open(){
 	//トランジションを開く
 	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
+		currentState_ = ResultSceneState::IncreaseGauge;
+	}
+}
+
+void ResultScene::IncreaseGauge(){
+	//ゲージの上昇
+	gaugeIncreaseTime_ += DELTA_TIME_;
+	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, gaugeIncreaseTime_);
+	t=std::clamp(t, 0.0f, 1.0f);
+	gauge_->SetMainScale({ .x = temporaryRecievedRecord_.gaugeRatio * Easing::EaseOutQuart(t)* GAUGE_MAX_SCALE_.x,.y = 1.0f });
+
+	//値の増加へ
+	if (t >= 1.0f) {
 		currentState_ = ResultSceneState::IncreaseValue;
 	}
 }
 
 void ResultScene::IncreaseValue(){
 
+	scoreIncreaseTime_ += DELTA_TIME_;
+	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, scoreIncreaseTime_);
+	t = std::clamp(t, 0.0f, 1.0f);
+	//各桁の値を求めていく
+	uint32_t score = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.score * t));
+	//score = temporaryRecievedRecord_.score;
+	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+		//各桁の数字を求める
+		uint8_t digit= score%10;
+		scoreDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
+		//10で割っていく
+		score /= 10;
+	}
+	
+	if (t >= 1.0f) {
 
-	currentState_ = ResultSceneState::Display;
+	}
 
+
+
+	temporaryRecievedRecord_.perfect = 1000u;
+	temporaryRecievedRecord_.great = 1000u;
+	temporaryRecievedRecord_.good = 1000u;
+	temporaryRecievedRecord_.miss = 1000u;
+	temporaryRecievedRecord_.maxCombo = 1000u;
+
+	//currentState_ = ResultSceneState::Display;
+
+	
+}
+
+void ResultScene::MoveRank(){
+	//ランク表示
+	rankSprite_->SetInvisible(false);
 }
 
 void ResultScene::Display(){
@@ -280,7 +325,7 @@ void ResultScene::Display(){
 }
 
 void ResultScene::Return(){
-
+	currentState_ = ResultSceneState::Close;
 }
 
 void ResultScene::Close(){
