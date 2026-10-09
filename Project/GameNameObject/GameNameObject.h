@@ -92,8 +92,7 @@ private:
 	/// 更新
 	/// </summary>
 	/// <param name="objectInformation"></param>
-	/// <param name="modelHandle"></param>
-	void UpdateTextObject(TextObjectInformation& objectInformation, const uint32_t modelHandle);
+	void UpdateTextObject(TextObjectInformation& objectInformation);
 
 private:
 	//Dのモデル

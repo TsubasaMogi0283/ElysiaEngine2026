@@ -14,7 +14,7 @@ void GameNameObject::Initialize(const uint32_t& dModelhandle, const uint32_t& aM
 	GenerateTextObject(pObject_, pModelHandle);
 	//!
 	for (uint8_t i = 0u;i < 3u;i++) {
-		GenerateTextObject(exclamationObjectArray_[i], pModelHandle);
+		GenerateTextObject(exclamationObjectArray_[i], exclamationModelhandle);
 	}
 }
 
@@ -25,18 +25,18 @@ void GameNameObject::Update(){
 void GameNameObject::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	//Dのモデル
 	for (uint8_t i = 0u;i < D_OBJECT_AMOUNT_;i++) {
-		dObjectArray_[i].model_->Draw(dObjectArray_[i].worldTransform, camera, dObjectArray_[i].material);
+		dObjectArray_[i].model_->Draw(dObjectArray_[i].worldTransform, camera, dObjectArray_[i].material, baseLight);
 	}
 
 	//Aのモデル
 	for (uint8_t i = 0u;i < A_OBJECT_AMOUNT_;i++) {
-		aObjectArray_[i].model_->Draw(aObjectArray_[i].worldTransform, camera, aObjectArray_[i].material);
+		aObjectArray_[i].model_->Draw(aObjectArray_[i].worldTransform, camera, aObjectArray_[i].material, baseLight);
 	}
 	//Pのモデル
-	pObject_.model_->Draw(pObject_.worldTransform, camera, pObject_.material);
+	pObject_.model_->Draw(pObject_.worldTransform, camera, pObject_.material, baseLight);
 	//!のモデル
 	for (uint8_t i = 0u;i < EXCLAMATION_OBJECT_AMOUNT_;i++) {
-		exclamationObjectArray_[i].model_->Draw(exclamationObjectArray_[i].worldTransform, camera, exclamationObjectArray_[i].material);
+		exclamationObjectArray_[i].model_->Draw(exclamationObjectArray_[i].worldTransform, camera, exclamationObjectArray_[i].material, baseLight);
 	}
 	
 
@@ -49,7 +49,7 @@ void GameNameObject::GenerateTextObject(TextObjectInformation& objectInformation
 
 }
 
-void GameNameObject::UpdateTextObject(TextObjectInformation& objectInformation, const uint32_t modelHandle){
+void GameNameObject::UpdateTextObject(TextObjectInformation& objectInformation){
 	objectInformation.worldTransform.Update();
 	objectInformation.material.Update();
 }
