@@ -610,7 +610,7 @@
       <Filter>Project\Gauge</Filter>
     </ClCompile>
     <ClCompile Include="Project\GameNameObject\GameNameObject.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
+      <Filter>Project\GameNameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1037,7 +1037,7 @@
       <Filter>Project\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="Project\GameNameObject\GameNameObject.h">
-      <Filter>Elysia\ヘッダー ファイル</Filter>
+      <Filter>Project\GameNameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
