@@ -282,6 +282,8 @@ private:
 
 	//コンボ
 	const float_t MAX_COMBO_INCREASE_TIME_ = 1.0f;
+	//スケールダウンの時間
+	const float_t MAX_SCALE_DOWN_TIME_ = 1.0f;
 
 
 	//時間変化
@@ -332,6 +334,8 @@ private:
 	float_t increaseMaxComboTime_ = 0.0f;
 	//ランク
 	std::unique_ptr<Elysia::Sprite>rankSprite_ = nullptr;
+	float_t rankScaleDownTime_ = 0.0f;
+
 
 	//数字のテクスチャハンドル
 	std::array<uint32_t, NUMBER_AMOUNT_> numberTextureHandle_ = {};

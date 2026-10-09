@@ -361,6 +361,17 @@ void ResultScene::IncreaseValue(){
 void ResultScene::MoveRank(){
 	//ランク表示
 	rankSprite_->SetInvisible(false);
+
+	//スケールダウンの時間
+	rankScaleDownTime_ += DELTA_TIME_;
+	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_SCALE_DOWN_TIME_, rankScaleDownTime_);
+	t = std::clamp(t, 0.0f, 1.0f);
+	float_t easeScale =Easing::EaseInOutQuart(t);
+	rankSprite_->SetScale({ .x = easeScale,.y = easeScale});
+
+	if (t >= 1.0f) {
+		currentState_ = ResultSceneState::Display;
+	}
 }
 
 void ResultScene::Display(){
@@ -378,5 +389,4 @@ void ResultScene::Close(){
 	if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
 		isEnd_ = true;
 	}
-	
 }

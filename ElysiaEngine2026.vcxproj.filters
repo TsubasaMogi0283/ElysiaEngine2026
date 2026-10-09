@@ -334,6 +334,9 @@
     <Filter Include="Project\Gauge">
       <UniqueIdentifier>{838a521d-bf5a-40fb-ab5e-6586afdeefac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\GameNameObject">
+      <UniqueIdentifier>{fdb345c0-c02e-4d09-bfa1-08375abb8b39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elysia\Audio\Audio.cpp">
@@ -605,6 +608,9 @@
     </ClCompile>
     <ClCompile Include="Project\Gauge\Gauge.cpp">
       <Filter>Project\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameNameObject\GameNameObject.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1029,6 +1035,9 @@
     </ClInclude>
     <ClInclude Include="Project\Gauge\Gauge.h">
       <Filter>Project\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameNameObject\GameNameObject.h">
+      <Filter>Elysia\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
