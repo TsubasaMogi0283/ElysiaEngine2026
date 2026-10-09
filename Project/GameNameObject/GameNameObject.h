@@ -36,7 +36,11 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	/// <param name="dModelhandle"></param>
+	/// <param name="aModelHandle"></param>
+	/// <param name="pModelHandle"></param>
+	/// <param name="exclamationModelhandle"></param>
+	void Initialize(const uint32_t& dModelhandle,const uint32_t& aModelHandle,const uint32_t& pModelHandle,const uint32_t& exclamationModelhandle);
 	
 	/// <summary>
 	/// 更新
@@ -57,9 +61,9 @@ public:
 
 private:
 	/// <summary>
-	/// 各文字の
+	/// 各文字の情報
 	/// </summary>
-	struct TextObject {
+	struct TextObjectInformation {
 		//モデル
 		std::unique_ptr<Elysia::Model>model_;
 		//ワールドトランスフォーム
@@ -68,17 +72,38 @@ private:
 		Material material;
 	};
 
+private:
+	//Dの数
+	static const uint8_t D_OBJECT_AMOUNT_ = 2u;
+	//Aの数
+	static const uint8_t A_OBJECT_AMOUNT_ = 3u;
+	//!の数
+	static const uint8_t EXCLAMATION_OBJECT_AMOUNT_ = 3u;
 
 
 private:
+	/// <summary>
+	/// オブジェクトの生成
+	/// </summary>
+	/// <param name="objectInformation"></param>
+	void GenerateTextObject(TextObjectInformation& objectInformation, const uint32_t modelHandle);
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="objectInformation"></param>
+	/// <param name="modelHandle"></param>
+	void UpdateTextObject(TextObjectInformation& objectInformation, const uint32_t modelHandle);
+
+private:
 	//Dのモデル
-	std::array<std::unique_ptr<Elysia::Model>, 2u>dModelArray_ = {};
+	std::array<TextObjectInformation, D_OBJECT_AMOUNT_>dObjectArray_ = {};
 	//Aのモデル
-	std::array<std::unique_ptr<Elysia::Model>, 3u>aModelArray_ = {};
+	std::array<TextObjectInformation, A_OBJECT_AMOUNT_>aObjectArray_ = {};
 	//Pのモデル
-	std::unique_ptr<Elysia::Model>pModel_ = nullptr;
+	TextObjectInformation pObject_ = {};
 	//!のモデル
-	std::array<std::unique_ptr<Elysia::Model>, 3u>exclamationMarkModelArray_ = {};
+	std::array<TextObjectInformation, EXCLAMATION_OBJECT_AMOUNT_>exclamationObjectArray_ = {};
 
 
 };
