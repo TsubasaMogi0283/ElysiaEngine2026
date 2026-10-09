@@ -9,8 +9,8 @@ void RecordManager::Register(const std::string& musicName, const std::string& le
     //BEの時の復習でランキングを実装していきたい
 
     //まずは楽曲を探す
-    auto it = noteJudgementResultMap.find(musicName);
-    if (it != noteJudgementResultMap.end()) {
+    auto it = noteJudgementResultMap_.find(musicName);
+    if (it != noteJudgementResultMap_.end()) {
 
         //レベルで探す
         auto it2 = it->second.find(level);

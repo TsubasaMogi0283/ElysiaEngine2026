@@ -198,6 +198,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Elysia\Polygon\PostEffect\Vignette\VignettePostEffect.cpp" />
     <ClCompile Include="Elysia\StringOption\StringOption.cpp" />
     <ClCompile Include="Elysia\Windows\WindowsSetup.cpp" />
+    <ClCompile Include="Project\GameNameObject\GameNameObject.cpp" />
     <ClCompile Include="Project\GameSceneManager\Factory\GameSceneFactory\GameSceneFactory.cpp" />
     <ClCompile Include="Project\GameSceneManager\GameSceneManager.cpp" />
     <ClCompile Include="Project\GameSceneManager\MainScene\BaseMainScene.cpp" />
@@ -336,6 +337,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\Polygon\PostEffect\Vignette\VignettePostEffect.h" />
     <ClInclude Include="Elysia\StringOption\StringOption.h" />
     <ClInclude Include="Elysia\Windows\WindowsSetup.h" />
+    <ClInclude Include="Project\GameNameObject\GameNameObject.h" />
     <ClInclude Include="Project\GameSceneManager\Factory\GameSceneFactory\GameSceneFactory.h" />
     <ClInclude Include="Project\GameSceneManager\Factory\IAbstractSceneFactory.h" />
     <ClInclude Include="Project\GameSceneManager\GameSceneManager.h" />

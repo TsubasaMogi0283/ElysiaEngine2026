@@ -9,6 +9,7 @@
 #include "LevelDataManager.h"
 #include <TextureManager.h>
 #include "GameSceneManager.h"
+#include <WindowsSetup.h>
 #include <MainScene/Start/StartMainScene.h>
 #include <MainScene/Play/PlayMainScene.h>
 #include <Note/NoteJudgement.h>
@@ -21,6 +22,8 @@ MainScene::MainScene() {
 	input_ = Elysia::Input::GetInstance();
 	//テクスチャ
 	textureManager_ = Elysia::TextureManager::GetInstance();
+	//ウィンドウクラス
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }
 
 void MainScene::Initialize() {
@@ -60,6 +63,20 @@ void MainScene::Initialize() {
 	gauge_ = std::make_unique<Gauge>();
 	gauge_->Initialize(gaugeTextureHandle, frameTextureHandle);
 	gauge_->SetTotalNotes(musicScoreData_.totalNote_);
+
+	//画像サイズ
+	Vector2<uint64_t> gaugeTextureSize = {
+		.x = textureManager_->GetTextureWidth(gaugeTextureHandle),
+		.y = textureManager_->GetTextureHeight(gaugeTextureHandle)
+	};
+
+	//初期座標
+	Vector2<int32_t> initialPosition = {
+		.x = static_cast<int32_t>(windowsSetup_->GetClientSize().x / 2u) - static_cast<int32_t>(gaugeTextureSize.x / 2u),
+		.y = static_cast<int32_t>(windowsSetup_->GetClientSize().y) - static_cast<int32_t>(gaugeTextureSize.y * 2u)
+	};
+	gauge_->SetInitialPosition(initialPosition);
+
 
 	//数字のテクスチャの読み込み
 	uint32_t numberTextureHandle[NUMBER_TEXTURE_AMOUNT_] = {};

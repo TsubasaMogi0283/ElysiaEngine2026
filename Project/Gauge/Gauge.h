@@ -7,6 +7,7 @@
  */
 
 #include <Sprite.h>
+#include <Vector2.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -58,24 +59,58 @@ public:
 public:
 
 	/// <summary>
-	/// ゲージの座標を設定
+	/// 初期の座標を設定
 	/// </summary>
-	/// <param name="positionY">Y座標</param>
-	inline void SetGaugePositionY(const float_t & positionY) {
-		this->back_->SetPosition({ .x = initialPosition_.x, .y = static_cast<int32_t>(positionY) });
-		this->main_->SetPosition({.x=initialPosition_.x, .y=static_cast<int32_t>(positionY)});
-		this->frame_->SetPosition({ .x = initialPosition_.x, .y = static_cast<int32_t>(positionY) });
+	/// <param name="position">座標</param>
+	inline void SetInitialPosition(const Vector2<int32_t>& position) {
+		this->initialPosition_ = position;
+		this->back_->SetPosition(initialPosition_);
+		this->main_->SetPosition(initialPosition_);
+		this->frame_->SetPosition(initialPosition_);
 	}
+
+	/// <summary>
+	/// 初期の座標を設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	inline void SetPosition(const Vector2<int32_t>& position) {
+		this->position_ = position;
+		this->back_->SetPosition(position_);
+		this->main_->SetPosition(position_);
+		this->frame_->SetPosition(position_);
+	}
+
+	/// <summary>
+	/// 初期のY座標を設定
+	/// </summary>
+	/// /// <param name="position">Y座標</param>
+	inline void SetInitialPositionY(const int32_t& positionY) {
+		this->back_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
+		this->main_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
+		this->frame_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
+	}
+
 
 	/// <summary>
 	/// ゲージのスケールを設定
 	/// </summary>
 	/// <param name="scale">スケール</param>
-	inline void SetGaugeScale(const Vector2<float_t>& scale) {
+	inline void SetAllScale(const Vector2<float_t>& scale) {
 		this->back_->SetScale(scale);
 		this->main_->SetScale(scale);
 		this->frame_->SetScale(scale);
 	}
+
+	
+	inline void SetMainScale(const Vector2<float_t>& scale) {
+		this->back_->SetScale(scale);
+		this->main_->SetScale(scale);
+	}
+
+	inline void SetFrameScale(const Vector2<float_t>& scale) {
+		this->frame_->SetScale(scale);
+	}
+
 
 	/// <summary>
 	/// 初期ゲージ座標を取得
@@ -90,7 +125,7 @@ public:
 	/// </summary>
 	/// <returns>ゲージの通常表示座標</returns>
 	inline Vector2<int32_t> GetGaugePosition()const {
-		return gaugePosition_;
+		return position_;
 	}
 
 	/// <summary>
@@ -106,7 +141,7 @@ public:
 	/// ゲージの値を増加させる
 	/// </summary>
 	/// <param name="result">判定結果</param>
-	void SetIncreaseValue(const int32_t& result);
+	void SetIncreaseValue(const size_t& result);
 
 
 private:
@@ -116,8 +151,6 @@ private:
 	Elysia::TextureManager* textureManager_ = nullptr;
 
 private:
-	//最大
-	const uint32_t MAX_VALUE_ = 500u;
 	//最小
 	const uint32_t MIN_VALUE_ = 0u;
 private:
@@ -134,15 +167,19 @@ private:
 	//初期座標
 	Vector2<int32_t>initialPosition_ = {};
 	//通常座標
-	Vector2<int32_t>gaugePosition_ = {};
+	Vector2<int32_t>position_ = {};
 
 	//総ノーツ数
 	uint16_t totalNotes_ = 0u;
-
+	//ゲージの色
 	Vector4<float_t> mainColor_ = {};
 
 	//スケールを設定
-	float_t scale_ = static_cast<float_t>(currentValue_) / static_cast<float_t>(MAX_VALUE_);
+	float_t scale_ = static_cast<float_t>(currentValue_) / static_cast<float_t>(maxValue_);
+
+	//ゲージの最大値
+	//難易度によって値を変える
+	uint32_t maxValue_ = 500u;
 
 };
 
