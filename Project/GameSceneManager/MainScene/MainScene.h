@@ -21,6 +21,7 @@
 #include <Sprite.h>
 #include <ScoreData/MusicScoreData.h>
 #include <Gauge/Gauge.h>
+#include <Note/NoteJudgement.h>
 
  /// <summary>
  /// ElysiaEngine(前方宣言)
@@ -55,6 +56,11 @@ namespace Elysia {
 	/// 入力クラス
 	/// </summary>
 	class Input;
+
+	/// <summary>
+	/// ウィンドウクラス
+	/// </summary>
+	class WindowsSetup;
 
 }
 
@@ -191,6 +197,8 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
+	//ウィンドウ管理クラス
+	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 
 private:
 	//開始オフセット
@@ -256,9 +264,6 @@ private:
 
 public:
 	
-
-	
-
 	/// <summary>
 	/// コンボの初期座標を取得
 	/// </summary>
@@ -338,6 +343,6 @@ private:
 	//ゲージ
 	std::unique_ptr<Gauge>gauge_ = nullptr;
 
-
-
+	//一時記録用
+	NoteJudgement::Record temporaryRecord_ = {};
 };

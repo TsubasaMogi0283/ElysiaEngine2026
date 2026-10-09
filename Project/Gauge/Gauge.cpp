@@ -18,23 +18,7 @@ void Gauge::Initialize(const uint32_t& mainTextureHandle, const uint32_t& frameT
 	back_ = Elysia::Sprite::Create(mainTextureHandle);
 	main_ = Elysia::Sprite::Create(mainTextureHandle);
 	frame_ = Elysia::Sprite::Create(frameTextureHandle);
-	//画像サイズ
-	Vector2<uint64_t> textureSize = {
-		.x = textureManager_->GetTextureWidth(mainTextureHandle),
-		.y = textureManager_->GetTextureHeight(mainTextureHandle)
-	};
 	
-	//通常表示座標
-	gaugePosition_ = {
-		.x = static_cast<int32_t>(windowsSetup_->GetClientSize().x/2u) - static_cast<int32_t>(textureSize.x / 2u),
-		.y = windowsSetup_->GetClientSize().y - static_cast<int32_t>(textureSize.y)-50
-	};
-
-	//初期座標
-	initialPosition_ = {
-		.x = gaugePosition_.x,
-		.y = gaugePosition_.y + static_cast<int32_t>(textureSize.y)
-	};
 	back_->SetPosition(initialPosition_);
 	main_->SetPosition(initialPosition_);
 	frame_->SetPosition(initialPosition_);
@@ -45,7 +29,7 @@ void Gauge::Initialize(const uint32_t& mainTextureHandle, const uint32_t& frameT
 
 void Gauge::Update(){
 	//最大値と最小値の範囲内にする
-	currentValue_ = std::clamp(currentValue_, MIN_VALUE_, MAX_VALUE_);
+	currentValue_ = std::clamp(currentValue_, MIN_VALUE_, maxValue_);
 
 	if (scale_ < 0.7f) {
 		mainColor_ = { .x = 1.0f,.y = 0.0f,.z = 0.0f,.w = 1.0f };
@@ -77,21 +61,21 @@ void Gauge::DrawSprite(){
 	frame_->Draw();
 }
 
-void Gauge::SetIncreaseValue(const int32_t& result){
+void Gauge::SetIncreaseValue(const size_t& result){
 
 	switch (result){
-	case NoteJudgement::Selection::Perfect:
+	case static_cast<size_t>(NoteJudgement::Selection::Perfect):
 		currentValue_ += 4u;
 		break;
 
-	case NoteJudgement::Selection::Great:
+	case static_cast<size_t>(NoteJudgement::Selection::Great):
 		currentValue_ += 2u;
 		break;
-	case NoteJudgement::Selection::Good:
+	case static_cast<size_t>(NoteJudgement::Selection::Good):
 		currentValue_++;
 		break;
 
-	case NoteJudgement::Selection::Miss:
+	case static_cast<size_t>(NoteJudgement::Selection::Miss):
 		currentValue_ -= 3u;
 		break;
 	}

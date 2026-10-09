@@ -268,9 +268,6 @@
     <Filter Include="Project\PauseAsset">
       <UniqueIdentifier>{7cb24404-1b20-4742-92c5-5fafcf6123b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Project\Result">
-      <UniqueIdentifier>{2781eaa7-4811-4520-b8ee-6b5e3f8e9877}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Project\JudgementLine">
       <UniqueIdentifier>{23969ba5-a305-4a6b-8936-187c231f1a2b}</UniqueIdentifier>
     </Filter>
@@ -336,6 +333,9 @@
     </Filter>
     <Filter Include="Project\Gauge">
       <UniqueIdentifier>{838a521d-bf5a-40fb-ab5e-6586afdeefac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameNameObject">
+      <UniqueIdentifier>{fdb345c0-c02e-4d09-bfa1-08375abb8b39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -608,6 +608,9 @@
     </ClCompile>
     <ClCompile Include="Project\Gauge\Gauge.cpp">
       <Filter>Project\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameNameObject\GameNameObject.cpp">
+      <Filter>Elysia\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1032,6 +1035,9 @@
     </ClInclude>
     <ClInclude Include="Project\Gauge\Gauge.h">
       <Filter>Project\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameNameObject\GameNameObject.h">
+      <Filter>Elysia\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

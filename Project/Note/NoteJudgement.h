@@ -17,43 +17,44 @@ namespace NoteJudgement {
 	/// </summary>
 	struct Record {
 		//ミス
-		uint8_t miss = 0u;
+		uint16_t miss = 0u;
 		//グッド
-		uint8_t good = 0u;
+		uint16_t good = 0u;
 		//グレート
-		uint8_t great = 0u;
+		uint16_t great = 0u;
 		//パーフェクト
-		uint8_t perfect = 0u;
+		uint16_t perfect = 0u;
 
 		//コンボ
-		uint8_t combo = 0u;
+		uint16_t combo = 0u;
 		//最大コンボ
-		uint8_t maxCombo = 0u;
+		uint16_t maxCombo = 0u;
 		//総ノーツ数
-		uint8_t total = 0u;
+		uint16_t totalNotes = 0u;
 
 		//スコア
 		uint32_t score = 0u;
-
+		//ゲージ(達成度)
+		float_t gaugeRatio = 0.0f;
 	};
 
 	/// <summary>
 	/// 判定の選択
 	/// </summary>
-	enum Selection {
-		//無し
-		None,
-		//ミス
-		Miss,
-		//グッド
-		Good,
-		//グレート
-		Great,
+	enum class Selection {
 		//パーフェクト
 		Perfect,
-
+		//グレート
+		Great,
+		//グッド
+		Good,
+		//ミス
+		Miss,
 		//サイズ
-		Size
+		Size,
+
+		//無し
+		None,
 	};
 
 	/// <summary>

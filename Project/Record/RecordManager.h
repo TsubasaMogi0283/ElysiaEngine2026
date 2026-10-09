@@ -42,8 +42,8 @@ public:
 	/// <returns>結果のランキングデータ</returns>
 	std::array<NoteJudgement::Record, RANKING_NUMBER_> GetRankingData(const std::string& musicName, const std::string& level) {
 		//まずは楽曲を探す
-		auto it = noteJudgementResultMap.find(musicName);
-		if (it != noteJudgementResultMap.end()) {
+		auto it = noteJudgementResultMap_.find(musicName);
+		if (it != noteJudgementResultMap_.end()) {
 
 			//レベルで探す
 			auto it2 = it->second.find(level);
@@ -70,7 +70,7 @@ private:
 private:
 	//スコアデータ
 	//楽曲名、難易度、結果
-	std::map<std::string, std::map<std::string,JudgementResultRanking>> noteJudgementResultMap;
+	std::map<std::string, std::map<std::string,JudgementResultRanking>> noteJudgementResultMap_;
 
 
 };
