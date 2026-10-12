@@ -119,6 +119,14 @@ public:
 	}
 
 	/// <summary>
+	/// ゲーム名オブジェクトクラスの取得
+	/// </summary>
+	/// <returns></returns>
+	inline GameNameObject* GetGameTextObject()const {
+		return gameNameObject_.get();
+	}
+
+	/// <summary>
 	/// タイトルシーンを変更する
 	/// </summary>
 	/// <param name="newMainScene">新しいタイトルシーン</param>

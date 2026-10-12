@@ -59,9 +59,28 @@ public:
 	/// </summary>
 	~GameNameObject() = default;
 
-private:
+public:
+	/// <summary>
+	/// 動き始めるかどうかを設定
+	/// </summary>
+	/// <param name="isMove">動き</param>
+	inline void SetIsMove(const bool& isMove) {
+		this->isMove_ = isMove;
+	}
 
-	enum TextObjectNumber {
+	/// <summary>
+	/// 処理終了か取得
+	/// </summary>
+	inline bool GetIsProcessEnd()const {
+		return isProcessEnd_;
+	}
+
+
+private:
+	/// <summary>
+	/// テキストオブジェクトの数
+	/// </summary>
+	enum class WordNumber {
 		//1つ目
 		First,
 		//2つ目
@@ -73,23 +92,6 @@ private:
 		Size,
 	};
 
-	/// <summary>
-	/// 各文字の情報
-	/// </summary>
-	struct TextObjectInformation {
-		//モデル
-		std::unique_ptr<Elysia::Model>model_;
-		//ワールドトランスフォーム
-		WorldTransform worldTransform;
-		//マテリアル
-		Material material;
-
-		//オブジェクトの数
-		TextObjectNumber number;
-	};
-
-	
-
 private:
 	//Dの数
 	static const uint8_t D_OBJECT_AMOUNT_ = 2u;
@@ -98,31 +100,69 @@ private:
 	//!の数
 	static const uint8_t EXCLAMATION_OBJECT_AMOUNT_ = 3u;
 
+	//単語(例:DA!で1つ)の数
+	static const uint8_t WORD_AMOUNT_ = 3u;
+	//文字数(例:D,A,!で3つ)
+	static const uint8_t TEXT_AMOUNT_ = 3u;
+
+
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f / 60.0f;
+	//待機時間
+	const float_t INTERVAL_TIME_ = 1.0f;
+	//文字のオブジェクトが動く時間
+	const float_t TEXT_OBJECT_MOVE_TIME_ = 1.0f;
+
+	//初期の回転
+	const float_t INITIAL_ROTATE_Y_ = std::numbers::pi_v<float_t>*10.0f;
+	//初期のZ座標
+	const float_t INITIAL_POSITION_Z_ = -10.0f;
+
+	//最終の回転
+	const float_t FINALE_ROTATE_Y_ = 0.0f;
+	//最終の座標
+	const float_t FINALE_POSITION_Z_ = 0.0f;
+
+
+	/// <summary>
+	/// 1単語の情報
+	/// </summary>
+	struct WordInformation {
+
+		/// <summary>
+		/// 各文字の情報
+		/// </summary>
+		struct IndivisualTextObject {
+			//モデル
+			std::unique_ptr<Elysia::Model>model;
+			//ワールドトランスフォーム
+			WorldTransform worldTransform;
+			//マテリアル
+			Material material;
+
+		};
+		//ひとまとまり
+		std::array<IndivisualTextObject, TEXT_AMOUNT_>objectArray;
+
+		//動く時間
+		float_t moveTime;
+		//動き始める時間
+		float_t startMoveTime;
+		//止まる時間
+		float_t endMoveTime;
+
+		//単語の番号
+		WordNumber number;
+	};
+
 private:
 	
-	/// <summary>
-	/// オブジェクトの生成
-	/// </summary>
-	/// <param name="objectInformation"></param>
-	/// <param name="modelHandle"></param>
-	/// <param name="number"></param>
-	void GenerateTextObject(TextObjectInformation& objectInformation, const uint32_t& modelHandle,const TextObjectNumber& number);
-
-	/// <summary>
-	/// オブジェクトの更新
-	/// </summary>
-	/// <param name="objectInformation"></param>
-	void UpdateTextObject(TextObjectInformation& objectInformation);
-
-private:
-	//Dのモデル
-	std::array<TextObjectInformation, D_OBJECT_AMOUNT_>dObjectArray_ = {};
-	//Aのモデル
-	std::array<TextObjectInformation, A_OBJECT_AMOUNT_>aObjectArray_ = {};
-	//Pのモデル
-	TextObjectInformation pObject_ = {};
-	//!のモデル
-	std::array<TextObjectInformation, EXCLAMATION_OBJECT_AMOUNT_>exclamationObjectArray_ = {};
-
+	//文字の動く時間
+	std::array<WordInformation, WORD_AMOUNT_>wordArray_ = {};
+	
+	//動き始めるかどうか
+	bool isMove_ = true;
+	//処理終了かどうか
+	bool isProcessEnd_ = true;
 
 };
