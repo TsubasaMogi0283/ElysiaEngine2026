@@ -60,6 +60,19 @@ public:
 	~GameNameObject() = default;
 
 private:
+
+	enum TextObjectNumber {
+		//1つ目
+		First,
+		//2つ目
+		Second,
+		//3つ目
+		Third,
+
+		//サイズ
+		Size,
+	};
+
 	/// <summary>
 	/// 各文字の情報
 	/// </summary>
@@ -70,7 +83,12 @@ private:
 		WorldTransform worldTransform;
 		//マテリアル
 		Material material;
+
+		//オブジェクトの数
+		TextObjectNumber number;
 	};
+
+	
 
 private:
 	//Dの数
@@ -80,16 +98,18 @@ private:
 	//!の数
 	static const uint8_t EXCLAMATION_OBJECT_AMOUNT_ = 3u;
 
-
 private:
+	
 	/// <summary>
 	/// オブジェクトの生成
 	/// </summary>
 	/// <param name="objectInformation"></param>
-	void GenerateTextObject(TextObjectInformation& objectInformation, const uint32_t modelHandle);
+	/// <param name="modelHandle"></param>
+	/// <param name="number"></param>
+	void GenerateTextObject(TextObjectInformation& objectInformation, const uint32_t& modelHandle,const TextObjectNumber& number);
 
 	/// <summary>
-	/// 更新
+	/// オブジェクトの更新
 	/// </summary>
 	/// <param name="objectInformation"></param>
 	void UpdateTextObject(TextObjectInformation& objectInformation);

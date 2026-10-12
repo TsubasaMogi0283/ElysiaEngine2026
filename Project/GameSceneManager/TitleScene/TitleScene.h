@@ -21,6 +21,7 @@
 #include <AnimationModel.h>
 #include <Dissolve.h>
 #include <TitleScene/BaseTitleScene.h>
+#include <GameNameObject/GameNameObject.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -161,9 +162,10 @@ private:
 	Camera camera_ = {};
 	//平行光源
 	DirectionalLight directionalLight_ = {};
-	//マテリアル
-	Material playerMaterial_ = {};
+	
 
+	//ゲーム名
+	std::unique_ptr<GameNameObject> gameNameObject_ = nullptr;
 
 	//各シーン
 	std::unique_ptr<BaseTitleScene>baseTitleScene_ = nullptr;

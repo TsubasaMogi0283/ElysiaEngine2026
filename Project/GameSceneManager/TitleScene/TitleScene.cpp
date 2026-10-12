@@ -43,12 +43,23 @@ void TitleScene::Initialize(){
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
+
+	//ゲーム名のオブジェクト
+	uint32_t dModelHandle = modelManager_->Load("Resources/Model/Title/D", "D.obj");
+	uint32_t aModelHandle = modelManager_->Load("Resources/Model/Title/A", "A.obj");
+	uint32_t pModelHandle = modelManager_->Load("Resources/Model/Title/P", "D.obj");
+	uint32_t exclamationModelHandle = modelManager_->Load("Resources/Model/Title/D", "A.obj");
+	gameNameObject_ = std::make_unique<GameNameObject>();
+	gameNameObject_->Initialize(dModelHandle, aModelHandle, pModelHandle, exclamationModelHandle);
+
 }
 
 void TitleScene::Update(){
 
 	//各シーンの更新
 	baseTitleScene_->Update();
+	//ゲーム名のオブジェクトの更新
+	gameNameObject_->Update();
 
 	//レベルエディタの更新
 	levelDataManager_->Update(levelHandle_);
@@ -67,6 +78,8 @@ void TitleScene::DrawObject3D(){
 	levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
 	//各シーン
 	baseTitleScene_->DrawObject3D(camera_, directionalLight_);
+	//ゲーム名のオブジェクト
+	gameNameObject_->DrawObject3D(camera_, directionalLight_);
 }
 
 void TitleScene::PreDrawPostEffect(){
