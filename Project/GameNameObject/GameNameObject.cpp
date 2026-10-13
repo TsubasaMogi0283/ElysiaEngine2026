@@ -2,6 +2,7 @@
 
 #include <SingleCalculation.h>
 #include <Easing.h>
+#include <imgui.h>
 
 void GameNameObject::Initialize(const uint32_t& dModelHandle, const uint32_t& aModelHandle, const uint32_t& pModelHandle, const uint32_t& exclamationModelHandle){
 	//D
@@ -29,6 +30,7 @@ void GameNameObject::Initialize(const uint32_t& dModelHandle, const uint32_t& aM
 			wordArray_[i].objectArray[j].worldTransform.Initialize();
 			wordArray_[i].objectArray[j].worldTransform.scale = { OBJECT_SCALE_,OBJECT_SCALE_,OBJECT_SCALE_ };
 			wordArray_[i].objectArray[j].worldTransform.translate.y = 6.0f;
+			wordArray_[i].objectArray[j].worldTransform.translate.z = INITIAL_POSITION_Z_;
 			wordArray_[i].objectArray[j].material.Initialize();
 		}
 
@@ -54,6 +56,7 @@ void GameNameObject::Initialize(const uint32_t& dModelHandle, const uint32_t& aM
 }
 
 void GameNameObject::Update(){
+
 	//動き始めの指示があったら更新開始
 	if (isMove_&&!isProcessEnd_) {
 		for (uint8_t i = 0u; i < WORD_AMOUNT_; i++) {
@@ -63,18 +66,23 @@ void GameNameObject::Update(){
 				float_t t = SingleCalculation::InverseLerp(wordArray_[i].startMoveTime, wordArray_[i].endMoveTime, wordArray_[i].moveTime);
 				t = std::clamp(t, 0.0f, 1.0f);
 				float_t easeT = Easing::EaseInQuart(t);
-				easeT;
 				//Y軸回転
 				wordArray_[i].objectArray[j].worldTransform.rotate.y = SingleCalculation::Lerp(INITIAL_ROTATE_Y_, FINALE_ROTATE_Y_, easeT);
 				////Z軸移動
-				//wordArray_[i].objectArray[j].worldTransform.translate.z = SingleCalculation::Lerp(INITIAL_POSITION_Z_, FINALE_POSITION_Z_, easeT);
+				wordArray_[i].objectArray[j].worldTransform.translate.z = SingleCalculation::Lerp(INITIAL_POSITION_Z_, FINALE_POSITION_Z_, easeT);
+
+
+#ifdef _DEBUG
+				ImGui::Begin("GameNameObject");
+				ImGui::InputFloat("Time", &wordArray_[0].moveTime);
+				ImGui::End();
+#endif // _DEBUG
+
+
 			}
 		}
 
-		//最後の単語も移動が終わったら処理終了
-		if (wordArray_[static_cast<uint8_t>(WordNumber::Third)].moveTime > wordArray_[static_cast<uint8_t>(WordNumber::Third)].endMoveTime) {
-			isProcessEnd_ = true;
-		}
+		
 	}
 
 	//更新
@@ -83,6 +91,11 @@ void GameNameObject::Update(){
 			wordArray_[i].objectArray[j].worldTransform.Update();
 			wordArray_[i].objectArray[j].material.Update();
 		}
+	}
+
+	//最後の単語も移動が終わったら処理終了
+	if (wordArray_[static_cast<uint8_t>(WordNumber::Third)].moveTime >= wordArray_[static_cast<uint8_t>(WordNumber::Third)].endMoveTime) {
+		isProcessEnd_ = true;
 	}
 }
 

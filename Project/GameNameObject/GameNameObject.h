@@ -117,7 +117,7 @@ private:
 	//初期の回転
 	const float_t INITIAL_ROTATE_Y_ = std::numbers::pi_v<float_t>*10.0f;
 	//初期のZ座標
-	const float_t INITIAL_POSITION_Z_ = -10.0f;
+	const float_t INITIAL_POSITION_Z_ = -30.0f;
 
 	//最終の回転
 	const float_t FINALE_ROTATE_Y_ = 0.0f;
@@ -167,8 +167,8 @@ private:
 	std::array<WordInformation, WORD_AMOUNT_>wordArray_ = {};
 	
 	//動き始めるかどうか
-	bool isMove_ = true;
+	bool isMove_ = false;
 	//処理終了かどうか
-	bool isProcessEnd_ = true;
+	bool isProcessEnd_ = false;
 
 };
