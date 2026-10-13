@@ -58,24 +58,3 @@ void StartTitleScene::ApperCharacter(){
 
 
 }
-
-void StartTitleScene::StartSelect(){
-
-}
-
-void StartTitleScene::Decide(){
-
-}
-
-void StartTitleScene::ToSelect(){
-
-}
-
-void StartTitleScene::QuitGame(){
-
-}
-
-void StartTitleScene::CloseTransition(){
-
-
-}

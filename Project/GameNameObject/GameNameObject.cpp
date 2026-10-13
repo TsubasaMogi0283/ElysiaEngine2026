@@ -23,7 +23,6 @@ void GameNameObject::Initialize(const uint32_t& dModelHandle, const uint32_t& aM
 	//各オブジェクトの初期化
 	for (uint8_t i = 0u;i < WORD_AMOUNT_;i++) {
 		for (uint8_t j = 0u; j < TEXT_AMOUNT_; j++) {
-			
 			wordArray_[i].objectArray[j].worldTransform.Initialize();
 			wordArray_[i].objectArray[j].material.Initialize();
 		}
