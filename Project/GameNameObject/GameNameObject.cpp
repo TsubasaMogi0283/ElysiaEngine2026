@@ -71,18 +71,8 @@ void GameNameObject::Update(){
 				////Z軸移動
 				wordArray_[i].objectArray[j].worldTransform.translate.z = SingleCalculation::Lerp(INITIAL_POSITION_Z_, FINALE_POSITION_Z_, easeT);
 
-
-#ifdef _DEBUG
-				ImGui::Begin("GameNameObject");
-				ImGui::InputFloat("Time", &wordArray_[0].moveTime);
-				ImGui::End();
-#endif // _DEBUG
-
-
 			}
 		}
-
-		
 	}
 
 	//更新
@@ -101,32 +91,14 @@ void GameNameObject::Update(){
 
 void GameNameObject::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
 	//各オブジェクトの描画
-	/*for (uint8_t i = 0u; i < WORD_AMOUNT_; i++) {
+	for (uint8_t i = 0u;i < WORD_AMOUNT_; i++) {
 		for (uint8_t j = 0u; j < TEXT_AMOUNT_; j++) {
 			wordArray_[i].objectArray[j].model->Draw(
-				wordArray_[i].objectArray[j].worldTransform,camera, wordArray_[i].objectArray[j].material, baseLight);
+				wordArray_[i].objectArray[j].worldTransform,
+				camera,
+				wordArray_[i].objectArray[j].material,
+				baseLight);
 		}
-	}*/
-
-	for (uint8_t j = 0u; j < TEXT_AMOUNT_; j++) {
-		wordArray_[static_cast<uint8_t>(WordNumber::First)].objectArray[j].model->Draw(
-			wordArray_[static_cast<uint8_t>(WordNumber::First)].objectArray[j].worldTransform, 
-			camera, 
-			wordArray_[static_cast<uint8_t>(WordNumber::First)].objectArray[j].material,
-			baseLight);
 	}
-	for (uint8_t j = 0u; j < TEXT_AMOUNT_; j++) {
-		wordArray_[static_cast<uint8_t>(WordNumber::Second)].objectArray[j].model->Draw(
-			wordArray_[static_cast<uint8_t>(WordNumber::Second)].objectArray[j].worldTransform,
-			camera,
-			wordArray_[static_cast<uint8_t>(WordNumber::Second)].objectArray[j].material,
-			baseLight);
-	}
-	for (uint8_t j = 0u; j < TEXT_AMOUNT_; j++) {
-		wordArray_[static_cast<uint8_t>(WordNumber::Third)].objectArray[j].model->Draw(
-			wordArray_[static_cast<uint8_t>(WordNumber::Third)].objectArray[j].worldTransform,
-			camera,
-			wordArray_[static_cast<uint8_t>(WordNumber::Third)].objectArray[j].material,
-			baseLight);
-	}
+	
 }
