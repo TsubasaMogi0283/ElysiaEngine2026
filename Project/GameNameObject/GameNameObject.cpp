@@ -3,16 +3,27 @@
 #include <SingleCalculation.h>
 #include <Easing.h>
 
-void GameNameObject::Initialize(const uint32_t& dModelhandle, const uint32_t& aModelHandle, const uint32_t& pModelHandle, const uint32_t& exclamationModelhandle){
+void GameNameObject::Initialize(const uint32_t& dModelHandle, const uint32_t& aModelHandle, const uint32_t& pModelHandle, const uint32_t& exclamationModelHandle){
+	//D
+	for (uint8_t i = 0u;i < D_OBJECT_AMOUNT_;i++) {
+		wordArray_[i].objectArray[static_cast<uint8_t>(WordNumber::First)].model = Elysia::Model::Create(dModelHandle);
+	}
+	//P
+	wordArray_[static_cast<uint8_t>(WordNumber::Third)].objectArray[static_cast<uint8_t>(WordNumber::First)].model = Elysia::Model::Create(pModelHandle);
+	//A
+	for (uint8_t i = 0u;i < A_OBJECT_AMOUNT_;i++) {
+		wordArray_[i].objectArray[static_cast<uint8_t>(WordNumber::Second)].model = Elysia::Model::Create(aModelHandle);
+	}
+	//!
+	for (uint8_t i = 0u;i < EXCLAMATION_OBJECT_AMOUNT_;i++) {
+		wordArray_[i].objectArray[static_cast<uint8_t>(WordNumber::Third)].model = Elysia::Model::Create(exclamationModelHandle);
+	}
+
+
 	//各オブジェクトの初期化
 	for (uint8_t i = 0u;i < WORD_AMOUNT_;i++) {
 		for (uint8_t j = 0u; j < TEXT_AMOUNT_; j++) {
-			if (j != static_cast<uint8_t>(WordNumber::Third)) {
-				wordArray_[i].objectArray[j].model = Elysia::Model::Create(dModelhandle);
-			}
-			else {
-
-			}
+			
 			wordArray_[i].objectArray[j].worldTransform.Initialize();
 			wordArray_[i].objectArray[j].material.Initialize();
 		}

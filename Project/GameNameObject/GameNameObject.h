@@ -36,11 +36,11 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="dModelhandle"></param>
+	/// <param name="dModelHandle"></param>
 	/// <param name="aModelHandle"></param>
 	/// <param name="pModelHandle"></param>
-	/// <param name="exclamationModelhandle"></param>
-	void Initialize(const uint32_t& dModelhandle,const uint32_t& aModelHandle,const uint32_t& pModelHandle,const uint32_t& exclamationModelhandle);
+	/// <param name="exclamationModelHandle"></param>
+	void Initialize(const uint32_t& dModelHandle,const uint32_t& aModelHandle,const uint32_t& pModelHandle,const uint32_t& exclamationModelHandle);
 	
 	/// <summary>
 	/// 更新
