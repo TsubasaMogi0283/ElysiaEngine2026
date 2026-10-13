@@ -27,11 +27,6 @@
 /// ElysiaEngine(前方宣言)
 /// </summary>
 namespace Elysia {
-	
-	/// <summary>
-	/// レベルエディタ
-	/// </summary>
-	class LevelDataManager;
 
 	/// <summary>
 	/// テクスチャ管理クラス
@@ -145,10 +140,6 @@ private:
 	Elysia::Input* input_ = nullptr;
 	//モデル管理クラス
 	Elysia::ModelManager* modelManager_ = nullptr;
-	//レベルエディタ
-	Elysia::LevelDataManager* levelDataManager_ = nullptr;
-	//ハンドル
-	uint32_t levelHandle_ = 0u;
 	//アニメーション管理クラス
 	Elysia::AnimationManager* animationManager_ = nullptr;
 	//ゲーム管理クラス
@@ -171,6 +162,10 @@ private:
 	//平行光源
 	DirectionalLight directionalLight_ = {};
 	
+	//地面モデル
+	std::unique_ptr<Elysia::Model>groundModel_ = nullptr;
+	WorldTransform groundWorldTransform_ = {};
+	Material groundMaterial_ = {};
 
 	//ゲーム名
 	std::unique_ptr<GameNameObject> gameNameObject_ = nullptr;

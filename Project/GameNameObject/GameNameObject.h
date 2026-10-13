@@ -12,6 +12,7 @@
 #include <Material.h>
 #include <memory>
 #include <array>
+#include <numbers>
 
 /// <summary>
 /// カメラ
@@ -78,7 +79,7 @@ public:
 
 private:
 	/// <summary>
-	/// テキストオブジェクトの数
+	/// 単語の数
 	/// </summary>
 	enum class WordNumber {
 		//1つ目
@@ -123,6 +124,10 @@ private:
 	//最終の座標
 	const float_t FINALE_POSITION_Z_ = 0.0f;
 
+	//オブジェクトのの大きさ
+	const float_t OBJECT_SCALE_ = 3.0f;
+
+private:
 
 	/// <summary>
 	/// 1単語の情報
@@ -139,7 +144,8 @@ private:
 			WorldTransform worldTransform;
 			//マテリアル
 			Material material;
-
+			//文字
+			std::string text;
 		};
 		//ひとまとまり
 		std::array<IndivisualTextObject, TEXT_AMOUNT_>objectArray;
