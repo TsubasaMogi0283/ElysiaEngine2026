@@ -36,31 +36,45 @@ void SelectScene::Initialize(){
 
 void SelectScene::Update(){
 
-	//楽曲
-	//右に選択
-	if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
-		jacket_->SetIsMoveToRight(true);
+	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
+		isOpendTransiont_ = true;
 	}
-	//左に選択
-	else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
-		jacket_->SetIsMoveToLeft(true);
+	if (isOpendTransiont_) {
+
+		//楽曲
+		//右に選択
+		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
+			jacket_->SetIsMoveToRight(true);
+		}
+		//左に選択
+		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
+			jacket_->SetIsMoveToLeft(true);
+		}
+
+		//難易度の設定
+		//上を選択
+		if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
+			currentDifficultyNumber_++;
+			//現在はHardより上にはならない
+			currentDifficultyNumber_ = std::max<uint8_t>(static_cast<uint8_t>(Difficulty::Hard), currentDifficultyNumber_);
+		}
+		//下を選択
+		if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
+			currentDifficultyNumber_--;
+			currentDifficultyNumber_ = std::min<uint8_t>(static_cast<uint8_t>(Difficulty::Easy), currentDifficultyNumber_);
+		}
+		jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
+
+
+
+		//処理終了
+		if (jacket_->GetIsProcessEnd()) {
+			//待機時間
+			waitingTime_ += DELTA_TIME_;
+		}
 	}
 
-	//難易度の設定
-	//上を選択
-	if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
-		currentDifficultyNumber_++;
-		//現在はHardより上にはならない
-		currentDifficultyNumber_ = std::max<uint8_t>(static_cast<uint8_t>(Difficulty::Hard), currentDifficultyNumber_);
-	}
-	//下を選択
-	if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
-		currentDifficultyNumber_--;
-		currentDifficultyNumber_ = std::min<uint8_t>(static_cast<uint8_t>(Difficulty::Easy), currentDifficultyNumber_);
-	}
-	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
-
-
+	
 	//ジャケット
 	jacket_->Update();
 
@@ -69,11 +83,7 @@ void SelectScene::Update(){
 	//平行光源
 	directionalLight_.Update();
 
-	//処理終了
-	if (jacket_->GetIsProcessEnd()) {
-		//待機時間
-		waitingTime_ += DELTA_TIME_;
-	}
+	
 
 	//指定時間を超えたらビネット
 	//仮置きでトランジェント

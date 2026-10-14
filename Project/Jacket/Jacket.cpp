@@ -83,8 +83,8 @@ void Jacket::Update(){
 				asset.isSelect_ = false;
 
 				//スケールの設定
-				asset.mainSprite->SetScale({ .x = SELECTED_SCALE_ ,.y = SELECTED_SCALE_ });
-				asset.levelFrameSprite->SetScale({ .x = SELECTED_SCALE_ ,.y = SELECTED_SCALE_ });
+				asset.mainSprite->SetScale({ .x = NO_SELECTED_SCALE_ ,.y = NO_SELECTED_SCALE_ });
+				asset.levelFrameSprite->SetScale({ .x = NO_SELECTED_SCALE_ ,.y = NO_SELECTED_SCALE_ });
 			}
 
 			//座標を設定
