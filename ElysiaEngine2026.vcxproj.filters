@@ -619,7 +619,7 @@
       <Filter>Project\GameNameObject</Filter>
     </ClCompile>
     <ClCompile Include="Project\Jacket\Jacket.cpp">
-      <Filter>Elysia\ソース ファイル</Filter>
+      <Filter>Project\Jacket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1048,11 +1048,11 @@
     <ClInclude Include="Project\GameNameObject\GameNameObject.h">
       <Filter>Project\GameNameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Jacket\Jacket.h">
-      <Filter>Elysia\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Project\ScoreData\Difficulty.h">
       <Filter>Project\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Jacket\Jacket.h">
+      <Filter>Project\Jacket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

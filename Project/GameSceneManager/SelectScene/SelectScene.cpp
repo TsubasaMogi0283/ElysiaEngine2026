@@ -89,7 +89,10 @@ void SelectScene::Update(){
 		}
 		jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
 
-
+		//決定
+		if (input_->IsTriggerKey(DIK_SPACE)) {
+			jacket_->SetIsDecide();
+		}
 
 		//処理終了
 		if (jacket_->GetIsProcessEnd()) {

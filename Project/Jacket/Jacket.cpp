@@ -7,7 +7,7 @@
 #include <SingleCalculation.h>
 #include <Easing.h>
 
-Jacket::Jacket(){
+Jacket::Jacket() {
 	//インスタンスの取得
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
@@ -15,21 +15,25 @@ Jacket::Jacket(){
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }
 
-void Jacket::Initialize(const std::vector<uint32_t> jacketTextureHandleVector, const uint32_t& frameTextureHandle){
-	
+void Jacket::Initialize(const std::vector<uint32_t> jacketTextureHandleVector, const uint32_t& frameTextureHandle) {
+
+
+
+	//初期位置
+	const int32_t INITIAL_JACKET_POSITION_X = windowsSetup_->GetClientSize().x / 2;
 	//アセットの初期設定
-	for (size_t i = 0u;i < jacketTextureHandleVector.size();i++) {
+	for (size_t i = 0u; i < jacketTextureHandleVector.size(); i++) {
 		Asset asset = {};
 		//スプライトの生成
 		asset.mainSprite = Elysia::Sprite::Create(jacketTextureHandleVector[i]);
 		asset.levelFrameSprite = Elysia::Sprite::Create(frameTextureHandle);
 
 		//アンカーポイントの設定
-		asset.mainSprite->SetAnchorPoint({ .x = 0.5f,.y = -1.0f });
-		asset.levelFrameSprite->SetAnchorPoint({ .x = 0.5f,.y = -1.0f });
+		asset.mainSprite->SetAnchorPoint({ .x = 0.5f,.y = 1.0f });
+		asset.levelFrameSprite->SetAnchorPoint({ .x = 0.5f,.y = 1.0f });
 
 		//座標のの設定
-		asset.position = { .x = static_cast<int32_t>(i) * JACKET_INTERVAL_X_ ,.y = JACKET_INITIAL_POSITION_Y_ };
+		asset.position = { .x = static_cast<int32_t>(i) * JACKET_INTERVAL_X_ + INITIAL_JACKET_POSITION_X ,.y = JACKET_INITIAL_POSITION_Y_ };
 		asset.mainSprite->SetPosition(asset.position);
 		asset.levelFrameSprite->SetPosition(asset.position);
 
@@ -44,7 +48,7 @@ void Jacket::Initialize(const std::vector<uint32_t> jacketTextureHandleVector, c
 	isInitialized_ = true;
 }
 
-void Jacket::Update(){
+void Jacket::Update() {
 
 	//選択時
 	if (!isDecide_) {
@@ -53,7 +57,7 @@ void Jacket::Update(){
 			//同時押しさせないようにするためelse if使っています
 			//右へ移動したとき
 			if (isMoveToRight_) {
-				
+
 				//座標
 				asset.position.x -= JACKET_INTERVAL_X_;
 				//移動終了
@@ -61,15 +65,14 @@ void Jacket::Update(){
 			}
 			//左へ移動したとき
 			else if (isMoveToLeft_) {
-				//選択している番号を増やす
-				currentSelectNumber_--;
+
 				//座標
 				asset.position.x += JACKET_INTERVAL_X_;
 				//移動終了
 				asset.isMoved_ = true;
 			}
 
-			
+
 			//選択中は大きくする
 			if (asset.placeNumber == currentSelectNumber_) {
 				asset.isSelect_ = true;
@@ -142,16 +145,16 @@ void Jacket::Update(){
 	else {
 		//時間の加算
 		scaleDownTime_ += DELTA_TIME_;
-		
+
 		for (const Asset& asset : assetVector_) {
 			//選択されていないものは縮小していく
 			if (!asset.isSelect_) {
 				float_t t = SingleCalculation::InverseLerp(0.0f, SCALE_DOWN_TIME_, scaleDownTime_);
 				t = std::clamp(t, 0.0f, 1.0f);
-				float_t eased = 1.0f-Easing::EaseOutQuart(t);
+				float_t eased = 1.0f - Easing::EaseOutQuart(t);
 				asset.mainSprite->SetScale({ .x = eased * NO_SELECTED_SCALE_,.y = eased * NO_SELECTED_SCALE_ });
 			}
-			
+
 		}
 
 		//指定時間を超えたら終了
@@ -161,7 +164,7 @@ void Jacket::Update(){
 	}
 }
 
-void Jacket::DrawSprite(){
+void Jacket::DrawSprite() {
 	for (const Asset& asset : assetVector_) {
 		//メイン
 		asset.mainSprite->Draw();

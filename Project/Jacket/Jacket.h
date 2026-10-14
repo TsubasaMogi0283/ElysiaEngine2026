@@ -119,9 +119,8 @@ public:
 	/// <summary>
 	/// 決定の設定
 	/// </summary>
-	/// <param name="isDecide">決定</param>
-	inline void SetIsDecide(const bool& isDecide) {
-		this->isDecide_ = isDecide;
+	inline void SetIsDecide() {
+		this->isDecide_ = true;
 	}
 
 	/// <summary>
@@ -144,14 +143,14 @@ private:
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 
 	//ジャケットの隣同士の間隔
-	const int32_t JACKET_INTERVAL_X_ = 100;
+	const int32_t JACKET_INTERVAL_X_ = 500;
 	//初期座標Y
-	const int32_t JACKET_INITIAL_POSITION_Y_ = 100;
+	const int32_t JACKET_INITIAL_POSITION_Y_ = 500;
 
 	//選択時のスケール
-	const float_t SELECTED_SCALE_ = 0.5f;
+	const float_t SELECTED_SCALE_ = 0.4f;
 	//非選択時のスケール
-	const float_t NO_SELECTED_SCALE_ = SELECTED_SCALE_ / 2.0f;
+	const float_t NO_SELECTED_SCALE_ = SELECTED_SCALE_ / 2.5f;
 	//縮小時間
 	const float_t SCALE_DOWN_TIME_ = 0.25f;
 private:
