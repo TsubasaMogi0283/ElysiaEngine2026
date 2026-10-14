@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "ModelManager.h"
 #include <GameSceneManager.h>
+#include <TextureManager.h>
 
 SelectScene::SelectScene(){
 	//インスタンスの取得	
@@ -14,6 +15,8 @@ SelectScene::SelectScene(){
 	input_ = Elysia::Input::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
+	//テクスチャ管理クラス
+	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
 void SelectScene::Initialize(){
@@ -31,8 +34,27 @@ void SelectScene::Initialize(){
 
 	//ジャケット
 	jacket_ = std::make_unique<Jacket>();
-	uint32_t neonStreet=
-	jacket_->Initialize();
+	
+	//テクスチャの読みこみ
+	std::vector<uint32_t>jacketTextureHandleVector = {};
+	
+	//HighwaySunset
+	uint32_t highwaySunsetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/HighwaySunset.png");
+	jacketTextureHandleVector.push_back(highwaySunsetTextureHandle);
+	
+	//ネオンストリート
+	uint32_t neonStreetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/NeonStreet.png");
+	jacketTextureHandleVector.push_back(neonStreetTextureHandle);
+
+	//AwakeningSoul
+	uint32_t awakeningSoulTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/AwakeningSoul.png");
+	jacketTextureHandleVector.push_back(awakeningSoulTextureHandle);
+
+	//フレーム
+	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
+
+	//初期化
+	jacket_->Initialize(jacketTextureHandleVector, frameTextureHandle);
 
 }
 

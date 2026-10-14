@@ -109,6 +109,8 @@ private:
 	Elysia::ModelManager* modelManager_ = nullptr;
 	//ゲーム管理クラス
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
 
 private:
 	//時間変化
