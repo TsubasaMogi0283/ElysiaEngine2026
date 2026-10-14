@@ -111,6 +111,13 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 
 private:
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f / 60.0f;
+	//待機時間
+	const float_t WATING_TIME_ = 2.0f;
+
+
+private:
 
 	//背景
 	std::unique_ptr<Elysia::BackTexture>backTexture_ = nullptr;
@@ -122,6 +129,10 @@ private:
 	//マテリアル
 	Material playerMaterial_ = {};
 	//ジャケット
-	std::vector<Jacket>jacketVector_ = {};
+	std::unique_ptr<Jacket>jacket_ = {};
 
+	//選択した後の待機時間
+	float_t waitingTime_ = 0.0f;
+	//終了
+	bool isEnd_ = false;
 };

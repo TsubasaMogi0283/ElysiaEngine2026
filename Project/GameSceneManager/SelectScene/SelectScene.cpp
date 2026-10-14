@@ -5,9 +5,7 @@
 
 #include "Input.h"
 #include "ModelManager.h"
-#include "LevelDataManager.h"
-#include "CollisionCalculation.h"
-#include "PushBackCalculation.h"
+#include <GameSceneManager.h>
 
 SelectScene::SelectScene(){
 	//インスタンスの取得	
@@ -30,16 +28,51 @@ void SelectScene::Initialize(){
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
 
-	jacketVector_ = std::make_unique<Jacket>();
-
+	//ジャケット
+	jacket_ = std::make_unique<Jacket>();
 
 }
 
 void SelectScene::Update(){
+
+	//右に選択
+	if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
+		jacket_->SetIsMoveToRight(true);
+	}
+	//左に選択
+	else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
+		jacket_->SetIsMoveToLeft(true);
+	}
+
+	//ジャケット
+	jacket_->Update();
+
 	//カメラ
 	camera_.Update();
 	//平行光源
 	directionalLight_.Update();
+
+	//処理終了
+	if (jacket_->GetIsProcessEnd()) {
+		//待機時間
+		waitingTime_ += DELTA_TIME_;
+	}
+
+	//指定時間を超えたらビネット
+	//仮置きでトランジェント
+	if (waitingTime_ >= WATING_TIME_) {
+		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
+			isEnd_ = true;
+		}
+
+	}
+
+	//メインシーン
+	if (isEnd_) {
+		gameSceneManager_->ChangeScene("Main");
+		return;
+	}
+
 
 #ifdef _DEBUG
 	ImGui::Begin("テストシーンカメラ");
@@ -66,7 +99,8 @@ void SelectScene::DrawPostEffect(){
 }
 
 void SelectScene::DrawSprite(){
-
+	//ジャケット
+	jacket_->DrawSprite();
 }
 
 
