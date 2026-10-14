@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <Sprite.h>
+#include <ScoreData/Difficulty.h>
 
  /// <summary>
  /// ElysiaEngine(前方宣言)
@@ -33,8 +34,9 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="jacketPath"></param>
-	void Initialize(const std::vector<std::string> jacketPath);
+	/// <param name="jacketTextureHandleVector"></param>
+	/// <param name="frameTextureHandle"></param>
+	void Initialize(const std::vector<uint32_t> jacketTextureHandleVector, const uint32_t& frameTextureHandle);
 
 	/// <summary>
 	/// 更新
@@ -64,8 +66,6 @@ private:
 		std::unique_ptr<Elysia::Sprite> mainSprite;
 		//難易度のフレーム
 		std::unique_ptr<Elysia::Sprite> levelFrameSprite;
-		//難易度の色
-		Vector4<float_t> levelColor;
 
 	};
 
@@ -74,7 +74,7 @@ private:
 	std::vector<Asset> assetVector_ = {};
 
 	//現在選択されている難易度
-	std::string
+	Difficulty currentDifficulty_ = Difficulty::Normal;
 
 };
 
