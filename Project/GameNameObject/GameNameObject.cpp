@@ -84,7 +84,7 @@ void GameNameObject::Update(){
 	}
 
 	//最後の単語も移動が終わったら処理終了
-	if (wordArray_[static_cast<uint8_t>(WordNumber::Third)].moveTime >= wordArray_[static_cast<uint8_t>(WordNumber::Third)].endMoveTime) {
+	if (wordArray_[static_cast<uint8_t>(WordNumber::Third)].moveTime + MOVE_OFFSET_TIME_ >= wordArray_[static_cast<uint8_t>(WordNumber::Third)].endMoveTime) {
 		isProcessEnd_ = true;
 	}
 }

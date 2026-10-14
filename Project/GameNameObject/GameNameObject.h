@@ -127,6 +127,9 @@ private:
 	//オブジェクトのの大きさ
 	const float_t OBJECT_SCALE_ = 3.0f;
 
+	//時間のオフセット
+	const float_t MOVE_OFFSET_TIME_ = -1.0f;
+
 private:
 
 	/// <summary>
