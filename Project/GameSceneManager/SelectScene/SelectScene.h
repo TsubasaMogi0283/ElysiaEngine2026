@@ -131,6 +131,9 @@ private:
 	//ジャケット
 	std::unique_ptr<Jacket>jacket_ = {};
 
+	//現在設定されている難易度
+	uint8_t currentDifficultyNumber_ = static_cast<uint8_t>(Difficulty::Normal);
+
 	//選択した後の待機時間
 	float_t waitingTime_ = 0.0f;
 	//終了

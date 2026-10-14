@@ -28,6 +28,11 @@ void Jacket::Initialize(const std::vector<uint32_t> jacketTextureHandleVector, c
 		asset.mainSprite->SetAnchorPoint({ .x = 0.5f,.y = -1.0f });
 		asset.levelFrameSprite->SetAnchorPoint({ .x = 0.5f,.y = -1.0f });
 
+		//座標のの設定
+		asset.position = { .x = static_cast<int32_t>(i) * JACKET_INTERVAL_X_ ,.y = JACKET_INITIAL_POSITION_Y_ };
+		asset.mainSprite->SetPosition(asset.position);
+		asset.levelFrameSprite->SetPosition(asset.position);
+
 		//場所の番号
 		asset.placeNumber = static_cast<uint8_t>(i);
 
@@ -88,7 +93,7 @@ void Jacket::Update(){
 
 			//難易度によって色を変える
 			Vector4<float_t> frameColor = {};
-			switch (currentDifficulty_) {
+			switch (selectedDifficulty_) {
 			case Difficulty::Easy:
 				//簡単の色を設定
 				frameColor = Color::Conevert(Color::EASY);
@@ -138,7 +143,7 @@ void Jacket::Update(){
 		//時間の加算
 		scaleDownTime_ += DELTA_TIME_;
 		
-		for (Asset& asset : assetVector_) {
+		for (const Asset& asset : assetVector_) {
 			//選択されていないものは縮小していく
 			if (!asset.isSelect_) {
 				float_t t = SingleCalculation::InverseLerp(0.0f, SCALE_DOWN_TIME_, scaleDownTime_);

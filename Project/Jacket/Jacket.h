@@ -108,6 +108,15 @@ public:
 	}
 
 	/// <summary>
+	/// 難易度の設定
+	/// </summary>
+	/// <param name="difficulty">難易度</param>
+	inline void SetDifficulty(const Difficulty& difficulty) {
+		this->selectedDifficulty_ = difficulty;
+	}
+
+
+	/// <summary>
 	/// 決定の設定
 	/// </summary>
 	/// <param name="isDecide">決定</param>
@@ -136,6 +145,9 @@ private:
 
 	//ジャケットの隣同士の間隔
 	const int32_t JACKET_INTERVAL_X_ = 100;
+	//初期座標Y
+	const int32_t JACKET_INITIAL_POSITION_Y_ = 100;
+
 	//選択時のスケール
 	const float_t SELECTED_SCALE_ = 0.5f;
 	//非選択時のスケール
@@ -147,7 +159,7 @@ private:
 	std::vector<Asset> assetVector_ = {};
 
 	//現在選択されている難易度
-	Difficulty currentDifficulty_ = Difficulty::Normal;
+	Difficulty selectedDifficulty_ = Difficulty::Size;
 	uint8_t currentSelectNumber_ = 0u;
 
 	//選択されているときの座標
