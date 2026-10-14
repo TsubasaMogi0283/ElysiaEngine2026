@@ -215,6 +215,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\TitleScene\TitleScene.cpp" />
     <ClCompile Include="Project\Gauge\Gauge.cpp" />
+    <ClCompile Include="Project\Jacket\Jacket.cpp" />
     <ClCompile Include="Project\JudgementLine\JudgementLine.cpp" />
     <ClCompile Include="Project\Note\BaseNote.cpp" />
     <ClCompile Include="Project\Note\Long\BaseLongNote.cpp" />
@@ -356,6 +357,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\GameSceneManager\TitleScene\Start\StartTitleScene.h" />
     <ClInclude Include="Project\GameSceneManager\TitleScene\TitleScene.h" />
     <ClInclude Include="Project\Gauge\Gauge.h" />
+    <ClInclude Include="Project\Jacket\Jacket.h" />
     <ClInclude Include="Project\JudgementLine\JudgementLine.h" />
     <ClInclude Include="Project\Note\BaseNote.h" />
     <ClInclude Include="Project\Note\Long\BaseLongNote.h" />
@@ -368,6 +370,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\Note\NoteType.h" />
     <ClInclude Include="Project\PauseAsset\PauseAsset.h" />
     <ClInclude Include="Project\Record\RecordManager.h" />
+    <ClInclude Include="Project\ScoreData\Difficulty.h" />
     <ClInclude Include="Project\ScoreData\Manager\ScoreDataManager.h" />
     <ClInclude Include="Project\ScoreData\MusicInformation.h" />
     <ClInclude Include="Project\ScoreData\MusicScoreData.h" />
