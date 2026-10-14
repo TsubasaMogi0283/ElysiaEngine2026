@@ -189,10 +189,6 @@ private:
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
-	//レベルエディタ
-	Elysia::LevelDataManager* levelDataManager_ = nullptr;
-	//ハンドル
-	uint32_t levelHandle_ = 0u;
 	//ゲーム管理クラス
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス

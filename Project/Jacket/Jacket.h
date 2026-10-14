@@ -152,7 +152,7 @@ private:
 	//非選択時のスケール
 	const float_t NO_SELECTED_SCALE_ = SELECTED_SCALE_ / 2.5f;
 	//縮小時間
-	const float_t SCALE_DOWN_TIME_ = 0.25f;
+	const float_t SCALE_DOWN_TIME_ = 0.75f;
 private:
 	//ジャケットのアセット
 	std::vector<Asset> assetVector_ = {};

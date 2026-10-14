@@ -37,8 +37,8 @@ namespace Color {
 
 
 	//難易度カラー
-	//簡単(水)
-	const uint32_t EASY = 0x7FFF00FF;
+	//簡単(緑)
+	const uint32_t EASY = GREEN;
 	//普通(山吹)
 	const uint32_t NORMAL = 0xF8B500FF;
 	//難しい(赤)

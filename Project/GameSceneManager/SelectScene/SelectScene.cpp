@@ -55,6 +55,8 @@ void SelectScene::Initialize(){
 
 	//初期化
 	jacket_->Initialize(jacketTextureHandleVector, frameTextureHandle);
+	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
+
 
 }
 
@@ -79,14 +81,13 @@ void SelectScene::Update(){
 		//上を選択
 		if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
 			currentDifficultyNumber_++;
-			//現在はHardより上にはならない
-			currentDifficultyNumber_ = std::max<uint8_t>(static_cast<uint8_t>(Difficulty::Hard), currentDifficultyNumber_);
 		}
 		//下を選択
 		if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
 			currentDifficultyNumber_--;
-			currentDifficultyNumber_ = std::min<uint8_t>(static_cast<uint8_t>(Difficulty::Easy), currentDifficultyNumber_);
 		}
+		//簡単から難しいまでにする
+		currentDifficultyNumber_ = std::clamp(currentDifficultyNumber_, static_cast<int8_t>(Difficulty::Easy), static_cast<int8_t>(Difficulty::Hard));
 		jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
 
 		//決定

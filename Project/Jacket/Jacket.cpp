@@ -153,6 +153,7 @@ void Jacket::Update() {
 				t = std::clamp(t, 0.0f, 1.0f);
 				float_t eased = 1.0f - Easing::EaseOutQuart(t);
 				asset.mainSprite->SetScale({ .x = eased * NO_SELECTED_SCALE_,.y = eased * NO_SELECTED_SCALE_ });
+				asset.levelFrameSprite->SetScale({ .x = eased * NO_SELECTED_SCALE_,.y = eased * NO_SELECTED_SCALE_ });
 			}
 
 		}
@@ -162,6 +163,16 @@ void Jacket::Update() {
 			isProcessEnd_ = true;
 		}
 	}
+
+
+#ifdef _DEBUG
+	ImGui::Begin("ジャケット");
+	int32_t tmpD = static_cast<int32_t>(selectedDifficulty_);
+	ImGui::InputInt("難易度", &tmpD);
+	ImGui::End();
+#endif // _DEBUG
+
+
 }
 
 void Jacket::DrawSprite() {
