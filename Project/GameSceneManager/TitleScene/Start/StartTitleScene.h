@@ -62,31 +62,6 @@ private:
 	/// </summary>
 	void ApperCharacter();
 
-	/// <summary>
-	/// スタートするかどうか
-	/// </summary>
-	void StartSelect();
-
-	/// <summary>
-	/// 決定
-	/// </summary>
-	void Decide();
-
-	/// <summary>
-	/// セレクトに行く移動
-	/// </summary>
-	void ToSelect();
-
-	/// <summary>
-	/// ゲームを止める
-	/// </summary>
-	void QuitGame();
-
-	/// <summary>
-	/// 閉めるトランジション
-	/// </summary>
-	void CloseTransition();
-
 private:
 	/// <summary>
 	/// 各状態を実行
@@ -100,11 +75,6 @@ private:
 		&StartTitleScene::OpenTransition,
 		&StartTitleScene::TextMove,
 		&StartTitleScene::ApperCharacter,
-		&StartTitleScene::StartSelect,
-		&StartTitleScene::Decide,
-		&StartTitleScene::ToSelect,
-		&StartTitleScene::QuitGame,
-		&StartTitleScene::CloseTransition,
 	};
 
 private:

@@ -45,34 +45,16 @@ void StartTitleScene::OpenTransition(){
 
 void StartTitleScene::TextMove(){
 	//テキスト「DA・DA・PA!!」の移動演出
-
-
+	titleScene_->GetGameTextObject()->SetIsMove(true);
+	//処理が終了したら次へ
+	if (titleScene_->GetGameTextObject()->GetIsProcessEnd()) {
+		currentState_ = StartTitleSceneState::ApperCharacter;
+	}
 
 }
 
 void StartTitleScene::ApperCharacter(){
 	//キャラクターが走ってくる
-
-
-}
-
-void StartTitleScene::StartSelect(){
-
-}
-
-void StartTitleScene::Decide(){
-
-}
-
-void StartTitleScene::ToSelect(){
-
-}
-
-void StartTitleScene::QuitGame(){
-
-}
-
-void StartTitleScene::CloseTransition(){
 
 
 }
