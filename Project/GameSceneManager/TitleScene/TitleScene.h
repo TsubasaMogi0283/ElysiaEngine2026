@@ -125,7 +125,7 @@ public:
 	/// タイトルシーンを変更する
 	/// </summary>
 	/// <param name="newMainScene">新しいタイトルシーン</param>
-	inline void ChangeMainScene(std::unique_ptr<BaseTitleScene> newMainScene) {
+	inline void ChangeTitleScene(std::unique_ptr<BaseTitleScene> newMainScene) {
 		if (baseTitleScene_ != newMainScene) {
 			//新しいシーンをセット
 			baseTitleScene_ = std::move(newMainScene);
@@ -134,6 +134,14 @@ public:
 			baseTitleScene_->Initialize();
 		}
 	};
+
+	/// <summary>
+	/// 処理終了の設定
+	/// </summary>
+	/// <param name="isProcessEnd">処理終了</param>
+	inline void SetIsProcessEnd(const bool& isProcessEnd) {
+		this->isProcessEnd_ = isProcessEnd;
+	}
 
 private:
 	//入力
@@ -172,5 +180,6 @@ private:
 
 	//各シーン
 	std::unique_ptr<BaseTitleScene>baseTitleScene_ = nullptr;
-
+	//処理終了(基本このクラスではいじらない)
+	bool isProcessEnd_ = false;
 };

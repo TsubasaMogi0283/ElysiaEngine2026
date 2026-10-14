@@ -68,7 +68,7 @@ void TitleScene::Update(){
 	directionalLight_.Update();
 
 	//処理が終わったら次のシーンへ
-	if (baseTitleScene_->GetIsEnd()) {
+	if (isProcessEnd_) {
 		gameSceneManager_->ChangeScene("Select");
 	}
 

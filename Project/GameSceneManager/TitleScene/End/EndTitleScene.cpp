@@ -1,19 +1,16 @@
 #include "EndTitleScene.h"
 
+#include <TitleScene/TitleScene.h>
+#include <GameSceneManager.h>
+
 void EndTitleScene::Initialize(){
 
 }
 
 void EndTitleScene::Update(){
 
-}
-
-void EndTitleScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
-	camera;
-	baseLight;
-
-}
-
-void EndTitleScene::DrawSprite(){
-
+	//閉じたらセレクトへ
+	if (titleScene_->GetGameSceneManager()->GetTransition()->SetCloseTransition()) {
+		titleScene_->SetIsProcessEnd(true);
+	}
 }

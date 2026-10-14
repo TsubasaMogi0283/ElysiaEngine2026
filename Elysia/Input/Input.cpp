@@ -72,6 +72,7 @@ void Elysia::Input::Initialize() {
 #pragma region キーボード
 
 bool Elysia::Input::IsPushKey(const uint8_t& keyNumber) const{
+	assert(this);
 	if (currentKey_[keyNumber] != 0) {
 		return true;
 	}
@@ -80,6 +81,7 @@ bool Elysia::Input::IsPushKey(const uint8_t& keyNumber) const{
 }
 
 bool Elysia::Input::IsTriggerKey(const uint8_t& keyNumber) const{
+	assert(this);
 	if (currentKey_[keyNumber] != 0 && preKey_[keyNumber] == 0) {
 		return true;
 	}
@@ -87,6 +89,7 @@ bool Elysia::Input::IsTriggerKey(const uint8_t& keyNumber) const{
 }
 
 bool Elysia::Input::IsReleaseKey(const uint8_t& keyNumber) const{
+	assert(this);
 	if (currentKey_[keyNumber] == 0 && preKey_[keyNumber] != 0) {
 		return true;
 	}
@@ -97,6 +100,7 @@ bool Elysia::Input::IsReleaseKey(const uint8_t& keyNumber) const{
 
 #pragma region マウス
 bool Elysia::Input::IsPushMouse(const uint32_t& mouseNumber)const {
+	assert(this);
 	if (currentMouse_.rgbButtons[mouseNumber] != 0) {
 		return true;
 	}
@@ -105,12 +109,14 @@ bool Elysia::Input::IsPushMouse(const uint32_t& mouseNumber)const {
 
 
 bool Elysia::Input::IsTriggerMouse(const uint32_t& mouseNumber)const {
+	assert(this);
 	if (currentMouse_.rgbButtons[mouseNumber] != 0 && preMouse_.rgbButtons[mouseNumber] == 0) {
 		return true;
 	}
 	return false;
 }
 bool Elysia::Input::IsReleaseMouse(const uint32_t& mouseNumber) const{
+	assert(this);
 	if (currentMouse_.rgbButtons[mouseNumber] == 0 && preMouse_.rgbButtons[mouseNumber] != 0) {
 		return true;
 	}
@@ -122,6 +128,7 @@ bool Elysia::Input::IsReleaseMouse(const uint32_t& mouseNumber) const{
 
 
 void Elysia::Input::SetVibration(const float_t& leftMotor, const float_t& rightMotor){
+	assert(this);
 	XINPUT_VIBRATION vibration;
 	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
 	//0から65535まで
@@ -134,6 +141,7 @@ void Elysia::Input::SetVibration(const float_t& leftMotor, const float_t& rightM
 }
 
 void Elysia::Input::StopVibration(){
+	assert(this);
 	XINPUT_VIBRATION vibration;
 	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
 	vibration = {
@@ -142,8 +150,6 @@ void Elysia::Input::StopVibration(){
 	;
 	XInputSetState(0, &vibration);
 }
-
-
 
 #pragma endregion
 
@@ -156,7 +162,6 @@ void Elysia::Input::Update() {
 	keyboard_->Acquire();
 	keyboard_->GetDeviceState(sizeof(currentKey_), currentKey_);
 
-
 	//マウス
 	//キーと違ってそのまま代入で大丈夫だよ
 	preMouse_ = currentMouse_;
@@ -165,9 +170,6 @@ void Elysia::Input::Update() {
 	mouseDevice_->GetDeviceState(sizeof(DIMOUSESTATE), &currentMouse_);
 
 	//コントローラー
-	
-	
-
 	//再初期化
 	//接続されたらまたデバイスを作り直す
 	if (!joyStickDevice_) {

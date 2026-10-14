@@ -10,22 +10,8 @@ void StartTitleScene::Initialize(){
 void StartTitleScene::Update(){
 	//各状態の更新
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
-
-	//表示タイトルシーン
-	if (false) {
-		titleScene_->ChangeMainScene(std::make_unique<DisplayTitleScene>());
-	}
-	
 }
 
-void StartTitleScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
-	camera;
-	baseLight;
-}
-
-void StartTitleScene::DrawSprite(){
-
-}
 
 void StartTitleScene::OpenTransition(){
 
@@ -55,6 +41,9 @@ void StartTitleScene::TextMove(){
 
 void StartTitleScene::ApperCharacter(){
 	//キャラクターが走ってくる
-
+	//表示タイトルシーン
+	if (true) {
+		titleScene_->ChangeTitleScene(std::make_unique<DisplayTitleScene>());
+	}
 
 }

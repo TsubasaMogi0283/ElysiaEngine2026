@@ -9,6 +9,22 @@
 #include <TitleScene/BaseTitleScene.h>
 
 /// <summary>
+/// ElysiaEngine(前方宣言)
+/// </summary>
+namespace Elysia {
+
+	/// <summary>
+	/// テクスチャ管理クラス
+	/// </summary>
+	class TextureManager;
+
+	/// <summary>
+	/// 入力
+	/// </summary>
+	class Input;
+}
+
+/// <summary>
 /// タイトル表示クラス
 /// </summary>
 class DisplayTitleScene :public BaseTitleScene {
@@ -16,7 +32,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	DisplayTitleScene() = default;
+	DisplayTitleScene();
 
 	/// <summary>
 	/// 初期化
@@ -27,13 +43,6 @@ public:
 	/// 更新
 	/// </summary>
 	void Update();
-
-	/// <summary>
-	/// 3Dオブジェクトの描画
-	/// </summary>
-	/// <param name="camera">カメラ</param>
-	/// <param name="baseLight">ライト</param>
-	void DrawObject3D(const Camera& camera, const BaseLight& baseLight)override;
 
 	/// <summary>
 	/// スプライト
@@ -62,10 +71,6 @@ private:
 	/// </summary>
 	void ToSelect();
 
-	/// <summary>
-	/// ゲームを止める
-	/// </summary>
-	void QuitGame();
 private:
 	/// <summary>
 	/// 各状態を実行
@@ -79,7 +84,6 @@ private:
 		&DisplayTitleScene::StartSelect,
 		&DisplayTitleScene::Decide,
 		&DisplayTitleScene::ToSelect,
-		&DisplayTitleScene::QuitGame,
 	};
 
 
@@ -93,16 +97,36 @@ private:
 		Decide,
 		//セレクトに行く移動
 		ToSelect,
-		//ゲームを止める
-		QuitGame,
 
-		//この列挙体の量
-		Amount,
+		//この列挙体の数
+		Size,
 	};
 
 	//現在の状態
 	DisplayTitleSceneState currentState_ = DisplayTitleSceneState::StartSelect;
 
+private:
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
+	//入力
+	Elysia::Input* input_ = nullptr;
+
+private:
+	//点滅間隔
+	const float_t FLASH_INTERVAL_ = 0.5f;
+	//高速点滅間隔
+	const float_t RAPID_FLASH_TIME_ = 0.05f;
+	//最大高速点滅回数
+	const uint8_t MAX_RAPID_FLASH_COUNT_ = 10u;
+private:
+	//SPACEでスタートのスプライト
+	std::unique_ptr<Elysia::Sprite> startTextSprite_ = nullptr;
+
+	//点滅時間
+	float_t flashTime_ = 0.0f;
+	//高速点滅時間
+	float_t rapidFlashTime_ = 0.0f;
+	uint8_t rapidFlashCount_ = 0u;
 
 };
 
