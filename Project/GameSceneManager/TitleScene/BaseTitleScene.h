@@ -92,12 +92,12 @@ public:
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="baseLight">ライト</param>
-	virtual void DrawObject3D(const Camera& camera, const BaseLight& baseLight) = 0;
+	virtual void DrawObject3D([[maybe_unused]] const Camera& camera, [[maybe_unused]] const BaseLight& baseLight){};
 
 	/// <summary>
 	/// スプライト
 	/// </summary>
-	virtual void DrawSprite() = 0;
+	virtual void DrawSprite() {};
 
 	/// <summary>
 	/// デストラクタ
@@ -111,16 +111,6 @@ public:
 	/// </summary>
 	virtual void SetTitleScene(TitleScene* titleScene) {
 		this->titleScene_ = titleScene;
-	}
-
-public:
-
-	/// <summary>
-	/// 処理が終わったかどうかを返す
-	/// </summary>
-	/// <returns></returns>
-	bool GetIsEnd() const {
-		return isEnd_;
 	}
 
 protected:
@@ -140,10 +130,6 @@ protected:
 protected:
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
-
-protected:
-	//処理が終わったかどうか
-	bool isEnd_ = false;
 
 
 };

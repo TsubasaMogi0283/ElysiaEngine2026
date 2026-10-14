@@ -29,25 +29,11 @@ public:
 	void Update();
 
 	/// <summary>
-	/// 3Dオブジェクトの描画
-	/// </summary>
-	/// <param name="camera">カメラ</param>
-	/// <param name="baseLight">ライト</param>
-	void DrawObject3D(const Camera& camera, const BaseLight& baseLight)override;
-
-	/// <summary>
-	/// スプライト
-	/// </summary>
-	void DrawSprite()override;
-
-	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~EndTitleScene() = default;
 
 private:
-	//閉めるトランジション
-	//CloseTransition;
 
 
 };
