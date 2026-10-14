@@ -31,6 +31,8 @@ void SelectScene::Initialize(){
 
 	//ジャケット
 	jacket_ = std::make_unique<Jacket>();
+	uint32_t neonStreet=
+	jacket_->Initialize();
 
 }
 
