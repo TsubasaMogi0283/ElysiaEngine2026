@@ -37,7 +37,7 @@ void Jacket::Initialize(const std::vector<uint32_t> jacketTextureHandleVector, c
 		asset.placeNumber = static_cast<uint8_t>(i);
 
 		//挿入
-		assetVector_.push_back(asset);
+		assetVector_.push_back(std::move(asset));
 	}
 
 	//初期化済みに設定
