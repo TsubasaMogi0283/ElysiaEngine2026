@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "ModelManager.h"
 #include <TextureManager.h>
+#include <ModelManager.h>
 #include "GameSceneManager.h"
 #include <WindowsSetup.h>
 #include <MainScene/Start/StartMainScene.h>
@@ -21,6 +22,8 @@ MainScene::MainScene() {
 	textureManager_ = Elysia::TextureManager::GetInstance();
 	//ウィンドウクラス
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
+	//モデル
+	modelManager_ = Elysia::ModelManager::GetInstance();
 }
 
 void MainScene::Initialize() {
@@ -35,7 +38,7 @@ void MainScene::Initialize() {
 	GenerateNotes();
 	//カメラの初期化
 	camera_.Initialize();
-	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -70.0f };
+	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -100.0f };
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
@@ -67,10 +70,13 @@ void MainScene::Initialize() {
 	//初期座標
 	Vector2<int32_t> initialPosition = {
 		.x = static_cast<int32_t>(windowsSetup_->GetClientSize().x / 2u) - static_cast<int32_t>(gaugeTextureSize.x / 2u),
-		.y = static_cast<int32_t>(windowsSetup_->GetClientSize().y) - static_cast<int32_t>(gaugeTextureSize.y * 2u)
+		.y = static_cast<int32_t>(windowsSetup_->GetClientSize().y+ static_cast<int32_t>(gaugeTextureSize.y))
 	};
+	//初期の座標
 	gauge_->SetInitialPosition(initialPosition);
-
+	gauge_->SetPosition(initialPosition);
+	//移動後の座標
+	gauge_->SetFinalPositionY(initialPosition.y - static_cast<int32_t>(gaugeTextureSize.y)*3);
 
 	//数字のテクスチャの読み込み
 	uint32_t numberTextureHandle[NUMBER_TEXTURE_AMOUNT_] = {};
@@ -111,6 +117,11 @@ void MainScene::Initialize() {
 		comboArray_[i].sprite->SetPosition(comboArray_[i].position);
 	}
 
+	//判定線のモデルを生成
+	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
+	judgementLine_ = std::make_unique<JudgementLine>();
+	judgementLine_->Initialize(normalNoteModelHandle);
+
 	//メインシーンの中
 	baseMainScene_ = std::make_unique<StartMainScene>();
 #ifdef _DEBUG
@@ -145,6 +156,8 @@ void MainScene::Update() {
 
 	//ゲージの更新
 	gauge_->Update();
+	//判定線の更新
+	judgementLine_->Update();
 
 	//更新
 	baseMainScene_->Update();
@@ -158,7 +171,11 @@ void MainScene::Update() {
 }
 
 void MainScene::DrawObject3D() {
+	
+	//判定線の描画
+	judgementLine_->Draw(camera_, directionalLight_);
 	//オブジェクトの描画
+	baseMainScene_->DrawObject3D(camera_, directionalLight_);
 
 }
 

@@ -218,9 +218,9 @@ void StartMainScene::UIScaleUp(){
 	float_t easedT = Easing::EaseInOutQuad(startMoveT);
 	float_t gaugePositionY = SingleCalculation::Lerp(
 		static_cast<float_t>(mainScene_->GetGauge()->GetInitialPosition().y),
-		static_cast<float_t>(mainScene_->GetGauge()->GetGaugePosition().y),
+		static_cast<float_t>(mainScene_->GetGauge()->GetFinalPosition().y),
 		easedT);
-	mainScene_->GetGauge()->SetInitialPositionY(static_cast<int32_t>(gaugePositionY));
+	mainScene_->GetGauge()->SetPositionY(static_cast<int32_t>(gaugePositionY));
 
 	//スコア
 	float_t scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);

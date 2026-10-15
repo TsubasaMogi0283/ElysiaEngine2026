@@ -22,6 +22,7 @@
 #include <ScoreData/MusicScoreData.h>
 #include <Gauge/Gauge.h>
 #include <Note/NoteJudgement.h>
+#include <JudgementLine/JudgementLine.h>
 
  /// <summary>
  /// ElysiaEngine(前方宣言)
@@ -46,11 +47,6 @@ namespace Elysia {
 	/// モデル管理クラス
 	/// </summary>
 	class ModelManager;
-
-	/// <summary>
-	/// アニメーション管理クラス
-	/// </summary>
-	class AnimationManager;
 
 	/// <summary>
 	/// 入力クラス
@@ -175,6 +171,14 @@ public:
 		return gauge_.get();
 	}
 
+	/// <summary>
+	/// 判定線を取得
+	/// </summary>
+	/// <returns></returns>
+	inline JudgementLine* GetJudgementLine()const {
+		return judgementLine_.get();
+	}
+
 private:
 	/// <summary>
 	/// ノーツ生成
@@ -195,6 +199,8 @@ private:
 	Elysia::TextureManager* textureManager_ = nullptr;
 	//ウィンドウ管理クラス
 	Elysia::WindowsSetup* windowsSetup_ = nullptr;
+	//モデル管理クラス
+	Elysia::ModelManager* modelManager_ = nullptr;
 
 private:
 	//開始オフセット
@@ -338,6 +344,9 @@ private:
 	uint16_t maxCombo_ = 0u;
 	//ゲージ
 	std::unique_ptr<Gauge>gauge_ = nullptr;
+
+	//判定線
+	std::unique_ptr<JudgementLine> judgementLine_ = nullptr;
 
 	//一時記録用
 	NoteJudgement::Record temporaryRecord_ = {};
