@@ -4,7 +4,7 @@
 #include <Audio.h>
 #include <ScoreData/MusicScoreData.h>
 #include <StringOption.h>
-
+#include <ScoreData/Difficulty.h>
 
 ScoreDataManager::ScoreDataManager(){
 	//オーディオクラス
@@ -14,7 +14,14 @@ ScoreDataManager::ScoreDataManager(){
 void ScoreDataManager::Initialize(){
 
 	///フォルダの名前を取得
-	std::vector<std::string>folderName= GetFoldername(MUSIC_SCORE_PATH_);
+	std::vector<std::string>folderNameVector= GetFoldername(MUSIC_SCORE_PATH_);
+	//難易度の名前を取得
+	std::vector<std::string>difficultynameVector={};
+	//Difficulty
+	for (uint8_t i = 0u;i < static_cast<uint8_t>(Difficulty::Size);i++) {
+		difficultynameVector;
+	}
+
 
 	//基本的には譜面データはJSONでやる
 	Load("HighwaySunset/HighwaySunset_Easy.json");
@@ -32,18 +39,7 @@ void ScoreDataManager::Load(const std::string& path) {
 
 	//JSON文字列から解凍したデータ
 	nlohmann::json deserialized = Deserialize(fullFilePath);
-	//ファイルパスの分解
-	std::string folderName = {};
-	std::string fileName = {};
-	size_t slashPosition = path.find('/');
-
-	if (slashPosition != std::string::npos) {
-		//0からslashPositionまで
-		folderName = path.substr(0, slashPosition);
-		//「/」から最後まで
-		fileName = path.substr(slashPosition + 1u);
-	}
-
+	
 	//楽曲情報を記録
 	//タイトル
 	const std::string TITLE = deserialized["title"].get<std::string>();
