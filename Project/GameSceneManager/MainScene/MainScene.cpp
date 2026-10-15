@@ -6,7 +6,6 @@
 
 #include "Input.h"
 #include "ModelManager.h"
-#include "LevelDataManager.h"
 #include <TextureManager.h>
 #include "GameSceneManager.h"
 #include <WindowsSetup.h>
@@ -16,8 +15,6 @@
 
 MainScene::MainScene() {
 	//インスタンスの取得
-	//レベルエディタ管理クラス
-	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
 	//入力
 	input_ = Elysia::Input::GetInstance();
 	//テクスチャ
@@ -36,9 +33,6 @@ void MainScene::Initialize() {
 
 	//ノーツの生成
 	GenerateNotes();
-	//ハンドルの取得
-	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
-
 	//カメラの初期化
 	camera_.Initialize();
 	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -70.0f };
@@ -153,7 +147,6 @@ void MainScene::Update() {
 	gauge_->Update();
 
 	//更新
-	levelDataManager_->Update(levelHandle_);
 	baseMainScene_->Update();
 	//全て終わったら結果シーンへ
 	if (baseMainScene_->GetIsEnd()) {
@@ -166,9 +159,6 @@ void MainScene::Update() {
 
 void MainScene::DrawObject3D() {
 	//オブジェクトの描画
-	//レベルエディタ  
-	//levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
-	baseMainScene_->DrawObject3D(camera_, directionalLight_);
 
 }
 

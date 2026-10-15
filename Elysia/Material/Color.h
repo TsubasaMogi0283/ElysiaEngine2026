@@ -12,6 +12,7 @@
 
 #include "cstdint"
 #include <Vector4.h>
+#include <Hsv.h>
 
 /// <summary>
 /// 色
@@ -37,8 +38,8 @@ namespace Color {
 
 
 	//難易度カラー
-	//簡単(水)
-	const uint32_t EASY = 0x7FFF00FF;
+	//簡単(緑)
+	const uint32_t EASY = GREEN;
 	//普通(山吹)
 	const uint32_t NORMAL = 0xF8B500FF;
 	//難しい(赤)
@@ -67,6 +68,38 @@ namespace Color {
 		};
 
 		return result;
+	}
+
+	/// <summary>
+	/// HSVからRGBに変換
+	/// </summary>
+	/// <param name="hsv"></param>
+	/// <returns></returns>
+	inline Vector4<float_t> HsvToRgb(const Hsv& hsv) {
+
+		float_t h = hsv.hue - std::floor(hsv.hue);          // 0〜1にループさせる
+		float_t h6 = h * 6.0f;
+		int32_t i = static_cast<int32_t>(h6);
+		float_t f = h6 - static_cast<float_t>(i);
+
+		float_t p = hsv.value * (1.0f - hsv.saturation);
+		float_t q = hsv.value * (1.0f - hsv.saturation * f);
+		float_t t = hsv.value * (1.0f - hsv.saturation * (1.0f - f));
+
+		switch (i % 6) {
+		case 0:  
+			return { hsv.value, t, p, hsv.a };
+		case 1:  
+			return { q, hsv.value, p, hsv.a };
+		case 2:  
+			return { p, hsv.value, t, hsv.a };
+		case 3:  
+			return { p, q, hsv.value, hsv.a };
+		case 4:  
+			return { t, p, hsv.value, hsv.a };
+		default: 
+			return { hsv.value, p, q, hsv.a };
+		}
 	}
 
 }

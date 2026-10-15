@@ -2,13 +2,12 @@
 
 #include <imgui.h>
 #include <numbers>
+#include <algorithm>
 
 #include "Input.h"
 #include "ModelManager.h"
-#include "LevelDataManager.h"
-#include "CollisionCalculation.h"
-#include "PushBackCalculation.h"
-#include <AnimationManager.h>
+#include <GameSceneManager.h>
+#include <TextureManager.h>
 
 SelectScene::SelectScene(){
 	//インスタンスの取得	
@@ -16,124 +15,121 @@ SelectScene::SelectScene(){
 	input_ = Elysia::Input::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
-	//レベルエディタ管理クラス
-	levelDataManager_ = Elysia::LevelDataManager::GetInstance();
-	//アニメーション管理クラス
-	animationManager_ = Elysia::AnimationManager::GetInstance();
+	//テクスチャ管理クラス
+	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
 void SelectScene::Initialize(){
-	//ハンドルの取得
-	levelHandle_ = levelDataManager_->Load("CollisionTest/CollisionTest.json");
-
-	//仮プレイヤー
-	uint32_t playerModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "cube.obj");
-	playerModel_=Elysia::Model::Create(playerModelHandle);
-	playerWorldTransform_.Initialize();
-	playerWorldTransform_.scale = { .x = 0.5f,.y = 1.0f,.z=2.0f };
-	playerCenterPosition_ = { .x = 0.0f,.y = 0.0f,.z = -5.0f };
-	playerWorldTransform_.translate = playerCenterPosition_;
-
-
-	uint32_t humanModelHandle = modelManager_->Load("Resources/Model/Sample/human", "walk.gltf");
-	uint32_t humanAnimationHandle = animationManager_->Load("Resources/Model/Sample/human", "walk.gltf");
-
-	playerAnimationModel_=Elysia::AnimationModel::Create(humanModelHandle, humanAnimationHandle);
-	playerAnimationWorldTransform_.Initialize();
-	playerAnimationWorldTransform_.translate.x = -20.0f;
-	playerAnimationWorldTransform_.translate.z = 20.0f;
-
-
 	
-
 	//カメラ
 	camera_.Initialize();
-	camera_.rotate.x = std::numbers::pi_v<float>/6.0f;
-	camera_.translate = { .x = 0.0f,.y = 21.0f,.z = -40.0f };
-	//マテリアルの初期化
-	playerMaterial_.Initialize();
-	playerMaterial_.lightingKinds = LightingType::DirectionalLighting;
-	//平行光源の初期化
+	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -10.0f };
+
+	//平行光源
 	directionalLight_.Initialize();
 
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
+
+	//ジャケット
+	jacket_ = std::make_unique<Jacket>();
+	
+	//テクスチャの読みこみ
+	std::vector<uint32_t>jacketTextureHandleVector = {};
+	
+	//HighwaySunset
+	uint32_t highwaySunsetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/HighwaySunset.png");
+	jacketTextureHandleVector.push_back(highwaySunsetTextureHandle);
+	
+	//ネオンストリート
+	uint32_t neonStreetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/NeonStreet.png");
+	jacketTextureHandleVector.push_back(neonStreetTextureHandle);
+
+	//AwakeningSoul
+	uint32_t awakeningSoulTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/AwakeningSoul.png");
+	jacketTextureHandleVector.push_back(awakeningSoulTextureHandle);
+
+	//フレーム
+	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
+
+	//初期化
+	jacket_->Initialize(jacketTextureHandleVector, frameTextureHandle);
+	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
+
+
 }
 
 void SelectScene::Update(){
 
+	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
+		isOpendTransiont_ = true;
+	}
+	if (isOpendTransiont_) {
 
-	//再読み込み
-	if (input_->IsTriggerKey(DIK_R)) {
-		levelDataManager_->Reload(levelHandle_);
-	}
+		//楽曲
+		//右に選択
+		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
+			jacket_->SetIsMoveToRight(true);
+		}
+		//左に選択
+		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
+			jacket_->SetIsMoveToLeft(true);
+		}
 
-	//レベルエディタの更新
-	levelDataManager_->Update(levelHandle_);
-	std::vector<AABB> objects = levelDataManager_->GetObjectAABBs(levelHandle_,"Stage");
+		//難易度の設定
+		//上を選択
+		if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
+			currentDifficultyNumber_++;
+		}
+		//下を選択
+		if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
+			currentDifficultyNumber_--;
+		}
+		//簡単から難しいまでにする
+		currentDifficultyNumber_ = std::clamp(currentDifficultyNumber_, static_cast<int8_t>(Difficulty::Easy), static_cast<int8_t>(Difficulty::Hard));
+		jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
 
+		//決定
+		if (input_->IsTriggerKey(DIK_SPACE)) {
+			jacket_->SetIsDecide();
+		}
 
-	//方向
-	Vector3<float_t> direction = {};
-
-	//入力
-	if (input_->IsPushKey(DIK_UP)&& input_->IsPushKey(DIK_RIGHT)) {
-		direction.x = SPEED*DIAGONAL_SCALE_;
-		direction.z = SPEED*DIAGONAL_SCALE_;
-	} 
-	else if (input_->IsPushKey(DIK_UP) && input_->IsPushKey(DIK_LEFT)) {
-		direction.x = -SPEED * DIAGONAL_SCALE_;
-		direction.z = SPEED * DIAGONAL_SCALE_;
-	}
-	else if (input_->IsPushKey(DIK_DOWN) && input_->IsPushKey(DIK_RIGHT)) {
-		direction.x = SPEED * DIAGONAL_SCALE_;
-		direction.z = -SPEED * DIAGONAL_SCALE_;
-	}
-	else if (input_->IsPushKey(DIK_DOWN) && input_->IsPushKey(DIK_LEFT)) {
-		direction.x = -SPEED * DIAGONAL_SCALE_;
-		direction.z = -SPEED * DIAGONAL_SCALE_;
-	}
-	else if (input_->IsPushKey(DIK_UP)) {
-		direction.z = SPEED;
-	}
-	else if (input_->IsPushKey(DIK_DOWN)) {
-		direction.z = -SPEED;
-	}
-	else if (input_->IsPushKey(DIK_RIGHT)) {
-		direction.x = SPEED;
-	}
-	else if (input_->IsPushKey(DIK_LEFT)) {
-		direction.x = -SPEED;
+		//処理終了
+		if (jacket_->GetIsProcessEnd()) {
+			//待機時間
+			waitingTime_ += DELTA_TIME_;
+		}
 	}
 
-	//座標の加算
-	playerCenterPosition_= playerCenterPosition_+ direction;
-	//プレイヤーのAABBを計算
-	playerAABB_.max = playerCenterPosition_+ playerWorldTransform_.scale;
-	playerAABB_.min = playerCenterPosition_- playerWorldTransform_.scale;
 	
-	for (size_t i = 0; i < objects.size(); i++) {
-		PushBackCalculation::FixPosition(playerCenterPosition_,playerAABB_, objects[i]);
+	//ジャケット
+	jacket_->Update();
+
+	//カメラ
+	camera_.Update();
+	//平行光源
+	directionalLight_.Update();
+
+	
+
+	//指定時間を超えたらビネット
+	//仮置きでトランジェント
+	if (waitingTime_ >= WATING_TIME_) {
+		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
+			isEnd_ = true;
+		}
+
 	}
 
-	animationTime_ += 0.1f;
+	//メインシーン
+	if (isEnd_) {
+		gameSceneManager_->ChangeScene("Main");
+		return;
+	}
 
-	//プレイヤー更新
-	playerWorldTransform_.translate = playerCenterPosition_;
-	playerAnimationWorldTransform_.Update();
-	playerWorldTransform_.Update();
-	camera_.Update();
-	directionalLight_.Update();
-	playerMaterial_.Update();
 
 #ifdef _DEBUG
-
-	ImGui::Begin("仮プレイヤー");
-	ImGui::InputFloat3("中心座標", &playerCenterPosition_.x);
-	ImGui::SliderFloat3("スケール", &playerWorldTransform_.scale.x, 0.0f, 2.0f);
-	ImGui::End();
-
 	ImGui::Begin("テストシーンカメラ");
 	ImGui::SliderFloat3("回転", &camera_.rotate.x, -3.0f, 3.0f);
 	ImGui::SliderFloat3("座標", &camera_.translate.x, -30.0f, 30.0f);
@@ -144,12 +140,6 @@ void SelectScene::Update(){
 }
 
 void SelectScene::DrawObject3D(){
-	//レベルエディタ  
-	levelDataManager_->Draw(levelHandle_, camera_, directionalLight_);
-	//仮プレイヤー
-	playerModel_->Draw(playerWorldTransform_,camera_, playerMaterial_, directionalLight_);
-
-	playerAnimationModel_->Draw(playerAnimationWorldTransform_, camera_, animationTime_, playerMaterial_,directionalLight_);
 	
 }
 
@@ -164,7 +154,8 @@ void SelectScene::DrawPostEffect(){
 }
 
 void SelectScene::DrawSprite(){
-
+	//ジャケット
+	jacket_->DrawSprite();
 }
 
 

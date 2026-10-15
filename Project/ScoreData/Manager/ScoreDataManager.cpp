@@ -12,10 +12,6 @@ ScoreDataManager::ScoreDataManager(){
 }
 
 void ScoreDataManager::Initialize(){
-	//ToDo
-	//Resourceフォルダに楽曲と譜面データを入れる
-	//フォルダに楽曲名を入れる。楽曲名を全て探索し、数を数え、各難易度の譜面データを記録していく
-	
 	//基本的には譜面データはJSONでやる
 	Load("HighwaySunset/HighwaySunset_Easy.json");
 
