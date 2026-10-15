@@ -64,32 +64,37 @@ public:
 	/// <param name="position">座標</param>
 	inline void SetInitialPosition(const Vector2<int32_t>& position) {
 		this->initialPosition_ = position;
-		this->back_->SetPosition(initialPosition_);
-		this->main_->SetPosition(initialPosition_);
-		this->frame_->SetPosition(initialPosition_);
 	}
 
-	/// <summary>
-	/// 初期の座標を設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	inline void SetPosition(const Vector2<int32_t>& position) {
-		this->position_ = position;
-		this->back_->SetPosition(position_);
-		this->main_->SetPosition(position_);
-		this->frame_->SetPosition(position_);
-	}
 
 	/// <summary>
-	/// 初期のY座標を設定
+	/// Y座標の設定
 	/// </summary>
-	/// /// <param name="position">Y座標</param>
-	inline void SetInitialPositionY(const int32_t& positionY) {
+	/// <param name="positionY">Y座標</param>
+	inline void SetPositionY(const int32_t& positionY) {
 		this->back_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
 		this->main_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
 		this->frame_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
 	}
 
+	/// <summary>
+	/// 座標の設定
+	/// </summary>
+	/// <param name="position"></param>
+	inline void SetPosition(const Vector2<int32_t>& position) {
+		this->position_ = position;
+		this->back_->SetPosition(this->position_);
+		this->main_->SetPosition(this->position_);
+		this->frame_->SetPosition(this->position_);
+	}
+
+	/// <summary>
+	/// 最終地点の設定
+	/// </summary>
+	/// <param name="position">Y座標</param>
+	inline void SetFinalPositionY(const int32_t& positionY) {
+		this->finalPosition_ = { .x = this->initialPosition_.x,.y = positionY };
+	}
 
 	/// <summary>
 	/// ゲージのスケールを設定
@@ -101,12 +106,19 @@ public:
 		this->frame_->SetScale(scale);
 	}
 
-	
+	/// <summary>
+	/// メインのスケールを設定
+	/// </summary>
+	/// <param name="scale"></param>
 	inline void SetMainScale(const Vector2<float_t>& scale) {
 		this->back_->SetScale(scale);
 		this->main_->SetScale(scale);
 	}
 
+	/// <summary>
+	/// フレームのスケールを設定
+	/// </summary>
+	/// <param name="scale"></param>
 	inline void SetFrameScale(const Vector2<float_t>& scale) {
 		this->frame_->SetScale(scale);
 	}
@@ -126,6 +138,14 @@ public:
 	/// <returns>ゲージの通常表示座標</returns>
 	inline Vector2<int32_t> GetGaugePosition()const {
 		return position_;
+	}
+
+	/// <summary>
+	/// 最終地点の取得
+	/// </summary>
+	/// <returns>座標</returns>
+	inline Vector2<int32_t> GetFinalPosition()const {
+		return finalPosition_;
 	}
 
 	/// <summary>
@@ -166,8 +186,11 @@ private:
 	//ゲージの座標
 	//初期座標
 	Vector2<int32_t>initialPosition_ = {};
-	//通常座標
+	//座標
 	Vector2<int32_t>position_ = {};
+	//最終地点
+	Vector2<int32_t>finalPosition_ = {};
+
 
 	//総ノーツ数
 	uint16_t totalNotes_ = 0u;

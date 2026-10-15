@@ -34,10 +34,6 @@ void PlayMainScene::Initialize() {
 	//ノーマルタップノーツのモデルを読み込む
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
-	//判定線のモデルを生成
-	judgementLine_ = std::make_unique<JudgementLine>();
-	judgementLine_->Initialize(normalNoteModelHandle);
-
 #pragma region ノーツの生成
 
 	//通常ノーツの生成
@@ -46,7 +42,7 @@ void PlayMainScene::Initialize() {
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
 		normalTapNote->SetInitialPositionX(INITIAL_POSITION_X_);
-		normalTapNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		normalTapNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
@@ -57,7 +53,7 @@ void PlayMainScene::Initialize() {
 		//初期化
 		hiPassLongNote->Initialize(normalNoteModelHandle);
 		hiPassLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
-		hiPassLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		hiPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		highPassLongNoteArray_[i] = std::move(hiPassLongNote);
 	}
@@ -68,7 +64,7 @@ void PlayMainScene::Initialize() {
 		//初期化
 		lowPassLongNote->Initialize(normalNoteModelHandle);
 		lowPassLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
-		lowPassLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		lowPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		lowPassLongNoteArray_[i] = std::move(lowPassLongNote);
 	}
@@ -79,7 +75,7 @@ void PlayMainScene::Initialize() {
 		//初期化
 		tranceGateEighthLongNote->Initialize(normalNoteModelHandle);
 		tranceGateEighthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
-		tranceGateEighthLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		tranceGateEighthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateEighthLongNoteArray_[i] = std::move(tranceGateEighthLongNote);
 	}
@@ -90,7 +86,7 @@ void PlayMainScene::Initialize() {
 		//初期化
 		tranceGateSixteenthLongNote->Initialize(normalNoteModelHandle);
 		tranceGateSixteenthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
-		tranceGateSixteenthLongNote->SetJudgmentPositionX(judgementLine_->GetJudgementPositionX());
+		tranceGateSixteenthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateSixteenthLongNoteArray_[i] = std::move(tranceGateSixteenthLongNote);
 	}
@@ -155,8 +151,7 @@ void PlayMainScene::Update() {
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;
 	}
-	//判定線の更新
-	judgementLine_->Update();
+	
 
 #ifdef _DEBUG
 	ImGui::Begin("プレイシーン");
@@ -244,8 +239,7 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
-	//判定線の描画
-	judgementLine_->Draw(camera, baseLight);
+	
 
 }
 
