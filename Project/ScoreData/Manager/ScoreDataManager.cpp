@@ -1,10 +1,10 @@
 #include "ScoreDataManager.h"
 
 #include <fstream>
+#include <magic_enum/magic_enum.hpp>
 #include <Audio.h>
 #include <ScoreData/MusicScoreData.h>
 #include <StringOption.h>
-#include <ScoreData/Difficulty.h>
 
 ScoreDataManager::ScoreDataManager(){
 	//オーディオクラス
@@ -14,12 +14,18 @@ ScoreDataManager::ScoreDataManager(){
 void ScoreDataManager::Initialize(){
 
 	///フォルダの名前を取得
-	std::vector<std::string>folderNameVector= GetFoldername(MUSIC_SCORE_PATH_);
+	std::vector<std::string>musicNameVector= GetFolderName(MUSIC_SCORE_PATH_);
 	//難易度の名前を取得
-	std::vector<std::string>difficultynameVector={};
-	//Difficulty
+	std::vector<std::string>difficultyNameVector ={};
+
+	//難易度
 	for (uint8_t i = 0u;i < static_cast<uint8_t>(Difficulty::Size);i++) {
-		difficultynameVector;
+		//名前を取り出す
+		std::string_view difficulty = magic_enum::enum_name(static_cast<Difficulty>(i));
+		//std::stringに変換
+		std::string convertDifficulty(difficulty);
+		//挿入
+		difficultyNameVector.push_back(convertDifficulty);
 	}
 
 
@@ -36,6 +42,8 @@ void ScoreDataManager::Initialize(){
 void ScoreDataManager::Load(const std::string& path) {
 	//パスの結合
 	std::string fullFilePath = MUSIC_SCORE_PATH_ + "/" + path;
+
+
 
 	//JSON文字列から解凍したデータ
 	nlohmann::json deserialized = Deserialize(fullFilePath);
@@ -151,7 +159,7 @@ nlohmann::json ScoreDataManager::Deserialize(const std::string& fullFilePath) {
 	return data;
 }
 
-std::vector<std::string> ScoreDataManager::GetFoldername(const std::filesystem::path& path){
+std::vector<std::string> ScoreDataManager::GetFolderName(const std::filesystem::path& path){
 	//記録
 	std::vector<std::string>folderName;
 	//指定したパスにあるものがフォルダであれば格納

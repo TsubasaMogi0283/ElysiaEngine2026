@@ -8,6 +8,7 @@
 #include <nlohmannJSON/json.hpp>
 #include <ScoreData/NoteInformation.h>
 #include <ScoreData/MusicScoreData.h>
+#include <ScoreData/Difficulty.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -61,7 +62,7 @@ private:
 	/// </summary>
 	/// <param name="path"></param>
 	/// <returns></returns>
-	std::vector<std::string>GetFoldername(const std::filesystem::path& path);
+	std::vector<std::string>GetFolderName(const std::filesystem::path& path);
 
 public:
 	MusicScoreData GetMusicScoreData(const std::string& id,const std::string& level) {
@@ -107,9 +108,23 @@ private:
 	//譜面が入っているフォルダパス
 	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore";
 
+public:
+	/// <summary>
+	/// 譜面データの存在チェック
+	/// </summary>
+	struct ExistScoreData {
+		//楽曲名
+		std::string musicName;
+		//難易度存在チェック
+		std::array<bool, static_cast<uint8_t>(Difficulty::Size)>isExistDifficulty;
+	};
+
+private:
+
 	//各譜面情報
 	std::map<std::string,MusicScoreData> musicInformation = {};
-
+	//譜面データチェック
+	std::vector<ExistScoreData>existScoreDataVector_ = {};
 	
 };
 
