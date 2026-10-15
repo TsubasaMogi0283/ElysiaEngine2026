@@ -12,6 +12,10 @@ ScoreDataManager::ScoreDataManager(){
 }
 
 void ScoreDataManager::Initialize(){
+
+	///フォルダの名前を取得
+	std::vector<std::string>folderName= GetFoldername(MUSIC_SCORE_PATH_);
+
 	//基本的には譜面データはJSONでやる
 	Load("HighwaySunset/HighwaySunset_Easy.json");
 
@@ -24,7 +28,7 @@ void ScoreDataManager::Initialize(){
 
 void ScoreDataManager::Load(const std::string& path) {
 	//パスの結合
-	std::string fullFilePath = MUSIC_SCORE_PATH_ + path;
+	std::string fullFilePath = MUSIC_SCORE_PATH_ + "/" + path;
 
 	//JSON文字列から解凍したデータ
 	nlohmann::json deserialized = Deserialize(fullFilePath);
@@ -45,30 +49,30 @@ void ScoreDataManager::Load(const std::string& path) {
 	const std::string TITLE = deserialized["title"].get<std::string>();
 	//作曲
 	const std::string PRODUCE = deserialized["produce"].get<std::string>();
-	//レベル
-	const std::string LEVEL = deserialized["level"].get<std::string>();
 	//難易度
 	const std::string DIFFICULTY = deserialized["difficulty"].get<std::string>();
+	//レベル
+	const std::string LEVEL = deserialized["level"].get<std::string>();
 	//BPM
 	const std::string BPM = deserialized["bpm"].get<std::string>();
 	//オフセット
 	const std::string OFFSET = deserialized["offset"].get<std::string>();
 	//ID
-	const std::string ID = deserialized["id"].get<std::string>();
+	const std::string ID = TITLE + "_" + LEVEL;
 	//楽曲ファイル名
 	const std::string MUSIC_FILE_NAME = deserialized["filename"].get<std::string>();
 	//拡張子を取得
-	std::string MUSIC_FULL_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_+MUSIC_FILE_NAME, MUSIC_FILE_NAME);
+	std::string MUSIC_FULL_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_+"/" + MUSIC_FILE_NAME, MUSIC_FILE_NAME);
 	//楽曲ファイルパス
-	std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + MUSIC_FILE_NAME +"/" + MUSIC_FILE_NAME + MUSIC_FULL_EXTENSION;
+	std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME +"/" + MUSIC_FILE_NAME + MUSIC_FULL_EXTENSION;
 
 	//ハンドルとパスを記録
 	MusicScoreData musicNotesData = {};
 	const MusicInformation MUSIC_INFORMATION = {
 		.title = TITLE,
 		.produce = PRODUCE,
-		.level = LEVEL,
-		.difficulty = std::atoi(DIFFICULTY.c_str()),
+		.difficulty = DIFFICULTY,
+		.level = std::atoi( LEVEL.c_str()),
 		.bpm = static_cast<float_t>(std::atof(BPM.c_str())),
 		.offset = static_cast<float_t>(std::atof(OFFSET.c_str())),
 		.id = ID,
@@ -149,4 +153,17 @@ nlohmann::json ScoreDataManager::Deserialize(const std::string& fullFilePath) {
 
 	//値を返す
 	return data;
+}
+
+std::vector<std::string> ScoreDataManager::GetFoldername(const std::filesystem::path& path){
+	//記録
+	std::vector<std::string>folderName;
+	//指定したパスにあるものがフォルダであれば格納
+	for (const auto& entry : std::filesystem::directory_iterator(path)) {
+		if (entry.is_directory()) {
+			folderName.push_back(entry.path().filename().string());
+		}
+	}
+
+	return folderName;
 }

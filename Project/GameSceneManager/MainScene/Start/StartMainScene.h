@@ -215,7 +215,7 @@ private:
 
 	//楽曲情報
 	int32_t bpm_ = 0;
-	std::string level_ = "";
+	std::string difficulty_ = "";
 
 	//全ての状態の処理が終わったかどうか
 	bool isProcessEnd_ = false;

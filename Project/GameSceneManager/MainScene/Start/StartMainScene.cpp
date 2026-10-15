@@ -108,18 +108,18 @@ void StartMainScene::Initialize() {
 	//BPMの取得
 	bpm_ = static_cast<int32_t>(mainScene_->GetScoreData().musicInformation.bpm);
 	//レベルの取得
-	level_ = mainScene_->GetScoreData().musicInformation.level;
+	difficulty_ = mainScene_->GetScoreData().musicInformation.difficulty;
 
 	//線
 	//レベルによって色を変える
 	Vector4<float_t> levelColor = {};
-	if (level_ == "Easy") {
+	if (difficulty_ == "Easy") {
 		levelColor = Color::Conevert(Color::EASY);
-	} else if (level_ == "Normal") {
+	} else if (difficulty_ == "Normal") {
 		levelColor = Color::Conevert(Color::NORMAL);
-	} else if (level_ == "Hard") {
+	} else if (difficulty_ == "Hard") {
 		levelColor = Color::Conevert(Color::HARD);
-	} else if (level_ == "Special") {
+	} else if (difficulty_ == "Special") {
 		levelColor = Color::Conevert(Color::SPECIAL);
 	}
 

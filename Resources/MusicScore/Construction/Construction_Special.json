@@ -1,11 +1,10 @@
 {
 	"title": "Construction",
 			 "produce": "145",
-			 "level": "Special",
-			 "difficulty": "1",
+			 "difficulty": "Special",
+			 "level": "1",
 			 "bpm": "145.0",
 			 "offset": "0.0",
-			"id": "Construction_Special",
 			"filename":"Construction",
 	"data": [
 		{

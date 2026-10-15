@@ -2,6 +2,9 @@
 
 #include <vector>
 #include <map>
+#include <filesystem>
+#include <string>
+
 #include <nlohmannJSON/json.hpp>
 #include <ScoreData/NoteInformation.h>
 #include <ScoreData/MusicScoreData.h>
@@ -53,6 +56,12 @@ private:
 	/// </summary>
 	static nlohmann::json Deserialize(const std::string& fullFilePath);
 
+	/// <summary>
+	/// 全てのフォルダの名前を取得する
+	/// </summary>
+	/// <param name="path"></param>
+	/// <returns></returns>
+	std::vector<std::string>GetFoldername(const std::filesystem::path& path);
 
 public:
 	MusicScoreData GetMusicScoreData(const std::string& id,const std::string& level) {
@@ -96,10 +105,11 @@ private:
 
 private:
 	//譜面が入っているフォルダパス
-	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore/";
+	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore";
 
 	//各譜面情報
 	std::map<std::string,MusicScoreData> musicInformation = {};
+
 	
 };
 

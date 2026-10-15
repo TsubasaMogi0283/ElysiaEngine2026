@@ -122,12 +122,8 @@ void MainScene::Initialize() {
 	judgementLine_ = std::make_unique<JudgementLine>();
 	judgementLine_->Initialize(normalNoteModelHandle);
 
-	//メインシーンの中
+	//メインシーン
 	baseMainScene_ = std::make_unique<StartMainScene>();
-#ifdef _DEBUG
-	baseMainScene_ = std::make_unique<StartMainScene>();
-#endif // _DEBUG
-
 	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
 
