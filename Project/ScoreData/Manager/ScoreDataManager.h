@@ -45,7 +45,7 @@ private:
 	/// 譜面データ読み込み
 	/// </summary>
 	/// <param name="path"></param>
-	void Load(const std::string& path);
+	bool Load(const std::string& path);
 
 	/// <summary>
 	/// 配置

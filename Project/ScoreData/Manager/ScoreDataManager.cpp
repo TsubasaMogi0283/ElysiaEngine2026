@@ -16,7 +16,7 @@ void ScoreDataManager::Initialize(){
 	///フォルダの名前を取得
 	std::vector<std::string>musicNameVector= GetFolderName(MUSIC_SCORE_PATH_);
 	//難易度の名前を取得
-	std::vector<std::string>difficultyNameVector ={};
+	std::array<std::string, static_cast<uint8_t>(Difficulty::Size)>difficultyNameVector ={};
 
 	//難易度
 	for (uint8_t i = 0u;i < static_cast<uint8_t>(Difficulty::Size);i++) {
@@ -24,27 +24,46 @@ void ScoreDataManager::Initialize(){
 		std::string_view difficulty = magic_enum::enum_name(static_cast<Difficulty>(i));
 		//std::stringに変換
 		std::string convertDifficulty(difficulty);
-		//挿入
-		difficultyNameVector.push_back(convertDifficulty);
+		//記録
+		difficultyNameVector[i] = convertDifficulty;
 	}
 
 
 	//基本的には譜面データはJSONでやる
-	Load("HighwaySunset/HighwaySunset_Easy.json");
+	for (uint8_t i = 0u; i < musicNameVector.size(); i++) {
+		
+		//楽曲名を記録
+		ExistScoreData existScoreData = {};
+		existScoreData.musicName = musicNameVector[i];
 
-	//Construction
-	Load("Construction/Construction_Easy.json");
-	Load("Construction/Construction_Normal.json");
-	Load("Construction/Construction_Hard.json");
-	Load("Construction/Construction_Special.json");
+		for (uint8_t j = 0u; j < static_cast<uint8_t>(Difficulty::Size); j++) {
+			//例:HighwaySunset/HighwaySunset_Easy.json
+			std::string scorePath = musicNameVector[i] + "/" + musicNameVector[i] + "_" + difficultyNameVector[j] + ".json";
+			
+			//読み込み出来たら記録
+			if (Load(scorePath)) {
+				existScoreDataVector_.push_back
+
+			}
+		}
+		existScoreData.isExistDifficulty();
+
+
+
+	}
+
+	musicInformation;
 }
 
-void ScoreDataManager::Load(const std::string& path) {
+bool ScoreDataManager::Load(const std::string& path) {
 	//パスの結合
 	std::string fullFilePath = MUSIC_SCORE_PATH_ + "/" + path;
 
-
-
+	//見つからなかったら横む必要はないのでreturn 
+	if (!std::filesystem::exists(fullFilePath)) {
+		return false;
+	}
+	
 	//JSON文字列から解凍したデータ
 	nlohmann::json deserialized = Deserialize(fullFilePath);
 	
@@ -91,6 +110,7 @@ void ScoreDataManager::Load(const std::string& path) {
 	//挿入
 	musicInformation.insert(make_pair(MUSIC_INFORMATION.id,musicNotesData));
 
+	return true;
 }
 
 void ScoreDataManager::Place(MusicScoreData& musicNotesData, const nlohmann::json& deserialized) {
