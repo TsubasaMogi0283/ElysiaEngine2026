@@ -44,13 +44,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PublicIncludeDirectories>$(SolutionDir)External\nlohmannJSON;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <PublicIncludeDirectories>$(SolutionDir)External\nlohmannJSON;$(SolutionDir)External\magic_enum;$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\ImGui;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Generated\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <PublicIncludeDirectories>$(SolutionDir)External\nlohmannJSON;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <PublicIncludeDirectories>$(SolutionDir)External\nlohmannJSON;$(SolutionDir)External\magic_enum;$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\ImGui;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Generated\obj\$(ProjectName)\$(Configuration)\</IntDir>
@@ -235,6 +235,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
     <ProjectReference Include="External\ImGui\ImGui.vcxproj">
       <Project>{0f410817-3951-48cc-b7e1-b0d424d9e376}</Project>
+    </ProjectReference>
+    <ProjectReference Include="External\magic_enum\magic_enum.vcxproj">
+      <Project>{a5854b22-251f-4c84-8af8-8c36fd714e6f}</Project>
     </ProjectReference>
     <ProjectReference Include="External\nlohmannJSON\nlohmannJSON.vcxproj">
       <Project>{6a069f8d-4e27-4764-bbbd-f5522ceb957d}</Project>
