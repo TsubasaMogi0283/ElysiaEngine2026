@@ -171,11 +171,12 @@ void MainScene::Update() {
 }
 
 void MainScene::DrawObject3D() {
-	//オブジェクトの描画
-
-
+	
 	//判定線の描画
 	judgementLine_->Draw(camera_, directionalLight_);
+	//オブジェクトの描画
+	baseMainScene_->DrawObject3D(camera_, directionalLight_);
+
 }
 
 void MainScene::PreDrawPostEffect() {
