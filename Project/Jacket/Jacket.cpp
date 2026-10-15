@@ -1,5 +1,6 @@
 #include "Jacket.h"
 
+
 #include <algorithm>
 #include <TextureManager.h>
 #include <WindowsSetup.h>
@@ -43,6 +44,9 @@ void Jacket::Initialize(const std::vector<uint32_t> jacketTextureHandleVector, c
 		//挿入
 		assetVector_.push_back(std::move(asset));
 	}
+
+	//初期位置
+	specialHsv_ = { .hue = 1.0f,.saturation = 1.0f,.value = 1.0f,.a = 1.0f };
 
 	//初期化済みに設定
 	isInitialized_ = true;
@@ -96,6 +100,7 @@ void Jacket::Update() {
 
 			//難易度によって色を変える
 			Vector4<float_t> frameColor = {};
+			
 			switch (selectedDifficulty_) {
 			case Difficulty::Easy:
 				//簡単の色を設定
@@ -115,7 +120,9 @@ void Jacket::Update() {
 			case Difficulty::Special:
 				//特別の色を設定
 				//虹でもあり?笑
-				frameColor = Color::Conevert(Color::SPECIAL);
+				specialHsv_.hue += 0.25f * DELTA_TIME_;
+				specialHsv_.hue -= std::floor(specialHsv_.hue);
+				frameColor = Color::HsvToRgb(specialHsv_);
 				break;
 			}
 

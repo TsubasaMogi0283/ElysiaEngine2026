@@ -10,6 +10,7 @@
 #include <string>
 #include <Sprite.h>
 #include <ScoreData/Difficulty.h>
+#include <Hsv.h>
 
  /// <summary>
  /// ElysiaEngine(前方宣言)
@@ -83,7 +84,7 @@ public:
 
 		//ジャケット情報が入って初期化されていないと使えないようにする
 		assert(isInitialized_);
-		if (currentSelectNumber_ < assetVector_.size()) {
+		if (currentSelectNumber_ < assetVector_.size()-1u) {
 			//選択している番号を増やす
 			this->currentSelectNumber_++;
 			//移動する
@@ -178,6 +179,9 @@ private:
 	bool isInitialized_ = false;
 	//処理終了
 	bool isProcessEnd_ = false;
+
+	//難易度Specialの色
+	Hsv specialHsv_ = {};
 
 };
 
