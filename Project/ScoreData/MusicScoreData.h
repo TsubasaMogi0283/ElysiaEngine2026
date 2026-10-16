@@ -8,6 +8,9 @@
 
 #include <vector>
 #include <string>
+#include <array>
+
+#include <ScoreData/Difficulty.h>
 #include <ScoreData/MusicInformation.h>
 #include <ScoreData/NoteInformation.h>
 #include <ScoreData/NoteBarInformation.h>
@@ -34,4 +37,15 @@ struct MusicScoreData {
 	//1小節ごとのデータ
 	//ScoreDataManagerで譜面を読み込むときに使用する
 	std::vector<NoteBarInformation> newNotesData = {};
+};
+
+
+/// <summary>
+/// 譜面データの存在チェック
+/// </summary>
+struct ExistMusicScoreData {
+	//楽曲名
+	std::string musicName;
+	//難易度存在チェック
+	std::array<bool, static_cast<uint8_t>(Difficulty::Size)>isExistDifficulty;
 };

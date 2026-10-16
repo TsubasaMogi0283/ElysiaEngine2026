@@ -15,9 +15,9 @@ void ScoreDataManager::Initialize(){
 
 	///フォルダの名前を取得
 	std::vector<std::string>musicNameVector= GetFolderName(MUSIC_SCORE_PATH_);
+
 	//難易度の名前を取得
 	std::array<std::string, static_cast<uint8_t>(Difficulty::Size)>difficultyNameVector ={};
-
 	//難易度
 	for (uint8_t i = 0u;i < static_cast<uint8_t>(Difficulty::Size);i++) {
 		//名前を取り出す
@@ -28,29 +28,24 @@ void ScoreDataManager::Initialize(){
 		difficultyNameVector[i] = convertDifficulty;
 	}
 
+	//楽曲数分サイズを変更する
+	existScoreDataVector_.resize(musicNameVector.size());
 
 	//基本的には譜面データはJSONでやる
 	for (uint8_t i = 0u; i < musicNameVector.size(); i++) {
 		
 		//楽曲名を記録
-		ExistScoreData existScoreData = {};
-		existScoreData.musicName = musicNameVector[i];
+		existScoreDataVector_[i].musicName = musicNameVector[i];
 
 		for (uint8_t j = 0u; j < static_cast<uint8_t>(Difficulty::Size); j++) {
 			//例:HighwaySunset/HighwaySunset_Easy.json
 			std::string scorePath = musicNameVector[i] + "/" + musicNameVector[i] + "_" + difficultyNameVector[j] + ".json";
 			
 			//読み込み出来たら記録
-			if (Load(scorePath)) {
-				existScoreDataVector_.push_back
-
-			}
+			existScoreDataVector_[i].isExistDifficulty[j] = Load(scorePath);
 		}
-		existScoreData.isExistDifficulty();
-
-
-
 	}
+	existScoreDataVector_;
 
 	musicInformation;
 }
