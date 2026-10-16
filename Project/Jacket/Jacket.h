@@ -116,6 +116,10 @@ public:
 		this->selectedDifficulty_ = difficulty;
 	}
 
+	inline void DownDifficulty() {
+
+	}
+
 
 	/// <summary>
 	/// 決定の設定

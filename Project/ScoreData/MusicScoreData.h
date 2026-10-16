@@ -29,6 +29,9 @@ struct MusicScoreData {
 	MusicInformation musicInformation = {};
 	//楽曲ハンドル
 	int32_t musicHandle = -1;
+	//ジャケットテクスチャハンドル
+	int32_t textureHandle = -1;
+
 	//譜面のパス
 	std::string fullFilePath_="";
 	//総ノーツ数

@@ -102,16 +102,12 @@ void SelectScene::Update(){
 		}
 	}
 
-	
 	//ジャケット
 	jacket_->Update();
-
 	//カメラ
 	camera_.Update();
 	//平行光源
 	directionalLight_.Update();
-
-	
 
 	//指定時間を超えたらビネット
 	//仮置きでトランジェント
@@ -119,7 +115,6 @@ void SelectScene::Update(){
 		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
 			isEnd_ = true;
 		}
-
 	}
 
 	//メインシーン
@@ -128,14 +123,12 @@ void SelectScene::Update(){
 		return;
 	}
 
-
 #ifdef _DEBUG
 	ImGui::Begin("テストシーンカメラ");
 	ImGui::SliderFloat3("回転", &camera_.rotate.x, -3.0f, 3.0f);
 	ImGui::SliderFloat3("座標", &camera_.translate.x, -30.0f, 30.0f);
 	ImGui::End();
 #endif // _DEBUG
-
 
 }
 

@@ -14,10 +14,16 @@
 /// ElysiaEngine(前方宣言)
 /// </summary>
 namespace Elysia{
+	
 	/// <summary>
 	/// オーディオ
 	/// </summary>
 	class Audio;
+
+	/// <summary>
+	/// テクスチャ管理クラス
+	/// </summary>
+	class TextureManager;
 }
 
 /// <summary>
@@ -103,7 +109,8 @@ public:
 private:
 	//オーディオ
 	Elysia::Audio* audio_ = nullptr;
-
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
 private:
 	//譜面が入っているフォルダパス
 	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore";

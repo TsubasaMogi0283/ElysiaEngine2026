@@ -3,12 +3,16 @@
 #include <fstream>
 #include <magic_enum/magic_enum.hpp>
 #include <Audio.h>
+#include <TextureManager.h>
 #include <ScoreData/MusicScoreData.h>
 #include <StringOption.h>
 
 ScoreDataManager::ScoreDataManager(){
-	//オーディオクラス
+	//インスタンスの取得
+	//オーディオ
 	audio_ = Elysia::Audio::GetInstance();
+	//テクスチャ
+	textureManager_ = Elysia::TextureManager::GetInstance();
 }
 
 void ScoreDataManager::Initialize(){
@@ -45,9 +49,6 @@ void ScoreDataManager::Initialize(){
 			existScoreDataVector_[i].isExistDifficulty[j] = Load(scorePath);
 		}
 	}
-	existScoreDataVector_;
-
-	musicInformation;
 }
 
 bool ScoreDataManager::Load(const std::string& path) {
@@ -79,10 +80,15 @@ bool ScoreDataManager::Load(const std::string& path) {
 	const std::string ID = TITLE + "_" + LEVEL;
 	//楽曲ファイル名
 	const std::string MUSIC_FILE_NAME = deserialized["filename"].get<std::string>();
-	//拡張子を取得
-	std::string MUSIC_FULL_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_+"/" + MUSIC_FILE_NAME, MUSIC_FILE_NAME);
+	//楽曲の拡張子を取得
+	const std::string MUSIC_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_+"/" + MUSIC_FILE_NAME, MUSIC_FILE_NAME);
 	//楽曲ファイルパス
-	std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME +"/" + MUSIC_FILE_NAME + MUSIC_FULL_EXTENSION;
+	const std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME +"/" + MUSIC_FILE_NAME + MUSIC_EXTENSION;
+	
+	//ジャケットの拡張子を取得
+	const std::string JACKET_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME, MUSIC_FILE_NAME + "_Jacket");
+	//ジャケットのパス
+	const std::string TEXTURE_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME + "/" + MUSIC_FILE_NAME + "_Jacket" + JACKET_EXTENSION;
 
 	//ハンドルとパスを記録
 	MusicScoreData musicNotesData = {};
@@ -93,17 +99,18 @@ bool ScoreDataManager::Load(const std::string& path) {
 		.level = std::atoi( LEVEL.c_str()),
 		.bpm = static_cast<float_t>(std::atof(BPM.c_str())),
 		.offset = static_cast<float_t>(std::atof(OFFSET.c_str())),
-		.id = ID,
 		.fileName = MUSIC_FILE_NAME,
 	};
 	//挿入
 	musicNotesData.musicInformation = MUSIC_INFORMATION;
 	musicNotesData.fullFilePath_ = fullFilePath;
 	musicNotesData.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
+	musicNotesData.textureHandle = textureManager_->Load(TEXTURE_FULL_FILE_PATH);
+
 	//ノーツの配置
 	Place(musicNotesData, deserialized);
 	//挿入
-	musicInformation.insert(make_pair(MUSIC_INFORMATION.id,musicNotesData));
+	musicInformation.insert(make_pair(ID,musicNotesData));
 
 	return true;
 }
