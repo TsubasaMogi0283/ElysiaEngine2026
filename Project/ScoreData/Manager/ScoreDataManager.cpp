@@ -56,7 +56,7 @@ void ScoreDataManager::Initialize(){
 			//見つからなかったら譜面データを読み込み
 			if (std::filesystem::exists(fullFilePath)) {
 				existScoreDataVector_[i].isExistDifficulty[j] = true;
-				existScoreDataVector_[i].musicScoreData[j] = Load(scorePath);
+				existScoreDataVector_[i].musicScoreData[j] = Load(fullFilePath);
 			}
 			else {
 				existScoreDataVector_[i].isExistDifficulty[j] = false;
@@ -66,6 +66,20 @@ void ScoreDataManager::Initialize(){
 }
 
 MusicScoreData ScoreDataManager::Load(const std::string& path) {
+
+
+
+
+	//Load("Construction/Construction_Easy.json");
+	//Load("Construction/Construction_Normal.json");
+	//Load("Construction/Construction_Hard.json");
+	//Load("Construction/Construction_Special.json");
+	//
+	//
+	////パスの結合
+	//std::string fullFilePath = "Resources/MusicScore"+"/" + "Construction/Construction_Special.json";
+	
+	
 	//JSON文字列から解凍したデータ
 	nlohmann::json deserialized = Deserialize(path);
 	

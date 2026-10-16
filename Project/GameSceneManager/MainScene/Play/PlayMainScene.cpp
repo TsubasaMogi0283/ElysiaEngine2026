@@ -140,7 +140,7 @@ void PlayMainScene::Update() {
 		//上
 		NoteFlow(musicScoreData_.upInformation, upLaneCondition);
 		//下
-		NoteFlow(musicScoreData_.upInformation, downLaneCondition);
+		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
 
 		//ポーズ処理
 		Pause();
