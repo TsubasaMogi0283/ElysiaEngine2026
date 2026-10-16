@@ -40,10 +40,16 @@ namespace Elysia {
 	/// モデル管理クラス
 	/// </summary>
 	class ModelManager;
+
 	/// <summary>
 	/// 入力クラス
 	/// </summary>
 	class Input;
+
+	/// <summary>
+	/// オーディオ
+	/// </summary>
+	class Audio;
 
 }
 
@@ -112,7 +118,8 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
-
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
 private:
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
@@ -146,4 +153,9 @@ private:
 	float_t waitingTime_ = 0.0f;
 	//終了
 	bool isEnd_ = false;
+
+
+
+	bool isPlay_ = false;
+
 };

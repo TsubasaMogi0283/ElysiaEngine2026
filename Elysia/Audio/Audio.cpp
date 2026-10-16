@@ -69,30 +69,9 @@ uint32_t Elysia::Audio::Load(const std::string& fileName) {
 		return Elysia::Audio::GetInstance()->audioInformation_[fileName].handle;
 	}
 
-	//拡張子を探す
-	size_t dotPosition = fileName.find('.');
-	std::string extension = {};
-	if (dotPosition != std::string::npos) {
-		//「/」から最後まで
-		extension = fileName.substr(dotPosition + 1);
-	}
 
+	return LoadMP3(fileName);
 
-	//返す値
-	uint32_t result = 0u;
-
-	//wavの場合
-	if (extension == "wav") {
-		return result = LoadWave(fileName);
-	}
-	//mp3の場合
-	else if (extension == "mp3") {
-		return result = LoadMP3(fileName);
-	}
-
-
-	//無かったら空を返す
-	return result;
 
 }
 //読み込み
@@ -497,7 +476,6 @@ void Elysia::Audio::ExitLoop(const uint32_t& audioHandle) {
 	assert(SUCCEEDED(hResult));
 }
 
-
 void Elysia::Audio::AfterLoopPlayWave(const uint32_t& audioHandle, const float_t& second) {
 	//ファイルキーの取得
 	std::string fileKey = GetAudioInformationKey(audioHandle);
@@ -526,7 +504,6 @@ void Elysia::Audio::AfterLoopPlayWave(const uint32_t& audioHandle, const float_t
 	assert(SUCCEEDED(hResult));
 
 }
-
 
 void Elysia::Audio::BeforeLoopPlayWave(const uint32_t& audioHandle, const float_t& lengthSecond) {
 	//こっちは前半でループ
@@ -559,7 +536,6 @@ void Elysia::Audio::BeforeLoopPlayWave(const uint32_t& audioHandle, const float_
 
 }
 
-
 void Elysia::Audio::PartlyLoopPlayWave(const uint32_t& audioHandle, const float_t& start, const float_t& lengthSecond) {
 	//別名サスティンループというらしい
 	//シンセとかにあるサスティンと関係があるのかな
@@ -567,7 +543,6 @@ void Elysia::Audio::PartlyLoopPlayWave(const uint32_t& audioHandle, const float_
 
 	//ファイルキーの取得
 	std::string fileKey = GetAudioInformationKey(audioHandle);
-
 
 	//再生する波形データの設定
 	XAUDIO2_BUFFER buffer{};
@@ -592,6 +567,44 @@ void Elysia::Audio::PartlyLoopPlayWave(const uint32_t& audioHandle, const float_
 	hResult = audioInformation_[fileKey].sourceVoice->Start(0);
 	assert(SUCCEEDED(hResult));
 
+}
+
+void Elysia::Audio::PartlyLoopPlayMp3(const uint32_t& audioHandle, const float_t& startTime, const float_t& endTime){
+	//ファイルキーの取得
+	std::string fileKey = GetAudioInformationKey(audioHandle);
+
+
+	//同じものが再生されていたら一旦止める
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
+	assert(SUCCEEDED(hResult));
+
+	hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
+	assert(SUCCEEDED(hResult));
+
+
+
+	//bufferの設定
+	XAUDIO2_BUFFER buffer{};
+	buffer.pAudioData = audioInformation_[fileKey].mediaData.data();
+	buffer.AudioBytes = sizeof(BYTE) * static_cast<UINT32>(Elysia::Audio::GetInstance()->audioInformation_[fileKey].mediaData.size());
+	buffer.Flags = XAUDIO2_END_OF_STREAM;
+	//ここでループ回数を設定
+	buffer.LoopCount = XAUDIO2_LOOP_INFINITE;
+	//長いので新しく変数を作って分かりやすくする
+	int32_t samplingRate = Elysia::Audio::GetInstance()->audioInformation_[fileKey].soundData.wfex.nSamplesPerSec;
+
+	//ここでループしたい位置を設定してあげる
+	buffer.LoopBegin = static_cast<uint32_t>(startTime * static_cast<float_t>(samplingRate));
+	buffer.LoopLength = static_cast<uint32_t>((endTime-startTime) * static_cast<float_t>(samplingRate));
+
+	//Buffer登録
+	hResult = audioInformation_[fileKey].sourceVoice->SubmitSourceBuffer(&buffer);
+	assert(SUCCEEDED(hResult));
+
+
+	//波形データの再生
+	hResult = audioInformation_[fileKey].sourceVoice->Start(0);
+	assert(SUCCEEDED(hResult));
 }
 
 #pragma endregion

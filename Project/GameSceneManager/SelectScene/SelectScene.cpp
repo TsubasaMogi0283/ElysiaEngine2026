@@ -8,6 +8,7 @@
 #include "ModelManager.h"
 #include <GameSceneManager.h>
 #include <TextureManager.h>
+#include <Audio.h>
 #include <StringOption.h>
 
 SelectScene::SelectScene(){
@@ -18,6 +19,8 @@ SelectScene::SelectScene(){
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
+	//オーディオ
+	audio_ = Elysia::Audio::GetInstance();
 }
 
 void SelectScene::Initialize(){
@@ -69,10 +72,15 @@ void SelectScene::Update(){
 		//右に選択
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
+			audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
+			
+			isPlay_ = false;
 		}
 		//左に選択
 		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
 			jacket_->SetIsMoveToLeft(true);
+			audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
+			isPlay_ = false;
 		}
 
 		//難易度の設定
@@ -93,12 +101,29 @@ void SelectScene::Update(){
 			jacket_->SetIsDecide();
 			//選択した楽曲のデータを取得
 			gameSceneManager_->SetMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
-			
-			
-			
-
 		}
 
+		currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();
+
+		
+		
+		float_t startTime = 0.0f;
+		float_t endTime = 0.0f;
+		if (currentSelectedMusicNumber_ == 0) {
+			startTime = 0.0f;
+			endTime = 2.0f;
+			
+		}
+		else if (currentSelectedMusicNumber_ == 1) {
+			startTime = 49.5f;
+			endTime = 62.0;
+		}
+
+		if (!isPlay_) {
+			audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+			isPlay_ = true;
+		}
+		
 		//処理終了
 		if (jacket_->GetIsProcessEnd()) {
 			//待機時間
@@ -112,8 +137,7 @@ void SelectScene::Update(){
 	camera_.Update();
 	//平行光源
 	directionalLight_.Update();
-	//現在選択している楽曲番号を取得
-	currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();
+	
 
 	//指定時間を超えたらビネット
 	//仮置きでトランジェント
