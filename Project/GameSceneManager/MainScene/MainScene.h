@@ -148,6 +148,31 @@ public:
 	}
 
 	/// <summary>
+	/// 選択した難易度の取得
+	/// </summary>
+	/// <returns>難易度</returns>
+	inline int8_t GetDifficulty()const {
+		return difficulty_;
+	}
+
+	/// <summary>
+	/// 楽曲ハンドルを取得
+	/// </summary>
+	/// <returns>楽曲ハンドル</returns>
+	inline uint32_t GetMusicHandle()const {
+		return musicHandle_;
+	}
+
+	/// <summary>
+	/// ジャケットテクスチャハンドルの取得
+	/// </summary>
+	/// <returns>ジャケットテクスチャハンドル</returns>
+	inline uint32_t GetjacketTextureHandle()const {
+		return jacketTextureHandle_;
+	}
+
+
+	/// <summary>
 	/// ハイスピの設定
 	/// </summary>
 	/// <param name="hiSpeed">ハイスピ</param>
@@ -321,10 +346,15 @@ private:
 	//メインシーンの中で細かく分けるための変数
 	std::unique_ptr<BaseMainScene> baseMainScene_ = nullptr;
 
-	//楽曲情報
-	MusicInformation musicInformation_ = {};
+	//一時保管場所から取得用
 	//譜面データ
 	MusicScoreData musicScoreData_ = {};
+	//難易度
+	int8_t difficulty_ = 0;
+	//ハンドル
+	uint32_t musicHandle_ = 0u;
+	uint32_t jacketTextureHandle_ = 0u;
+
 	//ハイスピ
 	float_t hiSpeed_ = 5.0f;
 

@@ -31,6 +31,10 @@ void PlayMainScene::Initialize() {
 
 	//譜面データを取得
 	musicScoreData_ = mainScene_->GetScoreData();
+	difficulty_ = mainScene_->GetDifficulty();
+	musicHandle_ = mainScene_->GetMusicHandle();
+	jacketTextureHandle_ = mainScene_->GetjacketTextureHandle();
+	
 	//ノーマルタップノーツのモデルを読み込む
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
@@ -111,15 +115,15 @@ void PlayMainScene::Initialize() {
 #pragma endregion
 
 	//楽曲の再生
-	audio_->Play(musicScoreData_.musicHandle, false);
-	musicLength_ = audio_->GetAudioLength(musicScoreData_.musicHandle);
+	audio_->Play(musicHandle_, false);
+	musicLength_ = audio_->GetAudioLength(musicHandle_);
 }
 
 void PlayMainScene::Update() {
 	//再生時間を取得
-	musicTime_ = audio_->GetPlayCurrentTime(musicScoreData_.musicHandle);
+	musicTime_ = audio_->GetPlayCurrentTime(musicHandle_);
 	//楽曲を再生し終わったとき
-	if (audio_->IsEnd(musicScoreData_.musicHandle)) {
+	if (audio_->IsEnd(musicHandle_)) {
 		isPlay_ = false;
 	}
 
@@ -136,7 +140,7 @@ void PlayMainScene::Update() {
 		//上
 		NoteFlow(musicScoreData_.upInformation, upLaneCondition);
 		//下
-		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
+		NoteFlow(musicScoreData_.upInformation, downLaneCondition);
 
 		//ポーズ処理
 		Pause();
@@ -144,7 +148,7 @@ void PlayMainScene::Update() {
 	} 
 	else {
 		//楽曲停止
-		audio_->Stop(musicScoreData_.musicHandle);
+		audio_->Stop(musicHandle_);
 		//結果を記録
 		mainScene_->GetGameSceneManager()->SettemporaryRecord(record_);
 		//終了シーンへ
@@ -734,9 +738,9 @@ void PlayMainScene::Pause() {
 		//再開処理
 		if (pauseAsset_->GetIsEnd()) {
 			//音量をもとに戻す
-			audio_->ChangeVolume(musicScoreData_.musicHandle, 1.0f);
+			audio_->ChangeVolume(musicHandle_, 1.0f);
 			//再生する
-			audio_->Resume(musicScoreData_.musicHandle);
+			audio_->Resume(musicHandle_);
 			//ポーズ解除
 			isPause_ = false;
 			//初期状態に戻す
@@ -765,9 +769,9 @@ void PlayMainScene::Pause() {
 
 void PlayMainScene::Stop() {
 	//ESCAPEでポーズ
-	audio_->Stop(musicScoreData_.musicHandle);
+	audio_->Stop(musicHandle_);
 	//音量も0にする
-	audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
+	audio_->ChangeVolume(musicHandle_, 0.0f);
 	//止めた時間を記録
 	stopTime_ = musicTime_;
 	//ポーズ中にする

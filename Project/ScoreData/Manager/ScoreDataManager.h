@@ -51,7 +51,7 @@ private:
 	/// 譜面データ読み込み
 	/// </summary>
 	/// <param name="path"></param>
-	bool Load(const std::string& path);
+	MusicScoreData Load(const std::string& path);
 
 	/// <summary>
 	/// 配置
@@ -71,13 +71,6 @@ private:
 	std::vector<std::string>GetFolderName(const std::filesystem::path& path);
 
 public:
-	/// <summary>
-	/// 全ての楽曲データを取得
-	/// </summary>
-	/// <returns></returns>
-	std::vector<MusicScoreData> GetAllMusciScoreData()const {
-		return musicScoreData_;
-	}
 
 	/// <summary>
 	/// 楽曲データを取得
@@ -88,11 +81,14 @@ public:
 	MusicScoreData GetMusicScoreData(const std::string& title,const std::string& difficulty) {
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
-		for (size_t i = 0u;i < musicScoreData_.size();i++) {
-			if (musicScoreData_[i].musicInformation.id == title+"_"+difficulty) {
-				return musicScoreData_[i];
+		for (size_t i = 0u; i < existScoreDataVector_.size(); i++) {
+			for (size_t j = 0u; j < existScoreDataVector_[i].musicScoreData.size(); j++) {
+				if (existScoreDataVector_[i].musicScoreData[j].musicInformation.id == title + "_" + difficulty) {
+					return existScoreDataVector_[i].musicScoreData[j];
+				}
 			}
 		}
+
 		return musicScoreData;
 	}
 
@@ -103,11 +99,14 @@ public:
 	MusicScoreData GetSampleMusicScoreData() {
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
-		for (size_t i = 0u;i < musicScoreData_.size();i++) {
-			if (musicScoreData_[i].musicInformation.id == "Construction_Easy") {
-				return musicScoreData_[i];
+		for (size_t i = 0u; i < existScoreDataVector_.size(); i++) {
+			for (size_t j = 0u; j < existScoreDataVector_[i].musicScoreData.size(); j++) {
+				if (existScoreDataVector_[i].musicScoreData[j].musicInformation.id == "Construction_Easy") {
+					return existScoreDataVector_[i].musicScoreData[j];
+				}
 			}
 		}
+
 		return musicScoreData;
 	}
 
@@ -130,8 +129,6 @@ private:
 
 private:
 
-	//各譜面情報
-	std::vector<MusicScoreData> musicScoreData_ = {};
 	//譜面データチェック
 	std::vector<ExistMusicScoreData>existScoreDataVector_ = {};
 	

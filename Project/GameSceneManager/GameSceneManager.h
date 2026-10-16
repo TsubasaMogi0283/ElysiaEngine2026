@@ -93,7 +93,7 @@ namespace Elysia {
 		/// 一時譜面場所
 		/// </summary>
 		/// <param name="musicScoreData"></param>
-		void SetMusicScoreData(const MusicScoreData& musicScoreData) {
+		void SetMusicScoreData(const ExistMusicScoreData& musicScoreData) {
 			this->temporarymusicScoreData_ = musicScoreData;
 		}
 
@@ -101,8 +101,50 @@ namespace Elysia {
 		/// 一時保存の譜面情報を取得
 		/// </summary>
 		/// <returns></returns>
-		MusicScoreData GetMusicScoreData()const {
+		ExistMusicScoreData GetMusicScoreData()const {
 			return temporarymusicScoreData_;
+		}
+
+		/// <summary>
+		/// 一時保存の難易度を記録
+		/// </summary>
+		/// <param name="difficulty">難易度</param>
+		inline void SetDifficulty(const int8_t& difficulty) {
+			this->temporaryDifficulty_ = difficulty;
+		}
+
+		/// <summary>
+		/// 一時保存の難易度を取得
+		/// </summary>
+		/// <returns>難易度</returns>
+		inline int8_t GetTemporaryDifficulty()const {
+			return temporaryDifficulty_;
+		}
+
+		/// <summary>
+		/// ハンドルの設定
+		/// </summary>
+		/// <param name="musicHandle">楽曲ハンドル</param>
+		/// <param name="jacketTextureHandle">ジャケットハンドル</param>
+		inline void SetTemporaryHandle(const uint32_t& musicHandle, const uint32_t& jacketTextureHandle) {
+			this->temporaryMusicHandle_ = musicHandle;
+			this->temporaryJacketTextureHandle_ = jacketTextureHandle;
+		}
+
+		/// <summary>
+		/// 楽曲ハンドルを取得
+		/// </summary>
+		/// <returns>楽曲ハンドル</returns>
+		inline uint32_t GetTemporaryMusicHandle()const {
+			return temporaryMusicHandle_;
+		}
+
+		/// <summary>
+		/// ジャケットのテクスチャハンドルを取得
+		/// </summary>
+		/// <returns>テクスチャハンドル</returns>
+		inline uint32_t GetTemporaryJacketTextureHandle()const {
+			return temporaryJacketTextureHandle_;
 		}
 
 		/// <summary>
@@ -142,7 +184,11 @@ namespace Elysia {
 
 	private:
 		//一時保管場所
-		MusicScoreData temporarymusicScoreData_ = {};
+		ExistMusicScoreData temporarymusicScoreData_ = {};
+		int8_t temporaryDifficulty_ = 0;
+		uint32_t temporaryMusicHandle_ = 0u;
+		uint32_t temporaryJacketTextureHandle_ = 0u;
+
 		//結果
 		NoteJudgement::Record temporaryRecord_ = {};
 	};

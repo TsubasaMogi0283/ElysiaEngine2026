@@ -20,18 +20,7 @@ void ScoreDataManager::Initialize(){
 	///フォルダの名前を取得
 	std::vector<std::string>musicNameVector= GetFolderName(MUSIC_SCORE_PATH_);
 
-	//難易度の名前を取得
-	std::array<std::string, static_cast<uint8_t>(Difficulty::Size)>difficultyNameVector ={};
-	//難易度
-	for (uint8_t i = 0u;i < static_cast<uint8_t>(Difficulty::Size);i++) {
-		//名前を取り出す
-		std::string_view difficulty = magic_enum::enum_name(static_cast<Difficulty>(i));
-		//std::stringに変換
-		std::string convertDifficulty(difficulty);
-		//記録
-		difficultyNameVector[i] = convertDifficulty;
-	}
-
+	
 	//楽曲数分サイズを変更する
 	existScoreDataVector_.resize(musicNameVector.size());
 
@@ -41,27 +30,44 @@ void ScoreDataManager::Initialize(){
 		//楽曲名を記録
 		existScoreDataVector_[i].musicName = musicNameVector[i];
 
+		//楽曲の読み込み
+		const std::string MUSIC_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName, existScoreDataVector_[i].musicName);
+		const std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName + "/" + existScoreDataVector_[i].musicName + MUSIC_EXTENSION;
+		existScoreDataVector_[i].musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
+
+		//ジャケットの読み込み
+		const std::string JACKET_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName, existScoreDataVector_[i].musicName + "_Jacket");
+		const std::string TEXTURE_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName + "/" + existScoreDataVector_[i].musicName + "_Jacket" + JACKET_EXTENSION;
+		existScoreDataVector_[i].jacketTextureHandle = textureManager_->Load(TEXTURE_FULL_FILE_PATH);
+
+
 		for (uint8_t j = 0u; j < static_cast<uint8_t>(Difficulty::Size); j++) {
 			//例:HighwaySunset/HighwaySunset_Easy.json
-			std::string scorePath = musicNameVector[i] + "/" + musicNameVector[i] + "_" + difficultyNameVector[j] + ".json";
+			//名前を取り出す
+			std::string_view difficulty = magic_enum::enum_name(static_cast<Difficulty>(i));
+			//std::stringに変換
+			std::string convertDifficulty(difficulty);
+			std::string scorePath = musicNameVector[i] + "/" + musicNameVector[i] + "_" + convertDifficulty + ".json";
 			
 			//読み込み出来たら記録
-			existScoreDataVector_[i].isExistDifficulty[j] = Load(scorePath);
+			//パスの結合
+			std::string fullFilePath = MUSIC_SCORE_PATH_ + "/" + scorePath;
+
+			//見つからなかったら譜面データを読み込み
+			if (std::filesystem::exists(fullFilePath)) {
+				existScoreDataVector_[i].isExistDifficulty[j] = true;
+				existScoreDataVector_[i].musicScoreData[j] = Load(scorePath);
+			}
+			else {
+				existScoreDataVector_[i].isExistDifficulty[j] = false;
+			}
 		}
 	}
 }
 
-bool ScoreDataManager::Load(const std::string& path) {
-	//パスの結合
-	std::string fullFilePath = MUSIC_SCORE_PATH_ + "/" + path;
-
-	//見つからなかったら横む必要はないのでreturn 
-	if (!std::filesystem::exists(fullFilePath)) {
-		return false;
-	}
-	
+MusicScoreData ScoreDataManager::Load(const std::string& path) {
 	//JSON文字列から解凍したデータ
-	nlohmann::json deserialized = Deserialize(fullFilePath);
+	nlohmann::json deserialized = Deserialize(path);
 	
 	//楽曲情報を記録
 	//タイトル
@@ -80,16 +86,7 @@ bool ScoreDataManager::Load(const std::string& path) {
 	const std::string ID = TITLE + "_" + DIFFICULTY;
 	//楽曲ファイル名
 	const std::string MUSIC_FILE_NAME = deserialized["filename"].get<std::string>();
-	//楽曲の拡張子を取得
-	const std::string MUSIC_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_+"/" + MUSIC_FILE_NAME, MUSIC_FILE_NAME);
-	//楽曲ファイルパス
-	const std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME +"/" + MUSIC_FILE_NAME + MUSIC_EXTENSION;
 	
-	//ジャケットの拡張子を取得
-	const std::string JACKET_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME, MUSIC_FILE_NAME + "_Jacket");
-	//ジャケットのパス
-	const std::string TEXTURE_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + MUSIC_FILE_NAME + "/" + MUSIC_FILE_NAME + "_Jacket" + JACKET_EXTENSION;
-
 	//ハンドルとパスを記録
 	MusicScoreData musicNotesData = {};
 	const MusicInformation MUSIC_INFORMATION = {
@@ -105,16 +102,13 @@ bool ScoreDataManager::Load(const std::string& path) {
 	};
 	//挿入
 	musicNotesData.musicInformation = MUSIC_INFORMATION;
-	musicNotesData.fullFilePath_ = fullFilePath;
-	musicNotesData.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
-	musicNotesData.textureHandle = textureManager_->Load(TEXTURE_FULL_FILE_PATH);
+	musicNotesData.fullFilePath_ = path;
 
 	//ノーツの配置
 	Place(musicNotesData, deserialized);
-	//挿入
-	musicScoreData_.push_back(musicNotesData);
 
-	return true;
+	//返す
+	return musicNotesData;
 }
 
 void ScoreDataManager::Place(MusicScoreData& musicNotesData, const nlohmann::json& deserialized) {

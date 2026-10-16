@@ -30,8 +30,9 @@ void MainScene::Initialize() {
 	//楽曲譜面情報を取得
 #ifdef _DEBUG
 	musicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetSampleMusicScoreData();
-
+	
 #endif // _DEBUG
+	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
 
 	//ノーツの生成
 	GenerateNotes();

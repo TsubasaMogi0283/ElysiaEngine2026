@@ -43,14 +43,11 @@ void SelectScene::Initialize(){
 	std::vector<uint32_t>jacketTextureHandleVector = {};
 	
 	//全ての楽曲データを取得
-	allScoreData_ = gameSceneManager_->GetScoreDataManager()->GetAllMusciScoreData();
+	allScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData();
 
-	std::vector<ExistMusicScoreData> existData = gameSceneManager_->GetScoreDataManager()->GetExistScoreData();
+	std::vector<ExistMusicScoreData> existData = allScoreData_;
 	for (size_t i = 0u;i < existData.size();i++) {
-		std::string path = "Resources/MusicScore/" + existData[i].musicName;
-		std::string extention= StringOption::FindExtension(path, existData[i].musicName + "_Jacket");
-		uint32_t jacketTextureHandle = textureManager_->Load(path + "/"+existData[i].musicName + "_Jacket" + extention);
-		jacketTextureHandleVector.push_back(jacketTextureHandle);
+		jacketTextureHandleVector.push_back(existData[i].jacketTextureHandle);
 	}
 	//フレーム
 	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
@@ -101,6 +98,8 @@ void SelectScene::Update(){
 			jacket_->SetIsDecide();
 			//選択した楽曲のデータを取得
 			gameSceneManager_->SetMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
+			gameSceneManager_->SetDifficulty(currentDifficultyNumber_);
+			gameSceneManager_->SetTemporaryHandle(allScoreData_[currentSelectedMusicNumber_].musicHandle, allScoreData_[currentSelectedMusicNumber_].jacketTextureHandle);
 		}
 
 		currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();

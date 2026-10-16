@@ -142,7 +142,7 @@ private:
 	std::unique_ptr<Jacket>jacket_ = {};
 
 	//全ての譜面データ
-	std::vector<MusicScoreData> allScoreData_ = {};
+	std::vector<ExistMusicScoreData> allScoreData_ = {};
 
 	bool isOpendTransiont_ = false;
 	//現在選択している楽曲の番号
