@@ -111,6 +111,14 @@ public:
 		return musicScoreData;
 	}
 
+	/// <summary>
+	/// 楽曲の存在チェック
+	/// </summary>
+	/// <returns></returns>
+	std::vector<ExistMusicScoreData> GetExistScoreData()const {
+		return existScoreDataVector_;
+	}
+
 private:
 	//オーディオ
 	Elysia::Audio* audio_ = nullptr;

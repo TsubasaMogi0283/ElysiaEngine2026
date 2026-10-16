@@ -27,6 +27,10 @@ struct MusicScoreData {
 
 	//楽曲情報
 	MusicInformation musicInformation = {};
+	//楽曲ハンドル
+	int32_t musicHandle = -1;
+	//ジャケットテクスチャハンドル
+	int32_t textureHandle = -1;
 
 	//譜面のパス
 	std::string fullFilePath_="";

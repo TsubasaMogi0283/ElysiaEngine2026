@@ -29,9 +29,4 @@ struct MusicInformation {
 	std::string id = "";
 	//楽曲ファイル名
 	std::string fileName = "";
-
-	//楽曲ハンドル
-	uint32_t musicHandle = 0u;
-	//ジャケットテクスチャハンドル
-	uint32_t textureHandle = 0u;
 };

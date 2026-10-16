@@ -101,13 +101,13 @@ bool ScoreDataManager::Load(const std::string& path) {
 		.offset = static_cast<float_t>(std::atof(OFFSET.c_str())),
 		.id = ID,
 		.fileName = MUSIC_FILE_NAME,
-		.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH),
-		.textureHandle = textureManager_->Load(TEXTURE_FULL_FILE_PATH)
+		
 	};
 	//挿入
 	musicNotesData.musicInformation = MUSIC_INFORMATION;
 	musicNotesData.fullFilePath_ = fullFilePath;
-	
+	musicNotesData.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
+	musicNotesData.textureHandle = textureManager_->Load(TEXTURE_FULL_FILE_PATH);
 
 	//ノーツの配置
 	Place(musicNotesData, deserialized);

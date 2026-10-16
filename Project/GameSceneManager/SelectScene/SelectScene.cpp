@@ -8,6 +8,7 @@
 #include "ModelManager.h"
 #include <GameSceneManager.h>
 #include <TextureManager.h>
+#include <StringOption.h>
 
 SelectScene::SelectScene(){
 	//インスタンスの取得	
@@ -35,24 +36,22 @@ void SelectScene::Initialize(){
 	//ジャケット
 	jacket_ = std::make_unique<Jacket>();
 	
+
+
+
 	//テクスチャの読みこみ
 	std::vector<uint32_t>jacketTextureHandleVector = {};
 	
 	//全ての楽曲データを取得
 	auto allScoreData=gameSceneManager_->GetScoreDataManager()->GetAllMusciScoreData();
 
-	//HighwaySunset
-	uint32_t highwaySunsetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/HighwaySunset.png");
-	jacketTextureHandleVector.push_back(highwaySunsetTextureHandle);
-	
-	//ネオンストリート
-	uint32_t neonStreetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/NeonStreet.png");
-	jacketTextureHandleVector.push_back(neonStreetTextureHandle);
-
-	//AwakeningSoul
-	uint32_t awakeningSoulTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/AwakeningSoul.png");
-	jacketTextureHandleVector.push_back(awakeningSoulTextureHandle);
-
+	std::vector<ExistMusicScoreData> existData = gameSceneManager_->GetScoreDataManager()->GetExistScoreData();
+	for (size_t i = 0u;i < existData.size();i++) {
+		std::string path = "Resources/MusicScore/" + existData[i].musicName;
+		std::string extention= StringOption::FindExtension(path, existData[i].musicName + "_Jacket");
+		uint32_t jacketTextureHandle = textureManager_->Load(path + "/"+existData[i].musicName + "_Jacket" + extention);
+		jacketTextureHandleVector.push_back(jacketTextureHandle);
+	}
 	//フレーム
 	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
 
