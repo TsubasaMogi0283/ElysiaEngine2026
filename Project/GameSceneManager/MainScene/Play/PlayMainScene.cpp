@@ -111,15 +111,15 @@ void PlayMainScene::Initialize() {
 #pragma endregion
 
 	//楽曲の再生
-	audio_->Play(musicScoreData_.musicHandle, false);
-	musicLength_ = audio_->GetAudioLength(musicScoreData_.musicHandle);
+	audio_->Play(musicScoreData_.musicInformation.musicHandle, false);
+	musicLength_ = audio_->GetAudioLength(musicScoreData_.musicInformation.musicHandle);
 }
 
 void PlayMainScene::Update() {
 	//再生時間を取得
-	musicTime_ = audio_->GetPlayCurrentTime(musicScoreData_.musicHandle);
+	musicTime_ = audio_->GetPlayCurrentTime(musicScoreData_.musicInformation.musicHandle);
 	//楽曲を再生し終わったとき
-	if (audio_->IsEnd(musicScoreData_.musicHandle)) {
+	if (audio_->IsEnd(musicScoreData_.musicInformation.musicHandle)) {
 		isPlay_ = false;
 	}
 
@@ -144,7 +144,7 @@ void PlayMainScene::Update() {
 	} 
 	else {
 		//楽曲停止
-		audio_->Stop(musicScoreData_.musicHandle);
+		audio_->Stop(musicScoreData_.musicInformation.musicHandle);
 		//結果を記録
 		mainScene_->GetGameSceneManager()->SettemporaryRecord(record_);
 		//終了シーンへ
@@ -734,9 +734,9 @@ void PlayMainScene::Pause() {
 		//再開処理
 		if (pauseAsset_->GetIsEnd()) {
 			//音量をもとに戻す
-			audio_->ChangeVolume(musicScoreData_.musicHandle, 1.0f);
+			audio_->ChangeVolume(musicScoreData_.musicInformation.musicHandle, 1.0f);
 			//再生する
-			audio_->Resume(musicScoreData_.musicHandle);
+			audio_->Resume(musicScoreData_.musicInformation.musicHandle);
 			//ポーズ解除
 			isPause_ = false;
 			//初期状態に戻す
@@ -765,9 +765,9 @@ void PlayMainScene::Pause() {
 
 void PlayMainScene::Stop() {
 	//ESCAPEでポーズ
-	audio_->Stop(musicScoreData_.musicHandle);
+	audio_->Stop(musicScoreData_.musicInformation.musicHandle);
 	//音量も0にする
-	audio_->ChangeVolume(musicScoreData_.musicHandle, 0.0f);
+	audio_->ChangeVolume(musicScoreData_.musicInformation.musicHandle, 0.0f);
 	//止めた時間を記録
 	stopTime_ = musicTime_;
 	//ポーズ中にする

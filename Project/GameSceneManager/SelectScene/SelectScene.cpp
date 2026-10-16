@@ -38,6 +38,9 @@ void SelectScene::Initialize(){
 	//テクスチャの読みこみ
 	std::vector<uint32_t>jacketTextureHandleVector = {};
 	
+	//全ての楽曲データを取得
+	auto allScoreData=gameSceneManager_->GetScoreDataManager()->GetAllMusciScoreData();
+
 	//HighwaySunset
 	uint32_t highwaySunsetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/HighwaySunset.png");
 	jacketTextureHandleVector.push_back(highwaySunsetTextureHandle);

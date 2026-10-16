@@ -28,10 +28,9 @@ MainScene::MainScene() {
 
 void MainScene::Initialize() {
 	//楽曲譜面情報を取得
-	//今は入らない
-	musicInformation_ = gameSceneManager_->GetMusicInformation();
 #ifdef _DEBUG
 	musicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetSampleMusicScoreData();
+
 #endif // _DEBUG
 
 	//ノーツの生成

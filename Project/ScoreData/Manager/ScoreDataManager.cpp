@@ -77,7 +77,7 @@ bool ScoreDataManager::Load(const std::string& path) {
 	//オフセット
 	const std::string OFFSET = deserialized["offset"].get<std::string>();
 	//ID
-	const std::string ID = TITLE + "_" + LEVEL;
+	const std::string ID = TITLE + "_" + DIFFICULTY;
 	//楽曲ファイル名
 	const std::string MUSIC_FILE_NAME = deserialized["filename"].get<std::string>();
 	//楽曲の拡張子を取得
@@ -99,18 +99,20 @@ bool ScoreDataManager::Load(const std::string& path) {
 		.level = std::atoi( LEVEL.c_str()),
 		.bpm = static_cast<float_t>(std::atof(BPM.c_str())),
 		.offset = static_cast<float_t>(std::atof(OFFSET.c_str())),
+		.id = ID,
 		.fileName = MUSIC_FILE_NAME,
+		.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH),
+		.textureHandle = textureManager_->Load(TEXTURE_FULL_FILE_PATH)
 	};
 	//挿入
 	musicNotesData.musicInformation = MUSIC_INFORMATION;
 	musicNotesData.fullFilePath_ = fullFilePath;
-	musicNotesData.musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
-	musicNotesData.textureHandle = textureManager_->Load(TEXTURE_FULL_FILE_PATH);
+	
 
 	//ノーツの配置
 	Place(musicNotesData, deserialized);
 	//挿入
-	musicInformation.insert(make_pair(ID,musicNotesData));
+	musicScoreData_.push_back(musicNotesData);
 
 	return true;
 }

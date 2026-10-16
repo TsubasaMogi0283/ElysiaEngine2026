@@ -71,38 +71,43 @@ private:
 	std::vector<std::string>GetFolderName(const std::filesystem::path& path);
 
 public:
-	MusicScoreData GetMusicScoreData(const std::string& id,const std::string& level) {
-		level;
+	/// <summary>
+	/// 全ての楽曲データを取得
+	/// </summary>
+	/// <returns></returns>
+	std::vector<MusicScoreData> GetAllMusciScoreData()const {
+		return musicScoreData_;
+	}
+
+	/// <summary>
+	/// 楽曲データを取得
+	/// </summary>
+	/// <param name="title">楽曲名</param>
+	/// <param name="difficulty">難易度</param>
+	/// <returns>楽曲データ</returns>
+	MusicScoreData GetMusicScoreData(const std::string& title,const std::string& difficulty) {
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
-		auto it = musicInformation.find(id);
-		if (it != musicInformation.end()) {
-			musicScoreData = it->second;
+		for (size_t i = 0u;i < musicScoreData_.size();i++) {
+			if (musicScoreData_[i].musicInformation.id == title+"_"+difficulty) {
+				return musicScoreData_[i];
+			}
 		}
-		else {
-			//空データ
-			musicScoreData = {};
-		}
-
 		return musicScoreData;
 	}
 
 	/// <summary>
-	/// サンプルの取得
+	/// サンプル楽曲データの取得
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>サンプル</returns>
 	MusicScoreData GetSampleMusicScoreData() {
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
-		auto it = musicInformation.find("Construction_Easy");
-		if (it != musicInformation.end()) {
-			musicScoreData = it->second;
+		for (size_t i = 0u;i < musicScoreData_.size();i++) {
+			if (musicScoreData_[i].musicInformation.id == "Construction_Easy") {
+				return musicScoreData_[i];
+			}
 		}
-		else {
-			//空データ
-			musicScoreData = {};
-		}
-
 		return musicScoreData;
 	}
 
@@ -118,7 +123,7 @@ private:
 private:
 
 	//各譜面情報
-	std::map<std::string,MusicScoreData> musicInformation = {};
+	std::vector<MusicScoreData> musicScoreData_ = {};
 	//譜面データチェック
 	std::vector<ExistMusicScoreData>existScoreDataVector_ = {};
 	
