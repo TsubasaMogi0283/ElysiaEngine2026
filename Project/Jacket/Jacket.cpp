@@ -78,7 +78,7 @@ void Jacket::Update() {
 
 			
 			//選択中は大きくする
-			if (asset.placeNumber == currentSelectNumber_) {
+			if (asset.placeNumber == currentSelectMusicNumber_) {
 				asset.isSelect_ = true;
 
 				//スケールの設定

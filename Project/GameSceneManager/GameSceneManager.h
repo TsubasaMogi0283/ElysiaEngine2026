@@ -90,19 +90,19 @@ namespace Elysia {
 		}
 
 		/// <summary>
-		/// 一時記録場所
+		/// 一時譜面場所
 		/// </summary>
-		/// <param name="musicInformation"></param>
-		void SetMusicInformation(const MusicInformation& musicInformation) {
-			this->temporaryMusicInformation_ = musicInformation;
+		/// <param name="musicScoreData"></param>
+		void SetMusicScoreData(const MusicScoreData& musicScoreData) {
+			this->temporarymusicScoreData_ = musicScoreData;
 		}
 
 		/// <summary>
-		/// 一時保存の楽曲情報を取得
+		/// 一時保存の譜面情報を取得
 		/// </summary>
 		/// <returns></returns>
-		MusicInformation GetMusicInformation()const {
-			return temporaryMusicInformation_;
+		MusicScoreData GetMusicScoreData()const {
+			return temporarymusicScoreData_;
 		}
 
 		/// <summary>
@@ -142,8 +142,7 @@ namespace Elysia {
 
 	private:
 		//一時保管場所
-		//楽曲情報
-		MusicInformation temporaryMusicInformation_ = {};
+		MusicScoreData temporarymusicScoreData_ = {};
 		//結果
 		NoteJudgement::Record temporaryRecord_ = {};
 	};

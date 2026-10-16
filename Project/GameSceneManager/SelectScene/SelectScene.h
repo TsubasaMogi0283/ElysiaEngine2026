@@ -20,6 +20,7 @@
 #include "Material.h"
 #include "DirectionalLight.h"
 #include <Jacket/Jacket.h>
+#include <ScoreData/MusicScoreData.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -133,8 +134,12 @@ private:
 	//ジャケット
 	std::unique_ptr<Jacket>jacket_ = {};
 
-	bool isOpendTransiont_ = false;
+	//全ての譜面データ
+	std::vector<MusicScoreData> allScoreData_ = {};
 
+	bool isOpendTransiont_ = false;
+	//現在選択している楽曲の番号
+	uint8_t currentSelectedMusicNumber_ = 0u;
 	//現在設定されている難易度
 	int8_t currentDifficultyNumber_ = static_cast<int8_t>(Difficulty::Normal);
 	//選択した後の待機時間

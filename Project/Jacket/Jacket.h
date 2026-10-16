@@ -84,9 +84,9 @@ public:
 
 		//ジャケット情報が入って初期化されていないと使えないようにする
 		assert(isInitialized_);
-		if (currentSelectNumber_ < assetVector_.size()-1u) {
+		if (currentSelectMusicNumber_ < assetVector_.size()-1u) {
 			//選択している番号を増やす
-			this->currentSelectNumber_++;
+			this->currentSelectMusicNumber_++;
 			//移動する
 			this->isMoveToRight_ = isMove;
 		}
@@ -100,9 +100,9 @@ public:
 
 		//ジャケット情報が入って初期化されていないと使えないようにする
 		assert(isInitialized_);
-		if (currentSelectNumber_ > 0u) {
+		if (currentSelectMusicNumber_ > 0u) {
 			//選択している番号を減らす
-			this->currentSelectNumber_--;
+			this->currentSelectMusicNumber_--;
 			//移動する
 			this->isMoveToLeft_ = isMove;
 		}
@@ -136,6 +136,14 @@ public:
 		return isProcessEnd_;
 	}
 
+	/// <summary>
+	/// 現在選択されている楽曲番号を取得
+	/// </summary>
+	/// <returns>楽曲番号を取得</returns>
+	uint8_t GetCurrentSelectMusicNumber()const {
+		return currentSelectMusicNumber_;
+	}
+
 private:
 
 	//テクスチャ管理クラス
@@ -164,7 +172,8 @@ private:
 
 	//現在選択されている難易度
 	Difficulty selectedDifficulty_ = Difficulty::Size;
-	uint8_t currentSelectNumber_ = 0u;
+	//現在選択されている曲の数
+	uint8_t currentSelectMusicNumber_ = 0u;
 
 	//選択されているときの座標
 	Vector2<int32_t> selectedPosition_ = {};

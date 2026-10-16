@@ -36,14 +36,11 @@ void SelectScene::Initialize(){
 	//ジャケット
 	jacket_ = std::make_unique<Jacket>();
 	
-
-
-
 	//テクスチャの読みこみ
 	std::vector<uint32_t>jacketTextureHandleVector = {};
 	
 	//全ての楽曲データを取得
-	auto allScoreData=gameSceneManager_->GetScoreDataManager()->GetAllMusciScoreData();
+	allScoreData_ = gameSceneManager_->GetScoreDataManager()->GetAllMusciScoreData();
 
 	std::vector<ExistMusicScoreData> existData = gameSceneManager_->GetScoreDataManager()->GetExistScoreData();
 	for (size_t i = 0u;i < existData.size();i++) {
@@ -58,7 +55,6 @@ void SelectScene::Initialize(){
 	//初期化
 	jacket_->Initialize(jacketTextureHandleVector, frameTextureHandle);
 	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
-
 
 }
 
@@ -95,6 +91,12 @@ void SelectScene::Update(){
 		//決定
 		if (input_->IsTriggerKey(DIK_SPACE)) {
 			jacket_->SetIsDecide();
+			//選択した楽曲のデータを取得
+			gameSceneManager_->SetMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
+			
+			
+			
+
 		}
 
 		//処理終了
@@ -110,6 +112,8 @@ void SelectScene::Update(){
 	camera_.Update();
 	//平行光源
 	directionalLight_.Update();
+	//現在選択している楽曲番号を取得
+	currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();
 
 	//指定時間を超えたらビネット
 	//仮置きでトランジェント

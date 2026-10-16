@@ -48,7 +48,7 @@ struct MusicScoreData {
 /// </summary>
 struct ExistMusicScoreData {
 	//楽曲名
-	std::string musicName;
+	std::string musicName="";
 	//難易度存在チェック
 	std::array<bool, static_cast<uint8_t>(Difficulty::Size)>isExistDifficulty;
 };
