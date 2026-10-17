@@ -335,12 +335,12 @@ public:
 		}
 	}
 
-	inline void SetTotalScore(const uint32_t& score) {
-		this->totalScore_ = score;
+	inline void SetTemporaryRecord(const NoteJudgement::Record& temporaryRecord) {
+		this->temporaryRecord_ = temporaryRecord;
 	}
 
-	inline void SetTotalCombo(const uint16_t& combo) {
-		this->totalCombo_ = combo;
+	inline NoteJudgement::Record GetTemporaryRecord()const {
+		return temporaryRecord_;
 	}
 
 private:
@@ -373,12 +373,9 @@ private:
 	
 	//スコア
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
-	uint32_t totalScore_ = 0u;
 	//コンボ
 	std::array<UIInformation, COMBO_DIGIT_>comboArray_ = {};
-	uint16_t totalCombo_ = 0u;
-	//最大コンボ
-	uint16_t maxCombo_ = 0u;
+
 	//ゲージ
 	std::unique_ptr<Gauge>gauge_ = nullptr;
 

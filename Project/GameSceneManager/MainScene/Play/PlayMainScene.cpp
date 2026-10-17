@@ -145,17 +145,11 @@ void PlayMainScene::Update() {
 		//ポーズ処理
 		Pause();
 
-
-		mainScene_->SetTotalCombo(record_.combo);
-		mainScene_->SetTotalScore(record_.score);
-
-
+		mainScene_->SetTemporaryRecord(record_);
 	} 
 	else {
 		//楽曲停止
 		audio_->Stop(musicHandle_);
-		//結果を記録
-		mainScene_->GetGameSceneManager()->SetTemporaryRecord(record_);
 		//終了シーンへ
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;

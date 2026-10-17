@@ -163,6 +163,8 @@ void MainScene::Update() {
 	baseMainScene_->Update();
 	//全て終わったら結果シーンへ
 	if (baseMainScene_->GetIsEnd()) {
+
+		gameSceneManager_->SetTemporaryRecord(temporaryRecord_);
 		gameSceneManager_->ChangeScene("Result");
 		return;
 	}
@@ -202,7 +204,7 @@ void MainScene::DrawSprite() {
 
 	//コンボ
 	for (uint8_t i = 0u;i < COMBO_DIGIT_;i++) {
-		if (totalCombo_ >= 10u) {
+		if (temporaryRecord_.combo >= 10u) {
 			comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
 		}
 	}
@@ -477,11 +479,10 @@ void MainScene::GenerateNotes() {
 }
 
 void MainScene::AssignToTexture() {
-
 #pragma region スコア
 
 	//各桁に数字を割り当てる
-	uint32_t score = totalScore_;
+	uint32_t score = temporaryRecord_.score;
 	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
 		scoreArray_[i].value = static_cast<uint16_t>(score % 10u);
 		//最後の桁以外は10で割る
@@ -498,7 +499,7 @@ void MainScene::AssignToTexture() {
 #pragma region コンボ
 
 	//各桁の数字を割り当てる
-	uint16_t combo = totalCombo_;
+	uint16_t combo = temporaryRecord_.combo;
 	for (uint8_t i = 0;i < COMBO_DIGIT_;i++) {
 		comboArray_[i].value = static_cast<uint16_t>(combo % 10u);
 		//最後の桁以外は10で割る
