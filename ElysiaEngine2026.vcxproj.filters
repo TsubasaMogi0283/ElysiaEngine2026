@@ -340,9 +340,6 @@
     <Filter Include="Project\Jacket">
       <UniqueIdentifier>{68e67455-5262-48a5-9845-0ba7a3852b0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Project\Level">
-      <UniqueIdentifier>{84b3147f-cec0-4044-9f9a-bd82ee24cb4a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elysia\Audio\Audio.cpp">
@@ -1048,14 +1045,14 @@
     <ClInclude Include="Project\GameNameObject\GameNameObject.h">
       <Filter>Project\GameNameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Project\ScoreData\Difficulty.h">
-      <Filter>Project\Level</Filter>
-    </ClInclude>
     <ClInclude Include="Elysia\Material\Hsv.h">
       <Filter>Elysia\ヘッダー ファイル\Material</Filter>
     </ClInclude>
     <ClInclude Include="Project\Jacket\Jacket.h">
       <Filter>Project\Jacket</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\ScoreData\Difficulty.h">
+      <Filter>Project\ScoreData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@
 #include "Material.h"
 #include "DirectionalLight.h"
 #include <Jacket/Jacket.h>
+#include <ScoreData/MusicScoreData.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -39,10 +40,16 @@ namespace Elysia {
 	/// モデル管理クラス
 	/// </summary>
 	class ModelManager;
+
 	/// <summary>
 	/// 入力クラス
 	/// </summary>
 	class Input;
+
+	/// <summary>
+	/// オーディオ
+	/// </summary>
+	class Audio;
 
 }
 
@@ -111,7 +118,8 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
-
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
 private:
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
@@ -133,12 +141,21 @@ private:
 	//ジャケット
 	std::unique_ptr<Jacket>jacket_ = {};
 
-	bool isOpendTransiont_ = false;
+	//全ての譜面データ
+	std::vector<ExistMusicScoreData> allScoreData_ = {};
 
+	bool isOpendTransiont_ = false;
+	//現在選択している楽曲の番号
+	uint8_t currentSelectedMusicNumber_ = 0u;
 	//現在設定されている難易度
 	int8_t currentDifficultyNumber_ = static_cast<int8_t>(Difficulty::Normal);
 	//選択した後の待機時間
 	float_t waitingTime_ = 0.0f;
 	//終了
 	bool isEnd_ = false;
+
+
+	//再生状態
+	bool isPlay_ = false;
+
 };

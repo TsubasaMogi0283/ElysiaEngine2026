@@ -216,6 +216,14 @@ namespace Elysia {
 		/// <param name="lengthSecond">ループの長さ(秒)</param>
 		void PartlyLoopPlayWave(const uint32_t& audioHandle, const float_t& start, const float_t& lengthSecond);
 
+		/// <summary>
+		/// 部分ループ
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="startTime">開始時間</param>
+		/// <param name="endTime">終了時間</param>
+		void PartlyLoopPlayMp3(const uint32_t& audioHandle, const float_t& startTime, const float_t& endTime);
+
 
 #pragma endregion
 

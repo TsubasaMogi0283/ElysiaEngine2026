@@ -8,6 +8,8 @@
 #include "ModelManager.h"
 #include <GameSceneManager.h>
 #include <TextureManager.h>
+#include <Audio.h>
+#include <StringOption.h>
 
 SelectScene::SelectScene(){
 	//インスタンスの取得	
@@ -17,6 +19,8 @@ SelectScene::SelectScene(){
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
+	//オーディオ
+	audio_ = Elysia::Audio::GetInstance();
 }
 
 void SelectScene::Initialize(){
@@ -38,25 +42,19 @@ void SelectScene::Initialize(){
 	//テクスチャの読みこみ
 	std::vector<uint32_t>jacketTextureHandleVector = {};
 	
-	//HighwaySunset
-	uint32_t highwaySunsetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/HighwaySunset.png");
-	jacketTextureHandleVector.push_back(highwaySunsetTextureHandle);
-	
-	//ネオンストリート
-	uint32_t neonStreetTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/NeonStreet.png");
-	jacketTextureHandleVector.push_back(neonStreetTextureHandle);
+	//全ての楽曲データを取得
+	allScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData();
 
-	//AwakeningSoul
-	uint32_t awakeningSoulTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/AwakeningSoul.png");
-	jacketTextureHandleVector.push_back(awakeningSoulTextureHandle);
-
+	std::vector<ExistMusicScoreData> existData = allScoreData_;
+	for (size_t i = 0u;i < existData.size();i++) {
+		jacketTextureHandleVector.push_back(existData[i].jacketTextureHandle);
+	}
 	//フレーム
 	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
 
 	//初期化
 	jacket_->Initialize(jacketTextureHandleVector, frameTextureHandle);
 	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
-
 
 }
 
@@ -71,10 +69,15 @@ void SelectScene::Update(){
 		//右に選択
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
+			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
+			
+			isPlay_ = false;
 		}
 		//左に選択
 		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
 			jacket_->SetIsMoveToLeft(true);
+			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
+			isPlay_ = false;
 		}
 
 		//難易度の設定
@@ -93,8 +96,33 @@ void SelectScene::Update(){
 		//決定
 		if (input_->IsTriggerKey(DIK_SPACE)) {
 			jacket_->SetIsDecide();
+			//選択した楽曲のデータを取得
+			gameSceneManager_->SetMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
+			gameSceneManager_->SetDifficulty(currentDifficultyNumber_);
+			gameSceneManager_->SetTemporaryHandle(allScoreData_[currentSelectedMusicNumber_].musicHandle, allScoreData_[currentSelectedMusicNumber_].jacketTextureHandle);
 		}
 
+		currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();
+
+		
+		
+		float_t startTime = 0.0f;
+		float_t endTime = 0.0f;
+		if (currentSelectedMusicNumber_ == 0) {
+			startTime = 0.0f;
+			endTime = 2.0f;
+			
+		}
+		else if (currentSelectedMusicNumber_ == 1) {
+			startTime = 49.5f;
+			endTime = 62.0;
+		}
+
+		if (!isPlay_) {
+			//audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+			isPlay_ = true;
+		}
+		
 		//処理終了
 		if (jacket_->GetIsProcessEnd()) {
 			//待機時間
@@ -102,15 +130,12 @@ void SelectScene::Update(){
 		}
 	}
 
-	
 	//ジャケット
 	jacket_->Update();
-
 	//カメラ
 	camera_.Update();
 	//平行光源
 	directionalLight_.Update();
-
 	
 
 	//指定時間を超えたらビネット
@@ -119,7 +144,6 @@ void SelectScene::Update(){
 		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
 			isEnd_ = true;
 		}
-
 	}
 
 	//メインシーン
@@ -128,14 +152,12 @@ void SelectScene::Update(){
 		return;
 	}
 
-
 #ifdef _DEBUG
 	ImGui::Begin("テストシーンカメラ");
 	ImGui::SliderFloat3("回転", &camera_.rotate.x, -3.0f, 3.0f);
 	ImGui::SliderFloat3("座標", &camera_.translate.x, -30.0f, 30.0f);
 	ImGui::End();
 #endif // _DEBUG
-
 
 }
 

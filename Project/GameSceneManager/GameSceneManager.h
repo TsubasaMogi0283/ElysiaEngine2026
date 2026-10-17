@@ -90,26 +90,68 @@ namespace Elysia {
 		}
 
 		/// <summary>
-		/// 一時記録場所
+		/// 一時譜面場所
 		/// </summary>
-		/// <param name="musicInformation"></param>
-		void SetMusicInformation(const MusicInformation& musicInformation) {
-			this->temporaryMusicInformation_ = musicInformation;
+		/// <param name="musicScoreData"></param>
+		void SetMusicScoreData(const ExistMusicScoreData& musicScoreData) {
+			this->temporarymusicScoreData_ = musicScoreData;
 		}
 
 		/// <summary>
-		/// 一時保存の楽曲情報を取得
+		/// 一時保存の譜面情報を取得
 		/// </summary>
 		/// <returns></returns>
-		MusicInformation GetMusicInformation()const {
-			return temporaryMusicInformation_;
+		ExistMusicScoreData GetMusicScoreData()const {
+			return temporarymusicScoreData_;
+		}
+
+		/// <summary>
+		/// 一時保存の難易度を記録
+		/// </summary>
+		/// <param name="difficulty">難易度</param>
+		inline void SetDifficulty(const int8_t& difficulty) {
+			this->temporaryDifficulty_ = difficulty;
+		}
+
+		/// <summary>
+		/// 一時保存の難易度を取得
+		/// </summary>
+		/// <returns>難易度</returns>
+		inline int8_t GetTemporaryDifficulty()const {
+			return temporaryDifficulty_;
+		}
+
+		/// <summary>
+		/// ハンドルの設定
+		/// </summary>
+		/// <param name="musicHandle">楽曲ハンドル</param>
+		/// <param name="jacketTextureHandle">ジャケットハンドル</param>
+		inline void SetTemporaryHandle(const uint32_t& musicHandle, const uint32_t& jacketTextureHandle) {
+			this->temporaryMusicHandle_ = musicHandle;
+			this->temporaryJacketTextureHandle_ = jacketTextureHandle;
+		}
+
+		/// <summary>
+		/// 楽曲ハンドルを取得
+		/// </summary>
+		/// <returns>楽曲ハンドル</returns>
+		inline uint32_t GetTemporaryMusicHandle()const {
+			return temporaryMusicHandle_;
+		}
+
+		/// <summary>
+		/// ジャケットのテクスチャハンドルを取得
+		/// </summary>
+		/// <returns>テクスチャハンドル</returns>
+		inline uint32_t GetTemporaryJacketTextureHandle()const {
+			return temporaryJacketTextureHandle_;
 		}
 
 		/// <summary>
 		/// 判定結果の設定
 		/// </summary>
 		/// <param name="m"></param>
-		inline void SettemporaryRecord(const NoteJudgement::Record& noteJudgementResult) {
+		inline void SetTemporaryRecord(const NoteJudgement::Record& noteJudgementResult) {
 			this->temporaryRecord_ = noteJudgementResult;
 		}
 
@@ -119,6 +161,13 @@ namespace Elysia {
 		/// <returns></returns>
 		inline NoteJudgement::Record GetNoteJudgementResult()const {
 			return temporaryRecord_;
+		}
+
+		/// <summary>
+		/// 記録の初期化
+		/// </summary>
+		inline void ResetRecord() {
+			this->temporaryRecord_ = {};
 		}
 
 	private:
@@ -142,8 +191,11 @@ namespace Elysia {
 
 	private:
 		//一時保管場所
-		//楽曲情報
-		MusicInformation temporaryMusicInformation_ = {};
+		ExistMusicScoreData temporarymusicScoreData_ = {};
+		int8_t temporaryDifficulty_ = 0;
+		uint32_t temporaryMusicHandle_ = 0u;
+		uint32_t temporaryJacketTextureHandle_ = 0u;
+
 		//結果
 		NoteJudgement::Record temporaryRecord_ = {};
 	};

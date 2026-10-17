@@ -12,11 +12,9 @@ void Elysia::GameSceneManager::Initialize() {
 	abstractSceneFactory_ = std::make_unique<GameSceneFactory>();
 	//シーンごとに動作確認したいときはここを変えてね
 	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
-
 #ifdef _DEBUG
 	//デバッグ時はこっちに入れてね
-	currentGamaScene_->SetGameManager(this);
-	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
+	currentGamaScene_ = abstractSceneFactory_->CreateScene("Select");
 #endif // _DEBUG
 
 	//譜面データ生成と読み込み
@@ -107,11 +105,7 @@ void Elysia::GameSceneManager::PreDrawPostEffect() {
 	currentGamaScene_->PreDrawPostEffect();
 }
 
-
 void Elysia::GameSceneManager::DrawPostEffect() {
 	//ポストエフェクト描画前
 	currentGamaScene_->DrawPostEffect();
 }
-
-
-

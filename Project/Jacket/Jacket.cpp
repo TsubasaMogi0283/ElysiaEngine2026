@@ -76,9 +76,9 @@ void Jacket::Update() {
 				asset.isMoved_ = true;
 			}
 
-
+			
 			//選択中は大きくする
-			if (asset.placeNumber == currentSelectNumber_) {
+			if (asset.placeNumber == currentSelectMusicNumber_) {
 				asset.isSelect_ = true;
 
 				//スケールの設定
@@ -100,7 +100,10 @@ void Jacket::Update() {
 
 			//難易度によって色を変える
 			Vector4<float_t> frameColor = {};
-			
+			//難易度を範囲内に固定
+			selectedDifficulty_ = std::clamp(selectedDifficulty_, Difficulty::Easy, Difficulty::Hard);
+
+			//難易度の色を設定
 			switch (selectedDifficulty_) {
 			case Difficulty::Easy:
 				//簡単の色を設定

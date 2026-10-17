@@ -28,11 +28,15 @@ MainScene::MainScene() {
 
 void MainScene::Initialize() {
 	//楽曲譜面情報を取得
-	//今は入らない
-	musicInformation_ = gameSceneManager_->GetMusicInformation();
 #ifdef _DEBUG
 	musicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetSampleMusicScoreData();
+	
 #endif // _DEBUG
+	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
+	musicScoreData_ = gameSceneManager_->GetMusicScoreData().musicScoreData[difficulty_];
+	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();
+	jacketTextureHandle_ = gameSceneManager_->GetTemporaryJacketTextureHandle();
+
 
 	//ノーツの生成
 	GenerateNotes();
@@ -122,12 +126,8 @@ void MainScene::Initialize() {
 	judgementLine_ = std::make_unique<JudgementLine>();
 	judgementLine_->Initialize(normalNoteModelHandle);
 
-	//メインシーンの中
+	//メインシーン
 	baseMainScene_ = std::make_unique<StartMainScene>();
-#ifdef _DEBUG
-	baseMainScene_ = std::make_unique<StartMainScene>();
-#endif // _DEBUG
-
 	baseMainScene_->SetMainScene(this);
 	baseMainScene_->Initialize();
 
@@ -163,6 +163,8 @@ void MainScene::Update() {
 	baseMainScene_->Update();
 	//全て終わったら結果シーンへ
 	if (baseMainScene_->GetIsEnd()) {
+
+		gameSceneManager_->SetTemporaryRecord(temporaryRecord_);
 		gameSceneManager_->ChangeScene("Result");
 		return;
 	}
@@ -202,7 +204,7 @@ void MainScene::DrawSprite() {
 
 	//コンボ
 	for (uint8_t i = 0u;i < COMBO_DIGIT_;i++) {
-		if (totalCombo_ >= 10u) {
+		if (temporaryRecord_.combo >= 10u) {
 			comboArray_[i].sprite->Draw(comboArray_[i].textureHandle);
 		}
 	}
@@ -477,11 +479,10 @@ void MainScene::GenerateNotes() {
 }
 
 void MainScene::AssignToTexture() {
-
 #pragma region スコア
 
 	//各桁に数字を割り当てる
-	uint32_t score = totalScore_;
+	uint32_t score = temporaryRecord_.score;
 	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
 		scoreArray_[i].value = static_cast<uint16_t>(score % 10u);
 		//最後の桁以外は10で割る
@@ -497,12 +498,8 @@ void MainScene::AssignToTexture() {
 
 #pragma region コンボ
 
-#ifdef _DEBUG
-	totalCombo_ = 123u;
-#endif // _DEBUG
-
 	//各桁の数字を割り当てる
-	uint16_t combo = totalCombo_;
+	uint16_t combo = temporaryRecord_.combo;
 	for (uint8_t i = 0;i < COMBO_DIGIT_;i++) {
 		comboArray_[i].value = static_cast<uint16_t>(combo % 10u);
 		//最後の桁以外は10で割る

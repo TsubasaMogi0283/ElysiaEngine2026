@@ -135,9 +135,15 @@ private:
 	//ロングノーツのスコア増加量
 	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;;
 private:
-
+	//一時補間場所からの取得
 	//譜面情報
 	MusicScoreData musicScoreData_ = {};
+	//難易度
+	int8_t difficulty_ = 0;
+	//ハンドル
+	uint32_t musicHandle_ = 0u;
+	uint32_t jacketTextureHandle_ = 0u;
+
 
 	//オブジェクトプールで管理するための変数
 	//通常タップノーツの固定配列

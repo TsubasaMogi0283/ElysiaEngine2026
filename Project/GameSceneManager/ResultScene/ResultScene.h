@@ -14,6 +14,7 @@
 #include <ScoreData/MusicInformation.h>
 #include <Note/NoteJudgement.h>
 #include <Gauge/Gauge.h>
+#include <ScoreData/MusicScoreData.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -281,7 +282,7 @@ private:
 	const float_t MAX_JUDGEMENT_INCREASE_TIME_ = 1.0f;
 
 	//コンボ
-	const float_t MAX_COMBO_INCREASE_TIME_ = 1.0f;
+	const float_t MAX_COMBO_INCREASE_TIME_ = 0.5f;
 	//スケールダウンの時間
 	const float_t MAX_SCALE_DOWN_TIME_ = 1.0f;
 
@@ -343,7 +344,7 @@ private:
 	float_t numberScale_ = 1.0f;
 
 	//受け取り用
-	MusicInformation musicInformation_ = {};
+	MusicScoreData musicScoreData_ = {};
 	NoteJudgement::Record temporaryRecievedRecord_ = {};
 	
 	//処理終了
