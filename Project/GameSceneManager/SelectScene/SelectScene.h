@@ -155,7 +155,7 @@ private:
 	bool isEnd_ = false;
 
 
-
+	//再生状態
 	bool isPlay_ = false;
 
 };

@@ -67,20 +67,6 @@ void ScoreDataManager::Initialize(){
 
 MusicScoreData ScoreDataManager::Load(const std::string& path) {
 
-
-
-
-	//Load("Construction/Construction_Easy.json");
-	//Load("Construction/Construction_Normal.json");
-	//Load("Construction/Construction_Hard.json");
-	//Load("Construction/Construction_Special.json");
-	//
-	//
-	////パスの結合
-	//std::string fullFilePath = "Resources/MusicScore"+"/" + "Construction/Construction_Special.json";
-	
-	
-	//JSON文字列から解凍したデータ
 	nlohmann::json deserialized = Deserialize(path);
 	
 	//楽曲情報を記録

@@ -33,6 +33,10 @@ void MainScene::Initialize() {
 	
 #endif // _DEBUG
 	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
+	musicScoreData_ = gameSceneManager_->GetMusicScoreData().musicScoreData[difficulty_];
+	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();
+	jacketTextureHandle_ = gameSceneManager_->GetTemporaryJacketTextureHandle();
+
 
 	//ノーツの生成
 	GenerateNotes();

@@ -69,14 +69,14 @@ void SelectScene::Update(){
 		//右に選択
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
-			audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
+			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
 			
 			isPlay_ = false;
 		}
 		//左に選択
 		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
 			jacket_->SetIsMoveToLeft(true);
-			audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
+			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
 			isPlay_ = false;
 		}
 
@@ -119,7 +119,7 @@ void SelectScene::Update(){
 		}
 
 		if (!isPlay_) {
-			audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+			//audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
 			isPlay_ = true;
 		}
 		
