@@ -282,7 +282,7 @@ private:
 	const float_t MAX_JUDGEMENT_INCREASE_TIME_ = 1.0f;
 
 	//コンボ
-	const float_t MAX_COMBO_INCREASE_TIME_ = 1.0f;
+	const float_t MAX_COMBO_INCREASE_TIME_ = 0.5f;
 	//スケールダウンの時間
 	const float_t MAX_SCALE_DOWN_TIME_ = 1.0f;
 

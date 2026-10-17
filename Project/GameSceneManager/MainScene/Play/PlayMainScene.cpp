@@ -145,6 +145,11 @@ void PlayMainScene::Update() {
 		//ポーズ処理
 		Pause();
 
+		//最大継続コンボ更新
+		if (record_.maxCombo <= record_.combo) {
+			record_.maxCombo = record_.combo;
+		}
+		//記録
 		mainScene_->SetTemporaryRecord(record_);
 	} 
 	else {
@@ -615,6 +620,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			}
 		}
 	}
+
 #pragma region 各ノーツの更新
 	//通常ノーツの設定
 	for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
