@@ -1,12 +1,16 @@
 # Blender 4.1.1 MTL File: 'None'
 # www.blender.org
 
-newmtl マテリアル
+newmtl Material.002
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
-Ni 1.500000
+Ni 1.450000
 d 1.000000
 illum 2
+<<<<<<<< HEAD:Resources/Model/Sample/Plane/Plane.mtl
 map_Kd Plane.png
+========
+map_Kd Arrow.png
+>>>>>>>> プルに失敗したらしい:Resources/Model/Title/Arrow/Arrow.mtl

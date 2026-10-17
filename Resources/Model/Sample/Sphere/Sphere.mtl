@@ -1,7 +1,14 @@
+<<<<<<<< HEAD:Resources/Model/Sample/Sphere/Sphere.mtl
 # Blender 4.1.1 MTL File: 'Sphere.blend'
 # www.blender.org
 
 newmtl マテリアル.008
+========
+# Blender 5.1.2 MTL File: 'Ground.blend'
+# www.blender.org
+
+newmtl Material.001
+>>>>>>>> プルに失敗したらしい:Resources/Model/Ground/Ground.mtl
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
