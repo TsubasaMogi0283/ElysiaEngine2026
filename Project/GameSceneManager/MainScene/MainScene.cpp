@@ -497,10 +497,6 @@ void MainScene::AssignToTexture() {
 
 #pragma region コンボ
 
-#ifdef _DEBUG
-	totalCombo_ = 123u;
-#endif // _DEBUG
-
 	//各桁の数字を割り当てる
 	uint16_t combo = totalCombo_;
 	for (uint8_t i = 0;i < COMBO_DIGIT_;i++) {

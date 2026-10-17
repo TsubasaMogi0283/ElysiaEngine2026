@@ -41,17 +41,6 @@ void ResultScene::Initialize() {
 	temporaryRecievedRecord_ = gameSceneManager_->GetNoteJudgementResult();
 
 
-#ifdef _DEBUG
-	temporaryRecievedRecord_.perfect = 1000u;
-	temporaryRecievedRecord_.great = 1000u;
-	temporaryRecievedRecord_.good = 1000u;
-	temporaryRecievedRecord_.miss = 1000u;
-
-	temporaryRecievedRecord_.maxCombo = 1000u;
-	temporaryRecievedRecord_.score = 1234567u;
-	temporaryRecievedRecord_.gaugeRatio = 0.8f;
-#endif // _DEBUG
-
 	//下地
 	baseSprite_ = Elysia::Sprite::Create();
 	baseSprite_->SetScale({ .x = 0.75f,.y = 1.0f });

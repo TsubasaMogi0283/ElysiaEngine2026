@@ -150,7 +150,7 @@ void PlayMainScene::Update() {
 		//楽曲停止
 		audio_->Stop(musicHandle_);
 		//結果を記録
-		mainScene_->GetGameSceneManager()->SettemporaryRecord(record_);
+		mainScene_->GetGameSceneManager()->SetTemporaryRecord(record_);
 		//終了シーンへ
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;
