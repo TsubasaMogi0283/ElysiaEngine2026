@@ -199,6 +199,14 @@ void ResultScene::Update(){
 	//平行光源
 	directionalLight_.Update();
 
+
+	if (isEnd_) {
+		//記録の初期化
+		gameSceneManager_->ResetRecord();
+		//セレクトへ
+		gameSceneManager_->ChangeScene("Select");
+	}
+
 #ifdef _DEBUG
 	ImGui::Begin("テストシーンカメラ");
 	ImGui::SliderFloat3("回転", &camera_.rotate.x, -3.0f, 3.0f);

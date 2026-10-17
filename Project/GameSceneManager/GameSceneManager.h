@@ -163,6 +163,13 @@ namespace Elysia {
 			return temporaryRecord_;
 		}
 
+		/// <summary>
+		/// 記録の初期化
+		/// </summary>
+		inline void ResetRecord() {
+			this->temporaryRecord_ = {};
+		}
+
 	private:
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> abstractSceneFactory_ = nullptr;

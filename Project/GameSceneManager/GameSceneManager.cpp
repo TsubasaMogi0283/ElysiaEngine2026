@@ -105,11 +105,7 @@ void Elysia::GameSceneManager::PreDrawPostEffect() {
 	currentGamaScene_->PreDrawPostEffect();
 }
 
-
 void Elysia::GameSceneManager::DrawPostEffect() {
 	//ポストエフェクト描画前
 	currentGamaScene_->DrawPostEffect();
 }
-
-
-
