@@ -145,6 +145,11 @@ void PlayMainScene::Update() {
 		//ポーズ処理
 		Pause();
 
+
+		mainScene_->SetTotalCombo(record_.combo);
+		mainScene_->SetTotalScore(record_.score);
+
+
 	} 
 	else {
 		//楽曲停止

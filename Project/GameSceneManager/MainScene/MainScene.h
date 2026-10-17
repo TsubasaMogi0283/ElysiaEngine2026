@@ -335,6 +335,13 @@ public:
 		}
 	}
 
+	inline void SetTotalScore(const uint32_t& score) {
+		this->totalScore_ = score;
+	}
+
+	inline void SetTotalCombo(const uint16_t& combo) {
+		this->totalCombo_ = combo;
+	}
 
 private:
 	//背景
