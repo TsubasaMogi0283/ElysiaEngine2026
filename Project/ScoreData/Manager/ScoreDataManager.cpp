@@ -65,7 +65,7 @@ void ScoreDataManager::Initialize(){
 	}
 }
 
-void ScoreDataManager::Reset(){
+void ScoreDataManager::Reload(){
 	//空にする
 	existScoreDataVector_ = {};
 

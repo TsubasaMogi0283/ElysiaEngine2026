@@ -42,9 +42,9 @@ public:
 	void Initialize();
 
 	/// <summary>
-	/// リセット
+	/// 再読み込み
 	/// </summary>
-	void Reset();
+	void Reload();
 
 	/// <summary>
 	/// デストラクタ

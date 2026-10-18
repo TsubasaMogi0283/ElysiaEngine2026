@@ -165,6 +165,12 @@ void TestScene::Update(){
 			isStop_ = false;
 			isPlay_ = true;
 		}
+
+		if (ImGui::Button("再読み込み")) {
+			gameSceneManager_->GetScoreDataManager()->Reload();
+
+		}
+
 	}
 	
 	//本番で確認
