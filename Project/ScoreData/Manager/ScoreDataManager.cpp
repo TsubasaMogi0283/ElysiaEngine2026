@@ -90,11 +90,11 @@ MusicScoreData ScoreDataManager::Load(const std::string& path) {
 	const std::string BPM = deserialized["bpm"].get<std::string>();
 	//オフセット
 	const std::string OFFSET = deserialized["offset"].get<std::string>();
-	//ID
-	const std::string ID = TITLE + "_" + DIFFICULTY;
 	//楽曲ファイル名
 	const std::string MUSIC_FILE_NAME = deserialized["filename"].get<std::string>();
-	
+	//ID
+	const std::string ID = MUSIC_FILE_NAME + "_" + DIFFICULTY;
+
 	//ハンドルとパスを記録
 	MusicScoreData musicNotesData = {};
 	const MusicInformation MUSIC_INFORMATION = {
@@ -104,8 +104,8 @@ MusicScoreData ScoreDataManager::Load(const std::string& path) {
 		.level = std::atoi( LEVEL.c_str()),
 		.bpm = static_cast<float_t>(std::atof(BPM.c_str())),
 		.offset = static_cast<float_t>(std::atof(OFFSET.c_str())),
-		.id = ID,
 		.fileName = MUSIC_FILE_NAME,
+		.id = ID,
 		
 	};
 	//挿入

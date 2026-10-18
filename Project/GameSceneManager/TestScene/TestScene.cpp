@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <numbers>
+#include <magic_enum/magic_enum.hpp>
 
 #include "Input.h"
 #include <Audio.h>
@@ -24,11 +25,9 @@ TestScene::TestScene(){
 void TestScene::Initialize(){
 	
 	//譜面データを取得
-	/*musicScoreData_ = mainScene_->GetScoreData();
-	difficulty_ = mainScene_->GetDifficulty();
-	musicHandle_ = mainScene_->GetMusicHandle();
-	jacketTextureHandle_ = mainScene_->GetjacketTextureHandle();*/
-
+	//musicScoreData_ = mainScene_->GetScoreData();
+	//difficulty_ = mainScene_->GetDifficulty();
+	//musicHandle_ = mainScene_->GetMusicHandle();
 	//ノーマルタップノーツのモデルを読み込む
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
@@ -98,7 +97,12 @@ void TestScene::Initialize(){
 	//譜面管理クラスより譜面データをいただく
 	scoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData();
 
-
+	for (uint8_t i = 0u;i< static_cast<uint8_t>(Difficulty::Size); i++) {
+		std::string_view difficulty= magic_enum::enum_name(static_cast<Difficulty>(i));
+		std::string convertedDiffuculty(difficulty);
+		difficultyVector_.push_back(convertedDiffuculty);
+	}
+	
 
 	//カメラ
 	camera_.Initialize();
@@ -118,33 +122,7 @@ void TestScene::Update(){
 #ifdef _DEBUG
 
 	ImGui::Begin("譜面エディタ");
-	std::vector<std::string> loaedMusicName = {};
-	for (size_t i = 0; i < scoreData_.size(); i++) {
-		loaedMusicName.push_back(scoreData_[i].musicName);
-	}
-	if (!scoreData_.empty()) {
-		
-		//コンボを閉じている時に表示される文字列
-		const char* preview = scoreData_[currentSceneNumber_].musicName.c_str();
-
-		if (ImGui::BeginCombo("楽曲", preview)) {
-			for (size_t i = 0; i < scoreData_.size(); i++) {
-				const bool isSelected = (currentSceneNumber_ == i);
-
-				if (ImGui::Selectable(scoreData_[i].musicName.c_str(), isSelected)) {
-					currentSceneNumber_ = i;
-				}
-				//選択中の項目にフォーカスを当てる
-				if (isSelected) {
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-			ImGui::EndCombo();
-		}
-	}
-	else {
-		ImGui::Text("楽曲データがありません");
-	}
+	
 	
 	//再生時
 	if (!isStop_ && isPlay_) {
@@ -157,8 +135,7 @@ void TestScene::Update(){
 	
 	//停止時
 	if (isStop_ && !isPlay_) {
-		ImGui::SliderFloat("開始時間", &startTime_, MUSIC_START_TIME_, MUSIC_END_TIME_);
-
+		
 		if (ImGui::Button("再生")) {
 			
 			//開始状態にする
@@ -166,10 +143,67 @@ void TestScene::Update(){
 			isPlay_ = true;
 		}
 
-		if (ImGui::Button("再読み込み")) {
-			gameSceneManager_->GetScoreDataManager()->Reload();
+		if (ImGui::TreeNode("再設定")) {
 
+			ImGui::SliderFloat("開始時間", &startTime_, MUSIC_START_TIME_, MUSIC_END_TIME_);
+
+
+			if (!scoreData_.empty()) {
+
+				//コンボを閉じている時に表示される文字列
+				const char* preview = scoreData_[currentMusicNumber_].musicName.c_str();
+
+				if (ImGui::BeginCombo("楽曲", preview)) {
+					for (size_t i = 0; i < scoreData_.size(); i++) {
+						const bool isSelected = (currentMusicNumber_ == i);
+
+						if (ImGui::Selectable(scoreData_[i].musicName.c_str(), isSelected)) {
+							currentMusicNumber_ = i;
+						}
+						//選択中の項目にフォーカスを当てる
+						if (isSelected) {
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+			}
+			else {
+				ImGui::Text("楽曲データがありません");
+			}
+
+
+			//コンボを閉じている時に表示される文字列
+			const char* preview = difficultyVector_[currentDifficultyNumber_].c_str();
+
+			if (ImGui::BeginCombo("楽曲", preview)) {
+				for (size_t i = 0; i < difficultyVector_.size(); i++) {
+					const bool isSelected = (currentDifficultyNumber_ == i);
+
+					if (ImGui::Selectable(difficultyVector_[i].c_str(), isSelected)) {
+						currentDifficultyNumber_ = i;
+					}
+					//選択中の項目にフォーカスを当てる
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+
+			if (ImGui::Button("再読み込み")) {
+				gameSceneManager_->GetScoreDataManager()->Reload();
+
+				//データを持ってくる
+				std::string musicName = scoreData_[currentMusicNumber_].musicName;
+				std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
+				musicData_ = gameSceneManager_->GetScoreDataManager()->GetMusicScoreData(musicName, difficultyName);
+
+			}
+
+			ImGui::TreePop();
 		}
+		
 
 	}
 	

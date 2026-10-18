@@ -179,6 +179,12 @@ private:
 	//開始時間
 	float_t startTime_ = 0.0f;
 
-	size_t currentSceneNumber_ = 0u;
+	//現在設定中の情報
+	size_t currentMusicNumber_ = 0u;
+	size_t currentDifficultyNumber_ = 0u;
+
+	MusicScoreData musicData_ = {};
+
+	std::vector<std::string> difficultyVector_ = {};
 
 };
