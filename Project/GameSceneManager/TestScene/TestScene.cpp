@@ -24,10 +24,6 @@ TestScene::TestScene(){
 
 void TestScene::Initialize(){
 	
-	//譜面データを取得
-	//musicScoreData_ = mainScene_->GetScoreData();
-	//difficulty_ = mainScene_->GetDifficulty();
-	//musicHandle_ = mainScene_->GetMusicHandle();
 	//ノーマルタップノーツのモデルを読み込む
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
@@ -113,6 +109,9 @@ void TestScene::Initialize(){
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
+
+	//すぐに開ける
+	gameSceneManager_->GetTransition()->ShortkyOpen();
 }
 
 void TestScene::Update(){
@@ -198,6 +197,9 @@ void TestScene::Update(){
 				std::string musicName = scoreData_[currentMusicNumber_].musicName;
 				std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
 				musicData_ = gameSceneManager_->GetScoreDataManager()->GetMusicScoreData(musicName, difficultyName);
+				existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
+				//再生
+				audio_->Play(existMusicScoreData_.musicHandle, false);
 
 			}
 
@@ -218,12 +220,48 @@ void TestScene::Update(){
 #endif // _DEBUG
 
 	//更新
+	judgementLine_->Update();
 	camera_.Update();
 	directionalLight_.Update();
 }
 
 void TestScene::DrawObject3D(){
+	//通常ノーツの設定
+	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
+		if (normalTapNoteArray_[i]->GetIsUsed()) {
+			normalTapNoteArray_[i]->DrawObject3D(camera_, directionalLight_);
+		}
+	}
 
+	//ハイパスロングノーツの設定
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		if (highPassLongNoteArray_[i]->GetIsUsed()) {
+			highPassLongNoteArray_[i]->DrawObject3D(camera_, directionalLight_);
+		}
+	}
+
+	//ローパスロングノーツの設定
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
+			lowPassLongNoteArray_[i]->DrawObject3D(camera_, directionalLight_);
+		}
+	}
+
+	//トランスゲート8分ロングノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
+			transGateEighthLongNoteArray_[i]->DrawObject3D(camera_, directionalLight_);
+		}
+	}
+
+	//トランスゲート16分ロングノーツの設定
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
+			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera_, directionalLight_);
+		}
+	}
+	//判定の線を取得
+	judgementLine_->Draw(camera_, directionalLight_);
 }
 
 void TestScene::PreDrawPostEffect(){
@@ -241,3 +279,267 @@ void TestScene::DrawSprite(){
 }
 
 
+void TestScene::GenerateNotes() {
+	//合計の時間
+	float_t totalTime = 0.0f;
+	//開始時間の設定
+	float_t startTime = START_OFFSET_TIME_ ;
+	//ノーツの配置
+	for (const NoteBarInformation& bar : musicData_.newNotesData) {
+		//1拍の秒数
+		float_t beatDuration = 60.0f / bar.bpm;
+		//ノーツ間隔(1小節4拍)
+		float_t noteInterval = (beatDuration * 4.0f) / bar.notesLane.size();
+		//長さ
+		size_t length = bar.notesLane.size();
+
+		for (size_t i = 0u; i < bar.notesLane.size(); i++) {
+			const NoteLane::Information& note = bar.notesLane[i];
+
+#pragma region 通常タップ
+			//上
+			if (note.upNote == NoteType::NormalTap) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.length = length,
+					.type = NoteType::NormalTap,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.upInformation.push_back(noteInformation);
+
+			}
+			//下
+			if (note.downNote == NoteType::NormalTap) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.length = length,
+					.type = NoteType::NormalTap,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.downInformation.push_back(noteInformation);
+			}
+#pragma endregion
+
+#pragma region ハイパスロングノーツ
+			//上
+			if (note.upNote == NoteType::HiPassLongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.length = length,
+					.type = NoteType::HiPassLongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.upInformation.push_back(noteInformation);
+
+			}
+			//下
+			if (note.downNote == NoteType::HiPassLongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.length = length,
+					.type = NoteType::HiPassLongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.downInformation.push_back(noteInformation);
+			}
+#pragma endregion
+
+#pragma region ローパスロングノーツ
+			//上
+			if (note.upNote == NoteType::LowPassLongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.length = length,
+					.type = NoteType::LowPassLongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.upInformation.push_back(noteInformation);
+
+			}
+			//下
+			if (note.downNote == NoteType::LowPassLongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.length = length,
+					.type = NoteType::LowPassLongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.downInformation.push_back(noteInformation);
+			}
+#pragma endregion
+
+#pragma region トランスゲート8分ロングノーツ
+
+			//上
+			if (note.upNote == NoteType::TranceGate8LongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.length = length,
+					.type = NoteType::TranceGate8LongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.upInformation.push_back(noteInformation);
+
+			}
+			//下
+			if (note.downNote == NoteType::TranceGate8LongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.length = length,
+					.type = NoteType::TranceGate8LongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.downInformation.push_back(noteInformation);
+			}
+
+
+#pragma endregion
+
+
+#pragma region トランスゲート16分ロングノーツ
+
+			//上
+			if (note.upNote == NoteType::TranceGate16LongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.length = length,
+					.type = NoteType::TranceGate16LongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.upInformation.push_back(noteInformation);
+
+			}
+			//下
+			if (note.downNote == NoteType::TranceGate16LongStart) {
+				//ノーツの数を増やす
+				musicData_.totalNote_++;
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.length = length,
+					.type = NoteType::TranceGate16LongStart,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.downInformation.push_back(noteInformation);
+			}
+
+
+#pragma endregion
+
+#pragma region ロング終点
+			//上
+			if (note.upNote == NoteType::LongEnd) {
+				//ノーツ情報の設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.length = length,
+					.type = NoteType::LongEnd,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.upInformation.push_back(noteInformation);
+			}
+
+			//下
+			if (note.downNote == NoteType::LongEnd) {
+				//ノーツ情報を設定
+				NoteInformation noteInformation = {
+					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.length = length,
+					.type = NoteType::LongEnd,
+					.startMoveTime = totalTime + i * noteInterval - startTime,
+					.arriveLineTime = totalTime + i * noteInterval,
+					.judgement = NoteJudgement::Selection::None,
+					.isJudged = false,
+					.isAssigned = false
+				};
+				//挿入
+				musicData_.downInformation.push_back(noteInformation);
+			}
+#pragma endregion
+		}
+		// 小節分進める
+		totalTime += 4.0f * beatDuration;
+	}
+}

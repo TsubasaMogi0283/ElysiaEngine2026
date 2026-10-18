@@ -100,8 +100,8 @@ namespace Elysia {
 		/// <summary>
 		/// 読み込み(MP3)
 		/// </summary>
-		/// <param name="fileName"></param>
-		/// <returns></returns>
+		/// <param name="fileName">ファイル名</param>
+		/// <returns>ハンドル</returns>
 		uint32_t LoadWave(const std::string& fileName);
 
 
@@ -113,14 +113,23 @@ namespace Elysia {
 		/// <summary>
 		/// 再生
 		/// </summary>
-		/// <param name="audioHandle"></param>
-		/// <param name="isLoop"></param>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="isLoop">ループするかどうか</param>
 		void Play(const uint32_t& audioHandle, const bool& isLoop);
 
 		/// <summary>
-		/// 再生
+		/// 再生(ループ指定版)
 		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="loopCount">回数</param>
 		void Play(const uint32_t& audioHandle, const uint32_t& loopCount);
+
+		/// <summary>
+		/// 再生(途中から)
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="startTime">開始時間</param>
+		void Play(const uint32_t& audioHandle, const float_t& startTime);
 
 	private:
 

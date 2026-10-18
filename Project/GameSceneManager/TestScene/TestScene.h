@@ -112,6 +112,12 @@ public:
 		this->gameSceneManager_ = gameManager;
 	}
 
+	/// <summary>
+	/// ノーツ生成
+	/// </summary>
+	void GenerateNotes();
+
+
 private:
 	//ゲーム管理クラス
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
@@ -144,6 +150,9 @@ private:
 	const float_t MUSIC_START_TIME_ = 0.0f;
 	//終了時間
 	const float_t MUSIC_END_TIME_ = 18.0f;
+
+	//開始オフセット
+	const float_t START_OFFSET_TIME_ = 1.0f;
 
 private:
 
@@ -183,7 +192,9 @@ private:
 	size_t currentMusicNumber_ = 0u;
 	size_t currentDifficultyNumber_ = 0u;
 
+	//譜面データ
 	MusicScoreData musicData_ = {};
+	ExistMusicScoreData existMusicScoreData_ = {};
 
 	std::vector<std::string> difficultyVector_ = {};
 

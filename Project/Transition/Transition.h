@@ -46,6 +46,10 @@ public:
 	~Transition() = default;
 
 public:
+	/// <summary>
+	/// 即開ける
+	/// </summary>
+	void ShortkyOpen();
 
 	/// <summary>
 	/// トランジションを開けるかどうかを設定
