@@ -121,22 +121,21 @@ void TestScene::Update(){
 #ifdef _DEBUG
 
 	ImGui::Begin("譜面エディタ");
-	
-	
 	//再生時
 	if (!isStop_ && isPlay_) {
 		if (ImGui::Button("停止")) {
 			//停止状態にする
 			isStop_ = true;
 			isPlay_ = false;
+
+			//音を停止
+			audio_->Stop(existMusicScoreData_.musicHandle);
 		}
 	}
 	
 	//停止時
 	if (isStop_ && !isPlay_) {
-		
 		if (ImGui::Button("再生")) {
-			
 			//開始状態にする
 			isStop_ = false;
 			isPlay_ = true;
