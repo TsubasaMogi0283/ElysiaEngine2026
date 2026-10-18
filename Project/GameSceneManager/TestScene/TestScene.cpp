@@ -199,7 +199,7 @@ void TestScene::Update(){
 				musicData_ = gameSceneManager_->GetScoreDataManager()->GetMusicScoreData(musicName, difficultyName);
 				existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
 				//再生
-				audio_->Play(existMusicScoreData_.musicHandle, false);
+				audio_->Play(existMusicScoreData_.musicHandle, startTime_);
 
 			}
 
