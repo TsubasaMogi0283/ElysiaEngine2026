@@ -17,17 +17,14 @@ void DisplayTitleScene::Initialize(){
 	//スペースでスタート
 	uint32_t startTextureHandle = textureManager_->Load("Resources/Sprite/Title/StartText.png");
 	startTextSprite_ = Elysia::Sprite::Create(startTextureHandle);
-
-
+	startTextSprite_->SetInvisible(true);
 }
 
 void DisplayTitleScene::Update(){
 	//各状態の更新
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
-	if (false) {
-		titleScene_->ChangeTitleScene(std::make_unique<EndTitleScene>());
-	}
+	
 }
 
 
@@ -52,10 +49,21 @@ void DisplayTitleScene::StartSelect(){
 		flashTime_ = 0.0f;
 	}
 
+	//右で開始を選択
+	if (input_->IsTriggerKey(DIK_RIGHT) || input_->IsTriggerKey(DIK_D)) {
+		titleScene_->SetSelectStart();
+	}
+
+	//左で終了を選択
+	if (input_->IsTriggerKey(DIK_LEFT) || input_->IsTriggerKey(DIK_A)) {
+		titleScene_->SetSelectEnd();
+	}
+
 
 	//SPACEを押したらスタート演出へ
 	if (input_->IsTriggerKey(DIK_SPACE)) {
 		currentState_= DisplayTitleSceneState::Decide;
+
 	}
 
 }
@@ -76,6 +84,8 @@ void DisplayTitleScene::Decide(){
 		rapidFlashTime_ = 0.0f;
 		rapidFlashCount_++;
 	}
+	
+
 
 	//指定回数高速点滅したらセレクトシーンへ行く演出
 	if (rapidFlashCount_ >= MAX_RAPID_FLASH_COUNT_) {
@@ -87,7 +97,7 @@ void DisplayTitleScene::ToSelect(){
 	
 	//表示タイトルシーン
 	if (true) {
-		titleScene_->ChangeTitleScene(std::make_unique<DisplayTitleScene>());
+		titleScene_->ChangeTitleScene(std::make_unique<EndTitleScene>());
 	}
 }
 

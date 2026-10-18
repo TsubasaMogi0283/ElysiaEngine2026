@@ -143,6 +143,40 @@ public:
 		this->isProcessEnd_ = isProcessEnd;
 	}
 
+	/// <summary>
+	/// 矢印の座標を設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	inline void SetArrowPosition(const Vector3<float_t>& position) {
+		this->arrowWorldTransform_.translate = position;
+	}
+
+	/// <summary>
+	/// 選択の透明度を設定
+	/// </summary>
+	/// <param name="transparency">透明度</param>
+	inline void SetSelectModelTransparency(const float_t& transparency) {
+		this->arrowMaterial_.color.w = transparency;
+		this->startMaterial_.color.w = transparency;
+		this->endMaterial_.color.w = transparency;
+	}
+
+	/// <summary>
+	/// 開始を選択
+	/// </summary>
+	inline void SetSelectStart() {
+		this->isSelectStart_ = true;
+		this->isSelectEnd_ = false;
+	}
+
+	/// <summary>
+	/// 終了を選択
+	/// </summary>
+	inline void SetSelectEnd() {
+		this->isSelectEnd_ = true;
+		this->isSelectStart_ = false;
+	}
+
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -154,12 +188,16 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 
 private:
-	//スピード
-	const float_t SPEED = 0.1f;
-	//斜め補正
-	const float_t DIAGONAL_SCALE_ = 0.7f;
-	const float_t SIZE = 1.0f;
-	const Vector3<float_t> CUBE_SIZE = { .x = SIZE ,.y = SIZE ,.z = SIZE };
+	
+	//選択のY座標
+	const float_t SELECT_POSITION_Y_ = 1.0f;
+	//選択時のスケール
+	const float_t SELECTED_SCALE_ = 3.0f;
+	//非選択時のスケール
+	const float_t NO_SELECTED_SCALE_ = 1.0f;
+
+	//矢印の回転
+	const float_t ARROW_ROTATE_AMOUNT_ = std::numbers::pi_v<float_t>/36.0f;
 private:
 
 	//背景
@@ -174,6 +212,25 @@ private:
 	std::unique_ptr<Elysia::Model>groundModel_ = nullptr;
 	WorldTransform groundWorldTransform_ = {};
 	Material groundMaterial_ = {};
+
+	//開始
+	std::unique_ptr<Elysia::Model> startModel_ = nullptr;
+	WorldTransform startWorldTransform_ = {};
+	Material startMaterial_ = {};
+	bool isSelectStart_ = false;
+
+	//終了
+	std::unique_ptr<Elysia::Model> endModel_ = nullptr;
+	WorldTransform endWorldTransform_ = {};
+	Material endMaterial_ = {};
+	bool isSelectEnd_ = false;
+
+	//矢印
+	std::unique_ptr<Elysia::Model> arrowModel_ = nullptr;
+	WorldTransform arrowWorldTransform_ = {};
+	Material arrowMaterial_ = {};
+	float_t arrowRotateX_ = 0.0f;
+	
 
 	//ゲーム名
 	std::unique_ptr<GameNameObject> gameNameObject_ = nullptr;

@@ -87,15 +87,26 @@ private:
 
 
 private:
-	//次の状態屁の待機時間
+	//次の状態への待機時間
 	const float_t NEXT_WAIT_TIME_ = 1.0f;
+	//透明度変化の時間
+	const float_t MAX_TRANSPARENCY_TIME_ = 1.0f;
 
 private:
 
 	//待機時間
 	std::array<float_t, static_cast<size_t>(StartTitleSceneState::Amount)>waitingTimeArray_ = {};
 
+	//選択の透明度
+	float_t selectTransparency_ = 0.0f;
+
+	//時間
+	float_t transparencyTime_ = 0.0f;
+
 	//トランジション終了したかどうか
 	bool isEndTransition_ = false;
+
+	//
+	bool isEndGameTitleTextMove_ = false;
 };
 
