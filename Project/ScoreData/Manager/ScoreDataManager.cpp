@@ -65,6 +65,14 @@ void ScoreDataManager::Initialize(){
 	}
 }
 
+void ScoreDataManager::Reset(){
+	//空にする
+	existScoreDataVector_ = {};
+
+	//再読み込み
+	Initialize();
+}
+
 MusicScoreData ScoreDataManager::Load(const std::string& path) {
 
 	nlohmann::json deserialized = Deserialize(path);

@@ -42,6 +42,11 @@ public:
 	void Initialize();
 
 	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
+
+	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~ScoreDataManager() = default;
@@ -114,7 +119,7 @@ public:
 	/// 楽曲の存在チェック
 	/// </summary>
 	/// <returns></returns>
-	std::vector<ExistMusicScoreData> GetExistScoreData()const {
+	inline std::vector<ExistMusicScoreData> GetExistScoreData()const {
 		return existScoreDataVector_;
 	}
 
@@ -123,6 +128,7 @@ private:
 	Elysia::Audio* audio_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
+
 private:
 	//譜面が入っているフォルダパス
 	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore";
