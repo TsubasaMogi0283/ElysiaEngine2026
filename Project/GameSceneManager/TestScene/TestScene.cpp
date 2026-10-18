@@ -171,7 +171,6 @@ void TestScene::Update(){
 				ImGui::Text("楽曲データがありません");
 			}
 
-
 			//コンボを閉じている時に表示される文字列
 			const char* preview = difficultyVector_[currentDifficultyNumber_].c_str();
 
@@ -201,6 +200,7 @@ void TestScene::Update(){
 				//再生
 				audio_->Play(existMusicScoreData_.musicHandle, startTime_);
 
+				GenerateNotes();
 			}
 
 			ImGui::TreePop();
