@@ -14,7 +14,7 @@ void Elysia::GameSceneManager::Initialize() {
 	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
 #ifdef _DEBUG
 	//デバッグ時はこっちに入れてね
-	currentGamaScene_ = abstractSceneFactory_->CreateScene("Select");
+	currentGamaScene_ = abstractSceneFactory_->CreateScene("Test");
 #endif // _DEBUG
 
 	//譜面データ生成と読み込み
@@ -60,7 +60,7 @@ void Elysia::GameSceneManager::Update() {
 
 #ifdef _DEBUG
 	ImGui::Begin("ゲームシーンの管理");
-	const char* SCENE_NAME[] = { "Title","Main","Win","Lose" };
+	const char* SCENE_NAME[] = { "Title","Main","Test","Win","Lose" };
 	if (ImGui::BeginCombo("シーン", SCENE_NAME[currentSceneNumber_])) {
 		for (uint32_t i = 0u; i < IM_ARRAYSIZE(SCENE_NAME); i++) {
 			bool isSelected = false;

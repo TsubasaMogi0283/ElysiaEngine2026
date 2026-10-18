@@ -45,7 +45,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
-		normalTapNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		normalTapNote->SetInitialPositionX(INITIAL_POSITION_.x);
 		normalTapNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
@@ -56,7 +56,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<HighPassLongNote> hiPassLongNote = std::make_unique<HighPassLongNote>();
 		//初期化
 		hiPassLongNote->Initialize(normalNoteModelHandle);
-		hiPassLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		hiPassLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
 		hiPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		highPassLongNoteArray_[i] = std::move(hiPassLongNote);
@@ -67,7 +67,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<LowPassLongNote> lowPassLongNote = std::make_unique<LowPassLongNote>();
 		//初期化
 		lowPassLongNote->Initialize(normalNoteModelHandle);
-		lowPassLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		lowPassLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
 		lowPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		lowPassLongNoteArray_[i] = std::move(lowPassLongNote);
@@ -78,7 +78,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<TranceGateEighthLongNote> tranceGateEighthLongNote = std::make_unique<TranceGateEighthLongNote>();
 		//初期化
 		tranceGateEighthLongNote->Initialize(normalNoteModelHandle);
-		tranceGateEighthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		tranceGateEighthLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
 		tranceGateEighthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateEighthLongNoteArray_[i] = std::move(tranceGateEighthLongNote);
@@ -89,7 +89,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<TranceGateSixteenthLongNote> tranceGateSixteenthLongNote = std::make_unique<TranceGateSixteenthLongNote>();
 		//初期化
 		tranceGateSixteenthLongNote->Initialize(normalNoteModelHandle);
-		tranceGateSixteenthLongNote->SetInitialPositionX(INITIAL_POSITION_X_);
+		tranceGateSixteenthLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
 		tranceGateSixteenthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateSixteenthLongNoteArray_[i] = std::move(tranceGateSixteenthLongNote);
