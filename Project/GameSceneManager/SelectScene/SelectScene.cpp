@@ -9,6 +9,7 @@
 #include <GameSceneManager.h>
 #include <TextureManager.h>
 #include <Audio.h>
+#include <WindowsSetup.h>
 #include <StringOption.h>
 
 SelectScene::SelectScene(){
@@ -21,6 +22,8 @@ SelectScene::SelectScene(){
 	textureManager_ = Elysia::TextureManager::GetInstance();
 	//オーディオ
 	audio_ = Elysia::Audio::GetInstance();
+	//ウィンドウクラス
+	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }
 
 void SelectScene::Initialize(){
@@ -51,10 +54,29 @@ void SelectScene::Initialize(){
 	}
 	//フレーム
 	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
-
+	Vector2<int32_t>frameTextureSize = { 
+		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(frameTextureHandle)),
+		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(frameTextureHandle))
+	};
 	//初期化
 	jacket_->Initialize(jacketTextureHandleVector, frameTextureHandle);
 	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
+
+	uint32_t arrowTextureHandle = textureManager_->Load("Resources/Sprite/Select/Arrow.png");
+	for (uint8_t i = 0u; i < ARRAOW_AMOUNT_; i++) {
+		arrowSpriteArray_[i] = Elysia::Sprite::Create(arrowTextureHandle);
+		arrowPositionArray_[i] = { 
+			.x = static_cast<int32_t>(i-1) * frameTextureSize.x/2 + windowsSetup_->GetClientSize().x/2+250,
+			.y = 360
+		};
+		arrowSpriteArray_[i]->SetPosition(arrowPositionArray_[i]);
+		arrowSpriteArray_[i]->SetAnchorPoint({.x=0.5f,.y=0.5f});
+		//右は反転
+		if (i == 1) {
+			arrowSpriteArray_[i]->SetRotate(std::numbers::pi_v<float_t>);
+		}
+	}
+	arrowPositionArray_;
 
 }
 
@@ -178,6 +200,10 @@ void SelectScene::DrawPostEffect(){
 void SelectScene::DrawSprite(){
 	//ジャケット
 	jacket_->DrawSprite();
+
+	for (uint8_t i = 0u; i < ARRAOW_AMOUNT_; i++) {
+		arrowSpriteArray_[i]->Draw();
+	}
 }
 
 

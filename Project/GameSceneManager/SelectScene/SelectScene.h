@@ -51,6 +51,11 @@ namespace Elysia {
 	/// </summary>
 	class Audio;
 
+	/// <summary>
+	/// ウィンドウクラス
+	/// </summary>
+	class WindowsSetup;
+
 }
 
 /// <summary>
@@ -120,12 +125,17 @@ private:
 	Elysia::TextureManager* textureManager_ = nullptr;
 	//オーディオ
 	Elysia::Audio* audio_ = nullptr;
+	//ウィンドウ
+	Elysia::WindowsSetup* windowsSetup_ = nullptr;
+
 private:
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 	//待機時間
 	const float_t WATING_TIME_ = 2.0f;
 
+	//矢印の数
+	static const uint8_t ARRAOW_AMOUNT_ = 2u;
 
 private:
 
@@ -141,9 +151,14 @@ private:
 	//ジャケット
 	std::unique_ptr<Jacket>jacket_ = {};
 
+	//矢印
+	std::array<std::unique_ptr<Elysia::Sprite>, ARRAOW_AMOUNT_> arrowSpriteArray_ = {};
+	std::array<Vector2<int32_t>, ARRAOW_AMOUNT_> arrowPositionArray_ = {};
+
+
 	//全ての譜面データ
 	std::vector<ExistMusicScoreData> allScoreData_ = {};
-
+	//トランジェントが開いているか
 	bool isOpendTransiont_ = false;
 	//現在選択している楽曲の番号
 	uint8_t currentSelectedMusicNumber_ = 0u;
