@@ -335,10 +335,18 @@ public:
 		}
 	}
 
-	inline void SetTemporaryRecord(const NoteJudgement::Record& temporaryRecord) {
-		this->temporaryRecord_ = temporaryRecord;
+	/// <summary>
+	/// 記録の一時保存
+	/// </summary>
+	/// <param name="temporaryRecord">記録</param>
+	inline void SetTemporaryRecord(const NoteJudgement::Record& record) {
+		this->temporaryRecord_ = record;
 	}
 
+	/// <summary>
+	/// 一時保存した記録を取得
+	/// </summary>
+	/// <returns>記録</returns>
 	inline NoteJudgement::Record GetTemporaryRecord()const {
 		return temporaryRecord_;
 	}
