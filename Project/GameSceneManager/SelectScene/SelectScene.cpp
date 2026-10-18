@@ -63,12 +63,21 @@ void SelectScene::Initialize(){
 	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
 
 	uint32_t arrowTextureHandle = textureManager_->Load("Resources/Sprite/Select/Arrow.png");
+	Vector2<int32_t>arrowTextureSize = {
+		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(arrowTextureHandle)),
+		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(arrowTextureHandle))
+	};
+
+	arrowPositionArray_[0] = {
+			.x = windowsSetup_->GetClientSize().x / 2 - arrowTextureSize.x / 2- frameTextureSize .x/4,
+			.y = 360
+	};
+	arrowPositionArray_[1] = {
+			.x = windowsSetup_->GetClientSize().x / 2 + arrowTextureSize.x / 2+ frameTextureSize .x/4,
+			.y = 360
+	};
 	for (uint8_t i = 0u; i < ARRAOW_AMOUNT_; i++) {
 		arrowSpriteArray_[i] = Elysia::Sprite::Create(arrowTextureHandle);
-		arrowPositionArray_[i] = { 
-			.x = static_cast<int32_t>(i-1) * frameTextureSize.x/2 + windowsSetup_->GetClientSize().x/2+250,
-			.y = 360
-		};
 		arrowSpriteArray_[i]->SetPosition(arrowPositionArray_[i]);
 		arrowSpriteArray_[i]->SetAnchorPoint({.x=0.5f,.y=0.5f});
 		//右は反転
@@ -76,6 +85,8 @@ void SelectScene::Initialize(){
 			arrowSpriteArray_[i]->SetRotate(std::numbers::pi_v<float_t>);
 		}
 	}
+	
+	
 	arrowPositionArray_;
 
 }
@@ -133,6 +144,7 @@ void SelectScene::Update(){
 		if (currentSelectedMusicNumber_ == 0) {
 			startTime = 0.0f;
 			endTime = 2.0f;
+
 			
 		}
 		else if (currentSelectedMusicNumber_ == 1) {
