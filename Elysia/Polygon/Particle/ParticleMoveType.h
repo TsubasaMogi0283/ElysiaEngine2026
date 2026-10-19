@@ -9,7 +9,7 @@
 /// <summary>
 /// 動き方の設定
 /// </summary>
-enum ParticleMoveType {
+enum class ParticleMoveType {
 
 	//通常の放出
 	NormalRelease,

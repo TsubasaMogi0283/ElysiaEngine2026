@@ -26,7 +26,6 @@
 #include <JudgementLine/JudgementLine.h>
 #include <MainScene/Play/PlayMainScene.h>
 
-
 /// <summary>
 /// ElysiaEngine(前方宣言)
 /// </summary>
@@ -154,7 +153,6 @@ private:
 private:
 	//ゲーム管理クラス
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
-
 	//入力
 	Elysia::Input* input_ = nullptr;
 	//オーディオ
@@ -163,6 +161,7 @@ private:
 	Elysia::ModelManager* modelManager_ = nullptr;
 	//テクスチャーハンドル
 	Elysia::TextureManager* textureManager_ = nullptr;
+
 private:
 	//ノーマルタップノーツ格納数の最大サイズ
 	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 32u;
@@ -174,7 +173,7 @@ private:
 	static const uint8_t TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_ = 6u;
 	//ロングノーツ(トランスゲート16)格納数の最大サイズ
 	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_ = 6u;
-
+	//初期座標
 	const Vector2<float_t> INITIAL_POSITION_ = { .x = 50.0f,.y = 0.0f };
 	//判定のX座標
 	const float_t JUDGEMENT_POSITION_X_ = -17.0f;
@@ -189,7 +188,9 @@ private:
 	const float_t START_OFFSET_TIME_ = 1.0f;
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
+	//レーンのサイズ
 	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
+
 private:
 
 	//背景
@@ -239,7 +240,6 @@ private:
 	//譜面データ
 	MusicScoreData musicData_ = {};
 	ExistMusicScoreData existMusicScoreData_ = {};
-
 	std::vector<std::string> difficultyVector_ = {};
 
 	//レーンの状態
@@ -252,4 +252,6 @@ private:
 
 	//レーンのY座標
 	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = { 10.0f,0.0f };
+	
+
 };

@@ -22,6 +22,7 @@
 #include <Note/Long/BaseLongNote.h>
 #include <PauseAsset/PauseAsset.h>
 #include <JudgementLine/JudgementLine.h>
+#include <Particle3D.h>
 
 
 /// <summary>
@@ -133,6 +134,10 @@ private:
 
 	//ロングノーツのスコア増加量
 	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;
+
+	//パーティクルの数
+	static const uint8_t PARTICLE_AMOUNT_ = 2u;
+
 private:
 	//一時補間場所からの取得
 	//譜面情報
@@ -178,4 +183,13 @@ private:
 
 	//記録
 	NoteJudgement::Record record_ = {};
+	//判定のパーティクル
+	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> perfectParticleArray_ = {};
+	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> greatParticleArray_ = {};
+	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> goodParticleArray_ = {};
+
+	uint32_t perfectParticleTextureHandle_ = 0u;
+	uint32_t greatPartucleTextureHandle_ = 0u;
+	uint32_t goodPartucleTextureHandle_ = 0u;
+
 };

@@ -17,8 +17,10 @@
 #include "TransformationMatrix.h"
 #include "Matrix4x4.h"
 #include "VertexData.h"
+#include "Material.h"
 #include "DirectXSetup.h"
 #include "Emitter.h"
+#include <BaseLight.h>
 #include "ParticleMoveType.h"
 
 #pragma region 前方宣言
@@ -94,7 +96,7 @@ namespace Elysia {
 		/// </summary>
 		/// <param name="moveType">動きの種類</param>
 		/// <returns>パーティクル(3D)</returns>
-		static std::unique_ptr<Particle3D> Create(const uint32_t& moveType);
+		static std::unique_ptr<Particle3D> Create(const ParticleMoveType& moveType);
 
 		/// <summary>
 		/// 生成
@@ -102,7 +104,7 @@ namespace Elysia {
 		/// <param name="modelHandle">モデルハンドル</param>
 		/// <param name="moveType">動きの種類</param>
 		/// <returns>パーティクル(3D)</returns>
-		static std::unique_ptr<Particle3D> Create(const uint32_t& modelHandle, const uint32_t& moveType);
+		static std::unique_ptr<Particle3D> Create(const uint32_t& modelHandle, const ParticleMoveType& moveType);
 
 
 	private:
@@ -131,35 +133,11 @@ namespace Elysia {
 	public:
 
 		/// <summary>
-		/// 通常描画
+		/// 描画
 		/// </summary>
 		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		void Draw(const Camera& camera, const Material& material);
-
-		/// <summary>
-		/// 描画(平行光源)
-		/// </summary>
-		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="directionalLight">平行光源</param>
-		void Draw(const Camera& camera, const Material& material, const DirectionalLight& directionalLight);
-
-		/// <summary>
-		/// 描画(点光源)
-		/// </summary>
-		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="pointLight">点光源</param>
-		void Draw(const Camera& camera, const Material& material, const PointLight& pointLight);
-
-		/// <summary>
-		/// 描画(スポットライト)
-		/// </summary>
-		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="spotLight">スポットライト</param>
-		void Draw(const Camera& camera, const Material& material, const SpotLight& spotLight);
+		/// <param name="baseLight">基底ライト</param>
+		void Draw(const Camera& camera, const BaseLight& baseLight);
 
 		/// <summary>
 		/// デストラクタ
@@ -255,6 +233,22 @@ namespace Elysia {
 			this->trackingPosition_ = position;
 		}
 
+		/// <summary>
+		/// 動的に放出するかどうかの設定
+		/// </summary>
+		/// <param name="isDynamicRelease">動的放出設定</param>
+		inline void SetIsDynamicReleaseMode(const bool& isDynamicRelease){
+			this->isDynamicReleaseMode_ = isDynamicRelease;
+		}
+
+		/// <summary>
+		/// 放出
+		/// </summary>
+		inline void SetIsRelease() {
+			this->isDynamicRelease_ = true;
+		}
+
+
 #pragma region エミッタの中の設定
 
 
@@ -322,8 +316,6 @@ namespace Elysia {
 		}
 
 
-
-
 #pragma endregion
 
 	private:
@@ -378,11 +370,11 @@ namespace Elysia {
 
 		//エミッタの設定
 		Emitter emitter_ = {};
-
+		
 		//テクスチャハンドル
 		uint32_t textureHandle_ = 0u;
 		//動きの種類
-		uint32_t moveType_ = ParticleMoveType::NormalRelease;
+		ParticleMoveType moveType_ = ParticleMoveType::NormalRelease;
 
 		//透明になっていくか
 		bool isToTransparent_ = true;
@@ -411,6 +403,15 @@ namespace Elysia {
 		Vector3<float_t> releasePositionForAbsorb_ = {};
 		//追従座標
 		Vector3<float_t> trackingPosition_ = {};
+
+		//動的に放出を管理するかどうか
+		bool isDynamicReleaseMode_ = false;
+		//放出
+		bool isDynamicRelease_ = false;
+
+
+		//マテリアル
+		Material material_ = {};
 	};
 
 };

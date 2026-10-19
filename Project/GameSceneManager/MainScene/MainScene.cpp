@@ -28,13 +28,14 @@ MainScene::MainScene() {
 
 void MainScene::Initialize() {
 	//楽曲譜面情報を取得
+	musicScoreData_ = gameSceneManager_->GetMusicScoreData().musicScoreData[difficulty_];
 #ifdef _DEBUG
 	musicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 	
 #endif // _DEBUG
-	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
-	musicScoreData_ = gameSceneManager_->GetMusicScoreData().musicScoreData[difficulty_];
-	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();
+	difficulty_ = 0;
+	
+	musicHandle_ = 1;
 	jacketTextureHandle_ = gameSceneManager_->GetTemporaryJacketTextureHandle();
 
 

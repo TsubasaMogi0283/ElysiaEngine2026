@@ -113,7 +113,44 @@ void PlayMainScene::Initialize() {
 	pauseAsset_->Initilaize(blackTextureHandle, numberTextureHandleVector);
 
 #pragma endregion
+	//パーティクルのテクスチャの読み込み
+	perfectParticleTextureHandle_ = textureManager_->Load("Resources/Sprite/Particle/PerfectParticle.png");
+	greatPartucleTextureHandle_ = textureManager_->Load("Resources/Sprite/Particle/GreatParticle.png");
+	goodPartucleTextureHandle_ = textureManager_->Load("Resources/External/Texture/Circle/circle.png");
 
+	//パーティクルの生成
+	for (uint8_t i = 0u;i < PARTICLE_AMOUNT_;i++) {
+		perfectParticleArray_[i]=Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
+		
+		
+		perfectParticleArray_[i]->SetIsDynamicReleaseMode(true);
+		perfectParticleArray_[i]->TextureOverride(perfectParticleTextureHandle_);
+
+		perfectParticleArray_[i]->SetTranslate({
+			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
+			.y = LANE_POSITION_Y_[i],
+			.z = 0.0f });
+		perfectParticleArray_[i]->SetCount(20);
+
+		greatParticleArray_[i] = Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
+		greatParticleArray_[i]->TextureOverride(greatPartucleTextureHandle_);
+		greatParticleArray_[i]->SetIsDynamicReleaseMode(true);
+		greatParticleArray_[i]->SetTranslate({
+			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
+			.y = LANE_POSITION_Y_[i],
+			.z = 0.0f });
+		greatParticleArray_[i]->SetCount(20);
+
+		goodParticleArray_[i] = Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
+		goodParticleArray_[i]->TextureOverride(goodPartucleTextureHandle_);
+		goodParticleArray_[i]->SetIsDynamicReleaseMode(true);
+		goodParticleArray_[i]->SetTranslate({
+			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
+			.y = LANE_POSITION_Y_[i],
+			.z = 0.0f });
+		goodParticleArray_[i]->SetCount(20);
+	}
+	
 	//楽曲の再生
 	audio_->Play(musicHandle_, false);
 	musicLength_ = audio_->GetAudioLength(musicHandle_);
@@ -151,6 +188,7 @@ void PlayMainScene::Update() {
 		}
 		//記録
 		mainScene_->SetTemporaryRecord(record_);
+
 	} 
 	else {
 		//楽曲停止
@@ -165,25 +203,25 @@ void PlayMainScene::Update() {
 	ImGui::Begin("プレイシーン");
 	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
 	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
+	int32_t perfect = static_cast<int32_t>(record_.perfect);
+	int32_t great = static_cast<int32_t>(record_.great);
+	int32_t good = static_cast<int32_t>(record_.good);
+	int32_t miss = static_cast<int32_t>(record_.miss);
+	int32_t combo = static_cast<int32_t>(record_.combo);
+	int32_t maxCombo = static_cast<int32_t>(record_.maxCombo);
+	int32_t score = static_cast<int32_t>(record_.score);
 
+	ImGui::InputInt("Perfect", &perfect);
+	ImGui::InputInt("Great", &great);
+	ImGui::InputInt("Good", &good);
+	ImGui::InputInt("Miss", &miss);
+	ImGui::InputInt("Combo", &combo);
+	ImGui::InputInt("MaxCombo", &maxCombo);
+	ImGui::InputInt("Score", &score);
 	ImGui::InputFloat("楽曲再生時間", &musicTime_);
 	ImGui::InputFloat("楽曲の長さ", &musicLength_);
 	if (ImGui::TreeNode("判定")) {
-		int32_t perfect = static_cast<int32_t>(record_.perfect);
-		int32_t great = static_cast<int32_t>(record_.great);
-		int32_t good = static_cast<int32_t>(record_.good);
-		int32_t miss = static_cast<int32_t>(record_.miss);
-		int32_t combo = static_cast<int32_t>(record_.combo);
-		int32_t maxCombo = static_cast<int32_t>(record_.maxCombo);
-		int32_t score = static_cast<int32_t>(record_.score);
-
-		ImGui::InputInt("Perfect", &perfect);
-		ImGui::InputInt("Great", &great);
-		ImGui::InputInt("Good", &good);
-		ImGui::InputInt("Miss", &miss);
-		ImGui::InputInt("Combo", &combo);
-		ImGui::InputInt("MaxCombo", &maxCombo);
-		ImGui::InputInt("Score", &score);
+		
 		ImGui::TreePop();
 	}
 
@@ -247,7 +285,13 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
-	
+	//判定のパーティクル
+	for (uint8_t i = 0u;i < PARTICLE_AMOUNT_;i++) {
+		perfectParticleArray_[i]->Draw(camera, baseLight);
+		greatParticleArray_[i]->Draw(camera, baseLight);
+		goodParticleArray_[i]->Draw(camera, baseLight);
+
+	}
 
 }
 
@@ -473,6 +517,16 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Perfect;
 				isConfirmJudgement = true;
 
+				//パーティクルの放出
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+				}
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+				}
+				
+				
+
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -487,6 +541,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Great;
 				isConfirmJudgement = true;
 
+				//パーティクルの放出
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+				}
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+				}
+
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -500,6 +562,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Good;
 				mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Good));
 				isConfirmJudgement = true;
+
+				//パーティクルの放出
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+				}
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+				}
 
 				//コンボを増やす
 				record_.combo++;
@@ -547,6 +617,13 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+					//パーティクルの放出
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+					}
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+					}
 
 				}
 				//Great用
@@ -561,6 +638,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+
+					//パーティクルの放出
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+						greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+					}
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+						greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+					}
 				}
 				//Good用
 				else if (absoluteJudgementTime < NoteJudgement::Time::GOOD) {
@@ -574,6 +659,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+
+					//パーティクルの放出
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+						goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+					}
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+						goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+					}
 				}
 				//Miss用
 				else if (absoluteJudgementTime < NoteJudgement::Time::MISS) {

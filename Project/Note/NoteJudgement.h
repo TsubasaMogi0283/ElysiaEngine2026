@@ -62,13 +62,13 @@ namespace NoteJudgement {
 	/// </summary>
 	namespace Time {
 		//パーフェクトの判定時間
-		const float_t PERFECT = 0.1f;
+		const float_t PERFECT = 0.05f;
 		//グレートの判定時間
-		const float_t GREAT = 0.15f;
+		const float_t GREAT = 0.1f;
 		//グッドの判定時間
-		const float_t GOOD = 0.2f;
+		const float_t GOOD = 0.15f;
 		//ミスの判定時間
-		const float_t MISS = 0.25f;
+		const float_t MISS = 0.20f;
 	}
 
 	/// <summary>
