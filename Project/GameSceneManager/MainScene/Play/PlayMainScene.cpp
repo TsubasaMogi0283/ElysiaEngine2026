@@ -113,7 +113,19 @@ void PlayMainScene::Initialize() {
 	pauseAsset_->Initilaize(blackTextureHandle, numberTextureHandleVector);
 
 #pragma endregion
-
+	//パーティクルの生成
+	for (uint8_t i = 0u;i < PARTICLE_AMOUNT_;i++) {
+		particleArray_[i]=Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
+		particleArray_[i]->SetIsDynamicReleaseMode(true);
+		particleArray_[i]->SetTranslate({
+			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
+			.y = LANE_POSITION_Y_[i],
+			.z = 0.0f });
+		particleArray_[i]->SetCount(10);
+		particleMaterialArray_[i].Initialize();
+		particleMaterialArray_[i].lightingKinds= LightingType::DirectionalLighting;
+	}
+	
 	//楽曲の再生
 	audio_->Play(musicHandle_, false);
 	musicLength_ = audio_->GetAudioLength(musicHandle_);
@@ -151,6 +163,11 @@ void PlayMainScene::Update() {
 		}
 		//記録
 		mainScene_->SetTemporaryRecord(record_);
+
+		//マテリアルの更新
+		for (uint8_t i = 0u;i < PARTICLE_AMOUNT_;i++) {
+			particleMaterialArray_[i].Update();
+		}
 	} 
 	else {
 		//楽曲停止
@@ -247,7 +264,10 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
-	
+	//判定のパーティクル
+	for (uint8_t i = 0u;i < PARTICLE_AMOUNT_;i++) {
+		particleArray_[i]->Draw(camera, particleMaterialArray_[i], baseLight);
+	}
 
 }
 
@@ -473,6 +493,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Perfect;
 				isConfirmJudgement = true;
 
+				//パーティクルの放出
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					particleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+				}
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+				}
+
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -487,6 +515,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Great;
 				isConfirmJudgement = true;
 
+				//パーティクルの放出
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					particleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+				}
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+				}
+
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -500,6 +536,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Good;
 				mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Good));
 				isConfirmJudgement = true;
+
+				//パーティクルの放出
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					particleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+				}
+				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+				}
 
 				//コンボを増やす
 				record_.combo++;
@@ -547,6 +591,13 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+					//パーティクルの放出
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+						particleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+					}
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+						particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+					}
 
 				}
 				//Great用
@@ -561,6 +612,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+
+					//パーティクルの放出
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+						particleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+					}
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+						particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+					}
 				}
 				//Good用
 				else if (absoluteJudgementTime < NoteJudgement::Time::GOOD) {
@@ -574,6 +633,14 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+
+					//パーティクルの放出
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+						particleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
+					}
+					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+						particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+					}
 				}
 				//Miss用
 				else if (absoluteJudgementTime < NoteJudgement::Time::MISS) {

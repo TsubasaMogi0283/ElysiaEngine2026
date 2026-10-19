@@ -32,7 +32,7 @@ Elysia::Particle3D::Particle3D() {
 
 }
 
-std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& moveType) {
+std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const ParticleMoveType& moveType) {
 	//生成
 	std::unique_ptr<Elysia::Particle3D> particle3D = std::make_unique<Elysia::Particle3D>();
 
@@ -72,7 +72,7 @@ std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& m
 
 }
 
-std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& modelHandle, const uint32_t& moveType) {
+std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& modelHandle, const ParticleMoveType& moveType) {
 	//生成
 	std::unique_ptr<Elysia::Particle3D> particle3D = std::make_unique<Elysia::Particle3D>();
 
@@ -123,7 +123,7 @@ ParticleInformation Elysia::Particle3D::MakeNewParticle(std::mt19937& randomEngi
 	Vector3 randomTranslate = { .x = distribute(randomEngine),.y = distribute(randomEngine) + 1.0f,.z = distribute(randomEngine) };
 	particle.transform.translate = emitter_.transform.translate+ randomTranslate;
 	//投げ上げは少しだけ上にずらす
-	if (moveType_ == ThrowUp) {
+	if (moveType_ == ParticleMoveType::ThrowUp) {
 		Vector3 offset = { .x = randomTranslate.x,.y = 0.1f,.z = randomTranslate.z };
 		particle.transform.translate = emitter_.transform.translate+ offset;
 
@@ -152,12 +152,10 @@ ParticleInformation Elysia::Particle3D::MakeNewParticle(std::mt19937& randomEngi
 
 std::list<ParticleInformation> Elysia::Particle3D::Emission(const Emitter& emmitter, std::mt19937& randomEngine) {
 	std::list<ParticleInformation> particles;
-
 	for (uint32_t count = 0u; count < emmitter.count; ++count) {
 		//emitterで設定したカウントまで増やしていくよ
 		particles.push_back(MakeNewParticle(randomEngine));
 	}
-
 	return particles;
 }
 
@@ -166,39 +164,47 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 	//ランダムエンジン
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine(seedGenerator());
-	//一度だけ出すモード
-	if (isReleaseOnceMode_) {
-		//パーティクルを作る
-		if (!isReleasedOnce_ ) {
+	if (isDynamicReleaseMode_) {
+		if (isDynamicRelease_) {
 			particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
-			isReleasedOnce_ = true;
+			isDynamicRelease_ = false;
 		}
+		
 	}
 	else {
-		//最初に1回だけ出す
-		if (!isFirstRelease_) {
-			particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
-			//出し終わったことを示す
-			isFirstRelease_ = true;
-		}
-
-		//そのあと循環
-		//時間経過
-		emitter_.frequencyTime += DELTA_TIME_;
-		//頻度より大きいかつまだ生成が停止されていない
-		if (emitter_.frequency <= emitter_.frequencyTime && isStopGenerate_==false) {
+		//一度だけ出すモード
+		if (isReleaseOnceMode_) {
 			//パーティクルを作る
-			particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
-			//出した
-			isRelease_ = true;
-			//もう一度最初から
-			emitter_.frequencyTime=0.0f;
-		}
-		else {
-			//出していない
-			isRelease_ = false;
+			if (!isReleasedOnce_) {
+				particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
+				isReleasedOnce_ = true;
+			}
+		} else {
+			//最初に1回だけ出す
+			if (!isFirstRelease_) {
+				particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
+				//出し終わったことを示す
+				isFirstRelease_ = true;
+			}
+
+			//そのあと循環
+			//時間経過
+			emitter_.frequencyTime += DELTA_TIME_;
+			//頻度より大きいかつまだ生成が停止されていない
+			if (emitter_.frequency <= emitter_.frequencyTime && isStopGenerate_ == false) {
+				//パーティクルを作る
+				particles_.splice(particles_.end(), Emission(emitter_, randomEngine));
+				//出した
+				isRelease_ = true;
+				//もう一度最初から
+				emitter_.frequencyTime = 0.0f;
+			} else {
+				//出していない
+				isRelease_ = false;
+			}
 		}
 	}
+	
 
 	//書き込み
 	instancingResource_->Map(0u, nullptr, reinterpret_cast<void**>(&particleForGpuData_));
@@ -213,10 +219,10 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 		Matrix4x4 scaleMatrix = {};
 		Matrix4x4 translateMatrix = {};
 		Matrix4x4 billBoardMatrix = {};
-		//
+		//吸収
 		Vector3<float_t> absorbPosition = {};
 
-		///時間経過
+		//時間経過
 		particleIterator->currentTime += DELTA_TIME_;
 
 		switch (moveType_) {
@@ -229,8 +235,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 				}
 			}
 
-			particleIterator->transform.translate.y += 0.0001f;
-
+			particleIterator->transform.translate = particleIterator->transform.translate + particleIterator->velocity;
 
 			//カメラの回転を適用する
 			billBoardMatrix = camera.viewMatrix;
@@ -255,7 +260,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			if (numInstance_ < MAX_INSTANCE_NUMBER_) {
 				//ワールド行列と色のデータを設定
 				particleForGpuData_[numInstance_].world = worldMatrix;
-				const Vector4 COLOR = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
+				const Vector4<float_t> COLOR = { .x = 1.0f,.y = 1.0f,.z = 1.0f,.w = 1.0f };
 				particleForGpuData_[numInstance_].color = COLOR;
 				particleIterator->color = COLOR;
 
@@ -462,8 +467,6 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 	}
 
 
-	instancingResource_->Unmap(0u, nullptr);
-
 	//全て見えなくなったらisAllInvisible_がtrueになる
 	if (isReleasedOnce_) {
 		//all_ofは中にある全ての要素が満たす時にtrueを返す
@@ -632,6 +635,60 @@ void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, co
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//SpotLight
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
+	//DrawCall
+	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
+}
+
+void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, const BaseLight& baseLight){
+
+	//更新
+	Update(camera);
+
+	//描画するものがなければコマンドを積まない
+	if (numInstance_ == 0u) {
+		return;
+	}
+
+	//PS用のカメラ
+	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraPositionData_));
+	*cameraPositionData_ = camera.GetWorldPosition();
+	cameraResource_->Unmap(0u, nullptr);
+
+
+	//コマンドを積む
+	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetParticle3DRootSignature().Get());
+	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetParticle3DGraphicsPipelineState().Get());
+	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
+	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
+	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//CBVを設定する
+	//マテリアル
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
+	//インスタンシング
+	srvManager_->SetGraphicsRootDescriptorTable(1u, instancingIndex_);
+	//テクスチャ
+	if (textureHandle_ != 0u) {
+		textureManager_->GraphicsCommand(2u, textureHandle_);
+	}
+	//カメラ
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, camera.resource->GetGPUVirtualAddress());
+	//PS用のカメラ
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
+	//ライトの設定
+	switch (material.lightingKinds) {
+	case LightingType::DirectionalLighting:
+		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, baseLight.resource->GetGPUVirtualAddress());
+		break;
+
+	case LightingType::PointLighting:
+		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, baseLight.resource->GetGPUVirtualAddress());
+		break;
+
+	case LightingType::SpotLighting:
+		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, baseLight.resource->GetGPUVirtualAddress());
+		break;
+	}
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
 }

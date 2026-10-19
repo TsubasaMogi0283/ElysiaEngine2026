@@ -14,7 +14,7 @@ void Elysia::GameSceneManager::Initialize() {
 	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
 #ifdef _DEBUG
 	//デバッグ時はこっちに入れてね
-	currentGamaScene_ = abstractSceneFactory_->CreateScene("Test");
+	currentGamaScene_ = abstractSceneFactory_->CreateScene("Main");
 #endif // _DEBUG
 
 	//譜面データ生成と読み込み
@@ -28,8 +28,6 @@ void Elysia::GameSceneManager::Initialize() {
 	//各シーン
 	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_->Initialize();
-
-	
 
 }
 
@@ -80,9 +78,7 @@ void Elysia::GameSceneManager::Update() {
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
 			}
-
 		}
-
 		ImGui::EndCombo();
 	}
 
