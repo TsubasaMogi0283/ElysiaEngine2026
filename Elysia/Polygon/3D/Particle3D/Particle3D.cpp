@@ -11,7 +11,7 @@
 #include "ModelManager.h"
 #include "SrvManager.h"
 
-#include "Material.h"
+
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
@@ -67,6 +67,9 @@ std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const ParticleMov
 	particle3D->srvManager_->CreateSRVForStructuredBuffer(particle3D->instancingIndex_, particle3D->instancingResource_.Get(), particle3D->MAX_INSTANCE_NUMBER_, sizeof(ParticleForGPU));
 	//カメラ
 	particle3D->cameraResource_ = particle3D->directXSetup_->CreateBufferResource(sizeof(Vector3<float_t>));
+
+	//マテリアル
+	particle3D->material_.Initialize();
 
 	return particle3D;
 
@@ -477,184 +480,12 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 			return particle.isInvisible == true;
 			});
 	}
+
+	//マテリアルの更新
+	material_.Update();
 }
 
-void Elysia::Particle3D::Draw(const Camera& camera, const Material& material) {
-
-	assert(material.lightingKinds == LightingType::NoneLighting);
-	//更新
-	Update(camera);
-
-	//PS用のカメラ
-	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraPositionData_));
-	*cameraPositionData_ = camera.GetWorldPosition();
-	cameraResource_->Unmap(0u, nullptr);
-
-	//コマンドを積む
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetParticle3DRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetParticle3DGraphicsPipelineState().Get());
-	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
-	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
-	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//CBVを設定する
-	//マテリアル
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//インスタンシング
-	srvManager_->SetGraphicsRootDescriptorTable(1u, instancingIndex_);
-	//テクスチャ
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
-	//カメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, camera.resource->GetGPUVirtualAddress());
-	//PS用のカメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
-}
-
-void Elysia::Particle3D::Draw(const Camera& camera, const  Material& material, const DirectionalLight& directionalLight) {
-
-	//Directionalではなかったらassert
-	if (material.lightingKinds != LightingType::DirectionalLighting) {
-		assert(0);
-	}
-
-	//描画するものがなければコマンドを積まない
-	if (numInstance_ == 0u) {
-		return;
-	}
-
-	//更新
-	Update(camera);
-
-	//PS用のカメラ
-	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraPositionData_));
-	*cameraPositionData_ = camera.GetWorldPosition();
-	cameraResource_->Unmap(0u, nullptr);
-
-	//コマンドを積む
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetParticle3DRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetParticle3DGraphicsPipelineState().Get());
-	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
-	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
-	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//CBVを設定する
-	//マテリアル
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//インスタンシング
-	srvManager_->SetGraphicsRootDescriptorTable(1u, instancingIndex_);
-	//テクスチャ
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
-	//カメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, camera.resource->GetGPUVirtualAddress());
-	//平行光源
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, directionalLight.resource->GetGPUVirtualAddress());
-	//PS用のカメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
-
-}
-
-void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, const PointLight& pointLight) {
-	//Pointではなかったらassert
-	if (material.lightingKinds != LightingType::PointLighting) {
-		assert(0);
-	}
-
-	//描画するものがなければコマンドを積まない
-	if (numInstance_ == 0u) {
-		return;
-	}
-	//更新
-	Update(camera);
-
-	//PS用のカメラ
-	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraPositionData_));
-	*cameraPositionData_ = camera.GetWorldPosition();
-	cameraResource_->Unmap(0u, nullptr);
-	//コマンドを積む
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetParticle3DRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetParticle3DGraphicsPipelineState().Get());
-
-
-	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
-	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
-	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//CBVを設定する
-	//マテリアル
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//インスタンシング
-	srvManager_->SetGraphicsRootDescriptorTable(1u, instancingIndex_);
-	//テクスチャ
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
-
-	//カメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, camera.resource->GetGPUVirtualAddress());
-	//PS用のカメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-	//点光源
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, pointLight.resource->GetGPUVirtualAddress());
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
-
-}
-
-void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, const SpotLight& spotLight) {
-	//Spotではなかったらassert
-	if (material.lightingKinds != LightingType::SpotLighting) {
-		assert(0);
-	}
-
-	//描画するものがなければコマンドを積まない
-	if (numInstance_ == 0u) {
-		return;
-	}
-	//更新
-	Update(camera);
-
-	//PS用のカメラ
-	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraPositionData_));
-	*cameraPositionData_ = camera.GetWorldPosition();
-	cameraResource_->Unmap(0u, nullptr);
-
-
-	//コマンドを積む
-	directXSetup_->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetParticle3DRootSignature().Get());
-	directXSetup_->GetCommandList()->SetPipelineState(pipelineManager_->GetParticle3DGraphicsPipelineState().Get());
-	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
-	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
-	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//CBVを設定する
-	//マテリアル
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
-	//インスタンシング
-	srvManager_->SetGraphicsRootDescriptorTable(1u, instancingIndex_);
-	//テクスチャ
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
-	//カメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, camera.resource->GetGPUVirtualAddress());
-	//PS用のカメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-	//SpotLight
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, spotLight.resource->GetGPUVirtualAddress());
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
-}
-
-void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, const BaseLight& baseLight){
+void Elysia::Particle3D::Draw(const Camera& camera,const BaseLight& baseLight){
 
 	//更新
 	Update(camera);
@@ -677,9 +508,6 @@ void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, co
 	directXSetup_->GetCommandList()->IASetVertexBuffers(0u, 1u, &vertexBufferView_);
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えよう
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//CBVを設定する
-	//マテリアル
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
 	//インスタンシング
 	srvManager_->SetGraphicsRootDescriptorTable(1u, instancingIndex_);
 	//テクスチャ
@@ -691,20 +519,27 @@ void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, co
 	//PS用のカメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//ライトの設定
-	switch (material.lightingKinds) {
+	switch (baseLight.lightingType) {
 	case LightingType::DirectionalLighting:
+		material_.lightingKinds = LightingType::DirectionalLighting;
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, baseLight.resource->GetGPUVirtualAddress());
 		break;
 
 	case LightingType::PointLighting:
+		material_.lightingKinds = LightingType::PointLighting;
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(6u, baseLight.resource->GetGPUVirtualAddress());
 		break;
 
 	case LightingType::SpotLighting:
+		material_.lightingKinds = LightingType::PointLighting;
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, baseLight.resource->GetGPUVirtualAddress());
 		break;
 
 	}
+
+	//マテリアル
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material_.resource->GetGPUVirtualAddress());
+
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
 }

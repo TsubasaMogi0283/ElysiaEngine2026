@@ -184,8 +184,12 @@ private:
 	//記録
 	NoteJudgement::Record record_ = {};
 	//判定のパーティクル
-	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> particleArray_ = {};
-	std::array<Material, PARTICLE_AMOUNT_> particleMaterialArray_ = {};
-	uint32_t parfectParticleTextureHandle = 0u;
+	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> perfectParticleArray_ = {};
+	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> greatParticleArray_ = {};
+	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> goodParticleArray_ = {};
+
+	uint32_t perfectParticleTextureHandle_ = 0u;
 	uint32_t greatPartucleTextureHandle_ = 0u;
+	uint32_t goodPartucleTextureHandle_ = 0u;
+
 };

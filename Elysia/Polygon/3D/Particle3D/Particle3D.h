@@ -17,6 +17,7 @@
 #include "TransformationMatrix.h"
 #include "Matrix4x4.h"
 #include "VertexData.h"
+#include "Material.h"
 #include "DirectXSetup.h"
 #include "Emitter.h"
 #include <BaseLight.h>
@@ -132,43 +133,11 @@ namespace Elysia {
 	public:
 
 		/// <summary>
-		/// 通常描画
-		/// </summary>
-		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		void Draw(const Camera& camera, const Material& material);
-
-		/// <summary>
-		/// 描画(平行光源)
-		/// </summary>
-		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="directionalLight">平行光源</param>
-		void Draw(const Camera& camera, const Material& material, const DirectionalLight& directionalLight);
-
-		/// <summary>
-		/// 描画(点光源)
-		/// </summary>
-		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="pointLight">点光源</param>
-		void Draw(const Camera& camera, const Material& material, const PointLight& pointLight);
-
-		/// <summary>
-		/// 描画(スポットライト)
-		/// </summary>
-		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="spotLight">スポットライト</param>
-		void Draw(const Camera& camera, const Material& material, const SpotLight& spotLight);
-
-		/// <summary>
 		/// 描画
 		/// </summary>
 		/// <param name="camera">カメラ</param>
-		/// <param name="material">マテリアル</param>
 		/// <param name="baseLight">基底ライト</param>
-		void Draw(const Camera& camera, const Material& material, const BaseLight& baseLight);
+		void Draw(const Camera& camera, const BaseLight& baseLight);
 
 		/// <summary>
 		/// デストラクタ
@@ -439,6 +408,10 @@ namespace Elysia {
 		bool isDynamicReleaseMode_ = false;
 		//放出
 		bool isDynamicRelease_ = false;
+
+
+		//マテリアル
+		Material material_ = {};
 	};
 
 };
