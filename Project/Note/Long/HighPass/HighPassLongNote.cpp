@@ -39,6 +39,7 @@ void HighPassLongNote::Update(){
 	//裏返り厳禁！
 	worldTransform_.scale.x = std::abs(endPositionX - startPositionX) / 2.0f;
 
+
 	//最後までいったら未使用状態にする
 	if (endRatio_ >= 1.0f) {
 		isUsed_ = false;

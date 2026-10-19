@@ -678,7 +678,7 @@ void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, co
 	//ライトの設定
 	switch (material.lightingKinds) {
 	case LightingType::DirectionalLighting:
-		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(3u, baseLight.resource->GetGPUVirtualAddress());
+		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, baseLight.resource->GetGPUVirtualAddress());
 		break;
 
 	case LightingType::PointLighting:
