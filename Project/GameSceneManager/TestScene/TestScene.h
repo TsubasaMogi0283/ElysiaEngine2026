@@ -24,6 +24,7 @@
 #include <Note/Long/TranceGateEighth/TranceGateEighthLongNote.h>
 #include <Note/Long/TranceGateSixteenth/TranceGateSixteenthLongNote.h>
 #include <JudgementLine/JudgementLine.h>
+#include <MainScene/Play/PlayMainScene.h>
 
 
 /// <summary>
@@ -112,10 +113,34 @@ public:
 		this->gameSceneManager_ = gameManager;
 	}
 
+private:
+	/// <summary>
+	/// レーンの状態
+	/// </summary>
+	struct LaneCondition {
+		//入力されたかどうか
+		bool isHit = false;
+		//ロングノーツが入力されたかどうか
+		bool isHoldLongNote = false;
+		//タッチ時間
+		float_t touchTime = 0.0f;
+
+		//ホールド状態
+		bool isHold = false;
+	};
+
+private:
 	/// <summary>
 	/// ノーツ生成
 	/// </summary>
 	void GenerateNotes();
+
+	/// <summary>
+	/// ノーツの流れる処理
+	/// </summary>
+	/// <param name="noteInformations"></param>
+	/// <param name="laneCondition"></param>
+	void NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition);
 
 
 private:
@@ -150,10 +175,13 @@ private:
 	const float_t MUSIC_START_TIME_ = 0.0f;
 	//終了時間
 	const float_t MUSIC_END_TIME_ = 18.0f;
-
+	//ロングノーツのスコア増加量
+	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;
 	//開始オフセット
 	const float_t START_OFFSET_TIME_ = 1.0f;
-
+	//初期のコンボボーナス倍率
+	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
+	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
 private:
 
 	//背景
@@ -187,6 +215,8 @@ private:
 	bool isStop_ = true;
 	//開始時間
 	float_t startTime_ = 0.0f;
+	//再生時間
+	float_t musicTime_ = 0.0f;
 
 	//現在設定中の情報
 	size_t currentMusicNumber_ = 0u;
@@ -198,4 +228,11 @@ private:
 
 	std::vector<std::string> difficultyVector_ = {};
 
+	//記録
+	NoteJudgement::Record record_ = {};
+
+	float_t comboBonusScale_ = 1.0f;
+
+	//レーンのY座標
+	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = { 10.0f,0.0f };
 };
