@@ -116,9 +116,11 @@ ParticleInformation Elysia::Particle3D::MakeNewParticle(std::mt19937& randomEngi
 
 	//ランダムの値で位置を決める
 	//SRは固定
+	std::uniform_real_distribution<float_t> scaleDistribute(0.5f, 2.0f);
 	std::uniform_real_distribution<float_t> distribute(-1.0f, 1.0f);
+
 	ParticleInformation particle = {};
-	particle.transform.scale = emitter_.transform.scale;
+	particle.transform.scale = { scaleDistribute(randomEngine),scaleDistribute(randomEngine),scaleDistribute(randomEngine) };
 	particle.transform.rotate = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 	Vector3 randomTranslate = { .x = distribute(randomEngine),.y = distribute(randomEngine) + 1.0f,.z = distribute(randomEngine) };
 	particle.transform.translate = emitter_.transform.translate+ randomTranslate;
@@ -235,7 +237,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 				}
 			}
 
-			particleIterator->transform.translate = {0.0f,0.0f,0.0f};
+			particleIterator->transform.translate = particleIterator->transform.translate + particleIterator->velocity;
 
 			//カメラの回転を適用する
 			billBoardMatrix = camera.viewMatrix;
