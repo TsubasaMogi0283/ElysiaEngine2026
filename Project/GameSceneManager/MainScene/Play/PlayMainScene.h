@@ -132,7 +132,7 @@ private:
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
 	//ロングノーツのスコア増加量
-	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;;
+	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;
 private:
 	//一時補間場所からの取得
 	//譜面情報
@@ -142,7 +142,6 @@ private:
 	//ハンドル
 	uint32_t musicHandle_ = 0u;
 	uint32_t jacketTextureHandle_ = 0u;
-
 
 	//オブジェクトプールで管理するための変数
 	//通常タップノーツの固定配列

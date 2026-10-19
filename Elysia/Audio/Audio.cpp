@@ -82,8 +82,6 @@ uint32_t Elysia::Audio::LoadWave(const std::string& fileName) {
 	}
 
 
-	//indexを取得
-	uint32_t handle = index_;
 	//加算
 	index_++;
 
@@ -170,12 +168,12 @@ uint32_t Elysia::Audio::LoadWave(const std::string& fileName) {
 
 	//記録
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].fileName = fileName;
-	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = handle;
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = index_;
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].soundData = newSoundData;
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].extension = "wave";
 
 	//handleを返す
-	return handle;
+	return index_;
 
 #pragma endregion
 
@@ -189,15 +187,12 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 		return Elysia::Audio::GetInstance()->audioInformation_[fileName].handle;
 	}
 
-
-	//indexを取得
-	uint32_t handle = index_;
 	//加算
 	index_++;
 
 	//記録
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].fileName = fileName;
-	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = handle;
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = index_;
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].extension = "mp3";
 
 
@@ -257,7 +252,7 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 
 	Elysia::Audio::GetInstance()->xAudio2_->CreateSourceVoice(&Elysia::Audio::GetInstance()->audioInformation_[fileName].sourceVoice, waveFormat);
 
-	return handle;
+	return index_;
 }
 
 void Elysia::Audio::Play(const uint32_t& audioHandle, const bool& isLoop) {
@@ -286,6 +281,31 @@ void Elysia::Audio::Play(const uint32_t& audioHandle, const uint32_t& loopCount)
 		PlayMP3(audioHandle, loopCount);
 	}
 
+}
+
+void Elysia::Audio::Play(const uint32_t& audioHandle, const float_t& startTime){
+	//ファイルキーの取得
+	std::string fileKey = GetAudioInformationKey(audioHandle);
+
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
+	assert(SUCCEEDED(hResult));
+
+	//bufferの設定
+	XAUDIO2_BUFFER buffer{};
+	buffer.pAudioData = Audio::GetInstance()->audioInformation_[fileKey].mediaData.data();
+	buffer.Flags = XAUDIO2_END_OF_STREAM;
+	buffer.AudioBytes = sizeof(BYTE) * static_cast<UINT32>(Elysia::Audio::GetInstance()->audioInformation_[fileKey].mediaData.size());
+	buffer.LoopCount = XAUDIO2_NO_LOOP_REGION;
+
+	UINT32 startSample = static_cast<UINT32>(startTime * audioInformation_[fileKey].soundData.wfex.nSamplesPerSec);
+	buffer.PlayBegin = startSample;
+
+	hResult = Elysia::Audio::GetInstance()->audioInformation_[fileKey].sourceVoice->SubmitSourceBuffer(&buffer);
+	assert(SUCCEEDED(hResult));
+
+	//波形データの再生
+	hResult = audioInformation_[fileKey].sourceVoice->Start(0);
+	assert(SUCCEEDED(hResult));
 }
 
 

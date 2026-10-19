@@ -53,6 +53,19 @@ void Transition::DrawSprite(){
 	}
 }
 
+void Transition::ShortkyOpen(){
+	//閉じている状態の時に開く
+	if (!isOpened_ && isClosed_) {
+		isOpened_ = true;
+		isClosed_ = false;
+
+		sideT_ = 1.0f;
+		widthScale_ = 0.0f;
+
+
+	}
+}
+
 bool Transition::SetOpenTransition(){
 
 	bool isEnd = false;

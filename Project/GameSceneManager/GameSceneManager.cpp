@@ -21,13 +21,15 @@ void Elysia::GameSceneManager::Initialize() {
 	scoreDataManager_ = std::make_unique<ScoreDataManager>();
 	scoreDataManager_->Initialize();
 
+	//トランジション
+	transition_ = std::make_unique<Transition>();
+	transition_->Initialize();
+
 	//各シーン
 	currentGamaScene_->SetGameManager(this);
 	currentGamaScene_->Initialize();
 
-	//トランジション
-	transition_ = std::make_unique<Transition>();
-	transition_->Initialize();
+	
 
 }
 
