@@ -519,6 +519,11 @@ void Elysia::Particle3D::Draw(const Camera& camera, const  Material& material, c
 		assert(0);
 	}
 
+	//描画するものがなければコマンドを積まない
+	if (numInstance_ == 0u) {
+		return;
+	}
+
 	//更新
 	Update(camera);
 
@@ -561,6 +566,10 @@ void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, co
 		assert(0);
 	}
 
+	//描画するものがなければコマンドを積まない
+	if (numInstance_ == 0u) {
+		return;
+	}
 	//更新
 	Update(camera);
 
@@ -604,6 +613,10 @@ void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, co
 		assert(0);
 	}
 
+	//描画するものがなければコマンドを積まない
+	if (numInstance_ == 0u) {
+		return;
+	}
 	//更新
 	Update(camera);
 
