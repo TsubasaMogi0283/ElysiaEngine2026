@@ -82,8 +82,6 @@ uint32_t Elysia::Audio::LoadWave(const std::string& fileName) {
 	}
 
 
-	//indexを取得
-	uint32_t handle = index_;
 	//加算
 	index_++;
 
@@ -170,12 +168,12 @@ uint32_t Elysia::Audio::LoadWave(const std::string& fileName) {
 
 	//記録
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].fileName = fileName;
-	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = handle;
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = index_;
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].soundData = newSoundData;
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].extension = "wave";
 
 	//handleを返す
-	return handle;
+	return index_;
 
 #pragma endregion
 
@@ -189,15 +187,12 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 		return Elysia::Audio::GetInstance()->audioInformation_[fileName].handle;
 	}
 
-
-	//indexを取得
-	uint32_t handle = index_;
 	//加算
 	index_++;
 
 	//記録
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].fileName = fileName;
-	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = handle;
+	Elysia::Audio::GetInstance()->audioInformation_[fileName].handle = index_;
 	Elysia::Audio::GetInstance()->audioInformation_[fileName].extension = "mp3";
 
 
@@ -257,7 +252,7 @@ uint32_t Elysia::Audio::LoadMP3(const std::string& fileName) {
 
 	Elysia::Audio::GetInstance()->xAudio2_->CreateSourceVoice(&Elysia::Audio::GetInstance()->audioInformation_[fileName].sourceVoice, waveFormat);
 
-	return handle;
+	return index_;
 }
 
 void Elysia::Audio::Play(const uint32_t& audioHandle, const bool& isLoop) {

@@ -142,6 +142,14 @@ private:
 	/// <param name="laneCondition"></param>
 	void NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition);
 
+	/// <summary>
+	/// 入力処理
+	/// </summary>
+	/// <param name="laneCondition">レーンの状態</param>
+	/// <param name="inputLeft">左入力</param>
+	/// <param name="inputRight">右入力</param>
+	void Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight);
+
 
 private:
 	//ゲーム管理クラス
@@ -209,10 +217,16 @@ private:
 	//譜面データ
 	std::vector<ExistMusicScoreData> scoreData_ = {};
 
+	//ハイスピ
+	float_t hiSpeed_ = 3.0f;
+
 	//再生しているかどうか
 	bool isPlay_ = false;
 	//停止しているかどうか
 	bool isStop_ = true;
+	//彩度再生
+	bool isResume_ = false;
+
 	//開始時間
 	float_t startTime_ = 0.0f;
 	//再生時間
@@ -228,9 +242,12 @@ private:
 
 	std::vector<std::string> difficultyVector_ = {};
 
+	//レーンの状態
+	LaneCondition upLaneCondition = {};
+	LaneCondition downLaneCondition = {};
+
 	//記録
 	NoteJudgement::Record record_ = {};
-
 	float_t comboBonusScale_ = 1.0f;
 
 	//レーンのY座標

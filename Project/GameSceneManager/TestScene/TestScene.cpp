@@ -102,7 +102,7 @@ void TestScene::Initialize(){
 
 	//カメラ
 	camera_.Initialize();
-	camera_.translate = { .x = 0.0f, .y = 5.0f, .z = -100.0f };
+	camera_.translate = { .x = 0.0f, .y = 5.0f, .z = -70.0f };
 	//平行光源の初期化
 	directionalLight_.Initialize();
 
@@ -112,21 +112,47 @@ void TestScene::Initialize(){
 
 	//すぐに開ける
 	gameSceneManager_->GetTransition()->ShortkyOpen();
+
+	std::string musicName = scoreData_[currentMusicNumber_].musicName;
+	std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
+	musicData_ = gameSceneManager_->GetScoreDataManager()->GetMusicScoreData(musicName, difficultyName);
+	existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
+
+	//生成
+	GenerateNotes();
 }
 
 void TestScene::Update(){
 
-	
+	if (!isStop_ && isPlay_) {
+		musicTime_ = audio_->GetPlayCurrentTime(existMusicScoreData_.musicHandle);
 
+		//入力処理
+		//上
+		Touch(upLaneCondition, DIK_R, DIK_I);
+		//下
+		Touch(downLaneCondition, DIK_F, DIK_J);
+
+		//譜面の流れる処理
+		//上
+		NoteFlow(musicData_.upInformation, upLaneCondition);
+		//下
+		NoteFlow(musicData_.downInformation, downLaneCondition);
+
+	}
+	
 #ifdef _DEBUG
 
 	ImGui::Begin("譜面エディタ");
+	ImGui::InputFloat("再生時間", &musicTime_);
+
 	//再生時
 	if (!isStop_ && isPlay_) {
 		if (ImGui::Button("停止")) {
 			//停止状態にする
 			isStop_ = true;
 			isPlay_ = false;
+			isResume_ = true;
 
 			//音を停止
 			audio_->Stop(existMusicScoreData_.musicHandle);
@@ -136,6 +162,16 @@ void TestScene::Update(){
 	//停止時
 	if (isStop_ && !isPlay_) {
 		if (ImGui::Button("再生")) {
+			//再生
+			if (isResume_) {
+				audio_->Resume(existMusicScoreData_.musicHandle);
+				isResume_ = false;
+			}
+			else {
+				audio_->Play(existMusicScoreData_.musicHandle, startTime_);
+			}
+			
+
 			//開始状態にする
 			isStop_ = false;
 			isPlay_ = true;
@@ -143,6 +179,7 @@ void TestScene::Update(){
 
 		if (ImGui::TreeNode("再設定")) {
 			ImGui::SliderFloat("開始時間", &startTime_, MUSIC_START_TIME_, MUSIC_END_TIME_);
+			ImGui::SliderFloat("ハイスピ", &hiSpeed_,0.0f,3.0f);
 
 			//楽曲が入っている時しか処理しないようにする
 			//入っていない状態でやっても意味ないからね
@@ -191,9 +228,9 @@ void TestScene::Update(){
 					std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
 					musicData_ = gameSceneManager_->GetScoreDataManager()->GetMusicScoreData(musicName, difficultyName);
 					existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
-					//再生
-					audio_->Play(existMusicScoreData_.musicHandle, startTime_);
-
+					
+					isResume_ = false;
+					//ノーツ生成
 					GenerateNotes();
 				}
 			}
@@ -275,12 +312,11 @@ void TestScene::DrawSprite(){
 
 }
 
-
 void TestScene::GenerateNotes() {
 	//合計の時間
 	float_t totalTime = 0.0f;
 	//開始時間の設定
-	float_t startTime = START_OFFSET_TIME_ ;
+	float_t startTime = START_OFFSET_TIME_+ hiSpeed_;
 	//ノーツの配置
 	for (const NoteBarInformation& bar : musicData_.newNotesData) {
 		//1拍の秒数
@@ -1015,4 +1051,22 @@ void TestScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCon
 	}
 
 #pragma endregion
+}
+
+void TestScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight) {
+
+	//トリガー
+	if (input_->IsTriggerKey(inputLeft) || input_->IsTriggerKey(inputRight)) {
+		laneCondition.isHit = true;
+		laneCondition.touchTime = musicTime_;
+	} else {
+		laneCondition.isHit = false;
+	}
+
+	//長押し
+	if (input_->IsPushKey(inputLeft) || input_->IsPushKey(inputRight)) {
+		laneCondition.isHold = true;
+	} else {
+		laneCondition.isHold = false;
+	}
 }
