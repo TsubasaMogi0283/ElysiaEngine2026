@@ -186,5 +186,6 @@ private:
 	//判定のパーティクル
 	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> particleArray_ = {};
 	std::array<Material, PARTICLE_AMOUNT_> particleMaterialArray_ = {};
-
+	uint32_t parfectParticleTextureHandle = 0u;
+	uint32_t greatPartucleTextureHandle_ = 0u;
 };

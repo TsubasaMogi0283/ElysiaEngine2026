@@ -113,27 +113,21 @@ void PlayMainScene::Initialize() {
 	pauseAsset_->Initilaize(blackTextureHandle, numberTextureHandleVector);
 
 #pragma endregion
+
+	parfectParticleTextureHandle = textureManager_->Load("Resources/Sprite/Particle/PerfectParticle.png");
+	greatPartucleTextureHandle_ = textureManager_->Load("Resources/External/Texture/Circle/circle.png");
+	
 	//パーティクルの生成
 	for (uint8_t i = 0u;i < PARTICLE_AMOUNT_;i++) {
 		particleArray_[i]=Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
+		
+		
 		particleArray_[i]->SetIsDynamicReleaseMode(true);
 		particleArray_[i]->SetTranslate({
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
 			.y = LANE_POSITION_Y_[i],
 			.z = 0.0f });
 		particleArray_[i]->SetCount(20);
-
-		/// <summary>
-		/// 発生頻度
-		/// </summary>
-		/// <param name="frequency">頻度</param>
-		particleArray_[i]->SetFrequency(0.5f);
-
-		/// <summary>
-		/// 発生頻度を設定
-		/// </summary>
-		/// <param name="frequencyTime">発生頻度</param>
-		particleArray_[i]->SetFrequencyTime(0.5f);
 		particleMaterialArray_[i].Initialize();
 		particleMaterialArray_[i].lightingKinds= LightingType::NoneLighting;
 	}
@@ -512,6 +506,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
 					particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
+				for (uint8_t i = 0u; i < PARTICLE_AMOUNT_; i++) {
+					particleArray_[i]->TextureOverride(parfectParticleTextureHandle);
+
+				}
+				
 
 				//コンボを増やす
 				record_.combo++;
@@ -610,7 +609,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
 						particleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
+					for (uint8_t i = 0u; i < PARTICLE_AMOUNT_; i++) {
+						particleArray_[i]->TextureOverride(parfectParticleTextureHandle);
 
+					}
 				}
 				//Great用
 				else if (absoluteJudgementTime < NoteJudgement::Time::GREAT) {

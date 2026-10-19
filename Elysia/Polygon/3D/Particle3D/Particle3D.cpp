@@ -123,7 +123,7 @@ ParticleInformation Elysia::Particle3D::MakeNewParticle(std::mt19937& randomEngi
 	particle.transform.scale = { scaleDistribute(randomEngine),scaleDistribute(randomEngine),scaleDistribute(randomEngine) };
 	particle.transform.rotate = { .x = 0.0f,.y = 0.0f,.z = 0.0f };
 	Vector3 randomTranslate = { .x = distribute(randomEngine),.y = distribute(randomEngine) + 1.0f,.z = distribute(randomEngine) };
-	particle.transform.translate = emitter_.transform.translate+ randomTranslate;
+	particle.transform.translate = emitter_.transform.translate + randomTranslate;
 	//投げ上げは少しだけ上にずらす
 	if (moveType_ == ParticleMoveType::ThrowUp) {
 		Vector3 offset = { .x = randomTranslate.x,.y = 0.1f,.z = randomTranslate.z };

@@ -347,8 +347,6 @@ namespace Elysia {
 		}
 
 
-
-
 #pragma endregion
 
 	private:
@@ -403,7 +401,7 @@ namespace Elysia {
 
 		//エミッタの設定
 		Emitter emitter_ = {};
-
+		
 		//テクスチャハンドル
 		uint32_t textureHandle_ = 0u;
 		//動きの種類
