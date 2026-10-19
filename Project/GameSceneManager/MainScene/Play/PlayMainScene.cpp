@@ -121,7 +121,19 @@ void PlayMainScene::Initialize() {
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
 			.y = LANE_POSITION_Y_[i],
 			.z = 0.0f });
-		particleArray_[i]->SetCount(10);
+		particleArray_[i]->SetCount(20);
+
+		/// <summary>
+		/// 発生頻度
+		/// </summary>
+		/// <param name="frequency">頻度</param>
+		particleArray_[i]->SetFrequency(0.5f);
+
+		/// <summary>
+		/// 発生頻度を設定
+		/// </summary>
+		/// <param name="frequencyTime">発生頻度</param>
+		particleArray_[i]->SetFrequencyTime(0.5f);
 		particleMaterialArray_[i].Initialize();
 		particleMaterialArray_[i].lightingKinds= LightingType::NoneLighting;
 	}

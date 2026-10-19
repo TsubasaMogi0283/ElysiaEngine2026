@@ -235,7 +235,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 				}
 			}
 
-			particleIterator->transform.translate = particleIterator->transform.translate + particleIterator->velocity;
+			particleIterator->transform.translate = {0.0f,0.0f,0.0f};
 
 			//カメラの回転を適用する
 			billBoardMatrix = camera.viewMatrix;
