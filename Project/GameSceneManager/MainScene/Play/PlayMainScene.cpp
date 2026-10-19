@@ -123,7 +123,7 @@ void PlayMainScene::Initialize() {
 			.z = 0.0f });
 		particleArray_[i]->SetCount(10);
 		particleMaterialArray_[i].Initialize();
-		particleMaterialArray_[i].lightingKinds= LightingType::DirectionalLighting;
+		particleMaterialArray_[i].lightingKinds= LightingType::NoneLighting;
 	}
 	
 	//楽曲の再生

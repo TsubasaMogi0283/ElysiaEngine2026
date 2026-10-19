@@ -688,6 +688,7 @@ void Elysia::Particle3D::Draw(const Camera& camera, const Material& material, co
 	case LightingType::SpotLighting:
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, baseLight.resource->GetGPUVirtualAddress());
 		break;
+
 	}
 	//DrawCall
 	directXSetup_->GetCommandList()->DrawInstanced(UINT(vertices_.size()), numInstance_, 0u, 0u);
