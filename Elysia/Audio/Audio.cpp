@@ -483,6 +483,19 @@ void Elysia::Audio::Stop(const uint32_t& audioHandle) {
 	assert(SUCCEEDED(hResult));
 }
 
+void Elysia::Audio::Reset(const uint32_t& audioHandle){
+	//ファイルキーの取得
+	std::string fileKey = GetAudioInformationKey(audioHandle);
+
+	
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
+	assert(SUCCEEDED(hResult));
+	hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
+	
+	assert(SUCCEEDED(hResult));
+
+}
+
 #pragma endregion
 
 

@@ -189,6 +189,12 @@ namespace Elysia {
 		/// <param name="audioHandle">ハンドル</param>
 		void Stop(const uint32_t& audioHandle);
 
+		/// <summary>
+		/// もう一回最初から再生できるようにしておく
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		void Reset(const uint32_t& audioHandle);
+
 #pragma endregion
 
 

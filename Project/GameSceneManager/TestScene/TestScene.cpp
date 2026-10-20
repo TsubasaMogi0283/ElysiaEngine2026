@@ -222,6 +222,9 @@ void TestScene::Update(){
 
 				if (ImGui::Button("再読み込み")) {
 					gameSceneManager_->GetScoreDataManager()->Reload();
+					//次にまた再生するときに再生時間がバグらないようにする
+					audio_->Reset(existMusicScoreData_.musicHandle);
+					
 
 					//データを持ってくる
 					std::string musicName = scoreData_[currentMusicNumber_].musicName;
