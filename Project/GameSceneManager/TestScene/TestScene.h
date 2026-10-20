@@ -237,7 +237,6 @@ private:
 	size_t currentDifficultyNumber_ = 0u;
 
 	//譜面データ
-	MusicScoreData musicData_ = {};
 	ExistMusicScoreData existMusicScoreData_ = {};
 
 	std::vector<std::string> difficultyVector_ = {};

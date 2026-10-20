@@ -98,6 +98,26 @@ public:
 	}
 
 	/// <summary>
+	/// 楽曲データを取得(番号版)
+	/// </summary>
+	/// <param name="title">楽曲名</param>
+	/// <param name="difficulty">難易度</param>
+	/// <returns>楽曲データ</returns>
+	MusicScoreData GetMusicScoreData(const uint8_t& title, const uint8_t& difficulty) {
+		MusicScoreData musicScoreData = {};
+		//見つけたら代入
+		for (size_t i = 0u; i < existScoreDataVector_.size(); i++) {
+			for (size_t j = 0u; j < existScoreDataVector_[i].musicScoreData.size(); j++) {
+				if (existScoreDataVector_[i].musicScoreData[j].musicInformation.id == title + "_" + difficulty) {
+					return existScoreDataVector_[i].musicScoreData[j];
+				}
+			}
+		}
+
+		return musicScoreData;
+	}
+
+	/// <summary>
 	/// サンプル楽曲データの取得
 	/// </summary>
 	/// <returns>サンプル</returns>

@@ -487,11 +487,10 @@ void Elysia::Audio::Reset(const uint32_t& audioHandle){
 	//ファイルキーの取得
 	std::string fileKey = GetAudioInformationKey(audioHandle);
 
-	
-	HRESULT hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
+	//停止
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
 	assert(SUCCEEDED(hResult));
-	hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
-	
+	hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
 	assert(SUCCEEDED(hResult));
 
 }

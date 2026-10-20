@@ -115,7 +115,6 @@ void TestScene::Initialize(){
 
 	std::string musicName = scoreData_[currentMusicNumber_].musicName;
 	std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
-	musicData_ = gameSceneManager_->GetScoreDataManager()->GetMusicScoreData(musicName, difficultyName);
 	existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
 
 	//生成
@@ -135,9 +134,9 @@ void TestScene::Update(){
 
 		//譜面の流れる処理
 		//上
-		NoteFlow(musicData_.upInformation, upLaneCondition);
+		NoteFlow(existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation, upLaneCondition);
 		//下
-		NoteFlow(musicData_.downInformation, downLaneCondition);
+		NoteFlow(existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation, downLaneCondition);
 
 	}
 	
@@ -205,7 +204,7 @@ void TestScene::Update(){
 
 				//コンボを閉じている時に表示される文字列
 				const char* difficultyPreview = difficultyVector_[currentDifficultyNumber_].c_str();
-				if (ImGui::BeginCombo("楽曲", difficultyPreview)) {
+				if (ImGui::BeginCombo("難易度", difficultyPreview)) {
 					for (size_t i = 0; i < difficultyVector_.size(); i++) {
 						const bool isSelected = (currentDifficultyNumber_ == i);
 
@@ -225,11 +224,9 @@ void TestScene::Update(){
 					//次にまた再生するときに再生時間がバグらないようにする
 					audio_->Reset(existMusicScoreData_.musicHandle);
 					
-
 					//データを持ってくる
 					std::string musicName = scoreData_[currentMusicNumber_].musicName;
 					std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
-					musicData_ = gameSceneManager_->GetScoreDataManager()->GetMusicScoreData(musicName, difficultyName);
 					existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
 					
 					isResume_ = false;
@@ -321,7 +318,7 @@ void TestScene::GenerateNotes() {
 	//開始時間の設定
 	float_t startTime = START_OFFSET_TIME_+ hiSpeed_;
 	//ノーツの配置
-	for (const NoteBarInformation& bar : musicData_.newNotesData) {
+	for (const NoteBarInformation& bar : existMusicScoreData_.musicScoreData[currentDifficultyNumber_].newNotesData) {
 		//1拍の秒数
 		float_t beatDuration = 60.0f / bar.bpm;
 		//ノーツ間隔(1小節4拍)
@@ -336,7 +333,7 @@ void TestScene::GenerateNotes() {
 			//上
 			if (note.upNote == NoteType::NormalTap) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Up),
@@ -349,13 +346,13 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.upInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation.push_back(noteInformation);
 
 			}
 			//下
 			if (note.downNote == NoteType::NormalTap) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Down),
@@ -368,7 +365,7 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.downInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation.push_back(noteInformation);
 			}
 #pragma endregion
 
@@ -376,7 +373,7 @@ void TestScene::GenerateNotes() {
 			//上
 			if (note.upNote == NoteType::HiPassLongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Up),
@@ -389,13 +386,13 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.upInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation.push_back(noteInformation);
 
 			}
 			//下
 			if (note.downNote == NoteType::HiPassLongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Down),
@@ -408,7 +405,7 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.downInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation.push_back(noteInformation);
 			}
 #pragma endregion
 
@@ -416,7 +413,7 @@ void TestScene::GenerateNotes() {
 			//上
 			if (note.upNote == NoteType::LowPassLongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Up),
@@ -429,13 +426,13 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.upInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation.push_back(noteInformation);
 
 			}
 			//下
 			if (note.downNote == NoteType::LowPassLongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Down),
@@ -448,7 +445,7 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.downInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation.push_back(noteInformation);
 			}
 #pragma endregion
 
@@ -457,7 +454,7 @@ void TestScene::GenerateNotes() {
 			//上
 			if (note.upNote == NoteType::TranceGate8LongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Up),
@@ -470,13 +467,13 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.upInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation.push_back(noteInformation);
 
 			}
 			//下
 			if (note.downNote == NoteType::TranceGate8LongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Down),
@@ -489,7 +486,7 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.downInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation.push_back(noteInformation);
 			}
 
 
@@ -501,7 +498,7 @@ void TestScene::GenerateNotes() {
 			//上
 			if (note.upNote == NoteType::TranceGate16LongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Up),
@@ -514,13 +511,13 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.upInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation.push_back(noteInformation);
 
 			}
 			//下
 			if (note.downNote == NoteType::TranceGate16LongStart) {
 				//ノーツの数を増やす
-				musicData_.totalNote_++;
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
 					.place = static_cast<uint8_t>(NoteLane::Place::Down),
@@ -533,7 +530,7 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.downInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation.push_back(noteInformation);
 			}
 
 
@@ -554,7 +551,7 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.upInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation.push_back(noteInformation);
 			}
 
 			//下
@@ -571,7 +568,7 @@ void TestScene::GenerateNotes() {
 					.isAssigned = false
 				};
 				//挿入
-				musicData_.downInformation.push_back(noteInformation);
+				existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation.push_back(noteInformation);
 			}
 #pragma endregion
 		}
