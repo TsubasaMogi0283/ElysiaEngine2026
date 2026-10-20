@@ -47,6 +47,11 @@ public:
 	void Reload();
 
 	/// <summary>
+	/// 楽曲の再読み込み
+	/// </summary>
+	void MusicReload();
+
+	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~ScoreDataManager() = default;
@@ -154,7 +159,7 @@ private:
 	const std::string MUSIC_SCORE_PATH_ = "Resources/MusicScore";
 
 private:
-
+	std::vector<std::string>musicNameVector;
 	//譜面データチェック
 	std::vector<ExistMusicScoreData>existScoreDataVector_ = {};
 	

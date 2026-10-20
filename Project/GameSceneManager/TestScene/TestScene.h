@@ -231,6 +231,8 @@ private:
 	float_t startTime_ = 0.0f;
 	//再生時間
 	float_t musicTime_ = 0.0f;
+	//一時停止時間
+	float_t stopTime_ = 0.0f;
 
 	//現在設定中の情報
 	size_t currentMusicNumber_ = 0u;
@@ -238,7 +240,7 @@ private:
 
 	//譜面データ
 	ExistMusicScoreData existMusicScoreData_ = {};
-
+	uint32_t currentPlayMusicHandle_ = 0u;
 	std::vector<std::string> difficultyVector_ = {};
 
 	//レーンの状態

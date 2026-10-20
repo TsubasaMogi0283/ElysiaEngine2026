@@ -18,7 +18,7 @@ ScoreDataManager::ScoreDataManager(){
 void ScoreDataManager::Initialize(){
 
 	///フォルダの名前を取得
-	std::vector<std::string>musicNameVector= GetFolderName(MUSIC_SCORE_PATH_);
+	musicNameVector= GetFolderName(MUSIC_SCORE_PATH_);
 
 	
 	//楽曲数分サイズを変更する
@@ -71,6 +71,19 @@ void ScoreDataManager::Reload(){
 
 	//再読み込み
 	Initialize();
+}
+
+void ScoreDataManager::MusicReload(){
+	
+	for (uint8_t i = 0u; i < musicNameVector.size(); i++) {
+		//楽曲名を記録
+		existScoreDataVector_[i].musicName = musicNameVector[i];
+
+		//楽曲の読み込み
+		const std::string MUSIC_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName, existScoreDataVector_[i].musicName);
+		const std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName + "/" + existScoreDataVector_[i].musicName + MUSIC_EXTENSION;
+		existScoreDataVector_[i].musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
+	}
 }
 
 MusicScoreData ScoreDataManager::Load(const std::string& path) {

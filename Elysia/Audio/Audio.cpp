@@ -308,6 +308,20 @@ void Elysia::Audio::Play(const uint32_t& audioHandle, const float_t& startTime){
 	assert(SUCCEEDED(hResult));
 }
 
+void Elysia::Audio::Delete(){
+	//あるもの全部消す
+	for (std::map<std::string, AudioInformation>::iterator it = audioInformation_.begin(); it != audioInformation_.end(); ++it) {
+		if ((*it).second.sourceVoice != nullptr) {
+			(*it).second.sourceVoice->DestroyVoice();
+			delete[](*it).second.soundData.pBuffer;
+			(*it).second.sourceVoice = nullptr;
+		}
+	}
+
+	//残りを消す
+	audioInformation_.clear();
+}
+
 
 void Elysia::Audio::PlayMP3(const uint32_t& audioHandle, const bool& isLoop) {
 	//ファイルキーの取得
@@ -463,7 +477,7 @@ void Elysia::Audio::Resume(const uint32_t& audioHandle, const float_t& startSeco
 	//サンプルレートとブロックアライメント
 	int32_t samplingRate = audioInformation_[fileKey].soundData.wfex.nSamplesPerSec;
 
-	// 2. 秒数から再生開始サンプル数を計算
+	//秒数から再生開始サンプル数を計算
 	buffer.PlayBegin = static_cast<UINT32>(startSeconds * samplingRate);
 
 	//Buffer登録
@@ -1034,6 +1048,7 @@ void Elysia::Audio::Finalize() {
 		if ((*it).second.sourceVoice != nullptr) {
 			(*it).second.sourceVoice->DestroyVoice();
 			delete[](*it).second.soundData.pBuffer;
+			(*it).second.sourceVoice = nullptr;
 		}
 	}
 

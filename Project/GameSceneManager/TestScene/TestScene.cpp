@@ -112,11 +112,10 @@ void TestScene::Initialize(){
 
 	//すぐに開ける
 	gameSceneManager_->GetTransition()->ShortkyOpen();
-
-	std::string musicName = scoreData_[currentMusicNumber_].musicName;
-	std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
+	currentMusicNumber_ = 1;
 	existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
-
+	currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
+	currentDifficultyNumber_ = static_cast<uint8_t>(Difficulty::Hard);
 	//生成
 	GenerateNotes();
 }
@@ -138,31 +137,51 @@ void TestScene::Update(){
 			isPlay_ = false;
 			isResume_ = true;
 
+			stopTime_ = musicTime_;
 			//音を停止
-			audio_->Stop(existMusicScoreData_.musicHandle);
+			audio_->Stop(currentPlayMusicHandle_);
 		}
 	}
 	
 	//停止時
 	if (isStop_ && !isPlay_) {
-		if (ImGui::Button("再生")) {
-			//再生
-			if (isResume_) {
-				audio_->Resume(existMusicScoreData_.musicHandle);
+		ImGui::SliderFloat("開始時間", &startTime_, MUSIC_START_TIME_, MUSIC_END_TIME_);
+		//再開
+		if (isResume_) {
+			if (ImGui::Button("再開")) {
+				audio_->Resume(currentPlayMusicHandle_);
+				//開始状態にする
+				isStop_ = false;
+				isPlay_ = true;
 				isResume_ = false;
 			}
-			else {
-				audio_->Play(existMusicScoreData_.musicHandle, startTime_);
+			if (ImGui::Button("最初から再生")) {
+				audio_->Reset(currentPlayMusicHandle_);
+				audio_->Delete();
+				gameSceneManager_->GetScoreDataManager()->MusicReload();
+				existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
+				currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
+				audio_->Play(currentPlayMusicHandle_, startTime_);
+
+				//開始状態にする
+				isStop_ = false;
+				isPlay_ = true;
 			}
 			
+		}
+		else {
+			if (ImGui::Button("再生")) {
+				audio_->Play(currentPlayMusicHandle_, startTime_);
 
-			//開始状態にする
-			isStop_ = false;
-			isPlay_ = true;
+				//開始状態にする
+				isStop_ = false;
+				isPlay_ = true;
+			}
 		}
 
+
 		if (ImGui::TreeNode("再設定")) {
-			ImGui::SliderFloat("開始時間", &startTime_, MUSIC_START_TIME_, MUSIC_END_TIME_);
+			
 			ImGui::SliderFloat("ハイスピ", &hiSpeed_,0.0f,3.0f);
 
 			//楽曲が入っている時しか処理しないようにする
@@ -186,7 +205,6 @@ void TestScene::Update(){
 					ImGui::EndCombo();
 				}
 
-
 				//コンボを閉じている時に表示される文字列
 				const char* difficultyPreview = difficultyVector_[currentDifficultyNumber_].c_str();
 				if (ImGui::BeginCombo("難易度", difficultyPreview)) {
@@ -205,16 +223,13 @@ void TestScene::Update(){
 				}
 
 				if (ImGui::Button("再読み込み")) {
+					audio_->Reset(currentPlayMusicHandle_);
+					audio_->Delete();
 					gameSceneManager_->GetScoreDataManager()->Reload();
-					//次にまた再生するときに再生時間がバグらないようにする
-					audio_->Reset(existMusicScoreData_.musicHandle);
 					
 					//データを持ってくる
-					std::string musicName = scoreData_[currentMusicNumber_].musicName;
-					std::string difficultyName = difficultyVector_[currentDifficultyNumber_];
 					existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
-					
-					isResume_ = false;
+					currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
 					//ノーツ生成
 					GenerateNotes();
 				}
@@ -224,8 +239,6 @@ void TestScene::Update(){
 			}
 			ImGui::TreePop();
 		}
-		
-
 	}
 	
 	//本番で確認
@@ -240,7 +253,7 @@ void TestScene::Update(){
 
 
 	if (!isStop_ && isPlay_) {
-		musicTime_ = audio_->GetPlayCurrentTime(existMusicScoreData_.musicHandle);
+		musicTime_ = audio_->GetPlayCurrentTime(currentPlayMusicHandle_)+ startTime_;
 
 		//入力処理
 		//上

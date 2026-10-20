@@ -131,6 +131,11 @@ namespace Elysia {
 		/// <param name="startTime">開始時間</param>
 		void Play(const uint32_t& audioHandle, const float_t& startTime);
 
+		/// <summary>
+		/// 消去
+		/// </summary>
+		void Delete();
+
 	private:
 
 		/// <summary>
