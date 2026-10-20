@@ -44,7 +44,7 @@ void ScoreDataManager::Initialize(){
 		for (uint8_t j = 0u; j < static_cast<uint8_t>(Difficulty::Size); j++) {
 			//例:HighwaySunset/HighwaySunset_Easy.json
 			//名前を取り出す
-			std::string_view difficulty = magic_enum::enum_name(static_cast<Difficulty>(i));
+			std::string_view difficulty = magic_enum::enum_name(static_cast<Difficulty>(j));
 			//std::stringに変換
 			std::string convertDifficulty(difficulty);
 			std::string scorePath = musicNameVector[i] + "/" + musicNameVector[i] + "_" + convertDifficulty + ".json";
