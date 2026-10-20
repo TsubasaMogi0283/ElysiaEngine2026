@@ -35,7 +35,7 @@ public:
 	/// </summary>
 	/// <param name="modelHandle"></param>
 	/// <param name="animationHandle"></param>
-	void Initialize(const uint32_t& modelHandle,const uint32_t& animationHandle);
+	void Initialize(const uint32_t& modelHandle,const std::vector<uint32_t>& animationHandle);
 
 	/// <summary>
 	/// 更新
@@ -54,17 +54,72 @@ public:
 	/// </summary>
 	~Player() = default;
 
+public:
+	/// <summary>
+	/// アニメーション
+	/// </summary>
+	enum class AnimationSelection {
+		//待機
+		Wait,
+		//走る
+		Run,
+
+		//メインシーンにて
+		//パンチ(上)
+		Punch,
+		//キック(下)
+		Kick,
+	};
+
+private:
+	//アニメーション管理クラス
+	Elysia::AnimationManager* animationManager_ = nullptr;
+
+private:
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f / 60.0f;
+
+
+public:
+
+	/// <summary>
+	/// スケールの設定
+	/// </summary>
+	/// <param name="scale">スケール</param>
+	void SetScale(const Vector3<float_t>& scale) {
+		this->worldTransform_.scale = scale;
+	}
+
+	/// <summary>
+	/// 回転の設定
+	/// </summary>
+	/// <param name="rotate">回転</param>
+	inline void SetRotate(const Vector3<float_t>& rotate) {
+		this->worldTransform_.rotate = rotate;
+	}
+
+	/// <summary>
+	/// 座標の設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	inline void SetPosition(const Vector3<float_t>& position) {
+		this->worldTransform_.translate = position;
+	}
+
 private:
 	//モデル
 	std::unique_ptr<Elysia::AnimationModel> animationModel_ = nullptr;
+	//アニメーションのハンドル
+	std::vector<uint32_t>animationHandleVector_ = {};
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_ = {};
 	//マテリアル
 	Material material_ = {};
 
-
+	//アニメーション時間
 	float_t animationTime_ = 0.0f;
+
 
 };
 

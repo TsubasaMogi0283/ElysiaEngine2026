@@ -159,7 +159,6 @@ uint32_t Elysia::AnimationManager::Load(const std::string& directoryPath, const 
 
 void Elysia::AnimationManager::ApplyAnimation(Skeleton& skeleton, const uint32_t& animationHandle, float_t animationTime) {
 
-
     Animation animationData = AnimationManager::GetInstance()->animationInfromtion_[animationHandle].animationData;
     for (Joint& joint : skeleton.joints) {
         //対象のJointのAnimationがあれば、値の適用を行う。下記のif文はC++17から可能になった

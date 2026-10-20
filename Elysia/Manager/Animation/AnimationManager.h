@@ -56,7 +56,6 @@ namespace Elysia {
 		/// <returns></returns>
 		AnimationManager& operator=(const AnimationManager& modelManager) = delete;
 
-
 	private:
 		
 		/// <summary>
@@ -94,7 +93,7 @@ namespace Elysia {
 		static uint32_t Load(const std::string& directoryPath, const std::string& fileName);
 
 		/// <summary>
-		/// アニメーションの計算
+		/// アニメーションの計算(アニメーションモデルクラスしか使わない)
 		/// </summary>
 		/// <param name="skeleton">スケルトン</param>
 		/// <param name="animationHandle">アニメーションハンドル</param>
