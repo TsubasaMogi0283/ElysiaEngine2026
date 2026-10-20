@@ -123,22 +123,7 @@ void TestScene::Initialize(){
 
 void TestScene::Update(){
 
-	if (!isStop_ && isPlay_) {
-		musicTime_ = audio_->GetPlayCurrentTime(existMusicScoreData_.musicHandle);
-
-		//入力処理
-		//上
-		Touch(upLaneCondition, DIK_R, DIK_I);
-		//下
-		Touch(downLaneCondition, DIK_F, DIK_J);
-
-		//譜面の流れる処理
-		//上
-		NoteFlow(existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation, upLaneCondition);
-		//下
-		NoteFlow(existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation, downLaneCondition);
-
-	}
+	
 	
 #ifdef _DEBUG
 
@@ -252,6 +237,24 @@ void TestScene::Update(){
 
 	ImGui::End();
 #endif // _DEBUG
+
+
+	if (!isStop_ && isPlay_) {
+		musicTime_ = audio_->GetPlayCurrentTime(existMusicScoreData_.musicHandle);
+
+		//入力処理
+		//上
+		Touch(upLaneCondition, DIK_R, DIK_I);
+		//下
+		Touch(downLaneCondition, DIK_F, DIK_J);
+
+		//譜面の流れる処理
+		//上
+		NoteFlow(existMusicScoreData_.musicScoreData[currentDifficultyNumber_].upInformation, upLaneCondition);
+		//下
+		NoteFlow(existMusicScoreData_.musicScoreData[currentDifficultyNumber_].downInformation, downLaneCondition);
+
+	}
 
 	//更新
 	judgementLine_->Update();
