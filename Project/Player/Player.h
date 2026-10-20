@@ -21,6 +21,11 @@ struct Camera;
 struct BaseLight;
 
 /// <summary>
+/// 判定線
+/// </summary>
+class JudgementLine;
+
+/// <summary>
 /// プレイヤー
 /// </summary>
 class Player{
@@ -105,6 +110,16 @@ public:
 	inline void SetPosition(const Vector3<float_t>& position) {
 		this->worldTransform_.translate = position;
 	}
+
+	/// <summary>
+	/// 判定線の取得
+	/// </summary>
+	/// <param name="judgementLine">判定線</param>
+	void SetJudgementLine(JudgementLine* judgementLine);
+
+private:
+	//判定線
+	JudgementLine* judgementLine_ = nullptr;
 
 private:
 	//モデル

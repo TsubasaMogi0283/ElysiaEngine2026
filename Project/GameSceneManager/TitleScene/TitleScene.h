@@ -240,6 +240,8 @@ private:
 	Material arrowMaterial_ = {};
 	float_t arrowRotateX_ = 0.0f;
 	
+	//プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
 
 	//ゲーム名
 	std::unique_ptr<GameNameObject> gameNameObject_ = nullptr;
@@ -249,7 +251,6 @@ private:
 	//処理終了(基本このクラスではいじらない)
 	bool isProcessEnd_ = false;
 
-	//プレイヤー
-	std::unique_ptr<Player> player_ = nullptr;
+	
 
 };

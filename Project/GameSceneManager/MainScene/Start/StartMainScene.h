@@ -53,6 +53,11 @@ private:
 	void Transition();
 
 	/// <summary>
+	/// プレイヤーの移動
+	/// </summary>
+	void PlayerMove();
+
+	/// <summary>
 	/// UIの拡大
 	/// </summary>
 	void UIScaleUp();
@@ -84,6 +89,7 @@ private:
 	inline static void (StartMainScene::* functionTable[])() = {
 		&StartMainScene::Transition,
 		&StartMainScene::UIScaleUp,
+		&StartMainScene::PlayerMove,
 		&StartMainScene::Ready,
 		&StartMainScene::Go,
 		&StartMainScene::UIScaleDown,
@@ -96,6 +102,8 @@ private:
 		Transition,
 		//UIの移動(スケールアップ)
 		UIMoveScaleUp,
+		//プレイヤーの移動
+		PlayerMovement,
 		//Ready
 		Ready,
 		//Go!!
@@ -163,8 +171,10 @@ private:
 	//Go!の表示時間
 	const float_t GO_DISPLAY_TIME_ = 1.5f;
 
-
-
+	//プレイヤーの動く時間
+	const float_t PLAYER_MOVE_TIME_ = 2.0f;
+	//動く距離
+	const float_t PLAYER_MOVE_DISTANCE_ = 10.0f;
 private:
 	//ウィンドウのサイズ
 	Vector2<int32_t> windowSize_ = {};
@@ -173,9 +183,16 @@ private:
 	bool isEndTransition_ = false;
 	//Ready用のスプライト
 	std::array<std::unique_ptr<Elysia::Sprite>, READY_TEXTURE_AMOUNT_> readySpriteArray_ = {};
-	//
+	//待機時間
 	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleUpTime_ = {};
 	std::array<UITextTimeInformation, READY_TEXTURE_AMOUNT_> readyScaleDownTime_ = {};
+
+	//プレイヤーの動く時間
+	float_t playerMoveTime_ = 0.0f;
+	//判定線の前に行くようにする
+	float_t mainPositionX = 0.0f;
+	float_t initialPositionX = 0.0f;
+
 
 	//Readyに関する変数
 	float_t baseScaleTime_ = 0.0f;

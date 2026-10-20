@@ -78,8 +78,6 @@ Animation Elysia::AnimationManager::LoadAnimationFile(const std::string& directo
     //mDuration...mTicksPerSecondで指定された周波数における長さ
     animation.duration = static_cast<float_t>(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
 
-
-
     //NodeAnimationを解析する
     //assimpでは個々のNodeAnimationをChannelと呼んでいるのでChannelを回してNodeAnimationの情報をとってくる
     for (uint32_t channelIndex = 0u; channelIndex < animationAssimp->mNumChannels; ++channelIndex) {
@@ -110,9 +108,6 @@ Animation Elysia::AnimationManager::LoadAnimationFile(const std::string& directo
         }
 
         //ScaleはmNumScalingKeys/mScalingKeysで取得出来るので同時に行う
-        //Scaleはそのままで良い
-
-        //Scale
         for (uint32_t keyIndex = 0u; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
             aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
             KeyFrameVector3 keyFrame = {};
@@ -124,37 +119,31 @@ Animation Elysia::AnimationManager::LoadAnimationFile(const std::string& directo
 
     }
 
-
     return animation;
 }
 
 uint32_t Elysia::AnimationManager::Load(const std::string& directoryPath, const std::string& fileName) {
 
     for (uint32_t i = 0u; i < ANIMATION_MAX_AMOUNT_; ++i) {
-        if (AnimationManager::GetInstance()->animationInfromtion_[i].directoryPath == directoryPath &&
-            AnimationManager::GetInstance()->animationInfromtion_[i].fileName == fileName) {
-            return AnimationManager::GetInstance()->animationInfromtion_[i].handle;
+        if (animationInfromtion_[i].directoryPath == directoryPath &&
+            animationInfromtion_[i].fileName == fileName) {
+            return animationInfromtion_[i].handle;
         }
     }
 
-
     ///読み込み
-    Animation animation = AnimationManager::GetInstance()->LoadAnimationFile(directoryPath, fileName);
-
+    Animation animation = LoadAnimationFile(directoryPath, fileName);
 
     //番号をインクリメント
-    ++AnimationManager::GetInstance()->index_;
+    index_++;
 
     //情報を登録
-    AnimationManager::GetInstance()->animationInfromtion_[AnimationManager::GetInstance()->index_].animationData = animation;
-    AnimationManager::GetInstance()->animationInfromtion_[AnimationManager::GetInstance()->index_].directoryPath = directoryPath;
-    AnimationManager::GetInstance()->animationInfromtion_[AnimationManager::GetInstance()->index_].fileName = fileName;
-    AnimationManager::GetInstance()->animationInfromtion_[AnimationManager::GetInstance()->index_].handle = AnimationManager::GetInstance()->index_;
+    animationInfromtion_[index_].animationData = animation;
+    animationInfromtion_[index_].directoryPath = directoryPath;
+    animationInfromtion_[index_].fileName = fileName;
+    animationInfromtion_[index_].handle = index_;
 
-
-    return AnimationManager::GetInstance()->index_;
-
-
+    return index_;
 }
 
 void Elysia::AnimationManager::ApplyAnimation(Skeleton& skeleton, const uint32_t& animationHandle, float_t animationTime) {
@@ -162,7 +151,6 @@ void Elysia::AnimationManager::ApplyAnimation(Skeleton& skeleton, const uint32_t
     Animation animationData = AnimationManager::GetInstance()->animationInfromtion_[animationHandle].animationData;
     for (Joint& joint : skeleton.joints) {
         //対象のJointのAnimationがあれば、値の適用を行う。下記のif文はC++17から可能になった
-
         if (auto it = animationData.nodeAnimations.find(joint.name); it != animationData.nodeAnimations.end()) {
             animationTime = std::fmodf(animationTime, animationData.duration);
             const NodeAnimation& rootNodeAnimation = (*it).second;
