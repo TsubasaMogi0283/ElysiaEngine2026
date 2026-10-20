@@ -701,11 +701,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				laneCondition.isHoldLongNote = false;
 				targetNote.isJudged = true;
 
-				//パーフェクトで判定する
-				record_.perfect++;
-				mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Perfect));
-				//コンボを増やす
-				record_.combo++;
 				//また初期値に戻す
 				highPassLongNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
 				highPassLongNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
