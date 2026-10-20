@@ -44,14 +44,6 @@ void HighPassLongNote::Update(){
 		isUsed_ = false;
 	}
 
-#ifdef _DEBUG
-	ImGui::Begin("ハイパス用ロングノーツ");
-	ImGui::SliderFloat("AnchorX", &worldTransform_.anchorPoint.x, -1.0f, 1.0f);
-	ImGui::SliderFloat("ScaleX", &worldTransform_.scale.x, 1.0f, 10.0f);
-	ImGui::SliderFloat3("Color", &material_.color.x, 0.0f, 1.0f);
-	ImGui::InputFloat("EndPositionX", &endPositionX);
-	ImGui::End();
-#endif // _DEBUG
 
 
 	//更新

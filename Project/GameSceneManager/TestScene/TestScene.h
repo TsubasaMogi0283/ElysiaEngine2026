@@ -224,8 +224,10 @@ private:
 	bool isPlay_ = false;
 	//停止しているかどうか
 	bool isStop_ = true;
-	//彩度再生
+	//再度再生
 	bool isResume_ = false;
+
+	bool isLoadSuccess_ = false;
 
 	//開始時間
 	float_t startTime_ = 0.0f;
@@ -253,4 +255,6 @@ private:
 
 	//レーンのY座標
 	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = { 10.0f,0.0f };
+
+	uint32_t normalNoteModelHandle = 0u;
 };

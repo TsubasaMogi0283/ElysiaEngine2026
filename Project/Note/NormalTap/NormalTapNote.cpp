@@ -15,6 +15,28 @@ void NormalTapNote::Initialize(const uint32_t& modelHandle){
 	//マテリアルの初期化
 	material_.Initialize();
 	material_.lightingKinds = LightingType::DirectionalLighting;
+
+
+	//使用状態
+	isUsed_ = false;
+	//動きの比率
+	ratio_ = 0.0f;
+
+	//初期座標
+	initialPositionX_ = 0.0f;
+	//判定座標
+	judgmentPositionX_ = 0.0f;
+	//レーンの座標
+	lanePositionY_ = 0.0f;
+
+	//移動開始時間
+	startMoveTime_ = 0.0f;
+	//到達時間
+	arriveLineTime_ = 0.0f;
+	//楽曲時間
+	musicTime_ = 0.0f;
+	//オブジェクトプールの割り当て番号
+	poolIndex_ = 0u;
 }
 
 void NormalTapNote::Update(){

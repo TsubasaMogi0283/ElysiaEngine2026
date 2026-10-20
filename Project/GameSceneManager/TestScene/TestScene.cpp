@@ -25,7 +25,7 @@ TestScene::TestScene(){
 void TestScene::Initialize(){
 	
 	//ノーマルタップノーツのモデルを読み込む
-	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
+	normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
 #pragma region ノーツの生成
 
@@ -141,6 +141,8 @@ void TestScene::Update(){
 			//音を停止
 			audio_->Stop(currentPlayMusicHandle_);
 		}
+
+		isLoadSuccess_ = false;
 	}
 	
 	//停止時
@@ -158,10 +160,15 @@ void TestScene::Update(){
 			if (ImGui::Button("最初から再生")) {
 				audio_->Reset(currentPlayMusicHandle_);
 				audio_->Delete();
-				gameSceneManager_->GetScoreDataManager()->MusicReload();
+				gameSceneManager_->GetScoreDataManager()->MusicReload(); 
+				existMusicScoreData_ = {};
 				existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
+
+
+				GenerateNotes();
 				currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
 				audio_->Play(currentPlayMusicHandle_, startTime_);
+
 
 				//開始状態にする
 				isStop_ = false;
@@ -230,9 +237,15 @@ void TestScene::Update(){
 					//データを持ってくる
 					existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
 					currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
-					//ノーツ生成
-					GenerateNotes();
+					
+					isLoadSuccess_ = true;
 				}
+
+
+				if (isLoadSuccess_) {
+					ImGui::Text("読み込み完了しました");
+				}
+
 			}
 			else {
 				ImGui::Text("楽曲データがありません");
