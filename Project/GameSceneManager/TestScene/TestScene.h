@@ -228,7 +228,7 @@ private:
 	bool isResume_ = false;
 
 	bool isLoadSuccess_ = false;
-
+	bool isToMain_ = false;
 	//開始時間
 	float_t startTime_ = 0.0f;
 	//再生時間

@@ -52,6 +52,11 @@ public:
 	void ShortkyOpen();
 
 	/// <summary>
+	/// 即閉める
+	/// </summary>
+	void ShortkyClose();
+
+	/// <summary>
 	/// トランジションを開けるかどうかを設定
 	/// </summary>
 	bool SetOpenTransition();

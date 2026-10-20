@@ -256,14 +256,24 @@ void TestScene::Update(){
 	
 	//本番で確認
 	if (ImGui::Button("本番確認")) {
-
-		gameSceneManager_->ChangeScene("Main");
-		return;
+		isToMain_ = true;
+		
 	}
 
 	ImGui::End();
 #endif // _DEBUG
 
+
+	if (isToMain_) {
+		
+		gameSceneManager_->SetDifficulty(static_cast<int8_t>(currentDifficultyNumber_));
+		gameSceneManager_->SetMusicScoreData(existMusicScoreData_);
+		gameSceneManager_->SetTemporaryHandle(existMusicScoreData_.musicHandle, existMusicScoreData_.jacketTextureHandle);
+
+		gameSceneManager_->GetTransition()->ShortkyClose();
+		gameSceneManager_->ChangeScene("Main");
+		return;
+	}
 
 	if (!isStop_ && isPlay_) {
 		musicTime_ = audio_->GetPlayCurrentTime(currentPlayMusicHandle_)+ startTime_;

@@ -38,12 +38,6 @@ void Transition::Update(){
 		spriteArray_[i]->SetScale({ .x = widthScale_, .y = heightScale_ });
 	}
 
-#ifdef _DEBUG
-	ImGui::Begin("トランジション");
-	ImGui::SliderFloat("幅スケール", &widthScale_, 0.0f, 1.0f);
-	ImGui::End();
-#endif // _DEBUG
-
 
 }
 
@@ -61,6 +55,19 @@ void Transition::ShortkyOpen(){
 
 		sideT_ = 1.0f;
 		widthScale_ = 0.0f;
+
+
+	}
+}
+
+void Transition::ShortkyClose(){
+	//閉じている状態の時に開く
+	if (isOpened_ && !isClosed_) {
+		isOpened_ = false;
+		isClosed_ = true;
+
+		sideT_ = 0.0f;
+		widthScale_ = 1.0f;
 
 
 	}
