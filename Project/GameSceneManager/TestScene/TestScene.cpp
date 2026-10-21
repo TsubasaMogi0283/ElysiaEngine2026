@@ -177,15 +177,16 @@ void TestScene::Update(){
 			
 		}
 		else {
-			audio_->Reset(currentPlayMusicHandle_);
-			audio_->Delete();
-			gameSceneManager_->GetScoreDataManager()->MusicReload();
-			existMusicScoreData_ = {};
-			existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
-
-			currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
-			GenerateNotes();
+			
 			if (ImGui::Button("再生")) {
+				audio_->Reset(currentPlayMusicHandle_);
+				audio_->Delete();
+				gameSceneManager_->GetScoreDataManager()->MusicReload();
+				existMusicScoreData_ = {};
+				existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
+
+				currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
+				GenerateNotes();
 				audio_->Play(currentPlayMusicHandle_, startTime_);
 
 				//開始状態にする
