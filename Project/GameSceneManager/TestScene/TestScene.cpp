@@ -147,7 +147,8 @@ void TestScene::Update(){
 	
 	//停止時
 	if (isStop_ && !isPlay_) {
-		ImGui::SliderFloat("開始時間", &startTime_, MUSIC_START_TIME_, MUSIC_END_TIME_);
+		float_t finishTime = audio_->GetAudioLength(currentPlayMusicHandle_);
+		ImGui::SliderFloat("開始時間", &startTime_, MUSIC_START_TIME_, finishTime);
 		//再開
 		if (isResume_) {
 			if (ImGui::Button("再開")) {
@@ -169,7 +170,6 @@ void TestScene::Update(){
 				currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
 				audio_->Play(currentPlayMusicHandle_, startTime_);
 
-
 				//開始状態にする
 				isStop_ = false;
 				isPlay_ = true;
@@ -177,6 +177,14 @@ void TestScene::Update(){
 			
 		}
 		else {
+			audio_->Reset(currentPlayMusicHandle_);
+			audio_->Delete();
+			gameSceneManager_->GetScoreDataManager()->MusicReload();
+			existMusicScoreData_ = {};
+			existMusicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData()[currentMusicNumber_];
+
+			currentPlayMusicHandle_ = existMusicScoreData_.musicHandle;
+			GenerateNotes();
 			if (ImGui::Button("再生")) {
 				audio_->Play(currentPlayMusicHandle_, startTime_);
 
@@ -187,9 +195,9 @@ void TestScene::Update(){
 		}
 
 
-		if (ImGui::TreeNode("再設定")) {
+		if (ImGui::TreeNode("設定")) {
 			
-			ImGui::SliderFloat("ハイスピ", &hiSpeed_,0.0f,3.0f);
+			ImGui::SliderFloat("ハイスピ", &hiSpeed_,0.0f,8.0f);
 
 			//楽曲が入っている時しか処理しないようにする
 			//入っていない状態でやっても意味ないからね
