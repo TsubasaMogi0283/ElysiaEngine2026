@@ -21,8 +21,8 @@ TitleScene::TitleScene(){
 	animationManager_ = Elysia::AnimationManager::GetInstance();
 }
 
-void TitleScene::Initialize(){
-	
+void TitleScene::Initialize() {
+
 	//カメラ
 	camera_.Initialize();
 	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -30.0f };
@@ -48,10 +48,25 @@ void TitleScene::Initialize(){
 	uint32_t dModelHandle = modelManager_->Load("Resources/Model/Title/D", "D.obj");
 	uint32_t aModelHandle = modelManager_->Load("Resources/Model/Title/A", "A.obj");
 	uint32_t pModelHandle = modelManager_->Load("Resources/Model/Title/D", "D.obj");
-	uint32_t exclamationModelHandle = modelManager_->Load("Resources/Model/Title/Exclamation","Exclamation.obj");
+	uint32_t exclamationModelHandle = modelManager_->Load("Resources/Model/Title/Exclamation", "Exclamation.obj");
 	gameNameObject_ = std::make_unique<GameNameObject>();
 	gameNameObject_->Initialize(dModelHandle, aModelHandle, pModelHandle, exclamationModelHandle);
 
+	//プレイヤー
+	//モデル
+	uint32_t playerModelhandle = modelManager_->Load("Resources/External/Model/human", "walk.gltf");
+	//アニメーション
+	uint32_t playerWalkAnimationHandle = animationManager_->Load("Resources/External/Model/human", "walk.gltf");
+	std::vector<uint32_t> playerAnimationHandleVector;
+	playerAnimationHandleVector.push_back(playerWalkAnimationHandle);
+	//生成
+	player_ = std::make_unique<Player>();
+	player_->Initialize(playerModelhandle, playerAnimationHandleVector);
+	const float_t PLAYER_SCALE = 2.0f;
+	player_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
+
+	player_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t>,.z=0.0f });
+	
 
 	//開始
 	uint32_t startModelHandle = modelManager_->Load("Resources/Model/Title/Start","Start.obj");
@@ -99,7 +114,9 @@ void TitleScene::Update(){
 		//矢印の座標
 		arrowWorldTransform_.translate.x = -9.0f;
 	}
-
+	//各更新
+	//プレイヤー
+	player_->Update();
 	//各シーンの更新
 	baseTitleScene_->Update();
 	//ゲーム名のオブジェクトの更新
@@ -147,7 +164,10 @@ void TitleScene::DrawObject3D(){
 	gameNameObject_->DrawObject3D(camera_, directionalLight_);
 	//地面
 	groundModel_->Draw(groundWorldTransform_, camera_, groundMaterial_, directionalLight_);
+	//プレイヤー
+	player_->DrawObject3D(camera_, directionalLight_);
 
+	//選択肢
 	startModel_->Draw(startWorldTransform_, camera_, startMaterial_, directionalLight_);
 	endModel_->Draw(endWorldTransform_, camera_, endMaterial_, directionalLight_);
 	arrowModel_->Draw(arrowWorldTransform_, camera_, arrowMaterial_, directionalLight_);

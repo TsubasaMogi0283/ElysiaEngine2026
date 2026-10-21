@@ -136,6 +136,11 @@ void StartMainScene::Initialize() {
 		//色
 		baseLineSpriteArray_[i]->SetColor(levelColor);
 	}
+
+	mainPositionX = mainScene_->GetJudgementLine()->GetJudgementPositionX() - 10.0f;
+	initialPositionX = mainPositionX;
+	initialPositionX -= PLAYER_MOVE_DISTANCE_;
+	mainScene_->GetPlayer()->SetPosition({ .x = initialPositionX ,.y = 0.0f,.z = 0.0f });
 }
 
 void StartMainScene::Update() {
@@ -201,9 +206,25 @@ void StartMainScene::Transition() {
 	if (isEndTransition_) {
 		waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Transition)] += DELTA_TIME_;
 		if (waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Transition)] >= WAIT_FOR_UI_MOVE_TIME_) {
-			//トランジションが終わったらUIの移動へ 
-			currentState_ = StartMainSceneState::UIMoveScaleUp;
+			//トランジションが終わったらプレイヤーの登場へ
+			currentState_ = StartMainSceneState::PlayerMovement;
 		}
+	}
+}
+
+void StartMainScene::PlayerMove(){
+	
+	//時間変化
+	playerMoveTime_ += DELTA_TIME_;
+	float_t t = SingleCalculation::InverseLerp(0.0f, PLAYER_MOVE_TIME_, playerMoveTime_);
+	t = std::clamp(t, 0.0f, 1.0f);
+	float_t easedT = Easing::EaseOutQuart(t);
+	float_t newPositionX = SingleCalculation::Lerp(initialPositionX, mainPositionX, easedT);
+	mainScene_->GetPlayer()->SetPosition({ .x = newPositionX ,.y = 0.0f,.z = 0.0f });
+
+	if (t >= 1.0f) {
+		//トランジションが終わったらUIの移動へ 
+		currentState_ = StartMainSceneState::UIMoveScaleUp;
 	}
 }
 

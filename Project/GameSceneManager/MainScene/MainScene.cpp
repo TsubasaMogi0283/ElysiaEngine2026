@@ -8,6 +8,7 @@
 #include "ModelManager.h"
 #include <TextureManager.h>
 #include <ModelManager.h>
+#include <AnimationManager.h>
 #include "GameSceneManager.h"
 #include <WindowsSetup.h>
 #include <MainScene/Start/StartMainScene.h>
@@ -24,6 +25,8 @@ MainScene::MainScene() {
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 	//モデル
 	modelManager_ = Elysia::ModelManager::GetInstance();
+	//アニメーション
+	animationManager_ = Elysia::AnimationManager::GetInstance();
 }
 
 void MainScene::Initialize() {
@@ -43,7 +46,7 @@ void MainScene::Initialize() {
 	GenerateNotes();
 	//カメラの初期化
 	camera_.Initialize();
-	camera_.translate = { .x = 0.0f,.y = 5.0f,.z = -100.0f };
+	camera_.translate = { .x = 0.0f,.y = 10.0f,.z = -80.0f };
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
@@ -127,6 +130,21 @@ void MainScene::Initialize() {
 	judgementLine_ = std::make_unique<JudgementLine>();
 	judgementLine_->Initialize(normalNoteModelHandle);
 
+	//プレイヤー
+	//モデル
+	uint32_t playerModelhandle = modelManager_->Load("Resources/External/Model/human", "walk.gltf");
+	//アニメーション
+	uint32_t playerWalkAnimationHandle = animationManager_->Load("Resources/External/Model/human", "walk.gltf");
+	std::vector<uint32_t> playerAnimationHandleVector;
+	playerAnimationHandleVector.push_back(playerWalkAnimationHandle);
+	//生成
+	player_ = std::make_unique<Player>();
+	player_->SetJudgementLine(judgementLine_.get());
+	player_->Initialize(playerModelhandle, playerAnimationHandleVector);
+	const float_t PLAYER_SCALE = 2.0f;
+	player_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
+	player_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t>/2,.z = 0.0f });
+	
 	//メインシーン
 	baseMainScene_ = std::make_unique<StartMainScene>();
 	baseMainScene_->SetMainScene(this);
@@ -154,7 +172,8 @@ void MainScene::Update() {
 
 	//テクスチャ割り当て
 	AssignToTexture();
-
+	//プレイヤー
+	player_->Update();
 	//ゲージの更新
 	gauge_->Update();
 	//判定線の更新
@@ -177,9 +196,11 @@ void MainScene::DrawObject3D() {
 	
 	//判定線の描画
 	judgementLine_->Draw(camera_, directionalLight_);
+	//プレイヤー
+	player_->DrawObject3D(camera_, directionalLight_);
 	//オブジェクトの描画
 	baseMainScene_->DrawObject3D(camera_, directionalLight_);
-
+	
 }
 
 void MainScene::PreDrawPostEffect() {

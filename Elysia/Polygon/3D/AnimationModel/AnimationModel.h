@@ -53,6 +53,10 @@ struct SpotLight;
 /// </summary>
 struct Material;
 
+/// <summary>
+/// 基底ライト
+/// </summary>
+struct BaseLight;
 
 /// <summary>
 /// ElysiaEngine
@@ -113,34 +117,14 @@ namespace Elysia {
 		void Update(const float& animationTime);
 
 		/// <summary>
-		/// 描画(平行光源)
+		/// 描画
 		/// </summary>
 		/// <param name="worldTransform">ワールドトランスフォーム</param>
 		/// <param name="camera">カメラ</param>
 		/// <param name="animationTime">アニメーションの時間</param>
 		/// <param name="material">マテリアル</param>
-		/// <param name="directionalLight">平行光源</param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const DirectionalLight& directionalLight);
-
-		/// <summary>
-		/// 描画(点光源)
-		/// </summary>
-		/// <param name="worldTransform">ワールドトランスフォーム</param>
-		/// <param name="camera">カメラ</param>
-		/// <param name="animationTime">アニメーションの時間</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="pointLight">点光源</param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const PointLight& pointLight);
-
-		/// <summary>
-		/// 描画(スポットライト)
-		/// </summary>
-		/// <param name="worldTransform">ワールドトランスフォーム</param>
-		/// <param name="camera">カメラ</param>
-		/// <param name="animationTime">アニメーションの時間</param>
-		/// <param name="material">マテリアル</param>
-		/// <param name="spotLight">スポットライト</param>
-		void Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, const Material& material, const SpotLight& spotLight);
+		/// <param name="baseLight">基底ライト</param>
+		void Draw(const WorldTransform& worldTransform, const Camera& camera, const float& animationTime, Material& material, const BaseLight& baseLight);
 
 		/// <summary>
 		/// デストラクタ

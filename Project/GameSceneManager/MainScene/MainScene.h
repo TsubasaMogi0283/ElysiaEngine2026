@@ -23,6 +23,7 @@
 #include <Gauge/Gauge.h>
 #include <Note/NoteJudgement.h>
 #include <JudgementLine/JudgementLine.h>
+#include <Player/Player.h>
 
  /// <summary>
  /// ElysiaEngine(前方宣言)
@@ -204,6 +205,15 @@ public:
 		return judgementLine_.get();
 	}
 
+	/// <summary>
+	/// プレイヤーを取得
+	/// </summary>
+	/// <returns></returns>
+	inline Player* GetPlayer()const {
+		return player_.get();
+	}
+
+
 private:
 	/// <summary>
 	/// ノーツ生成
@@ -226,7 +236,8 @@ private:
 	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 	//モデル管理クラス
 	Elysia::ModelManager* modelManager_ = nullptr;
-
+	//アニメーション
+	Elysia::AnimationManager* animationManager_ = nullptr;
 private:
 	//開始オフセット
 	const float_t START_OFFSET_TIME_ = 1.0f;
@@ -351,6 +362,9 @@ public:
 		return temporaryRecord_;
 	}
 
+	
+
+
 private:
 	//背景
 	std::unique_ptr<Elysia::BackTexture>backTexture_ = nullptr;
@@ -372,7 +386,6 @@ private:
 
 	//ハイスピ
 	float_t hiSpeed_ = 5.0f;
-
 private:
 	//メインシーン共通部分
 	//UI
@@ -383,13 +396,12 @@ private:
 	std::array<UIInformation, SCORE_DIGIT_>scoreArray_ = {};
 	//コンボ
 	std::array<UIInformation, COMBO_DIGIT_>comboArray_ = {};
-
 	//ゲージ
 	std::unique_ptr<Gauge>gauge_ = nullptr;
-
 	//判定線
 	std::unique_ptr<JudgementLine> judgementLine_ = nullptr;
-
+	//プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
 	//一時記録用
 	NoteJudgement::Record temporaryRecord_ = {};
 };

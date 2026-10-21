@@ -225,6 +225,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.cpp" />
     <ClCompile Include="Project\Note\NormalTap\NormalTapNote.cpp" />
     <ClCompile Include="Project\PauseAsset\PauseAsset.cpp" />
+    <ClCompile Include="Project\Player\Player.cpp" />
     <ClCompile Include="Project\Record\RecordManager.cpp" />
     <ClCompile Include="Project\ScoreData\Manager\ScoreDataManager.cpp" />
     <ClCompile Include="Project\Transition\Transition.cpp" />
@@ -373,6 +374,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\Note\NoteJudgement.h" />
     <ClInclude Include="Project\Note\NoteType.h" />
     <ClInclude Include="Project\PauseAsset\PauseAsset.h" />
+    <ClInclude Include="Project\Player\Player.h" />
     <ClInclude Include="Project\Record\RecordManager.h" />
     <ClInclude Include="Project\ScoreData\Difficulty.h" />
     <ClInclude Include="Project\ScoreData\Manager\ScoreDataManager.h" />
