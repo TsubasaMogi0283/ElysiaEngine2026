@@ -112,7 +112,7 @@ private:
 	const Vector2<float_t> INITIAL_POSITION_ = { .x = 50.0f,.y = 0.0f };
 	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
 	//レーンのY座標
-	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {10.0f,0.0f};
+	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {15.0f,5.0f};
 	//レーンのZ座標
 	const float_t LANE_POSITION_Z_ = 0.0f;
 

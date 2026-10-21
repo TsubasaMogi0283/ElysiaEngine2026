@@ -22,6 +22,7 @@
 #include <Dissolve.h>
 #include <TitleScene/BaseTitleScene.h>
 #include <GameNameObject/GameNameObject.h>
+#include <Player/Player.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -177,6 +178,14 @@ public:
 		this->isSelectStart_ = false;
 	}
 
+	/// <summary>
+	/// プレイヤーを取得
+	/// </summary>
+	/// <returns></returns>
+	inline Player* GetPlayer()const {
+		return player_.get();
+	}
+
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -231,6 +240,8 @@ private:
 	Material arrowMaterial_ = {};
 	float_t arrowRotateX_ = 0.0f;
 	
+	//プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
 
 	//ゲーム名
 	std::unique_ptr<GameNameObject> gameNameObject_ = nullptr;
@@ -239,4 +250,7 @@ private:
 	std::unique_ptr<BaseTitleScene>baseTitleScene_ = nullptr;
 	//処理終了(基本このクラスではいじらない)
 	bool isProcessEnd_ = false;
+
+	
+
 };

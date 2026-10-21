@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file TestScene.h
+ * @brief テスト(譜面制作エディター)シーンのクラス
+ * @author 茂木翼
+ */
+
 #include <memory>
 #include <array>
 
