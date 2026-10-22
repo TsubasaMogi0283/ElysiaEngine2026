@@ -193,6 +193,7 @@ void ResultScene::Initialize() {
 	decideSprite_ = Elysia::Sprite::Create(decideTexturehandle);
 	decideSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
 	decideSprite_->SetPosition({ .x = 1050,.y = 500 });
+	decideSprite_->SetInvisible(true);
 }
 
 void ResultScene::Update(){
@@ -381,6 +382,8 @@ void ResultScene::MoveRank(){
 }
 
 void ResultScene::Display(){
+	decideSprite_->SetInvisible(false);
+
 	if (input_->IsTriggerKey(DIK_RETURN)) {
 		currentState_ = ResultSceneState::Return;
 	}

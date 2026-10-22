@@ -103,6 +103,18 @@ void SelectScene::Update(){
 
 	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
 		isOpendTransiont_ = true;
+
+		float startTime = 0.0f;
+		float endTime = 2.0f;
+		if (currentSelectedMusicNumber_ == 1) {
+			startTime = 49.5f;
+			endTime = 62.0f;
+		} else {
+			startTime = 48.5f;
+			endTime = 61.0f;
+		}
+		audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+
 	}
 	if (isOpendTransiont_) {
 
@@ -110,15 +122,11 @@ void SelectScene::Update(){
 		//右に選択
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
-			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
 			
-			isPlay_ = false;
 		}
 		//左に選択
 		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
 			jacket_->SetIsMoveToLeft(true);
-			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
-			isPlay_ = false;
 		}
 
 		//難易度の設定
@@ -147,22 +155,27 @@ void SelectScene::Update(){
 
 		
 		
-		float_t startTime = 0.0f;
-		float_t endTime = 0.0f;
-		if (currentSelectedMusicNumber_ == 0) {
-			startTime = 0.0f;
-			endTime = 2.0f;
 
-			
-		}
-		else if (currentSelectedMusicNumber_ == 1) {
-			startTime = 49.5f;
-			endTime = 62.0;
-		}
+		// 選択曲が変わったときだけ再生し直す
+		if (currentSelectedMusicNumber_ != playingMusicNumber_) {
+			// 前の曲を止める（以前作ったReset等）
+			if (playingMusicNumber_ >= 0) {
+				audio_->Reset(allScoreData_[playingMusicNumber_].musicHandle);
+			}
 
-		if (!isPlay_) {
-			//audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
-			isPlay_ = true;
+			float startTime = 0.0f;
+			float endTime = 2.0f;
+			//NeonStreet
+			if (currentSelectedMusicNumber_ == 1) {
+				startTime = 70.3f;
+				endTime = 96.0f;
+			}
+			else {
+				startTime = 48.5f;
+				endTime = 61.0f;
+			}
+			audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+			playingMusicNumber_ = currentSelectedMusicNumber_;
 		}
 		
 		//処理終了

@@ -174,8 +174,6 @@ private:
 	//終了
 	bool isEnd_ = false;
 
-
-	//再生状態
-	bool isPlay_ = false;
+	uint32_t playingMusicNumber_ = 0u;
 
 };

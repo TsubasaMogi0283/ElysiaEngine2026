@@ -31,9 +31,6 @@ void HighPassLongNote::Update(){
 	endRatio_= SingleCalculation::InverseLerp(endStartTime_, endArriveTime_, musicTime_);
 	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
 	
-	
-
-	
 	//判定線に到達したら、始点を判定線に固定する
 	if (ratio_ >= 1.0f) {
 		startPositionX = judgmentPositionX_;

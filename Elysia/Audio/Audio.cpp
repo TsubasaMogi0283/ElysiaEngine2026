@@ -483,6 +483,18 @@ void Elysia::Audio::Stop(const uint32_t& audioHandle) {
 	assert(SUCCEEDED(hResult));
 }
 
+void Elysia::Audio::Reset(const uint32_t& audioHandle){
+	//ファイルキーの取得
+	std::string fileKey = GetAudioInformationKey(audioHandle);
+
+	//停止
+	HRESULT hResult = audioInformation_[fileKey].sourceVoice->Stop(0);
+	assert(SUCCEEDED(hResult));
+	hResult = audioInformation_[fileKey].sourceVoice->FlushSourceBuffers();
+	assert(SUCCEEDED(hResult));
+
+}
+
 #pragma endregion
 
 
@@ -610,12 +622,20 @@ void Elysia::Audio::PartlyLoopPlayMp3(const uint32_t& audioHandle, const float_t
 	buffer.Flags = XAUDIO2_END_OF_STREAM;
 	//ここでループ回数を設定
 	buffer.LoopCount = XAUDIO2_LOOP_INFINITE;
+
 	//長いので新しく変数を作って分かりやすくする
 	int32_t samplingRate = Elysia::Audio::GetInstance()->audioInformation_[fileKey].soundData.wfex.nSamplesPerSec;
 
+	const uint32_t loopBegin = static_cast<uint32_t>(startTime * static_cast<float_t>(samplingRate));
+	const uint32_t loopLength = static_cast<uint32_t>((endTime - startTime) * static_cast<float_t>(samplingRate));
+
+	
+	//再生開始位置と再生範囲
+	buffer.PlayBegin = loopBegin;
+	buffer.PlayLength = loopLength;
 	//ここでループしたい位置を設定してあげる
-	buffer.LoopBegin = static_cast<uint32_t>(startTime * static_cast<float_t>(samplingRate));
-	buffer.LoopLength = static_cast<uint32_t>((endTime-startTime) * static_cast<float_t>(samplingRate));
+	buffer.LoopBegin = loopBegin;
+	buffer.LoopLength = loopLength;
 
 	//Buffer登録
 	hResult = audioInformation_[fileKey].sourceVoice->SubmitSourceBuffer(&buffer);
