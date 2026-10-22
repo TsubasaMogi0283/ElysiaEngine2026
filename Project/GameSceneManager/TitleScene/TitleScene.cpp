@@ -64,7 +64,6 @@ void TitleScene::Initialize() {
 	player_->Initialize(playerModelhandle, playerAnimationHandleVector);
 	const float_t PLAYER_SCALE = 2.0f;
 	player_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
-
 	player_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t>,.z=0.0f });
 	
 
@@ -88,7 +87,8 @@ void TitleScene::Initialize() {
 	uint32_t arrowModelHandle = modelManager_->Load("Resources/Model/Title/SelectArrow", "SelectArrow.obj");
 	arrowModel_ = Elysia::Model::Create(arrowModelHandle);
 	arrowWorldTransform_.Initialize();
-	arrowWorldTransform_.translate = { .x = 0.0f,.y = 2.0f,.z = 0.0f };
+	arrowWorldTransform_.translate = { .x = 9.0f,.y = 2.0f,.z = 0.0f };
+	arrowWorldTransform_.rotate.y = 0.0f;
 	arrowMaterial_.Initialize();
 	arrowMaterial_.color.w = 0.0f;
 }
@@ -102,7 +102,8 @@ void TitleScene::Update(){
 		startWorldTransform_.rotate.y -= ARROW_ROTATE_AMOUNT_;
 		endWorldTransform_.rotate.y = 0.0f;
 		//矢印の座標
-		arrowWorldTransform_.translate.x = 0.0f;
+		arrowWorldTransform_.translate.x = 9.0f;
+		arrowWorldTransform_.rotate.y = std::numbers::pi_v<float_t>;
 	}
 	//終了を選択時
 	if (!isSelectStart_ && isSelectEnd_) {
@@ -113,6 +114,7 @@ void TitleScene::Update(){
 		endWorldTransform_.rotate.y -= ARROW_ROTATE_AMOUNT_;
 		//矢印の座標
 		arrowWorldTransform_.translate.x = -9.0f;
+		arrowWorldTransform_.rotate.y = 0.0f;
 	}
 	//各更新
 	//プレイヤー
