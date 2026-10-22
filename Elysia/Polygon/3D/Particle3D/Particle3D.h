@@ -356,7 +356,7 @@ namespace Elysia {
 
 
 		//最大数
-		const uint32_t MAX_INSTANCE_NUMBER_ = 1000u;
+		const uint32_t MAX_INSTANCE_NUMBER_ = 10000u;
 		//描画すべきインスタンス数
 		uint32_t numInstance_ = 0u;
 		//インスタンスのインデックス

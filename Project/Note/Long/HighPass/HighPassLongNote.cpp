@@ -31,17 +31,22 @@ void HighPassLongNote::Update(){
 	endRatio_= SingleCalculation::InverseLerp(endStartTime_, endArriveTime_, musicTime_);
 	float_t endPositionX = SingleCalculation::Lerp(initialPositionX_, judgmentPositionX_, endRatio_);
 	
+	
+
+	
+	//判定線に到達したら、始点を判定線に固定する
+	if (ratio_ >= 1.0f) {
+		startPositionX = judgmentPositionX_;
+	}
 	//半分の所でスケールを伸ばしていきたい
-	worldTransform_.translate.x= startPositionX;
+	worldTransform_.translate.x = startPositionX;
 	worldTransform_.translate.y = lanePositionY_;
 
 	//スケールの計算
 	//裏返り厳禁！
 	worldTransform_.scale.x = std::abs(endPositionX - startPositionX) / 2.0f;
-
-
 	//最後までいったら未使用状態にする
-	if (endRatio_ >= 1.0f) {
+	if (endRatio_ >= 1.2f) {
 		isUsed_ = false;
 	}
 

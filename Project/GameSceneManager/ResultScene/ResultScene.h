@@ -347,6 +347,9 @@ private:
 	MusicScoreData musicScoreData_ = {};
 	NoteJudgement::Record temporaryRecievedRecord_ = {};
 	
+	//決定
+	std::unique_ptr<Elysia::Sprite>decideSprite_ = nullptr;
+
 	//処理終了
 	bool isEnd_ = false;
 };

@@ -130,7 +130,7 @@ void PlayMainScene::Initialize() {
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
 			.y = LANE_POSITION_Y_[i],
 			.z = 0.0f });
-		perfectParticleArray_[i]->SetCount(20);
+		perfectParticleArray_[i]->SetCount(10);
 
 		greatParticleArray_[i] = Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
 		greatParticleArray_[i]->TextureOverride(greatPartucleTextureHandle_);
@@ -139,7 +139,7 @@ void PlayMainScene::Initialize() {
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
 			.y = LANE_POSITION_Y_[i],
 			.z = 0.0f });
-		greatParticleArray_[i]->SetCount(20);
+		greatParticleArray_[i]->SetCount(5);
 
 		goodParticleArray_[i] = Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
 		goodParticleArray_[i]->TextureOverride(goodPartucleTextureHandle_);
@@ -148,7 +148,7 @@ void PlayMainScene::Initialize() {
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
 			.y = LANE_POSITION_Y_[i],
 			.z = 0.0f });
-		goodParticleArray_[i]->SetCount(20);
+		goodParticleArray_[i]->SetCount(5);
 	}
 	
 	//楽曲の再生
@@ -525,8 +525,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
 				
-				
-
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -688,6 +686,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			if (laneCondition.isHold&&
 				(targetNote.arriveLineTime <= musicTime_&& musicTime_ <= targetNote.endArriveMoveTime_)) {
 				laneCondition.isHoldLongNote = true;
+				//highPassLongNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
 				record_.score += LONG_NOTE_SCORE_INCREASE_VALUE_;
 			}
 			//比率を計算し、1.0f以上になったら判定済みにする

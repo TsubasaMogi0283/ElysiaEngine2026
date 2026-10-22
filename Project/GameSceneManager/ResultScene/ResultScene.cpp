@@ -186,6 +186,13 @@ void ResultScene::Initialize() {
 	rankSprite_->SetInvisible(true);
 	rankSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 	rankSprite_->SetPosition({ .x = SCORE_BOARD_CENTER_POSITION_X + 250,.y = 475 });
+
+
+	//決定
+	uint32_t decideTexturehandle = textureManager_->Load("Resources/Sprite/Select/Decide.png");
+	decideSprite_ = Elysia::Sprite::Create(decideTexturehandle);
+	decideSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
+	decideSprite_->SetPosition({ .x = 1050,.y = 500 });
 }
 
 void ResultScene::Update(){
@@ -237,7 +244,7 @@ void ResultScene::DrawSprite(){
 	//musicTitleSprite_->Draw();
 	//musicComposerSprite_->Draw();
 	//ゲージ
-	gauge_->DrawSprite();
+	//gauge_->DrawSprite();
 
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
@@ -262,13 +269,15 @@ void ResultScene::DrawSprite(){
 	}
 
 	//ランクの表示
-	rankSprite_->Draw();
+	//rankSprite_->Draw();
+
+	decideSprite_->Draw();
 }
 
 void ResultScene::Open(){
 	//トランジションを開く
 	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
-		currentState_ = ResultSceneState::IncreaseGauge;
+		currentState_ = ResultSceneState::IncreaseValue;
 	}
 }
 
@@ -372,7 +381,7 @@ void ResultScene::MoveRank(){
 }
 
 void ResultScene::Display(){
-	if (input_->IsTriggerKey(DIK_SPACE)) {
+	if (input_->IsTriggerKey(DIK_RETURN)) {
 		currentState_ = ResultSceneState::Return;
 	}
 }
