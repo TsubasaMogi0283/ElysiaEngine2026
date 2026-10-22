@@ -31,14 +31,13 @@ MainScene::MainScene() {
 
 void MainScene::Initialize() {
 	//楽曲譜面情報を取得
-	musicScoreData_ = gameSceneManager_->GetMusicScoreData().musicScoreData[difficulty_];
+	
 #ifdef _DEBUG
-	musicScoreData_ = gameSceneManager_->GetScoreDataManager()->GetSampleMusicScoreData();
 	
 #endif // _DEBUG
-	difficulty_ = 0;
-	
-	musicHandle_ = 1;
+	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
+	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreData[difficulty_];
+	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();;
 	jacketTextureHandle_ = gameSceneManager_->GetTemporaryJacketTextureHandle();
 
 
@@ -217,7 +216,7 @@ void MainScene::DrawPostEffect() {
 void MainScene::DrawSprite() {
 	
 	//ゲージ
-	gauge_->DrawSprite();
+	//gauge_->DrawSprite();
 
 	//スコア
 	for (uint8_t i = 0u;i < SCORE_DIGIT_;i++) {

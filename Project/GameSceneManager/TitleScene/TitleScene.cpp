@@ -9,6 +9,7 @@
 #include "PushBackCalculation.h"
 #include <AnimationManager.h>
 #include <GameSceneManager.h>
+#include <TextureManager.h>
 #include <TitleScene/Start/StartTitleScene.h>
 
 TitleScene::TitleScene(){
@@ -19,6 +20,8 @@ TitleScene::TitleScene(){
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//アニメーション管理クラス
 	animationManager_ = Elysia::AnimationManager::GetInstance();
+	//テクスチャ管理クラス
+	textureManager_->GetInstance();
 }
 
 void TitleScene::Initialize() {
@@ -91,6 +94,8 @@ void TitleScene::Initialize() {
 	arrowWorldTransform_.rotate.y = 0.0f;
 	arrowMaterial_.Initialize();
 	arrowMaterial_.color.w = 0.0f;
+	
+	
 }
 
 void TitleScene::Update(){
@@ -198,5 +203,8 @@ void TitleScene::DrawPostEffect(){
 void TitleScene::DrawSprite(){
 	//各シーン
 	baseTitleScene_->DrawSprite();
+
+	
+
 }
 

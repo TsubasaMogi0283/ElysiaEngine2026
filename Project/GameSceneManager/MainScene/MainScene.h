@@ -385,7 +385,7 @@ private:
 	uint32_t jacketTextureHandle_ = 0u;
 
 	//ハイスピ
-	float_t hiSpeed_ = 5.0f;
+	float_t hiSpeed_ = 2.0f;
 private:
 	//メインシーン共通部分
 	//UI

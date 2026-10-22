@@ -195,6 +195,8 @@ private:
 	Elysia::AnimationManager* animationManager_ = nullptr;
 	//ゲーム管理クラス
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
 
 private:
 	
@@ -240,6 +242,8 @@ private:
 	Material arrowMaterial_ = {};
 	float_t arrowRotateX_ = 0.0f;
 	
+	
+
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
 

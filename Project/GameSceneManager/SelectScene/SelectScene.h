@@ -155,6 +155,11 @@ private:
 	std::array<std::unique_ptr<Elysia::Sprite>, ARRAOW_AMOUNT_> arrowSpriteArray_ = {};
 	std::array<Vector2<int32_t>, ARRAOW_AMOUNT_> arrowPositionArray_ = {};
 
+	//決定
+	std::unique_ptr<Elysia::Sprite>decideSprite_ = nullptr;
+	//戻る
+	std::unique_ptr<Elysia::Sprite>backSprite_ = nullptr;
+
 
 	//全ての譜面データ
 	std::vector<ExistMusicScoreData> allScoreData_ = {};

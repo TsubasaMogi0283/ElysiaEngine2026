@@ -93,7 +93,7 @@ namespace Elysia {
 		/// 一時譜面場所
 		/// </summary>
 		/// <param name="musicScoreData"></param>
-		void SetMusicScoreData(const ExistMusicScoreData& musicScoreData) {
+		void SetTemporaryMusicScoreData(const ExistMusicScoreData& musicScoreData) {
 			this->temporarymusicScoreData_ = musicScoreData;
 		}
 
@@ -101,7 +101,7 @@ namespace Elysia {
 		/// 一時保存の譜面情報を取得
 		/// </summary>
 		/// <returns></returns>
-		ExistMusicScoreData GetMusicScoreData()const {
+		ExistMusicScoreData GetTemporaryMusicScoreData()const {
 			return temporarymusicScoreData_;
 		}
 
@@ -109,7 +109,7 @@ namespace Elysia {
 		/// 一時保存の難易度を記録
 		/// </summary>
 		/// <param name="difficulty">難易度</param>
-		inline void SetDifficulty(const int8_t& difficulty) {
+		inline void SetTemporaryDifficulty(const int8_t& difficulty) {
 			this->temporaryDifficulty_ = difficulty;
 		}
 

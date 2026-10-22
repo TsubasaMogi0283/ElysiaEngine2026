@@ -86,8 +86,16 @@ void SelectScene::Initialize(){
 		}
 	}
 	
-	
-	arrowPositionArray_;
+	//決定
+	uint32_t decideTexturehandle = textureManager_->Load("Resources/Sprite/Select/Decide.png");
+	decideSprite_ = Elysia::Sprite::Create(decideTexturehandle);
+	decideSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
+	decideSprite_->SetPosition({ .x = 1050,.y = 500 });
+	//戻る
+	uint32_t backTexturehandle = textureManager_->Load("Resources/Sprite/Select/Back.png");
+	backSprite_ = Elysia::Sprite::Create(backTexturehandle);
+	backSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
+	backSprite_->SetPosition({ .x = 10,.y = 500 });
 
 }
 
@@ -127,11 +135,11 @@ void SelectScene::Update(){
 		jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
 
 		//決定
-		if (input_->IsTriggerKey(DIK_SPACE)) {
+		if (input_->IsTriggerKey(DIK_RETURN)) {
 			jacket_->SetIsDecide();
 			//選択した楽曲のデータを取得
-			gameSceneManager_->SetMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
-			gameSceneManager_->SetDifficulty(currentDifficultyNumber_);
+			gameSceneManager_->SetTemporaryMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
+			gameSceneManager_->SetTemporaryDifficulty(currentDifficultyNumber_);
 			gameSceneManager_->SetTemporaryHandle(allScoreData_[currentSelectedMusicNumber_].musicHandle, allScoreData_[currentSelectedMusicNumber_].jacketTextureHandle);
 		}
 
@@ -216,6 +224,12 @@ void SelectScene::DrawSprite(){
 	for (uint8_t i = 0u; i < ARRAOW_AMOUNT_; i++) {
 		arrowSpriteArray_[i]->Draw();
 	}
+
+	//決定
+	decideSprite_->Draw();
+	//戻る
+	backSprite_->Draw();
+
 }
 
 
