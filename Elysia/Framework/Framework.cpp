@@ -182,6 +182,13 @@ void Elysia::Framework::Execute() {
 			//更新処理
 			Update();
 
+			//ゲーム終了状態を取得
+			isProcessEnd_ = gameSceneManager_->GetIsGameEnd();
+
+			if (isProcessEnd_) {
+				break;
+			}
+
 			//描画
 			Draw();
 

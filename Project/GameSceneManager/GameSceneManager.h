@@ -170,6 +170,21 @@ namespace Elysia {
 			this->temporaryRecord_ = {};
 		}
 
+		/// <summary>
+		/// ゲーム終了
+		/// </summary>
+		inline void SetIsGameEnd() {
+			this->isGameEnd_ = true;
+		}
+
+		/// <summary>
+		/// ゲーム終了状態を取得
+		/// </summary>
+		/// <returns>状態</returns>
+		inline bool GetIsGameEnd()const {
+			return isGameEnd_;
+		}
+
 	private:
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> abstractSceneFactory_ = nullptr;
@@ -188,6 +203,9 @@ namespace Elysia {
 		std::unique_ptr<RecordManager> recordManager_ = nullptr;
 		//トランジションクラス
 		std::unique_ptr<Transition>transition_ = nullptr;
+
+		//ゲーム終了
+		bool isGameEnd_ = false;
 
 	private:
 		//一時保管場所

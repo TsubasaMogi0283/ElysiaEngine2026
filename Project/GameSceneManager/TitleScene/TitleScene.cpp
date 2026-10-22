@@ -141,8 +141,17 @@ void TitleScene::Update(){
 
 	//処理が終わったら次のシーンへ
 	if (isProcessEnd_) {
-		gameSceneManager_->ChangeScene("Select");
-		return;
+		//選曲
+		if (isSelectStart_ && !isSelectEnd_) {
+			gameSceneManager_->ChangeScene("Select");
+			return;
+		}
+		//ゲーム終了
+		else if (!isSelectStart_ && isSelectEnd_) {
+			gameSceneManager_->SetIsGameEnd();
+			return;
+		}
+		
 	}
 
 

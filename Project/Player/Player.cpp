@@ -9,7 +9,7 @@ Player::Player(){
 }
 
 void Player::Initialize(const uint32_t& modelHandle, const std::vector<uint32_t>& animationHandle){
-	assert(judgementLine_);
+	
 
 	//モデルの生成
 	//待機アニメーションで初期化

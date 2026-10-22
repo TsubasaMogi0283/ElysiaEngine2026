@@ -114,6 +114,7 @@ namespace Elysia {
 		/// </summary>
 		void Finalize();
 
+
 	private:
 		//エンジンにある管理クラス
 		EngineManagers engineManagers_ = {};
@@ -125,5 +126,7 @@ namespace Elysia {
 		//シーンファクトリー
 		std::unique_ptr<IAbstractSceneFactory> sceneFactory_ = nullptr;
 
+		//ゲーム終了
+		bool isProcessEnd_ = false;
 	};
 }
