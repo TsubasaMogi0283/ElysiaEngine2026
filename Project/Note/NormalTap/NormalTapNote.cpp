@@ -24,7 +24,7 @@ void NormalTapNote::Update(){
 	worldTransform_.translate.y = lanePositionY_;
 
 	//使用状態の更新
-	if (ratio_ >= 1.2f) {
+	if (ratio_ >= 1.05f) {
 		ratio_ = 0.0f;
 		isUsed_ = false;
 	}
