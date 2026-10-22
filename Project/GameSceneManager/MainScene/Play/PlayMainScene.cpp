@@ -152,7 +152,7 @@ void PlayMainScene::Initialize() {
 	}
 	
 	//楽曲の再生
-	audio_->Play(musicHandle_, false);
+	audio_->PartlyLoopPlayMp3(musicHandle_, 0.0f, audio_->GetAudioLength(musicHandle_));
 	musicLength_ = audio_->GetAudioLength(musicHandle_);
 }
 

@@ -175,5 +175,6 @@ private:
 	bool isEnd_ = false;
 
 	uint32_t playingMusicNumber_ = 0u;
-
+	uint32_t decideSEHandle_ = 0u;
+	uint32_t selectSEHandle_ = 0u;
 };

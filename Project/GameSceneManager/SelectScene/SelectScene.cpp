@@ -97,6 +97,9 @@ void SelectScene::Initialize(){
 	backSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
 	backSprite_->SetPosition({ .x = 10,.y = 500 });
 
+
+	decideSEHandle_ = audio_->Load("Resources/Audio/SE/Deside.wav");
+	selectSEHandle_ = audio_->Load("Resources/Audio/SE/Select.wav");
 }
 
 void SelectScene::Update(){
@@ -122,21 +125,25 @@ void SelectScene::Update(){
 		//右に選択
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
+			audio_->Play(selectSEHandle_,false);
 			
 		}
 		//左に選択
 		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
 			jacket_->SetIsMoveToLeft(true);
+			audio_->Play(selectSEHandle_, false);
 		}
 
 		//難易度の設定
 		//上を選択
 		if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
 			currentDifficultyNumber_++;
+			audio_->Play(selectSEHandle_, false);
 		}
 		//下を選択
 		if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
 			currentDifficultyNumber_--;
+			audio_->Play(selectSEHandle_, false);
 		}
 		//簡単から難しいまでにする
 		currentDifficultyNumber_ = std::clamp(currentDifficultyNumber_, static_cast<int8_t>(Difficulty::Easy), static_cast<int8_t>(Difficulty::Hard));
@@ -149,6 +156,7 @@ void SelectScene::Update(){
 			gameSceneManager_->SetTemporaryMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
 			gameSceneManager_->SetTemporaryDifficulty(currentDifficultyNumber_);
 			gameSceneManager_->SetTemporaryHandle(allScoreData_[currentSelectedMusicNumber_].musicHandle, allScoreData_[currentSelectedMusicNumber_].jacketTextureHandle);
+			audio_->Play(decideSEHandle_, false);
 		}
 
 		currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();
@@ -203,6 +211,11 @@ void SelectScene::Update(){
 
 	//メインシーン
 	if (isEnd_) {
+		
+		for (uint8_t i = 0u;i < allScoreData_.size();i++) {
+			audio_->Reset(allScoreData_[i].musicHandle);
+		}
+
 		gameSceneManager_->ChangeScene("Main");
 		return;
 	}
