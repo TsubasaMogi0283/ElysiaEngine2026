@@ -151,22 +151,25 @@ void SelectScene::Update(){
 
 		
 		
-		float_t startTime = 0.0f;
-		float_t endTime = 0.0f;
-		if (currentSelectedMusicNumber_ == 0) {
-			startTime = 0.0f;
-			endTime = 2.0f;
+		// 選択曲が変わったときだけ再生し直す
+		if (currentSelectedMusicNumber_ != playingMusicNumber_) {
+			// 前の曲を止める（以前作ったReset等）
+			if (playingMusicNumber_ >= 0) {
+				audio_->Reset(allScoreData_[playingMusicNumber_].musicHandle);
+			}
 
-			
-		}
-		else if (currentSelectedMusicNumber_ == 1) {
-			startTime = 49.5f;
-			endTime = 62.0;
-		}
-
-		if (!isPlay_) {
-			//audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
-			isPlay_ = true;
+			float startTime = 0.0f;
+			float endTime = 2.0f;
+			//NeonStreet
+			if (currentSelectedMusicNumber_ == 1) {
+				startTime = 70.3f;
+				endTime = 96.0f;
+			} else {
+				startTime = 48.5f;
+				endTime = 61.0f;
+			}
+			audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+			playingMusicNumber_ = currentSelectedMusicNumber_;
 		}
 		
 		//処理終了
