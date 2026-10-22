@@ -177,6 +177,13 @@ private:
 
 	//再生状態
 	bool isPlay_ = false;
+	uint32_t highwaySunsetHandle_ = 0u;
+	uint32_t neonStreetHandle_ = 0u;
+	uint32_t NextMusicHandle_ = 0u;
+	uint32_t currentAllMusicHandle_ = 0u;
+
+
+	uint32_t playingMusicNumber_ = 0u;
 	uint32_t decideSEHandle_ = 0u;
 	uint32_t selectSEHandle_ = 0u;
 };

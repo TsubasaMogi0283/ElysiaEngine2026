@@ -97,6 +97,11 @@ void SelectScene::Initialize(){
 	backSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
 	backSprite_->SetPosition({ .x = 10,.y = 500 });
 
+
+	highwaySunsetHandle_ = audio_->Load("Resources/Audio/Demo/HighwaySunset.mp3");
+	neonStreetHandle_ = audio_->Load("Resources/Audio/Demo/NeonStreet.mp3");
+	NextMusicHandle_ = highwaySunsetHandle_;
+	currentAllMusicHandle_ = NextMusicHandle_;
 	decideSEHandle_ = audio_->Load("Resources/Audio/SE/Deside.wav");
 	selectSEHandle_ = audio_->Load("Resources/Audio/SE/Select.wav");
 }
@@ -105,15 +110,27 @@ void SelectScene::Update(){
 
 	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
 		isOpendTransiont_ = true;
+
+		float startTime = 0.0f;
+		float endTime = 2.0f;
+		//NeonStreet
+		if (currentAllMusicHandle_ == neonStreetHandle_) {
+			startTime = 70.3f;
+			endTime = 96.0f;
+		} else {
+			startTime = 48.5f;
+			endTime = 61.0f;
+		}
+		audio_->PartlyLoopPlayMp3(currentAllMusicHandle_, startTime, endTime);
 	}
 	if (isOpendTransiont_) {
-
 		//楽曲
 		//右に選択
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
 			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
 			audio_->Play(selectSEHandle_, false);
+			NextMusicHandle_ = neonStreetHandle_;
 			isPlay_ = false;
 		}
 		//左に選択
@@ -121,6 +138,7 @@ void SelectScene::Update(){
 			jacket_->SetIsMoveToLeft(true);
 			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
 			isPlay_ = false;
+			NextMusicHandle_ = highwaySunsetHandle_;
 			audio_->Play(selectSEHandle_, false);
 		}
 
@@ -152,24 +170,22 @@ void SelectScene::Update(){
 		
 		
 		// 選択曲が変わったときだけ再生し直す
-		if (currentSelectedMusicNumber_ != playingMusicNumber_) {
+		if (NextMusicHandle_ != currentAllMusicHandle_) {
 			// 前の曲を止める（以前作ったReset等）
-			if (playingMusicNumber_ >= 0) {
-				audio_->Reset(allScoreData_[playingMusicNumber_].musicHandle);
-			}
+			audio_->Reset(currentAllMusicHandle_);
 
 			float startTime = 0.0f;
 			float endTime = 2.0f;
 			//NeonStreet
-			if (currentSelectedMusicNumber_ == 1) {
+			if (NextMusicHandle_ == neonStreetHandle_) {
 				startTime = 70.3f;
 				endTime = 96.0f;
 			} else {
 				startTime = 48.5f;
 				endTime = 61.0f;
 			}
-			audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
-			playingMusicNumber_ = currentSelectedMusicNumber_;
+			audio_->PartlyLoopPlayMp3(NextMusicHandle_, startTime, endTime);
+			currentAllMusicHandle_=NextMusicHandle_;
 		}
 		
 		//処理終了
@@ -187,8 +203,7 @@ void SelectScene::Update(){
 	directionalLight_.Update();
 	
 
-	//指定時間を超えたらビネット
-	//仮置きでトランジェント
+	//指定時間を超えたら終了
 	if (waitingTime_ >= WATING_TIME_) {
 		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
 			isEnd_ = true;
@@ -197,6 +212,7 @@ void SelectScene::Update(){
 
 	//メインシーン
 	if (isEnd_) {
+		audio_->Reset(currentAllMusicHandle_);
 		gameSceneManager_->ChangeScene("Main");
 		return;
 	}

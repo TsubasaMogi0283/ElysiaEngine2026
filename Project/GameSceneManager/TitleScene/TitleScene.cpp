@@ -53,7 +53,7 @@ void TitleScene::Initialize() {
 	//ゲーム名のオブジェクト
 	uint32_t dModelHandle = modelManager_->Load("Resources/Model/Title/D", "D.obj");
 	uint32_t aModelHandle = modelManager_->Load("Resources/Model/Title/A", "A.obj");
-	uint32_t pModelHandle = modelManager_->Load("Resources/Model/Title/D", "D.obj");
+	uint32_t pModelHandle = modelManager_->Load("Resources/Model/Title/P", "P.obj");
 	uint32_t exclamationModelHandle = modelManager_->Load("Resources/Model/Title/Exclamation", "Exclamation.obj");
 	gameNameObject_ = std::make_unique<GameNameObject>();
 	gameNameObject_->Initialize(dModelHandle, aModelHandle, pModelHandle, exclamationModelHandle);
@@ -94,7 +94,7 @@ void TitleScene::Initialize() {
 	arrowModel_ = Elysia::Model::Create(arrowModelHandle);
 	arrowWorldTransform_.Initialize();
 	arrowWorldTransform_.translate = { .x = 9.0f,.y = 2.0f,.z = 0.0f };
-	arrowWorldTransform_.rotate.y = 0.0f;
+	arrowWorldTransform_.rotate.y = std::numbers::pi_v<float_t>;
 	arrowMaterial_.Initialize();
 	arrowMaterial_.color.w = 0.0f;
 	

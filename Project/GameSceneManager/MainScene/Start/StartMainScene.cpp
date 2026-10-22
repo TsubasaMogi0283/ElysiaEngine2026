@@ -317,7 +317,7 @@ void StartMainScene::Ready(){
 		waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Ready)] += DELTA_TIME_;
 		if (waitingTimeArray_[static_cast<size_t>(StartMainSceneState::Ready)] >= 2.0f) {
 			isScaleDown_ = true;
-			currentState_ = StartMainSceneState::Go;
+			currentState_ = StartMainSceneState::UIScaleDown;
 		}
 	}
 
