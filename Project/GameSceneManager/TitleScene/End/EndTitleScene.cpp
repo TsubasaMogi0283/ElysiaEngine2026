@@ -11,6 +11,8 @@ void EndTitleScene::Update(){
 
 	//閉じたらセレクトへ
 	if (titleScene_->GetGameSceneManager()->GetTransition()->SetCloseTransition()) {
+		titleScene_->EndBGM();
 		titleScene_->SetIsProcessEnd(true);
+
 	}
 }

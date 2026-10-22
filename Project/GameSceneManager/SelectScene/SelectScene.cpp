@@ -97,6 +97,8 @@ void SelectScene::Initialize(){
 	backSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
 	backSprite_->SetPosition({ .x = 10,.y = 500 });
 
+	decideSEHandle_ = audio_->Load("Resources/Audio/SE/Deside.wav");
+	selectSEHandle_ = audio_->Load("Resources/Audio/SE/Select.wav");
 }
 
 void SelectScene::Update(){
@@ -111,7 +113,7 @@ void SelectScene::Update(){
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
 			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
-			
+			audio_->Play(selectSEHandle_, false);
 			isPlay_ = false;
 		}
 		//左に選択
@@ -119,6 +121,7 @@ void SelectScene::Update(){
 			jacket_->SetIsMoveToLeft(true);
 			//audio_->Stop(allScoreData_[currentSelectedMusicNumber_].musicHandle);
 			isPlay_ = false;
+			audio_->Play(selectSEHandle_, false);
 		}
 
 		//難易度の設定
@@ -136,6 +139,7 @@ void SelectScene::Update(){
 
 		//決定
 		if (input_->IsTriggerKey(DIK_RETURN)) {
+			audio_->Play(decideSEHandle_, false);
 			jacket_->SetIsDecide();
 			//選択した楽曲のデータを取得
 			gameSceneManager_->SetTemporaryMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);

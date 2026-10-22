@@ -10,6 +10,7 @@
 #include <AnimationManager.h>
 #include <GameSceneManager.h>
 #include <TextureManager.h>
+#include <Audio.h>
 #include <TitleScene/Start/StartTitleScene.h>
 
 TitleScene::TitleScene(){
@@ -22,6 +23,8 @@ TitleScene::TitleScene(){
 	animationManager_ = Elysia::AnimationManager::GetInstance();
 	//テクスチャ管理クラス
 	textureManager_->GetInstance();
+	//オーディオ
+	audio_ = Elysia::Audio::GetInstance();
 }
 
 void TitleScene::Initialize() {
@@ -95,7 +98,7 @@ void TitleScene::Initialize() {
 	arrowMaterial_.Initialize();
 	arrowMaterial_.color.w = 0.0f;
 	
-	
+	bgmHandle_ = audio_->Load("Resources/Audio/Title/TitleBGM.wav");
 }
 
 void TitleScene::Update(){
@@ -208,3 +211,10 @@ void TitleScene::DrawSprite(){
 
 }
 
+void TitleScene::StartBGM() {
+	audio_->Play(bgmHandle_, true);
+}
+
+void TitleScene::EndBGM() {
+	audio_->Stop(bgmHandle_);
+}

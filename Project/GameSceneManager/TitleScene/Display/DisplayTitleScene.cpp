@@ -5,12 +5,15 @@
 #include <TitleScene/TitleScene.h>
 #include <GameSceneManager.h>
 #include <TitleScene/End/EndTitleScene.h>
+#include <Audio.h>
 
 DisplayTitleScene::DisplayTitleScene(){
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
 	//入力
 	input_ = Elysia::Input::GetInstance();
+	//オーディオ
+	audio_ = Elysia::Audio::GetInstance();
 }
 
 void DisplayTitleScene::Initialize(){
@@ -18,6 +21,9 @@ void DisplayTitleScene::Initialize(){
 	uint32_t startTextureHandle = textureManager_->Load("Resources/Sprite/Title/StartText.png");
 	startTextSprite_ = Elysia::Sprite::Create(startTextureHandle);
 	startTextSprite_->SetInvisible(true);
+	decideSEHandle_ = audio_->Load("Resources/Audio/SE/Deside.wav");
+	selectSEHandle_ = audio_->Load("Resources/Audio/SE/Select.wav");
+	titleScene_->StartBGM();
 }
 
 void DisplayTitleScene::Update(){
@@ -52,16 +58,19 @@ void DisplayTitleScene::StartSelect(){
 	//右で開始を選択
 	if (input_->IsTriggerKey(DIK_RIGHT) || input_->IsTriggerKey(DIK_D)) {
 		titleScene_->SetSelectStart();
+		audio_->Play(selectSEHandle_, false);
 	}
 
 	//左で終了を選択
 	if (input_->IsTriggerKey(DIK_LEFT) || input_->IsTriggerKey(DIK_A)) {
 		titleScene_->SetSelectEnd();
+		audio_->Play(selectSEHandle_, false);
 	}
 
 
 	//SPACEを押したらスタート演出へ
 	if (input_->IsTriggerKey(DIK_SPACE)) {
+		audio_->Play(decideSEHandle_, false);
 		currentState_= DisplayTitleSceneState::Decide;
 
 	}

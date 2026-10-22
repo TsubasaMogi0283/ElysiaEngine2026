@@ -110,7 +110,8 @@ private:
 	Elysia::TextureManager* textureManager_ = nullptr;
 	//入力
 	Elysia::Input* input_ = nullptr;
-
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
 private:
 	//点滅間隔
 	const float_t FLASH_INTERVAL_ = 0.5f;
@@ -128,5 +129,8 @@ private:
 	float_t rapidFlashTime_ = 0.0f;
 	uint8_t rapidFlashCount_ = 0u;
 
+
+	uint32_t decideSEHandle_ = 0u;
+	uint32_t selectSEHandle_ = 0u;
 };
 

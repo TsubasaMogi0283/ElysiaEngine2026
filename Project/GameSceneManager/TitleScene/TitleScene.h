@@ -186,6 +186,16 @@ public:
 		return player_.get();
 	}
 
+	/// <summary>
+	/// BGM再生
+	/// </summary>
+	void StartBGM();
+
+	/// <summary>
+	/// BGM停止
+	/// </summary>
+	void EndBGM();
+
 private:
 	//入力
 	Elysia::Input* input_ = nullptr;
@@ -197,6 +207,8 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
+	//オーディオ
+	Elysia::Audio* audio_ = nullptr;
 
 private:
 	
@@ -256,5 +268,5 @@ private:
 	bool isProcessEnd_ = false;
 
 	
-
+	uint32_t bgmHandle_ = 0u;
 };
