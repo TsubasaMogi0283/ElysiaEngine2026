@@ -41,7 +41,7 @@ void PlayMainScene::Initialize() {
 #pragma region ノーツの生成
 
 	//通常ノーツの生成
-	for (uint8_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < NORMAL_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
@@ -52,7 +52,7 @@ void PlayMainScene::Initialize() {
 	}
 
 	//ハイパスロングノーツの生成
-	for (uint8_t i = 0u;i < HI_PASS_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < HI_PASS_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<HighPassLongNote> hiPassLongNote = std::make_unique<HighPassLongNote>();
 		//初期化
 		hiPassLongNote->Initialize(normalNoteModelHandle);
@@ -63,7 +63,7 @@ void PlayMainScene::Initialize() {
 	}
 
 	//ローパスロングノーツの生成
-	for (uint8_t i = 0u;i < LOW_PASS_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < LOW_PASS_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<LowPassLongNote> lowPassLongNote = std::make_unique<LowPassLongNote>();
 		//初期化
 		lowPassLongNote->Initialize(normalNoteModelHandle);
@@ -74,7 +74,7 @@ void PlayMainScene::Initialize() {
 	}
 
 	//トランスゲート8分ロングノーツの生成
-	for (uint8_t i = 0u;i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<TranceGateEighthLongNote> tranceGateEighthLongNote = std::make_unique<TranceGateEighthLongNote>();
 		//初期化
 		tranceGateEighthLongNote->Initialize(normalNoteModelHandle);
@@ -85,7 +85,7 @@ void PlayMainScene::Initialize() {
 	}
 
 	//トランスゲート16分ロングノーツの生成
-	for (uint8_t i = 0u;i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<TranceGateSixteenthLongNote> tranceGateSixteenthLongNote = std::make_unique<TranceGateSixteenthLongNote>();
 		//初期化
 		tranceGateSixteenthLongNote->Initialize(normalNoteModelHandle);
@@ -151,6 +151,28 @@ void PlayMainScene::Initialize() {
 		goodParticleArray_[i]->SetCount(5);
 	}
 	
+	//UI
+	//Perfect
+	uint32_t perfectSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Perfect.png");
+	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
+		perfectSpriteArray[i] = Elysia::Sprite::Create(perfectSpriteHandle);
+	}
+	//Great
+	uint32_t greatSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Great.png");
+	for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
+		greatSpriteArray[i] = Elysia::Sprite::Create(greatSpriteHandle);
+	}
+	//Good
+	uint32_t goodSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Good.png");
+	for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
+		goodSpriteArray[i] = Elysia::Sprite::Create(goodSpriteHandle);
+	}
+	//Miss
+	uint32_t missSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Miss.png");
+	for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
+		missArray[i] = Elysia::Sprite::Create(missSpriteHandle);
+	}
+
 	//楽曲の再生
 	audio_->PartlyLoopPlayMp3(musicHandle_, 0.0f, audio_->GetAudioLength(musicHandle_));
 	musicLength_ = audio_->GetAudioLength(musicHandle_);
@@ -226,7 +248,7 @@ void PlayMainScene::Update() {
 	}
 
 	if (ImGui::TreeNode("上レーン")) {
-		for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
+		for (uint32_t i = 0u;i < NORMAL_NOTE_AMOUNT_;i++) {
 			bool isUsed = normalTapNoteArray_[i]->GetIsUsed();
 			if (isUsed) {
 				float_t startTime = normalTapNoteArray_[i]->GetStartMoveTime();
@@ -252,35 +274,35 @@ void PlayMainScene::Update() {
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight) {
 
 	//通常ノーツの設定
-	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < NORMAL_NOTE_AMOUNT_; i++) {
 		if (normalTapNoteArray_[i]->GetIsUsed()) {
 			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//ハイパスロングノーツの設定
-	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_AMOUNT_; i++) {
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			highPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//ローパスロングノーツの設定
-	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_AMOUNT_; i++) {
 		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
 			lowPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//トランスゲート8分ロングノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_; i++) {
 		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
 			transGateEighthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//トランスゲート16分ロングノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_; i++) {
 		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
 			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
@@ -292,7 +314,6 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 		goodParticleArray_[i]->Draw(camera, baseLight);
 
 	}
-
 }
 
 void PlayMainScene::DrawSprite() {
@@ -300,6 +321,23 @@ void PlayMainScene::DrawSprite() {
 	if (isPause_) {
 		//アセットの描画
 		pauseAsset_->Draw();
+	}
+
+	//Perfect
+	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
+		perfectSpriteArray[i]->Draw();
+	}
+	//Great
+	for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
+		greatSpriteArray[i]->Draw();
+	}
+	//Good
+	for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
+		goodSpriteArray[i]->Draw();
+	}
+	//Miss
+	for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
+		missArray[i]->Draw();
 	}
 }
 
@@ -322,7 +360,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			switch (startNote.type) {
 			case NoteType::NormalTap:
 				//通常ノーツの設定
-				for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < NORMAL_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
@@ -344,7 +382,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::HiPassLongStart:
-				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
@@ -378,7 +416,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::LowPassLongStart:
-				for (uint8_t j = 0u; j < LOW_PASS_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < LOW_PASS_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
@@ -400,7 +438,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::TranceGate8LongStart:
-				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
@@ -422,7 +460,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::TranceGate16LongStart:
-				for (uint8_t j = 0u; j < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
@@ -710,7 +748,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 #pragma region 各ノーツの更新
 	//通常ノーツの設定
-	for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
+	for (uint8_t j = 0u; j < NORMAL_NOTE_AMOUNT_; j++) {
 		//使用時
 		if (normalTapNoteArray_[j]->GetIsUsed()) {
 			//楽曲時間を設定
@@ -720,7 +758,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 	}
 	//ハイパスロングノーツの設定
-	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			//楽曲時間を設定
@@ -732,7 +770,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 	//ToDo:ハイパスをもとに貼り換え
 	//ローパスロングノーツの設定
-	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
 			size_t startIndex = 0u;
@@ -761,7 +799,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 	}
 	//トランスゲート8ノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
 			size_t startIndex = 0u;
@@ -790,7 +828,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 	}
 	//トランスゲート16ノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
 			size_t startIndex = 0u;

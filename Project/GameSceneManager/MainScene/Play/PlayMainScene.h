@@ -117,15 +117,26 @@ private:
 	const float_t LANE_POSITION_Z_ = 0.0f;
 
 	//ノーマルタップノーツ格納数の最大サイズ
-	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 32u;
+	static const uint8_t NORMAL_NOTE_AMOUNT_ = 64u;
 	//ロングノーツ(ハイパス)格納数の最大サイズ
-	static const uint8_t HI_PASS_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t HI_PASS_LONG_NOTE_AMOUNT_ = 16u;
 	//ロングノーツ(ローパス)格納数の最大サイズ
-	static const uint8_t LOW_PASS_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t LOW_PASS_LONG_NOTE_AMOUNT_ = 16u;
 	//ロングノーツ(トランスゲート8)格納数の最大サイズ
-	static const uint8_t TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_ = 16u;
 	//ロングノーツ(トランスゲート16)格納数の最大サイズ
-	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_ = 16u;
+
+	//判定のUI
+	//パーフェクト
+	static const uint8_t PERFECT_UI_AMOUNT_ = 8u;
+	//グレート
+	static const uint8_t GREAT_UI_AMOUNT_ = 8u;
+	//グッド
+	static const uint8_t GOOD_UI_AMOUNT_ = 8u;
+	//ミス
+	static const uint8_t MISS_UI_AMOUNT_ = 8u;
+
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
@@ -150,15 +161,26 @@ private:
 
 	//オブジェクトプールで管理するための変数
 	//通常タップノーツの固定配列
-	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
+	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_AMOUNT_> normalTapNoteArray_ = {};
 	//ロング開始ノーツ
-	std::array<std::unique_ptr<HighPassLongNote>, HI_PASS_LONG_NOTE_MAX_SIZE_> highPassLongNoteArray_ = {};
+	std::array<std::unique_ptr<HighPassLongNote>, HI_PASS_LONG_NOTE_AMOUNT_> highPassLongNoteArray_ = {};
 	//ロング(ローパス)開始ノーツ
-	std::array<std::unique_ptr<LowPassLongNote>, LOW_PASS_LONG_NOTE_MAX_SIZE_> lowPassLongNoteArray_ = {};
+	std::array<std::unique_ptr<LowPassLongNote>, LOW_PASS_LONG_NOTE_AMOUNT_> lowPassLongNoteArray_ = {};
 	//ロング(トランスゲート8)開始ノーツ
-	std::array<std::unique_ptr<TranceGateEighthLongNote>, TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_> transGateEighthLongNoteArray_ = {};
+	std::array<std::unique_ptr<TranceGateEighthLongNote>, TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_> transGateEighthLongNoteArray_ = {};
 	//ロング(トランスゲート16)開始ノーツ
-	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_> transGateSixteenthLongNoteArray_ = {};
+	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_> transGateSixteenthLongNoteArray_ = {};
+
+
+	//判定のUI
+	//Perfect
+	std::array<std::unique_ptr<Elysia::Sprite>, PERFECT_UI_AMOUNT_ >perfectSpriteArray;
+	//Great
+	std::array<std::unique_ptr<Elysia::Sprite>, GREAT_UI_AMOUNT_ >greatSpriteArray;
+	//Good
+	std::array<std::unique_ptr<Elysia::Sprite>, GOOD_UI_AMOUNT_ >goodSpriteArray;
+	//Miss
+	std::array<std::unique_ptr<Elysia::Sprite>, MISS_UI_AMOUNT_ >missArray;
 
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
