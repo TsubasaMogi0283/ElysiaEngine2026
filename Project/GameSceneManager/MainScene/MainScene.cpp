@@ -182,7 +182,7 @@ void MainScene::Update() {
 	baseMainScene_->Update();
 	//全て終わったら結果シーンへ
 	if (baseMainScene_->GetIsEnd()) {
-
+		//記録
 		gameSceneManager_->SetTemporaryRecord(temporaryRecord_);
 		gameSceneManager_->ChangeScene("Result");
 		return;

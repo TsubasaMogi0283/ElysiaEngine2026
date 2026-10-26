@@ -55,8 +55,7 @@ public:
 private:
 	//判定のX座標
 	const float_t JUDGEMENT_POSITION_X_ = -17.0f;
-
-
+	
 private:
 	//モデル
 	std::unique_ptr<Elysia::Model> model_ = nullptr;

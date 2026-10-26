@@ -210,18 +210,25 @@ void PlayMainScene::Update() {
 				perfectJudgementUIArray_[i].currentTime += DELTA_TIME_;
 				////線形補間
 				float_t t = SingleCalculation::InverseLerp(0.0f, APPEAR_TIME_, perfectJudgementUIArray_[i].currentTime);
-				////スケールと座標用
-				//float_t transformEasedT = Easing::EaseOutCirc(t);
-				//Vector2<float_t>newPosition = {
-				//	.x = INITIAL_UI_POSITION_Y_,
-				//	.y = SingleCalculation::Lerp(,-JUDGEMENT_UI_MOVE_DISTANCE_,transformEasedT) 
-				//};
-				//perfectJudgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
-				//perfectJudgementUIArray_[i].sprite->SetPosition(newPosition);
+				//スケールと座標用
+				float_t transformEasedT = Easing::EaseOutCirc(t);
+				Vector2<float_t>newPosition = {
+					.x = INITIAL_UI_POSITION_Y_,
+					.y = SingleCalculation::Lerp(100.0f,-JUDGEMENT_UI_MOVE_DISTANCE_,transformEasedT) 
+				};
+				perfectJudgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
+				perfectJudgementUIArray_[i].sprite->SetPosition(newPosition);
 
 				//透明度
 				float_t transparencyEasedT = Easing::EaseInQuart(t);
 				perfectJudgementUIArray_[i].sprite->SetTransparency(transparencyEasedT);
+
+
+				if (t >= 1.0f) {
+					perfectJudgementUIArray_[i].isUse = false;
+					perfectJudgementUIArray_[i].currentTime = 0.0f;
+					perfectJudgementUIArray_[i].ratio = 0.0f;
+				}
 			}
 		}
 		//Great
