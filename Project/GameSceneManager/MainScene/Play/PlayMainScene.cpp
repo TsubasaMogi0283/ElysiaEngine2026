@@ -11,6 +11,7 @@
 #include <Windows/WindowsSetup.h>
 #include <TextureManager.h>
 #include <Note/Long/HighPass/HighPassLongNote.h>
+#include <Easing.h>
 
 PlayMainScene::PlayMainScene() {
 	//ウィンドウの設定
@@ -45,7 +46,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
-		normalTapNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		normalTapNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		normalTapNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
@@ -56,7 +57,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<HighPassLongNote> hiPassLongNote = std::make_unique<HighPassLongNote>();
 		//初期化
 		hiPassLongNote->Initialize(normalNoteModelHandle);
-		hiPassLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		hiPassLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		hiPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		highPassLongNoteArray_[i] = std::move(hiPassLongNote);
@@ -67,7 +68,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<LowPassLongNote> lowPassLongNote = std::make_unique<LowPassLongNote>();
 		//初期化
 		lowPassLongNote->Initialize(normalNoteModelHandle);
-		lowPassLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		lowPassLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		lowPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		lowPassLongNoteArray_[i] = std::move(lowPassLongNote);
@@ -78,7 +79,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<TranceGateEighthLongNote> tranceGateEighthLongNote = std::make_unique<TranceGateEighthLongNote>();
 		//初期化
 		tranceGateEighthLongNote->Initialize(normalNoteModelHandle);
-		tranceGateEighthLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		tranceGateEighthLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		tranceGateEighthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateEighthLongNoteArray_[i] = std::move(tranceGateEighthLongNote);
@@ -89,7 +90,7 @@ void PlayMainScene::Initialize() {
 		std::unique_ptr<TranceGateSixteenthLongNote> tranceGateSixteenthLongNote = std::make_unique<TranceGateSixteenthLongNote>();
 		//初期化
 		tranceGateSixteenthLongNote->Initialize(normalNoteModelHandle);
-		tranceGateSixteenthLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		tranceGateSixteenthLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		tranceGateSixteenthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateSixteenthLongNoteArray_[i] = std::move(tranceGateSixteenthLongNote);
@@ -155,22 +156,22 @@ void PlayMainScene::Initialize() {
 	//Perfect
 	uint32_t perfectSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Perfect.png");
 	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-		perfectSpriteArray[i] = Elysia::Sprite::Create(perfectSpriteHandle);
+		perfectJudgementUIArray_[i].sprite= Elysia::Sprite::Create(perfectSpriteHandle);
 	}
 	//Great
 	uint32_t greatSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Great.png");
 	for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-		greatSpriteArray[i] = Elysia::Sprite::Create(greatSpriteHandle);
+		greatJudgementUIArray_[i].sprite = Elysia::Sprite::Create(greatSpriteHandle);
 	}
 	//Good
 	uint32_t goodSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Good.png");
 	for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-		goodSpriteArray[i] = Elysia::Sprite::Create(goodSpriteHandle);
+		goodJudgementUIArray_[i].sprite = Elysia::Sprite::Create(goodSpriteHandle);
 	}
 	//Miss
 	uint32_t missSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Miss.png");
 	for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-		missArray[i] = Elysia::Sprite::Create(missSpriteHandle);
+		missJudgementUIArray_[i].sprite = Elysia::Sprite::Create(missSpriteHandle);
 	}
 
 	//楽曲の再生
@@ -200,6 +201,47 @@ void PlayMainScene::Update() {
 		NoteFlow(musicScoreData_.upInformation, upLaneCondition);
 		//下
 		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
+
+		//判定UI
+		//Perfect
+		for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
+			if (perfectJudgementUIArray_[i].isUse) {
+				//時間変化
+				perfectJudgementUIArray_[i].currentTime += DELTA_TIME_;
+				////線形補間
+				float_t t = SingleCalculation::InverseLerp(0.0f, APPEAR_TIME_, perfectJudgementUIArray_[i].currentTime);
+				////スケールと座標用
+				//float_t transformEasedT = Easing::EaseOutCirc(t);
+				//Vector2<float_t>newPosition = {
+				//	.x = INITIAL_UI_POSITION_Y_,
+				//	.y = SingleCalculation::Lerp(,-JUDGEMENT_UI_MOVE_DISTANCE_,transformEasedT) 
+				//};
+				//perfectJudgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
+				//perfectJudgementUIArray_[i].sprite->SetPosition(newPosition);
+
+				//透明度
+				float_t transparencyEasedT = Easing::EaseInQuart(t);
+				perfectJudgementUIArray_[i].sprite->SetTransparency(transparencyEasedT);
+			}
+		}
+		//Great
+		for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
+			if (greatJudgementUIArray_[i].isUse) {
+				greatJudgementUIArray_[i].currentTime += DELTA_TIME_;
+			}
+		}
+		//Good
+		for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
+			if (goodJudgementUIArray_[i].isUse) {
+				goodJudgementUIArray_[i].currentTime += DELTA_TIME_;
+			}
+		}
+		//Miss
+		for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
+			if (missJudgementUIArray_[i].isUse) {
+				missJudgementUIArray_[i].currentTime += DELTA_TIME_;
+			}
+		}
 
 		//ポーズ処理
 		Pause();
@@ -312,7 +354,6 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 		perfectParticleArray_[i]->Draw(camera, baseLight);
 		greatParticleArray_[i]->Draw(camera, baseLight);
 		goodParticleArray_[i]->Draw(camera, baseLight);
-
 	}
 }
 
@@ -325,19 +366,19 @@ void PlayMainScene::DrawSprite() {
 
 	//Perfect
 	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-		perfectSpriteArray[i]->Draw();
+		perfectJudgementUIArray_[i].sprite->Draw();
 	}
 	//Great
 	for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-		greatSpriteArray[i]->Draw();
+		greatJudgementUIArray_[i].sprite->Draw();
 	}
 	//Good
 	for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-		goodSpriteArray[i]->Draw();
+		goodJudgementUIArray_[i].sprite->Draw();
 	}
 	//Miss
 	for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-		missArray[i]->Draw();
+		missJudgementUIArray_[i].sprite->Draw();
 	}
 }
 
@@ -563,6 +604,17 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
 				
+				//パーフェクトのUIを出す
+				for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
+					//未使用状態のものから使う
+					if (!perfectJudgementUIArray_[i].isUse) {
+						//使用中にする
+						perfectJudgementUIArray_[i].isUse = true;
+						//場所を記録
+						perfectJudgementUIArray_[i].place = targetNote.place;
+					}
+				}
+
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -583,6 +635,17 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
 					greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+				}
+
+				//グレートのUIを出す
+				for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
+					//未使用状態のものから使う
+					if (!greatJudgementUIArray_[i].isUse) {
+						//使用中にする
+						greatJudgementUIArray_[i].isUse = true;
+						//場所を記録
+						greatJudgementUIArray_[i].place = targetNote.place;
+					}
 				}
 
 				//コンボを増やす
@@ -607,6 +670,17 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
 
+				//グッドのUIを出す
+				for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
+					//未使用状態のものから使う
+					if (!goodJudgementUIArray_[i].isUse) {
+						//使用中にする
+						goodJudgementUIArray_[i].isUse = true;
+						//場所を記録
+						goodJudgementUIArray_[i].place = targetNote.place;
+					}
+				}
+
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -620,6 +694,18 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Miss;
 				mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Miss));
 				isConfirmJudgement = true;
+
+				//ミスのUIを出す
+				for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
+					//未使用状態のものから使う
+					if (!missJudgementUIArray_[i].isUse) {
+						missJudgementUIArray_[i].isUse = true;
+						//使用中にする
+						missJudgementUIArray_[i].isUse = true;
+						//場所を記録
+						missJudgementUIArray_[i].place = targetNote.place;
+					}
+				}
 
 				//コンボを0に戻す
 				record_.combo = 0u;
@@ -661,6 +747,18 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
 
+
+					//パーフェクトのUIを出す
+					for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
+						//未使用状態のものから使う
+						if (!perfectJudgementUIArray_[i].isUse) {
+							//使用中にする
+							perfectJudgementUIArray_[i].isUse = true;
+							//場所を記録
+							perfectJudgementUIArray_[i].place = targetNote.place;
+						}
+					}
+
 				}
 				//Great用
 				else if (absoluteJudgementTime < NoteJudgement::Time::GREAT) {
@@ -681,6 +779,17 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					}
 					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
 						greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
+					}
+
+					//グレートのUIを出す
+					for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
+						//未使用状態のものから使う
+						if (!greatJudgementUIArray_[i].isUse) {
+							//使用中にする
+							greatJudgementUIArray_[i].isUse = true;
+							//場所を記録
+							greatJudgementUIArray_[i].place = targetNote.place;
+						}
 					}
 				}
 				//Good用
@@ -703,6 +812,17 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
 						goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
+
+					//グッドのUIを出す
+					for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
+						//未使用状態のものから使う
+						if (!goodJudgementUIArray_[i].isUse) {
+							//使用中にする
+							goodJudgementUIArray_[i].isUse = true;
+							//場所を記録
+							goodJudgementUIArray_[i].place = targetNote.place;
+						}
+					}
 				}
 				//Miss用
 				else if (absoluteJudgementTime < NoteJudgement::Time::MISS) {
@@ -716,6 +836,18 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+				}
+
+				//ミスのUIを出す
+				for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
+					//未使用状態のものから使う
+					if (!missJudgementUIArray_[i].isUse) {
+						missJudgementUIArray_[i].isUse = true;
+						//使用中にする
+						missJudgementUIArray_[i].isUse = true;
+						//場所を記録
+						missJudgementUIArray_[i].place = targetNote.place;
+					}
 				}
 			}
 
@@ -737,7 +869,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			if (isConfirmJudgement) {
 				laneCondition.isHoldLongNote = false;
 				targetNote.isJudged = true;
-
 				//また初期値に戻す
 				highPassLongNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
 				highPassLongNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);

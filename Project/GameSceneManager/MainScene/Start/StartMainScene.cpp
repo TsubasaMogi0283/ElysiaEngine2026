@@ -25,8 +25,8 @@ void StartMainScene::Initialize() {
 
 	//ウィンドウのサイズ
 	windowSize_ = {
-		.x = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x),
-		.y = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().y)
+		.x = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x),
+		.y = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().y)
 	};
 
 	//Ready
@@ -84,7 +84,7 @@ void StartMainScene::Initialize() {
 		//アンカーポイント
 		goSpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 		//座標
-		goSpriteArray_[i]->SetPosition({ .x = windowSize_.x / 2 - (i - 1) * goTextureSize.x,.y = windowSize_.y / 2 });
+		goSpriteArray_[i]->SetPosition({ .x = windowSize_.x / 2.0f - (i - 1) * goTextureSize.x,.y = windowSize_.y / 2 });
 		//非表示
 		goSpriteArray_[i]->SetInvisible(true);
 
@@ -241,11 +241,11 @@ void StartMainScene::UIScaleUp(){
 		static_cast<float_t>(mainScene_->GetGauge()->GetInitialPosition().y),
 		static_cast<float_t>(mainScene_->GetGauge()->GetFinalPosition().y),
 		easedT);
-	mainScene_->GetGauge()->SetPositionY(static_cast<int32_t>(gaugePositionY));
+	mainScene_->GetGauge()->SetPositionY(gaugePositionY);
 
 	//スコア
 	float_t scorePositionY = SingleCalculation::Lerp(static_cast<float_t>(mainScene_->GetInitialScorePositionY()), static_cast<float_t>(mainScene_->GetScoreDisplayPositionY()), easedT);
-	mainScene_->SetScorePositionsY(static_cast<int32_t>(scorePositionY));
+	mainScene_->SetScorePositionsY(scorePositionY);
 
 	//下地
 	//表示

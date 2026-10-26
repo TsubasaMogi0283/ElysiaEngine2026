@@ -17,17 +17,17 @@ void Transition::Initialize(){
 		spriteArray_[i]->SetScale({ .x = widthScale_, .y = heightScale_ });
 		//偶数列の時は右から
 		float_t anchorPointX = 1.0f;
-		int32_t positionX = 0;
+		float_t positionX = 0.0f;
 		if (i % 2u == 0u) {
 			anchorPointX = 1.0f;
-			positionX = static_cast<int32_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x);
+			positionX = static_cast<float_t>(Elysia::WindowsSetup::GetInstance()->GetClientSize().x);
 		}
 		else {
 			anchorPointX = 0.0f;
 			positionX = 0;
 		}
 		spriteArray_[i]->SetAnchorPoint({ .x = anchorPointX, .y = 0.0f });
-		spriteArray_[i]->SetPosition({ .x = positionX, .y = static_cast<int32_t>(i * textureHeight / DIVIDE_NUMBER_) });
+		spriteArray_[i]->SetPosition({ .x = positionX, .y = static_cast<float_t>(i * textureHeight / DIVIDE_NUMBER_) });
 
 	}
 }

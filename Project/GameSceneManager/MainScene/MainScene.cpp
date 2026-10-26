@@ -75,9 +75,9 @@ void MainScene::Initialize() {
 	};
 
 	//初期座標
-	Vector2<int32_t> initialPosition = {
-		.x = static_cast<int32_t>(windowsSetup_->GetClientSize().x / 2u) - static_cast<int32_t>(gaugeTextureSize.x / 2u),
-		.y = static_cast<int32_t>(windowsSetup_->GetClientSize().y+ static_cast<int32_t>(gaugeTextureSize.y))
+	Vector2<float_t> initialPosition = {
+		.x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u) - static_cast<float_t>(gaugeTextureSize.x / 2u),
+		.y = static_cast<float_t>(windowsSetup_->GetClientSize().y+ static_cast<float_t>(gaugeTextureSize.y))
 	};
 	//初期の座標
 	gauge_->SetInitialPosition(initialPosition);
@@ -93,13 +93,13 @@ void MainScene::Initialize() {
 	}
 
 	//数字のテクスチャの横幅を取得
-	numberTextureSize_.x = static_cast<uint32_t>(textureManager_->GetTextureWidth(numberTextureHandle[0]));
-	numberTextureSize_.y = static_cast<uint32_t>(textureManager_->GetTextureHeight(numberTextureHandle[0]));
+	numberTextureSize_.x = static_cast<float_t>(textureManager_->GetTextureWidth(numberTextureHandle[0]));
+	numberTextureSize_.y = static_cast<float_t>(textureManager_->GetTextureHeight(numberTextureHandle[0]));
 
 	//スコア
 	//初期Y座標を設定
 	initialScorePositionY_ = -numberTextureSize_.y;
-	scoreDisplayPositionY_ = static_cast<int32_t>(numberTextureSize_.y * scoreScale_);
+	scoreDisplayPositionY_ = numberTextureSize_.y * scoreScale_;
 	for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
 		//生成
 		scoreArray_[i].sprite = Elysia::Sprite::Create(numberTextureHandle[i]);
@@ -118,8 +118,8 @@ void MainScene::Initialize() {
 
 		//座標の設定
 		comboArray_[i].position = {
-			.x = (COMBO_DIGIT_-i - 3) * numberTextureSize_.x + 640,
-			.y = 0
+			.x = static_cast<float_t>(COMBO_DIGIT_-i - 3) * numberTextureSize_.x + 640.0f,
+			.y = 0.0f
 		};
 		comboArray_[i].sprite->SetPosition(comboArray_[i].position);
 	}

@@ -80,6 +80,24 @@ private:
 		bool isHold = false;
 	};
 
+	/// <summary>
+	/// 判定UI
+	/// </summary>
+	struct JudgementUI {
+		//スプライト
+		std::unique_ptr<Elysia::Sprite>sprite = nullptr;
+		//動き
+		float_t ratio = 0.0f;
+		//時間
+		float_t currentTime = 0.0f;
+
+		//使用中かどうか
+		bool isUse = false;
+		//場所
+		uint8_t place;
+
+	};
+
 private:
 	/// <summary>
 	/// ノーツの流れる処理
@@ -109,7 +127,7 @@ private:
 private:
 	
 	//初期の座標
-	const Vector2<float_t> INITIAL_POSITION_ = { .x = 50.0f,.y = 0.0f };
+	const Vector2<float_t> NOTE_INITIAL_POSITION_ = { .x = 50.0f,.y = 0.0f };
 	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
 	//レーンのY座標
 	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {15.0f,5.0f};
@@ -137,15 +155,21 @@ private:
 	//ミス
 	static const uint8_t MISS_UI_AMOUNT_ = 8u;
 
+	//判定の出る時間
+	const float_t APPEAR_TIME_ = 0.7f;
+	//判定の移動距離
+	const float_t JUDGEMENT_UI_MOVE_DISTANCE_ = 100u;
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
+	//UIの初期座標
+	const float_t INITIAL_UI_POSITION_Y_ = 100.0f;
+
 	//ロングノーツのスコア増加量
 	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;
-
 	//パーティクルの数
 	static const uint8_t PARTICLE_AMOUNT_ = 2u;
 
@@ -174,13 +198,13 @@ private:
 
 	//判定のUI
 	//Perfect
-	std::array<std::unique_ptr<Elysia::Sprite>, PERFECT_UI_AMOUNT_ >perfectSpriteArray;
+	std::array<JudgementUI, PERFECT_UI_AMOUNT_ >perfectJudgementUIArray_;
 	//Great
-	std::array<std::unique_ptr<Elysia::Sprite>, GREAT_UI_AMOUNT_ >greatSpriteArray;
+	std::array<JudgementUI, GREAT_UI_AMOUNT_ >greatJudgementUIArray_;
 	//Good
-	std::array<std::unique_ptr<Elysia::Sprite>, GOOD_UI_AMOUNT_ >goodSpriteArray;
+	std::array<JudgementUI, GOOD_UI_AMOUNT_ >goodJudgementUIArray_;
 	//Miss
-	std::array<std::unique_ptr<Elysia::Sprite>, MISS_UI_AMOUNT_ >missArray;
+	std::array<JudgementUI, MISS_UI_AMOUNT_ >missJudgementUIArray_;
 
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
@@ -205,13 +229,15 @@ private:
 
 	//記録
 	NoteJudgement::Record record_ = {};
+
 	//判定のパーティクル
 	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> perfectParticleArray_ = {};
 	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> greatParticleArray_ = {};
 	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> goodParticleArray_ = {};
-
+	
+	//ハンドル
 	uint32_t perfectParticleTextureHandle_ = 0u;
 	uint32_t greatPartucleTextureHandle_ = 0u;
 	uint32_t goodPartucleTextureHandle_ = 0u;
-
+	
 };

@@ -53,7 +53,7 @@ void ResultScene::Initialize() {
 
 	//スコアボードの中心座標
 	const float_t SCORE_BORD_SIZE = static_cast<float_t>(windowsSetup_->GetClientSize().x) * 0.75f;
-	const int32_t SCORE_BOARD_CENTER_POSITION_X = static_cast<int32_t>(SCORE_BORD_SIZE) / 2;
+	const float_t SCORE_BOARD_CENTER_POSITION_X = SCORE_BORD_SIZE / 2.0f;
 
 	//ゲージ
 	//テクスチャの読み込み
@@ -90,13 +90,13 @@ void ResultScene::Initialize() {
 	};
 
 	//判定の座標
-	const Vector2<int32_t> JUDGEMENT_POSITION = { .x = 50,.y = 300 };
+	const Vector2<float_t> JUDGEMENT_POSITION = { .x = 50.0f,.y = 300.0f };
 	//判定のオフセットX座標
-	const int32_t JUDGEMENT_OFFSET_POSITION_Y = 10;
+	const float_t JUDGEMENT_OFFSET_POSITION_Y = 10.0f;
 	//文字と値の間隔
-	const int32_t DIDIT_INTERVAL_POSITION_X = 100;
+	const float_t DIDIT_INTERVAL_POSITION_X = 10.0f;
 	//コンボの座標(記録用)
-	Vector2<int32_t> comboPosition = {};
+	Vector2<float_t> comboPosition = {};
 	//0で初期化
 	const uint8_t INITIAL_NUMBER = 0u;
 	//判定の文字のスプライト
@@ -107,7 +107,7 @@ void ResultScene::Initialize() {
 		judgementSpriteArray_[i]->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
 
 		//座標の設定
-		Vector2<int32_t> position = {
+		Vector2<float_t> position = {
 			.x = JUDGEMENT_POSITION.x,
 			.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<int32_t>(i)
 		};
@@ -116,13 +116,13 @@ void ResultScene::Initialize() {
 		//コンボの座標
 		if (i == static_cast<size_t>(NoteJudgement::Selection::Miss)) {
 			comboPosition = {
-				.x = static_cast<int32_t>(static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) +100,
+				.x = (static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) +100.0f,
 				.y = position.y + judgementTextureSize.y
 			};
 		}
 
 		//各桁
-		Vector2<int32_t> digitPosition = {};
+		Vector2<float_t> digitPosition = {};
 		digitPosition.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + 8) * static_cast<int32_t>(i);
 		for (uint8_t j = 0u; j < ONE_THOUSAND_DIGIT_; j++) {
 			//生成
@@ -166,9 +166,9 @@ void ResultScene::Initialize() {
 		scoreDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
 		scoreDigit_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 		//座標の設定
-		Vector2<int32_t>digitPosition = { 
-			.x = static_cast<int32_t>(static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) + SCORE_BOARD_CENTER_POSITION_X/2,
-			.y = 175 
+		Vector2<float_t>digitPosition = { 
+			.x = static_cast<float_t>(static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) + SCORE_BOARD_CENTER_POSITION_X/2,
+			.y = 175.0f
 		};
 		scoreDigit_[i].sprite->SetPosition(digitPosition);
 		scoreDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];

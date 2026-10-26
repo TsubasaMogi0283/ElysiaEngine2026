@@ -37,9 +37,9 @@ void EndMainScene::Initialize(){
 	//スケールの設定
 	resultSprite_->SetScale({ .x = RESULT_MAX_SIZE_, .y = RESULT_MAX_SIZE_ });
 	//座標を設定
-	Vector2<int32_t>initialPosition = {
-		.x = windowsSetup_->GetClientSize().x/2u,
-		.y = windowsSetup_->GetClientSize().y/2u
+	Vector2<float_t>initialPosition = {
+		.x = static_cast<float_t>(windowsSetup_->GetClientSize().x)/2u,
+		.y = static_cast<float_t>(windowsSetup_->GetClientSize().y)/2u
 	};
 	resultSprite_->SetPosition(initialPosition);
 	//最初は非表示

@@ -114,9 +114,8 @@ namespace Elysia {
 		/// 位置の設定
 		/// </summary>
 		/// <param name="position">座標</param>
-		inline void SetPosition(const Vector2<int32_t>& position) {
-			this->position_.x = static_cast<float_t>(position.x);
-			this->position_.y = static_cast<float_t>(position.y);
+		inline void SetPosition(const Vector2<float_t>& position) {
+			this->position_ = position;
 		}
 
 		/// <summary>
