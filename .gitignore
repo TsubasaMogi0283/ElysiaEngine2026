@@ -99,6 +99,9 @@ StyleCopReport.xml
 !External/assimp/lib/
 !External/assimp/lib/Debug/
 !External/assimp/lib/Debug/*.lib
+!External/assimp/lib/Release/
+!External/assimp/lib/Release/*.lib
+
 
 # Chutzpah Test files
 _Chutzpah*
