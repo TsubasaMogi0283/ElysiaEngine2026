@@ -39,6 +39,7 @@ void PlayMainScene::Initialize() {
 	//ノーマルタップノーツのモデルを読み込む
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
+
 #pragma region ノーツの生成
 
 	//通常ノーツの生成
@@ -373,20 +374,22 @@ void PlayMainScene::DrawSprite() {
 
 	//Perfect
 	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-		perfectJudgementUIArray_[i].sprite->Draw();
+		if (perfectJudgementUIArray_[i].isUse) {
+			perfectJudgementUIArray_[i].sprite->Draw();
+		}
 	}
-	//Great
-	for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-		greatJudgementUIArray_[i].sprite->Draw();
-	}
-	//Good
-	for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-		goodJudgementUIArray_[i].sprite->Draw();
-	}
-	//Miss
-	for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-		missJudgementUIArray_[i].sprite->Draw();
-	}
+	////Great
+	//for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
+	//	greatJudgementUIArray_[i].sprite->Draw();
+	//}
+	////Good
+	//for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
+	//	goodJudgementUIArray_[i].sprite->Draw();
+	//}
+	////Miss
+	//for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
+	//	missJudgementUIArray_[i].sprite->Draw();
+	//}
 }
 
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition) {
@@ -412,7 +415,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						normalTapNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -434,7 +437,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						highPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -468,7 +471,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						lowPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -490,7 +493,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateEighthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -512,7 +515,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -604,10 +607,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//パーティクルの放出
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+				if (targetNote.place == NoteLane::Place::Up) {
 					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 				}
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+				if (targetNote.place == NoteLane::Place::Down) {
 					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
 				
@@ -637,10 +640,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//パーティクルの放出
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+				if (targetNote.place == NoteLane::Place::Up) {
 					greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 				}
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+				if (targetNote.place == NoteLane::Place::Down) {
 					greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
 
@@ -670,10 +673,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//パーティクルの放出
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+				if (targetNote.place == NoteLane::Place::Up) {
 					goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 				}
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+				if (targetNote.place == NoteLane::Place::Down) {
 					goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
 
@@ -747,10 +750,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
 					//パーティクルの放出
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					if (targetNote.place == NoteLane::Place::Up) {
 						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 					}
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					if (targetNote.place == NoteLane::Place::Down) {
 						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
 
@@ -781,10 +784,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					targetNote.isLongStartJugged = true;
 
 					//パーティクルの放出
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					if (targetNote.place == NoteLane::Place::Up) {
 						greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 					}
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					if (targetNote.place == NoteLane::Place::Down) {
 						greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
 
@@ -813,10 +816,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					targetNote.isLongStartJugged = true;
 
 					//パーティクルの放出
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					if (targetNote.place == NoteLane::Place::Up) {
 						goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 					}
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					if (targetNote.place == NoteLane::Place::Down) {
 						goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
 

@@ -372,6 +372,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\Note\Long\TranceGateSixteenth\TranceGateSixteenthLongNote.h" />
     <ClInclude Include="Project\Note\NormalTap\NormalTapNote.h" />
     <ClInclude Include="Project\Note\NoteJudgement.h" />
+    <ClInclude Include="Project\Note\NoteLane.h" />
     <ClInclude Include="Project\Note\NoteType.h" />
     <ClInclude Include="Project\PauseAsset\PauseAsset.h" />
     <ClInclude Include="Project\Player\Player.h" />
@@ -382,7 +383,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\ScoreData\MusicScoreData.h" />
     <ClInclude Include="Project\ScoreData\NoteBarInformation.h" />
     <ClInclude Include="Project\ScoreData\NoteInformation.h" />
-    <ClInclude Include="Project\ScoreData\NoteLane.h" />
     <ClInclude Include="Project\Transition\Transition.h" />
   </ItemGroup>
   <ItemGroup>

@@ -94,8 +94,9 @@ private:
 		//使用中かどうか
 		bool isUse = false;
 		//場所
-		uint8_t place;
-
+		NoteLane::Place place = NoteLane::Place::Up;
+		//場所
+		Vector2<float_t> initialPosition = {};
 	};
 
 private:
