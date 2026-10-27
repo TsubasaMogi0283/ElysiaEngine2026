@@ -31,10 +31,6 @@ MainScene::MainScene() {
 
 void MainScene::Initialize() {
 	//楽曲譜面情報を取得
-	
-#ifdef _DEBUG
-	
-#endif // _DEBUG
 	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
 	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreData[difficulty_];
 	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();;
