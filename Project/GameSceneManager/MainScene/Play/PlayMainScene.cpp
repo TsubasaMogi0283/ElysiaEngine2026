@@ -216,20 +216,9 @@ void PlayMainScene::Update() {
 				//スケールと座標用
 				float_t transformEasedT = Easing::EaseOutCirc(t);
 
-				float_t offset = 0.0f;
-
-				if (perfectJudgementUIArray_[i].place == NoteLane::Place::Up) {
-					offset = 100.0f;
-				} else {
-					offset = 500.0f;
-				}
-
-				Vector2<float_t>newPosition = {
-					.x = INITIAL_UI_POSITION_Y_,
-					.y = SingleCalculation::Lerp(offset,offset -JUDGEMENT_UI_MOVE_DISTANCE_,transformEasedT)
-				};
 				perfectJudgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
-				perfectJudgementUIArray_[i].sprite->SetPosition(newPosition);
+				float_t newPositionY = SingleCalculation::Lerp(perfectJudgementUIArray_[i].initialPosition , perfectJudgementUIArray_[i].movedPosition,transformEasedT);
+				perfectJudgementUIArray_[i].sprite->SetPosition({ .x = INITIAL_UI_POSITION_Y_ ,.y = newPositionY });
 
 				//透明度
 				float_t transparencyEasedT = Easing::EaseInQuart(t);
@@ -283,6 +272,14 @@ void PlayMainScene::Update() {
 	
 
 #ifdef _DEBUG
+	ImGui::Begin("使用チェック");
+	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
+		ImGui::Checkbox("IsUse", &perfectJudgementUIArray_[i].isUse);
+	}
+	ImGui::End();
+
+
+
 	ImGui::Begin("プレイシーン");
 	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
 	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
@@ -633,6 +630,22 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						perfectJudgementUIArray_[i].isUse = true;
 						//場所を記録
 						perfectJudgementUIArray_[i].place = targetNote.place;
+
+
+						float_t offset = 0.0f;
+						if (perfectJudgementUIArray_[i].place == NoteLane::Place::Up) {
+							offset = 100.0f;
+						} else {
+							offset = 500.0f;
+						}
+
+						//初期座標と
+						float_t initialPosition = offset ;
+						float_t movedPosition = initialPosition - JUDGEMENT_UI_MOVE_DISTANCE_ ;
+						
+						perfectJudgementUIArray_[i].initialPosition = initialPosition;
+						perfectJudgementUIArray_[i].movedPosition = movedPosition;
+						break;
 					}
 				}
 

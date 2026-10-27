@@ -95,8 +95,10 @@ private:
 		bool isUse = false;
 		//場所
 		NoteLane::Place place = NoteLane::Place::Up;
-		//場所
-		Vector2<float_t> initialPosition = {};
+		//初期の座標
+		float_t initialPosition = {};
+		//動いた後の座標
+		float_t movedPosition = {};
 	};
 
 private:
