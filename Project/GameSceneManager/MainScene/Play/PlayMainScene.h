@@ -156,8 +156,12 @@ private:
 	//ミス
 	static const uint8_t MISS_UI_AMOUNT_ = 8u;
 
+	//判定の動く時間
+	const float_t JUDGEMENT_UI_MOVE_TIME_ = 0.15f;
 	//判定の出る時間
-	const float_t APPEAR_TIME_ = 0.7f;
+	const float_t APPEAR_TIME_ = 0.5f;
+	
+
 	//判定の移動距離
 	const float_t JUDGEMENT_UI_MOVE_DISTANCE_ = 100u;
 
@@ -167,7 +171,7 @@ private:
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
 	//UIの初期座標
-	const float_t INITIAL_UI_POSITION_Y_ = 100.0f;
+	const float_t INITIAL_UI_POSITION_Y_ = 200.0f;
 
 	//ロングノーツのスコア増加量
 	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;

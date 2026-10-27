@@ -158,6 +158,7 @@ void PlayMainScene::Initialize() {
 	uint32_t perfectSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Perfect.png");
 	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
 		perfectJudgementUIArray_[i].sprite= Elysia::Sprite::Create(perfectSpriteHandle);
+		perfectJudgementUIArray_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 	}
 	//Great
 	uint32_t greatSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Great.png");
@@ -210,12 +211,22 @@ void PlayMainScene::Update() {
 				//時間変化
 				perfectJudgementUIArray_[i].currentTime += DELTA_TIME_;
 				////線形補間
-				float_t t = SingleCalculation::InverseLerp(0.0f, APPEAR_TIME_, perfectJudgementUIArray_[i].currentTime);
+				float_t t = SingleCalculation::InverseLerp(0.0f, JUDGEMENT_UI_MOVE_TIME_, perfectJudgementUIArray_[i].currentTime);
+				t = std::clamp(t, 0.0f, 1.0f);
 				//スケールと座標用
 				float_t transformEasedT = Easing::EaseOutCirc(t);
+
+				float_t offset = 0.0f;
+
+				if (perfectJudgementUIArray_[i].place == NoteLane::Place::Up) {
+					offset = 100.0f;
+				} else {
+					offset = 500.0f;
+				}
+
 				Vector2<float_t>newPosition = {
 					.x = INITIAL_UI_POSITION_Y_,
-					.y = SingleCalculation::Lerp(100.0f,-JUDGEMENT_UI_MOVE_DISTANCE_,transformEasedT) 
+					.y = SingleCalculation::Lerp(offset,offset -JUDGEMENT_UI_MOVE_DISTANCE_,transformEasedT)
 				};
 				perfectJudgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
 				perfectJudgementUIArray_[i].sprite->SetPosition(newPosition);
@@ -224,8 +235,8 @@ void PlayMainScene::Update() {
 				float_t transparencyEasedT = Easing::EaseInQuart(t);
 				perfectJudgementUIArray_[i].sprite->SetTransparency(transparencyEasedT);
 
-
-				if (t >= 1.0f) {
+				
+				if (perfectJudgementUIArray_[i].currentTime >= APPEAR_TIME_) {
 					perfectJudgementUIArray_[i].isUse = false;
 					perfectJudgementUIArray_[i].currentTime = 0.0f;
 					perfectJudgementUIArray_[i].ratio = 0.0f;
