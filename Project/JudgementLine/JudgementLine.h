@@ -71,7 +71,7 @@ public:
 	/// </summary>
 	/// <returns>X座標</returns>
 	inline float_t GetJudgementPositionX()const {
-		return JUDGEMENT_POSITION_X_;
+		return LINE_POSITION_X_;
 	}
 
 private:
@@ -80,24 +80,22 @@ private:
 
 private:
 	//判定のX座標
-	const float_t JUDGEMENT_POSITION_X_ = -17.0f;
+	const float_t LINE_POSITION_X_ = -17.0f;
 	
-	//判定のUI
-	//パーフェクト
-	static const uint8_t JUDGEMENT_AMOUNT = 8u;
-
+	//判定のUIの数
+	static const uint8_t UI_AMOUNT_ = 8u;
 	//判定の動く時間
-	const float_t JUDGEMENT_UI_MOVE_TIME_ = 0.15f;
+	const float_t UI_MOVE_TIME_ = 0.15f;
 	//判定の出る時間
-	const float_t APPEAR_TIME_ = JUDGEMENT_UI_MOVE_TIME_ * 2.0f;
+	const float_t APPEAR_TIME_ = UI_MOVE_TIME_ * 2.0f;
 
 	//判定の移動距離
-	const float_t JUDGEMENT_UI_MOVE_DISTANCE_ = 100u;
-
+	const float_t UI_MOVE_DISTANCE_ = 100u;
 	//時間変化
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 	//UIの初期座標
 	const float_t INITIAL_UI_POSITION_X = 150.0f;
+
 private:
 
 	/// <summary>
@@ -127,7 +125,6 @@ private:
 	
 	};
 
-
 private:
 	//モデル
 	std::unique_ptr<Elysia::Model> lineModel_ = nullptr;
@@ -138,7 +135,7 @@ private:
 
 	//判定のUI
 	//成功
-	std::array<JudgementUI, JUDGEMENT_AMOUNT >judgementUIArray_;
+	std::array<JudgementUI, UI_AMOUNT_ >judgementUIArray_;
 	//ハンドル
 	std::array<uint32_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)> judgementTextureHandleArray_ = {};
 };

@@ -18,7 +18,7 @@ void JudgementLine::Initialize(const uint32_t& normalNoteModelHandle, const std:
 	lineWorldTransform_.Initialize();
 	lineWorldTransform_.scale.x = 0.05f;
 	lineWorldTransform_.scale.y = 10.0f;
-	lineWorldTransform_.translate.x = JUDGEMENT_POSITION_X_;
+	lineWorldTransform_.translate.x = LINE_POSITION_X_;
 	lineWorldTransform_.translate.y = 10.0f;
 	//判定線のマテリアルを生成
 	lineMaterial_.Initialize();
@@ -29,8 +29,8 @@ void JudgementLine::Initialize(const uint32_t& normalNoteModelHandle, const std:
 
 	//UI
 	//一旦Perfectで初期化
-	for (uint8_t i = 0u;i < JUDGEMENT_AMOUNT;i++) {
-		judgementUIArray_[i].sprite = Elysia::Sprite::Create(judgementTextureHandleArray_[0]);
+	for (uint8_t i = 0u;i < UI_AMOUNT_;i++) {
+		judgementUIArray_[i].sprite = Elysia::Sprite::Create(judgementTextureHandleArray_[static_cast<uint8_t>(NoteJudgement::Selection::Perfect)]);
 		judgementUIArray_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 	}
 }
@@ -44,14 +44,15 @@ void JudgementLine::UpdateObject3D(){
 
 void JudgementLine::UpdateSprite(){
 	//判定UIの更新
-	for (uint8_t i = 0u;i < JUDGEMENT_AMOUNT;i++) {
+	for (uint8_t i = 0u;i < UI_AMOUNT_;i++) {
 		//使用状態の時
 		if (judgementUIArray_[i].isUse) {
 			//時間変化
 			judgementUIArray_[i].currentTime += DELTA_TIME_;
 			//線形補間
-			float_t t = SingleCalculation::InverseLerp(0.0f, JUDGEMENT_UI_MOVE_TIME_, judgementUIArray_[i].currentTime);
+			float_t t = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, judgementUIArray_[i].currentTime);
 			t = std::clamp(t, 0.0f, 1.0f);
+
 			//スケールと座標用
 			float_t transformEasedT = Easing::EaseOutCirc(t);
 			judgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
@@ -62,18 +63,23 @@ void JudgementLine::UpdateSprite(){
 			float_t transparencyEasedT = Easing::EaseOutQuart(t);
 			judgementUIArray_[i].sprite->SetTransparency(transparencyEasedT);
 
-			//表示時間を超えたら未使用に戻す
+			//表示時間を超えたら未使用に初期化
 			if (judgementUIArray_[i].currentTime >= APPEAR_TIME_) {
 				judgementUIArray_[i].isUse = false;
 				judgementUIArray_[i].currentTime = 0.0f;
 				judgementUIArray_[i].ratio = 0.0f;
+				judgementUIArray_[i].initialPositionY = 0.0f;
+				judgementUIArray_[i].movedPositionY = 0.0f;
+				judgementUIArray_[i].textureHandle = judgementTextureHandleArray_[static_cast<uint8_t>(NoteJudgement::Selection::Perfect)];
+				judgementUIArray_[i].judgement=NoteJudgement::Selection::Size;
+
 			}
 		}
 	}
 
 #ifdef _DEBUG
 	ImGui::Begin("使用チェック");
-	for (uint8_t i = 0u;i < JUDGEMENT_AMOUNT;i++) {
+	for (uint8_t i = 0u;i < UI_AMOUNT_;i++) {
 		ImGui::Checkbox("IsUse", &judgementUIArray_[i].isUse);
 	}
 	ImGui::End();
@@ -88,8 +94,7 @@ void JudgementLine::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 void JudgementLine::DrawSprite(){
 
 	//判定UI
-	//Perfect
-	for (uint8_t i = 0u;i < JUDGEMENT_AMOUNT;i++) {
+	for (uint8_t i = 0u;i < UI_AMOUNT_;i++) {
 		if (judgementUIArray_[i].isUse) {
 			judgementUIArray_[i].sprite->Draw(judgementUIArray_[i].textureHandle);
 		}
@@ -98,7 +103,7 @@ void JudgementLine::DrawSprite(){
 
 void JudgementLine::SetReleaseUI(const NoteLane::Place& place, const NoteJudgement::Selection& selection){
 	
-	for (uint8_t i = 0u;i < JUDGEMENT_AMOUNT;i++) {
+	for (uint8_t i = 0u;i < UI_AMOUNT_;i++) {
 		//未使用状態のものから使う
 		if (!judgementUIArray_[i].isUse) {
 			//使用中にする
@@ -125,13 +130,12 @@ void JudgementLine::SetReleaseUI(const NoteLane::Place& place, const NoteJudgeme
 
 			//ミスの設定をする
 			if (judgementUIArray_[i].judgement==NoteJudgement::Selection::Miss) {
-				judgementUIArray_[i].movedPositionY = height + JUDGEMENT_UI_MOVE_DISTANCE_;
+				judgementUIArray_[i].movedPositionY = height + UI_MOVE_DISTANCE_;
 
 			} 
 			//失敗の設定をする
 			else {
-				
-				judgementUIArray_[i].movedPositionY = height - JUDGEMENT_UI_MOVE_DISTANCE_;
+				judgementUIArray_[i].movedPositionY = height - UI_MOVE_DISTANCE_;
 			}
 			
 			break;

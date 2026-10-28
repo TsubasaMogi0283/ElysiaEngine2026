@@ -471,6 +471,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			if (overlookValue >= NoteJudgement::Time::MISS) {
 				//ミス
 				startNote.judgement = NoteJudgement::Selection::Miss;
+				//ミスのUIを出す
+				mainScene_->GetJudgementLine()->SetReleaseUI(startNote.place, startNote.judgement);
 				record_.miss++;
 				mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(startNote.judgement));
 				record_.combo = 0u;
@@ -605,6 +607,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//ミスのUIを出す
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 
 				//コンボを0に戻す
@@ -709,6 +712,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 					//判定の設定
 					record_.miss++;
+					//ミス
+					targetNote.judgement = NoteJudgement::Selection::Miss;
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Miss));
 					//コンボを0に戻す
 					record_.combo = 0u;
@@ -716,9 +721,12 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+
+					//ミスのUIを出す
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 				}
 
-				//ミスのUIを出す
+				
 
 			}
 
