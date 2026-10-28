@@ -301,4 +301,12 @@ struct Vector3 {
 	/// <returns></returns>
 	static inline Vector3<float_t> RotateVector(const Vector3<float_t>& vector, const Quaternion& quaternion);
 
+	/// <summary>
+	/// トランスフォーム
+	/// </summary>
+	/// <param name="vector"></param>
+	/// <param name="matrix"></param>
+	/// <returns></returns>
+	Vector3<float_t> MakeTransformCoodinate(const Vector3& vector, const Matrix4x4& matrix);
+
 };

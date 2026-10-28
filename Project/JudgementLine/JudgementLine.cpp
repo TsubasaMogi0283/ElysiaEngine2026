@@ -1,14 +1,18 @@
 #include "JudgementLine.h"
 
 #include <TextureManager.h>
+#include <WindowsSetup.h>
 #include <Easing.h>
 #include <imgui.h>
 #include <SingleCalculation.h>
+#include <Camera.h>
 
 JudgementLine::JudgementLine(){
 	//インスタンスの取得
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
+	//ウィンドウクラス
+	windowSetup_ = Elysia::WindowsSetup::GetInstance();
 }
 
 void JudgementLine::Initialize(const uint32_t& normalNoteModelHandle, const std::array<uint32_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)> judgementTextureHandleArray){
@@ -33,6 +37,9 @@ void JudgementLine::Initialize(const uint32_t& normalNoteModelHandle, const std:
 		judgementUIArray_[i].sprite = Elysia::Sprite::Create(judgementTextureHandleArray_[static_cast<uint8_t>(NoteJudgement::Selection::Perfect)]);
 		judgementUIArray_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 	}
+
+
+	
 }
 
 void JudgementLine::UpdateObject3D(){
@@ -42,7 +49,15 @@ void JudgementLine::UpdateObject3D(){
 	lineMaterial_.Update();
 }
 
-void JudgementLine::UpdateSprite(){
+void JudgementLine::UpdateSprite(const Camera& camera){
+
+	uiUpPosition_ = playerPosition_;
+
+	Matrix4x4 viewportMatrix = Matrix4x4::MakeViewportMatrix(100.0f,200.0f,600.0f,300.0f,0.0f,1.0f);
+	Matrix4x4 viewProjectionViewportMatrix = Matrix4x4::Multiply(Matrix4x4::Multiply(camera.viewMatrix, camera.projectionMatrix), viewportMatrix);
+	//uiDownPosition_ = playerPosition_;
+	//uiUpPosition_=
+
 	//判定UIの更新
 	for (uint8_t i = 0u;i < UI_AMOUNT_;i++) {
 		//使用状態の時

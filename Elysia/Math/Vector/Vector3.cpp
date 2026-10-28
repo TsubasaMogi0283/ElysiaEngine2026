@@ -44,3 +44,9 @@ Vector3<float_t> Vector3<float_t>::RotateVector(const Vector3<float_t>& vector, 
     };
     return result;
 }
+
+template<typename Type>
+Vector3<float_t> Vector3<Type>::MakeTransformCoodinate(const Vector3& vector, const Matrix4x4& matrix){
+
+    return Vector3<float_t>();
+}

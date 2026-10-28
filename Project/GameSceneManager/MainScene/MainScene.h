@@ -362,7 +362,13 @@ public:
 		return temporaryRecord_;
 	}
 
-	
+	/// <summary>
+	/// カメラの取得
+	/// </summary>
+	/// <returns></returns>
+	inline Camera GetCamera()const {
+		return camera_;
+	}
 
 
 private:

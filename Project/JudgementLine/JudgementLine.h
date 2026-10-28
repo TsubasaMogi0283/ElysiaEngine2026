@@ -14,6 +14,22 @@
 #include <Note/NoteJudgement.h>
 
 /// <summary>
+/// ElysiaEngine(前方宣言)
+/// </summary>
+namespace Elysia {
+	/// <summary>
+	/// テクスチャ管理クラス
+	/// </summary>
+	class TextureManager;
+	
+	/// <summary>
+	/// ウィンドウクラス
+	/// </summary>
+	class WindowsSetup;
+
+}
+
+/// <summary>
 /// 判定線クラス
 /// </summary>
 class JudgementLine{
@@ -38,7 +54,8 @@ public:
 	/// <summary>
 	/// スプライトの更新
 	/// </summary>
-	void UpdateSprite();
+	/// <param name="camera"></param>
+	void UpdateSprite(const Camera& camera);
 
 	/// <summary>
 	/// 描画
@@ -74,9 +91,19 @@ public:
 		return LINE_POSITION_X_;
 	}
 
+	/// <summary>
+	/// プレイヤーの座標を設定
+	/// </summary>
+	/// <param name="playerPosition"></param>
+	inline void SetPlayerPosition(const Vector3<float_t>& playerPosition) {
+		this->playerPosition_ = playerPosition;
+	}
+
 private:
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
+	//ウィンドウクラス
+	Elysia::WindowsSetup* windowSetup_ = nullptr;
 
 private:
 	//判定のX座標
@@ -138,4 +165,12 @@ private:
 	std::array<JudgementUI, UI_AMOUNT_ >judgementUIArray_;
 	//ハンドル
 	std::array<uint32_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)> judgementTextureHandleArray_ = {};
+
+	//プレイヤーの座標
+	Vector3<float_t> playerPosition_ = {};
+
+	//UIの座標
+	Vector3<float_t> uiUpPosition_ = {};
+	Vector3<float_t> uiDownPosition_ = {};
+
 };

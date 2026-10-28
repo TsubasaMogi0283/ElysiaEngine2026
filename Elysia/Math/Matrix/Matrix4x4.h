@@ -145,5 +145,18 @@ public:
 	/// <param name="m"></param>
 	/// <returns></returns>
 	static Matrix4x4 MakeTransposeMatrix(const Matrix4x4& m);
+
+	/// <summary>
+	/// ビューポート行列
+	/// </summary>
+	/// <param name="left"></param>
+	/// <param name="top"></param>
+	/// <param name="width"></param>
+	/// <param name="height"></param>
+	/// <param name="minDepth"></param>
+	/// <param name="maxDepth"></param>
+	/// <returns></returns>
+	static Matrix4x4 MakeViewportMatrix(const float_t& left, const float_t& top, const float_t& width, const float_t& height, const float_t& minDepth, const float_t& maxDepth);
+
 };
 

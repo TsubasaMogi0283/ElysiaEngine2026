@@ -184,7 +184,7 @@ void PlayMainScene::Update() {
 		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
 
 		//UIの更新
-		mainScene_->GetJudgementLine()->UpdateSprite();
+		mainScene_->GetJudgementLine()->UpdateSprite(mainScene_->GetCamera());
 
 		//ポーズ処理
 		Pause();
