@@ -281,7 +281,7 @@ private:
 	float_t scorePositionOffsetX_ = 1000.0f;
 	//スコアのスケール
 	float_t scoreScale_ = 0.5f;
-
+	//数のサイズ
 	Vector2<float_t> numberTextureSize_ = { .x = 0.0f, .y = 0.0f };
 
 private:

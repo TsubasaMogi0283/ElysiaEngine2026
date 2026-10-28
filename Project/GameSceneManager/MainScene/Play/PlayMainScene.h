@@ -80,26 +80,7 @@ private:
 		bool isHold = false;
 	};
 
-	/// <summary>
-	/// 判定UI
-	/// </summary>
-	struct JudgementUI {
-		//スプライト
-		std::unique_ptr<Elysia::Sprite>sprite = nullptr;
-		//動き
-		float_t ratio = 0.0f;
-		//時間
-		float_t currentTime = 0.0f;
-
-		//使用中かどうか
-		bool isUse = false;
-		//場所
-		NoteLane::Place place = NoteLane::Place::Up;
-		//初期の座標
-		float_t initialPosition = {};
-		//動いた後の座標
-		float_t movedPosition = {};
-	};
+	
 
 private:
 	/// <summary>
@@ -148,32 +129,14 @@ private:
 	//ロングノーツ(トランスゲート16)格納数の最大サイズ
 	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_ = 16u;
 
-	//判定のUI
-	//パーフェクト
-	static const uint8_t PERFECT_UI_AMOUNT_ = 8u;
-	//グレート
-	static const uint8_t GREAT_UI_AMOUNT_ = 8u;
-	//グッド
-	static const uint8_t GOOD_UI_AMOUNT_ = 8u;
-	//ミス
-	static const uint8_t MISS_UI_AMOUNT_ = 8u;
-
-	//判定の動く時間
-	const float_t JUDGEMENT_UI_MOVE_TIME_ = 0.15f;
-	//判定の出る時間
-	const float_t APPEAR_TIME_ = 0.5f;
 	
-
-	//判定の移動距離
-	const float_t JUDGEMENT_UI_MOVE_DISTANCE_ = 100u;
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
 
-	//UIの初期座標
-	const float_t INITIAL_UI_POSITION_Y_ = 200.0f;
+	
 
 	//ロングノーツのスコア増加量
 	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;
@@ -203,16 +166,7 @@ private:
 	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_> transGateSixteenthLongNoteArray_ = {};
 
 
-	//判定のUI
-	//Perfect
-	std::array<JudgementUI, PERFECT_UI_AMOUNT_ >perfectJudgementUIArray_;
-	//Great
-	std::array<JudgementUI, GREAT_UI_AMOUNT_ >greatJudgementUIArray_;
-	//Good
-	std::array<JudgementUI, GOOD_UI_AMOUNT_ >goodJudgementUIArray_;
-	//Miss
-	std::array<JudgementUI, MISS_UI_AMOUNT_ >missJudgementUIArray_;
-
+	
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
 

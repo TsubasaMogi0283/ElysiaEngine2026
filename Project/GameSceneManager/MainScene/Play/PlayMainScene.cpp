@@ -153,28 +153,7 @@ void PlayMainScene::Initialize() {
 		goodParticleArray_[i]->SetCount(5);
 	}
 	
-	//UI
-	//Perfect
-	uint32_t perfectSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Perfect.png");
-	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-		perfectJudgementUIArray_[i].sprite= Elysia::Sprite::Create(perfectSpriteHandle);
-		perfectJudgementUIArray_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
-	}
-	//Great
-	uint32_t greatSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Great.png");
-	for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-		greatJudgementUIArray_[i].sprite = Elysia::Sprite::Create(greatSpriteHandle);
-	}
-	//Good
-	uint32_t goodSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Good.png");
-	for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-		goodJudgementUIArray_[i].sprite = Elysia::Sprite::Create(goodSpriteHandle);
-	}
-	//Miss
-	uint32_t missSpriteHandle = textureManager_->Load("Resources/Sprite/Judgement/Miss.png");
-	for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-		missJudgementUIArray_[i].sprite = Elysia::Sprite::Create(missSpriteHandle);
-	}
+	
 
 	//楽曲の再生
 	audio_->PartlyLoopPlayMp3(musicHandle_, 0.0f, audio_->GetAudioLength(musicHandle_));
@@ -204,52 +183,8 @@ void PlayMainScene::Update() {
 		//下
 		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
 
-		//判定UI
-		//Perfect
-		for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-			if (perfectJudgementUIArray_[i].isUse) {
-				//時間変化
-				perfectJudgementUIArray_[i].currentTime += DELTA_TIME_;
-				////線形補間
-				float_t t = SingleCalculation::InverseLerp(0.0f, JUDGEMENT_UI_MOVE_TIME_, perfectJudgementUIArray_[i].currentTime);
-				t = std::clamp(t, 0.0f, 1.0f);
-				//スケールと座標用
-				float_t transformEasedT = Easing::EaseOutCirc(t);
-
-				perfectJudgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
-				float_t newPositionY = SingleCalculation::Lerp(perfectJudgementUIArray_[i].initialPosition , perfectJudgementUIArray_[i].movedPosition,transformEasedT);
-				perfectJudgementUIArray_[i].sprite->SetPosition({ .x = INITIAL_UI_POSITION_Y_ ,.y = newPositionY });
-
-				//透明度
-				float_t transparencyEasedT = Easing::EaseInQuart(t);
-				perfectJudgementUIArray_[i].sprite->SetTransparency(transparencyEasedT);
-
-				
-				if (perfectJudgementUIArray_[i].currentTime >= APPEAR_TIME_) {
-					perfectJudgementUIArray_[i].isUse = false;
-					perfectJudgementUIArray_[i].currentTime = 0.0f;
-					perfectJudgementUIArray_[i].ratio = 0.0f;
-				}
-			}
-		}
-		//Great
-		for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-			if (greatJudgementUIArray_[i].isUse) {
-				greatJudgementUIArray_[i].currentTime += DELTA_TIME_;
-			}
-		}
-		//Good
-		for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-			if (goodJudgementUIArray_[i].isUse) {
-				goodJudgementUIArray_[i].currentTime += DELTA_TIME_;
-			}
-		}
-		//Miss
-		for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-			if (missJudgementUIArray_[i].isUse) {
-				missJudgementUIArray_[i].currentTime += DELTA_TIME_;
-			}
-		}
+		//UIの更新
+		mainScene_->GetJudgementLine()->UpdateSprite();
 
 		//ポーズ処理
 		Pause();
@@ -272,14 +207,7 @@ void PlayMainScene::Update() {
 	
 
 #ifdef _DEBUG
-	ImGui::Begin("使用チェック");
-	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-		ImGui::Checkbox("IsUse", &perfectJudgementUIArray_[i].isUse);
-	}
-	ImGui::End();
-
-
-
+	
 	ImGui::Begin("プレイシーン");
 	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
 	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
@@ -379,25 +307,12 @@ void PlayMainScene::DrawSprite() {
 		//アセットの描画
 		pauseAsset_->Draw();
 	}
-
-	//Perfect
-	for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-		if (perfectJudgementUIArray_[i].isUse) {
-			perfectJudgementUIArray_[i].sprite->Draw();
-		}
+	//プレイ中
+	else {
+		//判定UIの表示
+		mainScene_->GetJudgementLine()->DrawSprite();
 	}
-	////Great
-	//for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-	//	greatJudgementUIArray_[i].sprite->Draw();
-	//}
-	////Good
-	//for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-	//	goodJudgementUIArray_[i].sprite->Draw();
-	//}
-	////Miss
-	//for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-	//	missJudgementUIArray_[i].sprite->Draw();
-	//}
+
 }
 
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition) {
@@ -623,31 +538,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 				
 				//パーフェクトのUIを出す
-				for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-					//未使用状態のものから使う
-					if (!perfectJudgementUIArray_[i].isUse) {
-						//使用中にする
-						perfectJudgementUIArray_[i].isUse = true;
-						//場所を記録
-						perfectJudgementUIArray_[i].place = targetNote.place;
-
-
-						float_t offset = 0.0f;
-						if (perfectJudgementUIArray_[i].place == NoteLane::Place::Up) {
-							offset = 100.0f;
-						} else {
-							offset = 500.0f;
-						}
-
-						//初期座標と
-						float_t initialPosition = offset ;
-						float_t movedPosition = initialPosition - JUDGEMENT_UI_MOVE_DISTANCE_ ;
-						
-						perfectJudgementUIArray_[i].initialPosition = initialPosition;
-						perfectJudgementUIArray_[i].movedPosition = movedPosition;
-						break;
-					}
-				}
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 				//コンボを増やす
 				record_.combo++;
@@ -672,15 +563,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 
 				//グレートのUIを出す
-				for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-					//未使用状態のものから使う
-					if (!greatJudgementUIArray_[i].isUse) {
-						//使用中にする
-						greatJudgementUIArray_[i].isUse = true;
-						//場所を記録
-						greatJudgementUIArray_[i].place = targetNote.place;
-					}
-				}
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 				//コンボを増やす
 				record_.combo++;
@@ -705,15 +588,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 
 				//グッドのUIを出す
-				for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-					//未使用状態のものから使う
-					if (!goodJudgementUIArray_[i].isUse) {
-						//使用中にする
-						goodJudgementUIArray_[i].isUse = true;
-						//場所を記録
-						goodJudgementUIArray_[i].place = targetNote.place;
-					}
-				}
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 				//コンボを増やす
 				record_.combo++;
@@ -730,16 +605,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//ミスのUIを出す
-				for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-					//未使用状態のものから使う
-					if (!missJudgementUIArray_[i].isUse) {
-						missJudgementUIArray_[i].isUse = true;
-						//使用中にする
-						missJudgementUIArray_[i].isUse = true;
-						//場所を記録
-						missJudgementUIArray_[i].place = targetNote.place;
-					}
-				}
+
 
 				//コンボを0に戻す
 				record_.combo = 0u;
@@ -769,6 +635,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Perfect));
 					//コンボを増やす
 					record_.combo++;
+					targetNote.judgement = NoteJudgement::Selection::Perfect;
 					//スコアを加算
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
 					//始点を判定済みにする
@@ -781,17 +648,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
 
-
 					//パーフェクトのUIを出す
-					for (uint8_t i = 0u;i < PERFECT_UI_AMOUNT_;i++) {
-						//未使用状態のものから使う
-						if (!perfectJudgementUIArray_[i].isUse) {
-							//使用中にする
-							perfectJudgementUIArray_[i].isUse = true;
-							//場所を記録
-							perfectJudgementUIArray_[i].place = targetNote.place;
-						}
-					}
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 				}
 				//Great用
@@ -802,6 +660,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Great));
 					//コンボを増やす
 					record_.combo++;
+					//グレート
+					targetNote.judgement = NoteJudgement::Selection::Great;
 					//スコアを加算
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 					//始点を判定済みにする
@@ -816,15 +676,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					}
 
 					//グレートのUIを出す
-					for (uint8_t i = 0u;i < GREAT_UI_AMOUNT_;i++) {
-						//未使用状態のものから使う
-						if (!greatJudgementUIArray_[i].isUse) {
-							//使用中にする
-							greatJudgementUIArray_[i].isUse = true;
-							//場所を記録
-							greatJudgementUIArray_[i].place = targetNote.place;
-						}
-					}
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 				}
 				//Good用
 				else if (absoluteJudgementTime < NoteJudgement::Time::GOOD) {
@@ -834,6 +686,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Good));
 					//コンボを増やす
 					record_.combo++;
+					//グッド
+					targetNote.judgement = NoteJudgement::Selection::Good;
 					//スコアを加算
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 					//始点を判定済みにする
@@ -848,15 +702,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					}
 
 					//グッドのUIを出す
-					for (uint8_t i = 0u;i < GOOD_UI_AMOUNT_;i++) {
-						//未使用状態のものから使う
-						if (!goodJudgementUIArray_[i].isUse) {
-							//使用中にする
-							goodJudgementUIArray_[i].isUse = true;
-							//場所を記録
-							goodJudgementUIArray_[i].place = targetNote.place;
-						}
-					}
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 				}
 				//Miss用
 				else if (absoluteJudgementTime < NoteJudgement::Time::MISS) {
@@ -873,16 +719,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				}
 
 				//ミスのUIを出す
-				for (uint8_t i = 0u;i < MISS_UI_AMOUNT_;i++) {
-					//未使用状態のものから使う
-					if (!missJudgementUIArray_[i].isUse) {
-						missJudgementUIArray_[i].isUse = true;
-						//使用中にする
-						missJudgementUIArray_[i].isUse = true;
-						//場所を記録
-						missJudgementUIArray_[i].place = targetNote.place;
-					}
-				}
+
 			}
 
 

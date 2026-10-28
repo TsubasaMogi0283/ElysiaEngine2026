@@ -3,6 +3,7 @@
 #include <cassert>
 #include <imgui.h>
 #include <numbers>
+#include <magic_enum/magic_enum.hpp>
 
 #include "Input.h"
 #include "ModelManager.h"
@@ -19,11 +20,11 @@ MainScene::MainScene() {
 	//インスタンスの取得
 	//入力
 	input_ = Elysia::Input::GetInstance();
-	//テクスチャ
+	//テクスチャー管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
 	//ウィンドウクラス
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
-	//モデル
+	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//アニメーション
 	animationManager_ = Elysia::AnimationManager::GetInstance();
@@ -50,9 +51,9 @@ void MainScene::Initialize() {
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
 
-	//数字のテクスチャハンドル
+	//数字のテクスチャーハンドル
 	for (uint8_t i = 0; i < NUMBER_TEXTURE_AMOUNT_; i++) {
-		//各数字のテクスチャを読み込み
+		//各数字のテクスチャーを読み込み
 		std::string numberPath = "Resources/Sprite/Number/" + std::to_string(i) + ".png";
 		numberTextureHandlesArray[i] = textureManager_->Load(numberPath);
 	}
@@ -81,14 +82,14 @@ void MainScene::Initialize() {
 	//移動後の座標
 	gauge_->SetFinalPositionY(initialPosition.y - static_cast<int32_t>(gaugeTextureSize.y)*3);
 
-	//数字のテクスチャの読み込み
+	//数字のテクスチャーの読み込み
 	uint32_t numberTextureHandle[NUMBER_TEXTURE_AMOUNT_] = {};
 	for (uint8_t i = 0u;i < NUMBER_TEXTURE_AMOUNT_;i++) {
 		std::string fullPath = "Resources/Sprite/Number/" + std::to_string(i) + ".png";
 		numberTextureHandle[i] = textureManager_->Load(fullPath);
 	}
 
-	//数字のテクスチャの横幅を取得
+	//数字のテクスチャーの横幅を取得
 	numberTextureSize_.x = static_cast<float_t>(textureManager_->GetTextureWidth(numberTextureHandle[0]));
 	numberTextureSize_.y = static_cast<float_t>(textureManager_->GetTextureHeight(numberTextureHandle[0]));
 
@@ -122,8 +123,17 @@ void MainScene::Initialize() {
 
 	//判定線のモデルを生成
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
+	//判定のテクスチャーを読み込む
+	std::array<uint32_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)> judgementUITextureHandle = {};
+	for (uint8_t i = 0u;i < static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
+		std::string path = "Resources/Sprite/Judgement/";
+		std::string_view judgementStringView = magic_enum::enum_name(static_cast<NoteJudgement::Selection>(i));
+		std::string newJudgementString(judgementStringView);
+		judgementUITextureHandle[i] = textureManager_->Load(path + newJudgementString + ".png");
+	}
+
 	judgementLine_ = std::make_unique<JudgementLine>();
-	judgementLine_->Initialize(normalNoteModelHandle);
+	judgementLine_->Initialize(normalNoteModelHandle, judgementUITextureHandle);
 
 	//プレイヤー
 	//モデル
@@ -172,7 +182,7 @@ void MainScene::Update() {
 	//ゲージの更新
 	gauge_->Update();
 	//判定線の更新
-	judgementLine_->Update();
+	judgementLine_->UpdateObject3D();
 
 	//更新
 	baseMainScene_->Update();
@@ -190,7 +200,7 @@ void MainScene::Update() {
 void MainScene::DrawObject3D() {
 	
 	//判定線の描画
-	judgementLine_->Draw(camera_, directionalLight_);
+	judgementLine_->DrawObject3D(camera_, directionalLight_);
 	//プレイヤー
 	player_->DrawObject3D(camera_, directionalLight_);
 	//オブジェクトの描画
