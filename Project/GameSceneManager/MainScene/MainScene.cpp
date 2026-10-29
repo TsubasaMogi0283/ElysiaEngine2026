@@ -182,6 +182,7 @@ void MainScene::Update() {
 	//ゲージの更新
 	gauge_->Update();
 	//判定線の更新
+	judgementLine_->SetPlayerPosition(player_->GetWorldPosition());
 	judgementLine_->UpdateObject3D();
 
 	//更新

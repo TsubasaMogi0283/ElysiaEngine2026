@@ -52,10 +52,9 @@ void JudgementLine::UpdateObject3D(){
 void JudgementLine::UpdateSprite(const Camera& camera){
 
 	uiUpPosition_ = playerPosition_;
-
-	Matrix4x4 viewportMatrix = Matrix4x4::MakeViewportMatrix(100.0f,200.0f,600.0f,300.0f,0.0f,1.0f);
+	Matrix4x4 viewportMatrix = Matrix4x4::MakeViewportMatrix(0.0f,0.0f,windowSetup_->GetInstance()->GetClientSize().x, windowSetup_->GetInstance()->GetClientSize().y, 0.0f, 1.0f);
 	Matrix4x4 viewProjectionViewportMatrix = Matrix4x4::Multiply(Matrix4x4::Multiply(camera.viewMatrix, camera.projectionMatrix), viewportMatrix);
-	//uiDownPosition_ = playerPosition_;
+	uiUpPosition_ = Vector3<float_t>::TransformCalculation(uiUpPosition_, viewProjectionViewportMatrix);
 	//uiUpPosition_=
 
 	//判定UIの更新
@@ -71,8 +70,8 @@ void JudgementLine::UpdateSprite(const Camera& camera){
 			//スケールと座標用
 			float_t transformEasedT = Easing::EaseOutCirc(t);
 			judgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
-			float_t newPositionY = SingleCalculation::Lerp(judgementUIArray_[i].initialPositionY, judgementUIArray_[i].movedPositionY, transformEasedT);
-			judgementUIArray_[i].sprite->SetPosition({ .x = INITIAL_UI_POSITION_X ,.y = newPositionY });
+			float_t newPositionY = SingleCalculation::Lerp(uiUpPosition_.y, judgementUIArray_[i].movedPositionY, transformEasedT);
+			judgementUIArray_[i].sprite->SetPosition({ .x = uiUpPosition_.x ,.y = newPositionY });
 
 			//透明度
 			float_t transparencyEasedT = Easing::EaseOutQuart(t);
