@@ -15,7 +15,6 @@
 ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileNameFolder, const std::string& fileName) {
 	ModelData modelData;
 
-
 	//assimpを利用してしてオブジェクトファイルを読んでいく
 	Assimp::Importer importer;
 	std::string directory = fileNameFolder + "/" + fileName + "/";
@@ -25,14 +24,11 @@ ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileName
 	//後読み込みが出来なかったらここで止まる
 	assert(scene->HasMeshes());
 
-
 	//ファイルを読み、ModelDataを構築していく
-
-
 	//Meshを解析
 	//Meshは複数のFaceで構成され、そのFaceは複数の頂点で構成されている
 	//さらにSceneには複数のMeshが存在しているというわけであるらしい
-	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
+	for (uint32_t meshIndex = 0u; meshIndex < scene->mNumMeshes; ++meshIndex) {
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		//Normalなので法線がない時は止める
 		assert(mesh->HasNormals());
@@ -41,7 +37,7 @@ ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileName
 		//頂点を解析する
 		//最初に頂点数分のメモリを確保しておく
 		modelData.vertices.resize(mesh->mNumVertices);
-		for (uint32_t verticesIndex = 0; verticesIndex < mesh->mNumVertices; ++verticesIndex) {
+		for (uint32_t verticesIndex = 0u; verticesIndex < mesh->mNumVertices; ++verticesIndex) {
 			aiVector3D& position = mesh->mVertices[verticesIndex];
 			aiVector3D& normal = mesh->mNormals[verticesIndex];
 			aiVector3D& texcoord = mesh->mTextureCoords[0][verticesIndex];
@@ -50,15 +46,13 @@ ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileName
 			modelData.vertices[verticesIndex].normal = { -normal.x,normal.y,normal.z };
 			modelData.vertices[verticesIndex].texCoord = { texcoord.x,texcoord.y };
 
-
-
 		}
 		//Indexの解析
-		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
+		for (uint32_t faceIndex = 0u; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			//三角形で
-			assert(face.mNumIndices == 3);
-			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
+			assert(face.mNumIndices == 3u);
+			for (uint32_t element = 0u; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];
 				modelData.indices.push_back(vertexIndex);
 			}
@@ -173,7 +167,7 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 	//Meshを解析
 	//Meshは複数のFaceで構成され、そのFaceは複数の頂点で構成されている
 	//さらにSceneには複数のMeshが存在しているというわけであるらしい
-	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
+	for (uint32_t meshIndex = 0u; meshIndex < scene->mNumMeshes; ++meshIndex) {
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		//Normalなので法線がない時は止める
 		assert(mesh->HasNormals());
@@ -182,7 +176,7 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 		//頂点を解析する
 		//最初に頂点数分のメモリを確保しておく
 		modelData.vertices.resize(mesh->mNumVertices);
-		for (uint32_t verticesIndex = 0; verticesIndex < mesh->mNumVertices; ++verticesIndex) {
+		for (uint32_t verticesIndex = 0u; verticesIndex < mesh->mNumVertices; ++verticesIndex) {
 			aiVector3D& position = mesh->mVertices[verticesIndex];
 			aiVector3D& normal = mesh->mNormals[verticesIndex];
 			aiVector3D& texcoord = mesh->mTextureCoords[0][verticesIndex];
@@ -192,11 +186,11 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 			modelData.vertices[verticesIndex].texCoord = { texcoord.x,texcoord.y };
 		}
 		//Indexの解析
-		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
+		for (uint32_t faceIndex = 0u; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			//三角形で
 			assert(face.mNumIndices == 3);
-			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
+			for (uint32_t element = 0u; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];
 				modelData.indices.push_back(vertexIndex);
 			}
@@ -232,13 +226,8 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
 				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId });
 			}
-
-
 		}
-
 	}
-
-
 
 	//Materialを解析する
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
