@@ -144,7 +144,7 @@ ParticleInformation Elysia::Particle3D::MakeNewParticle(std::mt19937& randomEngi
 	particle.color = { .x = distColor(randomEngine),.y = distColor(randomEngine),.z = distColor(randomEngine),.w = 1.0f };
 
 	//時間
-	std::uniform_real_distribution<float_t> distTime(0.5f, 1.5f);
+	std::uniform_real_distribution<float_t> distTime(0.25f, 0.5f);
 	particle.lifeTime = distTime(randomEngine);
 	particle.currentTime = 0.0f;
 
@@ -240,7 +240,7 @@ void Elysia::Particle3D::Update(const Camera& camera) {
 				}
 			}
 
-			particleIterator->transform.translate = particleIterator->transform.translate + particleIterator->velocity;
+			particleIterator->transform.translate = particleIterator->transform.translate + particleIterator->velocity*0.2f;
 
 			//カメラの回転を適用する
 			billBoardMatrix = camera.viewMatrix;

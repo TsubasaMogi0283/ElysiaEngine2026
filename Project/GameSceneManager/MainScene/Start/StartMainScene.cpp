@@ -137,7 +137,7 @@ void StartMainScene::Initialize() {
 		baseLineSpriteArray_[i]->SetColor(levelColor);
 	}
 
-	mainPositionX = mainScene_->GetJudgementLine()->GetJudgementPositionX() - 10.0f;
+	mainPositionX = mainScene_->GetJudgementLine()->GetJudgementPositionX() - 7.5f;
 	initialPositionX = mainPositionX;
 	initialPositionX -= PLAYER_MOVE_DISTANCE_;
 	mainScene_->GetPlayer()->SetPosition({ .x = initialPositionX ,.y = 0.0f,.z = 0.0f });
