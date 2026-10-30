@@ -51,12 +51,7 @@ void JudgementLine::UpdateObject3D(){
 
 void JudgementLine::UpdateSprite(const Camera& camera){
 
-	uiUpPosition_ = playerPosition_;
-	Matrix4x4 viewportMatrix = Matrix4x4::MakeViewportMatrix(0.0f,0.0f,windowSetup_->GetInstance()->GetClientSize().x, windowSetup_->GetInstance()->GetClientSize().y, 0.0f, 1.0f);
-	Matrix4x4 viewProjectionViewportMatrix = Matrix4x4::Multiply(Matrix4x4::Multiply(camera.viewMatrix, camera.projectionMatrix), viewportMatrix);
-	uiUpPosition_ = Vector3<float_t>::TransformCalculation(uiUpPosition_, viewProjectionViewportMatrix);
-	//uiUpPosition_=
-
+	
 	//判定UIの更新
 	for (uint8_t i = 0u;i < UI_AMOUNT_;i++) {
 		//使用状態の時
@@ -67,11 +62,20 @@ void JudgementLine::UpdateSprite(const Camera& camera){
 			float_t t = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, judgementUIArray_[i].currentTime);
 			t = std::clamp(t, 0.0f, 1.0f);
 
+			for (uint8_t j = 0u;j < static_cast<uint8_t>(NoteLane::Place::Size);j++) {
+				uiPositionArray_[j] = playerPosition_;
+				uiPositionArray_[j].y = LANE_POSITION_Y_[static_cast<uint8_t>(j)];
+				Matrix4x4 viewportMatrix = Matrix4x4::MakeViewportMatrix(0.0f, 0.0f, windowSetup_->GetInstance()->GetClientSize().x, windowSetup_->GetInstance()->GetClientSize().y, 0.0f, 1.0f);
+				Matrix4x4 viewProjectionViewportMatrix = Matrix4x4::Multiply(Matrix4x4::Multiply(camera.viewMatrix, camera.projectionMatrix), viewportMatrix);
+				uiPositionArray_[j] = Vector3<float_t>::MakeTransformCoordinate(uiPositionArray_[j], viewProjectionViewportMatrix);
+
+			}
+			
 			//スケールと座標用
 			float_t transformEasedT = Easing::EaseOutCirc(t);
 			judgementUIArray_[i].sprite->SetScale({ .x = transformEasedT ,.y = transformEasedT });
-			float_t newPositionY = SingleCalculation::Lerp(uiUpPosition_.y, judgementUIArray_[i].movedPositionY, transformEasedT);
-			judgementUIArray_[i].sprite->SetPosition({ .x = uiUpPosition_.x ,.y = newPositionY });
+			float_t newPositionY = SingleCalculation::Lerp(uiPositionArray_[static_cast<uint8_t>(judgementUIArray_[i].place)].y, judgementUIArray_[i].movedPositionY, transformEasedT);
+			judgementUIArray_[i].sprite->SetPosition({ .x = uiPositionArray_[static_cast<uint8_t>(judgementUIArray_[i].place)].x ,.y = newPositionY });
 
 			//透明度
 			float_t transparencyEasedT = Easing::EaseOutQuart(t);

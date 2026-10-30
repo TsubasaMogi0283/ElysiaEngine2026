@@ -307,6 +307,6 @@ struct Vector3 {
 	/// <param name="vector">ベクトル</param>
 	/// <param name="matrix">行列</param>
 	/// <returns></returns>
-	Vector3<float_t> MakeTransformCoordinate(const Vector3<float_t>& vector, const Matrix4x4& matrix);
+	static Vector3<float_t> MakeTransformCoordinate(const Vector3<float_t>& vector, const Matrix4x4& matrix);
 
 };

@@ -39,7 +39,6 @@ void PlayMainScene::Initialize() {
 	//ノーマルタップノーツのモデルを読み込む
 	uint32_t normalNoteModelHandle = modelManager_->Load("Resources/Model/Sample/Cube", "Cube.obj");
 
-
 #pragma region ノーツの生成
 
 	//通常ノーツの生成
@@ -115,6 +114,12 @@ void PlayMainScene::Initialize() {
 	pauseAsset_->Initilaize(blackTextureHandle, numberTextureHandleVector);
 
 #pragma endregion
+
+	//レーンの座標を取得
+	for (uint8_t i = 0u;i < mainScene_->GetJudgementLine()->GetLanePosition().size();i++) {
+		lanePositionY_.push_back(mainScene_->GetJudgementLine()->GetLanePosition()[i]);
+	}
+
 	//パーティクルのテクスチャの読み込み
 	perfectParticleTextureHandle_ = textureManager_->Load("Resources/Sprite/Particle/PerfectParticle.png");
 	greatPartucleTextureHandle_ = textureManager_->Load("Resources/Sprite/Particle/GreatParticle.png");
@@ -130,7 +135,7 @@ void PlayMainScene::Initialize() {
 
 		perfectParticleArray_[i]->SetTranslate({
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
-			.y = LANE_POSITION_Y_[i],
+			.y = lanePositionY_[i],
 			.z = 0.0f });
 		perfectParticleArray_[i]->SetCount(10);
 
@@ -139,7 +144,7 @@ void PlayMainScene::Initialize() {
 		greatParticleArray_[i]->SetIsDynamicReleaseMode(true);
 		greatParticleArray_[i]->SetTranslate({
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
-			.y = LANE_POSITION_Y_[i],
+			.y = lanePositionY_[i],
 			.z = 0.0f });
 		greatParticleArray_[i]->SetCount(5);
 
@@ -148,7 +153,7 @@ void PlayMainScene::Initialize() {
 		goodParticleArray_[i]->SetIsDynamicReleaseMode(true);
 		goodParticleArray_[i]->SetTranslate({
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
-			.y = LANE_POSITION_Y_[i],
+			.y = lanePositionY_[i],
 			.z = 0.0f });
 		goodParticleArray_[i]->SetCount(5);
 	}
@@ -338,7 +343,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
+						normalTapNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						normalTapNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -360,7 +365,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
+						highPassLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						highPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -394,7 +399,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
+						lowPassLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						lowPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -416,7 +421,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
+						transGateEighthLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateEighthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -438,7 +443,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//未使用時
 					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
+						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定

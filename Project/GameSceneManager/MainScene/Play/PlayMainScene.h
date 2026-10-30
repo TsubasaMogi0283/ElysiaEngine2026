@@ -112,12 +112,7 @@ private:
 	
 	//初期の座標
 	const Vector2<float_t> NOTE_INITIAL_POSITION_ = { .x = 50.0f,.y = 0.0f };
-	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
-	//レーンのY座標
-	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {15.0f,5.0f};
-	//レーンのZ座標
-	const float_t LANE_POSITION_Z_ = 0.0f;
-
+	
 	//ノーマルタップノーツ格納数の最大サイズ
 	static const uint8_t NORMAL_NOTE_AMOUNT_ = 64u;
 	//ロングノーツ(ハイパス)格納数の最大サイズ
@@ -129,14 +124,10 @@ private:
 	//ロングノーツ(トランスゲート16)格納数の最大サイズ
 	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_ = 16u;
 
-	
-
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
 	//初期のコンボボーナス倍率
 	const float_t INITIAL_COMBO_BONUS_SCALE_ = 1.0f;
-
-	
 
 	//ロングノーツのスコア増加量
 	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;
@@ -165,8 +156,6 @@ private:
 	//ロング(トランスゲート16)開始ノーツ
 	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_> transGateSixteenthLongNoteArray_ = {};
 
-
-	
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
 
@@ -187,6 +176,8 @@ private:
 	//レーンの状態
 	LaneCondition upLaneCondition = {};
 	LaneCondition downLaneCondition = {};
+	//レーンの座標
+	std::vector<float_t> lanePositionY_ = {};
 
 	//記録
 	NoteJudgement::Record record_ = {};

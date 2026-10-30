@@ -108,7 +108,10 @@ private:
 private:
 	//判定のX座標
 	const float_t LINE_POSITION_X_ = -17.0f;
-	
+	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
+	//レーンのY座標
+	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = { 15.0f,5.0f };
+
 	//判定のUIの数
 	static const uint8_t UI_AMOUNT_ = 8u;
 	//判定の動く時間
@@ -152,6 +155,15 @@ private:
 	
 	};
 
+public:
+	/// <summary>
+	/// レーンの座標を設定
+	/// </summary>
+	/// <returns>座標</returns>
+	inline std::array<float_t, LANE_SIZE_> GetLanePosition() const{
+		return LANE_POSITION_Y_;
+	}
+
 private:
 	//モデル
 	std::unique_ptr<Elysia::Model> lineModel_ = nullptr;
@@ -170,7 +182,6 @@ private:
 	Vector3<float_t> playerPosition_ = {};
 
 	//UIの座標
-	Vector3<float_t> uiUpPosition_ = {};
-	Vector3<float_t> uiDownPosition_ = {};
+	std::array<Vector3<float_t>, 2u> uiPositionArray_ = {};
 
 };
