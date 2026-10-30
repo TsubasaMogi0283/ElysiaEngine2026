@@ -262,4 +262,44 @@ namespace Easing{
 	}
 	#pragma endregion
 
+#pragma region 
+
+	/// <summary>
+	/// CircのIn
+	/// </summary>
+	/// <param name="value"></param>
+	/// <returns></returns>
+	inline float_t EaseInCirc(const float_t& value) {
+		float_t result = 1.0f - std::sqrtf(1.0f - std::powf(value, 2.0f));
+		return std::clamp(result, 0.0f, 1.0f);
+	}
+
+	/// <summary>
+	/// CircのOut
+	/// </summary>
+	/// <param name="value"></param>
+	/// <returns></returns>
+	inline float_t EaseOutCirc(const float_t& value) {
+		float_t result = std::sqrtf(1.0f - std::powf(value - 1.0f, 2.0f));
+		return std::clamp(result, 0.0f, 1.0f);
+	}
+
+	/// <summary>
+	/// CircのInとOut
+	/// </summary>
+	/// <param name="value"></param>
+	/// <returns></returns>
+	inline float_t EaseInOutCirc(const float_t& value) {
+		float_t result = 0.0f;
+		if (value < 0.5f) {
+			result = 1.0f - std::sqrtf(1.0f - std::powf(2.0f * value, 2.0f)) / 2.0f;
+		}
+		else {
+			result = (std::sqrtf(1.0f - std::powf(-2.0f * value + 2.0f, 2.0f)) + 1.0f) / 2.0f;
+		}
+		return std::clamp(result, 0.0f, 1.0f);
+	}
+
+#pragma endregion
+
 };

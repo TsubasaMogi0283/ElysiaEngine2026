@@ -255,7 +255,7 @@ struct Vector3 {
 	/// <param name="v">ベクトル</param>
 	/// <param name="m">行列</param>
 	/// <returns></returns>
-	static inline Vector3<float_t> TransformCalculation(const Vector3<float_t>& v, const Matrix4x4& m);
+	static Vector3<float_t> TransformCalculation(const Vector3<float_t>& v, const Matrix4x4& m);
 
 
 	/// <summary>
@@ -300,5 +300,13 @@ struct Vector3 {
 	/// <param name="quaternion"></param>
 	/// <returns></returns>
 	static inline Vector3<float_t> RotateVector(const Vector3<float_t>& vector, const Quaternion& quaternion);
+
+	/// <summary>
+	/// トランスフォーム
+	/// </summary>
+	/// <param name="vector">ベクトル</param>
+	/// <param name="matrix">行列</param>
+	/// <returns></returns>
+	static Vector3<float_t> MakeTransformCoordinate(const Vector3<float_t>& vector, const Matrix4x4& matrix);
 
 };

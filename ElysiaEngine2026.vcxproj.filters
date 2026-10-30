@@ -967,9 +967,6 @@
     <ClInclude Include="Project\Note\NoteType.h">
       <Filter>Project\Note</Filter>
     </ClInclude>
-    <ClInclude Include="Project\ScoreData\NoteLane.h">
-      <Filter>Project\Note</Filter>
-    </ClInclude>
     <ClInclude Include="Project\ScoreData\NoteInformation.h">
       <Filter>Project\Note</Filter>
     </ClInclude>
@@ -1062,6 +1059,9 @@
     </ClInclude>
     <ClInclude Include="Project\Player\Player.h">
       <Filter>Project\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Note\NoteLane.h">
+      <Filter>Project\Note</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

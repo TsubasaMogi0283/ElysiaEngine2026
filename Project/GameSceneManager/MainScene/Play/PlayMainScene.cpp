@@ -11,6 +11,7 @@
 #include <Windows/WindowsSetup.h>
 #include <TextureManager.h>
 #include <Note/Long/HighPass/HighPassLongNote.h>
+#include <Easing.h>
 
 PlayMainScene::PlayMainScene() {
 	//ウィンドウの設定
@@ -41,55 +42,55 @@ void PlayMainScene::Initialize() {
 #pragma region ノーツの生成
 
 	//通常ノーツの生成
-	for (uint8_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < NORMAL_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<NormalTapNote> normalTapNote = std::make_unique<NormalTapNote>();
 		//初期化
 		normalTapNote->Initialize(normalNoteModelHandle);
-		normalTapNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		normalTapNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		normalTapNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		normalTapNoteArray_[i] = std::move(normalTapNote);
 	}
 
 	//ハイパスロングノーツの生成
-	for (uint8_t i = 0u;i < HI_PASS_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < HI_PASS_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<HighPassLongNote> hiPassLongNote = std::make_unique<HighPassLongNote>();
 		//初期化
 		hiPassLongNote->Initialize(normalNoteModelHandle);
-		hiPassLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		hiPassLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		hiPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		highPassLongNoteArray_[i] = std::move(hiPassLongNote);
 	}
 
 	//ローパスロングノーツの生成
-	for (uint8_t i = 0u;i < LOW_PASS_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < LOW_PASS_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<LowPassLongNote> lowPassLongNote = std::make_unique<LowPassLongNote>();
 		//初期化
 		lowPassLongNote->Initialize(normalNoteModelHandle);
-		lowPassLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		lowPassLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		lowPassLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		lowPassLongNoteArray_[i] = std::move(lowPassLongNote);
 	}
 
 	//トランスゲート8分ロングノーツの生成
-	for (uint8_t i = 0u;i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<TranceGateEighthLongNote> tranceGateEighthLongNote = std::make_unique<TranceGateEighthLongNote>();
 		//初期化
 		tranceGateEighthLongNote->Initialize(normalNoteModelHandle);
-		tranceGateEighthLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		tranceGateEighthLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		tranceGateEighthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateEighthLongNoteArray_[i] = std::move(tranceGateEighthLongNote);
 	}
 
 	//トランスゲート16分ロングノーツの生成
-	for (uint8_t i = 0u;i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_;i++) {
+	for (uint8_t i = 0u;i < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_;i++) {
 		std::unique_ptr<TranceGateSixteenthLongNote> tranceGateSixteenthLongNote = std::make_unique<TranceGateSixteenthLongNote>();
 		//初期化
 		tranceGateSixteenthLongNote->Initialize(normalNoteModelHandle);
-		tranceGateSixteenthLongNote->SetInitialPositionX(INITIAL_POSITION_.x);
+		tranceGateSixteenthLongNote->SetInitialPositionX(NOTE_INITIAL_POSITION_.x);
 		tranceGateSixteenthLongNote->SetJudgmentPositionX(mainScene_->GetJudgementLine()->GetJudgementPositionX());
 		//挿入
 		transGateSixteenthLongNoteArray_[i] = std::move(tranceGateSixteenthLongNote);
@@ -113,6 +114,12 @@ void PlayMainScene::Initialize() {
 	pauseAsset_->Initilaize(blackTextureHandle, numberTextureHandleVector);
 
 #pragma endregion
+
+	//レーンの座標を取得
+	for (uint8_t i = 0u;i < mainScene_->GetJudgementLine()->GetLanePosition().size();i++) {
+		lanePositionY_.push_back(mainScene_->GetJudgementLine()->GetLanePosition()[i]);
+	}
+
 	//パーティクルのテクスチャの読み込み
 	perfectParticleTextureHandle_ = textureManager_->Load("Resources/Sprite/Particle/PerfectParticle.png");
 	greatPartucleTextureHandle_ = textureManager_->Load("Resources/Sprite/Particle/GreatParticle.png");
@@ -128,7 +135,7 @@ void PlayMainScene::Initialize() {
 
 		perfectParticleArray_[i]->SetTranslate({
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
-			.y = LANE_POSITION_Y_[i],
+			.y = lanePositionY_[i],
 			.z = 0.0f });
 		perfectParticleArray_[i]->SetCount(10);
 
@@ -137,7 +144,7 @@ void PlayMainScene::Initialize() {
 		greatParticleArray_[i]->SetIsDynamicReleaseMode(true);
 		greatParticleArray_[i]->SetTranslate({
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
-			.y = LANE_POSITION_Y_[i],
+			.y = lanePositionY_[i],
 			.z = 0.0f });
 		greatParticleArray_[i]->SetCount(5);
 
@@ -146,11 +153,13 @@ void PlayMainScene::Initialize() {
 		goodParticleArray_[i]->SetIsDynamicReleaseMode(true);
 		goodParticleArray_[i]->SetTranslate({
 			.x = mainScene_->GetJudgementLine()->GetJudgementPositionX(),
-			.y = LANE_POSITION_Y_[i],
+			.y = lanePositionY_[i],
 			.z = 0.0f });
 		goodParticleArray_[i]->SetCount(5);
 	}
 	
+	
+
 	//楽曲の再生
 	audio_->PartlyLoopPlayMp3(musicHandle_, 0.0f, audio_->GetAudioLength(musicHandle_));
 	musicLength_ = audio_->GetAudioLength(musicHandle_);
@@ -179,6 +188,9 @@ void PlayMainScene::Update() {
 		//下
 		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
 
+		//UIの更新
+		mainScene_->GetJudgementLine()->UpdateSprite(mainScene_->GetCamera());
+
 		//ポーズ処理
 		Pause();
 
@@ -200,6 +212,7 @@ void PlayMainScene::Update() {
 	
 
 #ifdef _DEBUG
+	
 	ImGui::Begin("プレイシーン");
 	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
 	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
@@ -226,7 +239,7 @@ void PlayMainScene::Update() {
 	}
 
 	if (ImGui::TreeNode("上レーン")) {
-		for (uint32_t i = 0u;i < NORMAL_NOTE_MAX_SIZE_;i++) {
+		for (uint32_t i = 0u;i < NORMAL_NOTE_AMOUNT_;i++) {
 			bool isUsed = normalTapNoteArray_[i]->GetIsUsed();
 			if (isUsed) {
 				float_t startTime = normalTapNoteArray_[i]->GetStartMoveTime();
@@ -252,35 +265,35 @@ void PlayMainScene::Update() {
 void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLight) {
 
 	//通常ノーツの設定
-	for (uint8_t i = 0u; i < NORMAL_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < NORMAL_NOTE_AMOUNT_; i++) {
 		if (normalTapNoteArray_[i]->GetIsUsed()) {
 			normalTapNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//ハイパスロングノーツの設定
-	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_AMOUNT_; i++) {
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			highPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//ローパスロングノーツの設定
-	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_AMOUNT_; i++) {
 		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
 			lowPassLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//トランスゲート8分ロングノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_; i++) {
 		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
 			transGateEighthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
 	}
 
 	//トランスゲート16分ロングノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_; i++) {
 		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
 			transGateSixteenthLongNoteArray_[i]->DrawObject3D(camera, baseLight);
 		}
@@ -290,9 +303,7 @@ void PlayMainScene::DrawObject3D(const Camera& camera, const BaseLight& baseLigh
 		perfectParticleArray_[i]->Draw(camera, baseLight);
 		greatParticleArray_[i]->Draw(camera, baseLight);
 		goodParticleArray_[i]->Draw(camera, baseLight);
-
 	}
-
 }
 
 void PlayMainScene::DrawSprite() {
@@ -301,6 +312,12 @@ void PlayMainScene::DrawSprite() {
 		//アセットの描画
 		pauseAsset_->Draw();
 	}
+	//プレイ中
+	else {
+		//判定UIの表示
+		mainScene_->GetJudgementLine()->DrawSprite();
+	}
+
 }
 
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition) {
@@ -322,11 +339,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			switch (startNote.type) {
 			case NoteType::NormalTap:
 				//通常ノーツの設定
-				for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < NORMAL_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						normalTapNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						normalTapNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -344,11 +361,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::HiPassLongStart:
-				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < HI_PASS_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						highPassLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						highPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -378,11 +395,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::LowPassLongStart:
-				for (uint8_t j = 0u; j < LOW_PASS_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < LOW_PASS_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						lowPassLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						lowPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -400,11 +417,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::TranceGate8LongStart:
-				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						transGateEighthLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateEighthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -422,11 +439,11 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				break;
 
 			case NoteType::TranceGate16LongStart:
-				for (uint8_t j = 0u; j < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; j++) {
+				for (uint8_t j = 0u; j < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_; j++) {
 					//未使用時
 					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(lanePositionY_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -459,6 +476,8 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			if (overlookValue >= NoteJudgement::Time::MISS) {
 				//ミス
 				startNote.judgement = NoteJudgement::Selection::Miss;
+				//ミスのUIを出す
+				mainScene_->GetJudgementLine()->SetReleaseUI(startNote.place, startNote.judgement);
 				record_.miss++;
 				mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(startNote.judgement));
 				record_.combo = 0u;
@@ -518,13 +537,16 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//パーティクルの放出
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+				if (targetNote.place == NoteLane::Place::Up) {
 					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 				}
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+				if (targetNote.place == NoteLane::Place::Down) {
 					perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
 				
+				//パーフェクトのUIを出す
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
+
 				//コンボを増やす
 				record_.combo++;
 				//スコアを加算
@@ -540,12 +562,15 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//パーティクルの放出
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+				if (targetNote.place == NoteLane::Place::Up) {
 					greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 				}
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+				if (targetNote.place == NoteLane::Place::Down) {
 					greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
+
+				//グレートのUIを出す
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 				//コンボを増やす
 				record_.combo++;
@@ -562,12 +587,15 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				isConfirmJudgement = true;
 
 				//パーティクルの放出
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+				if (targetNote.place == NoteLane::Place::Up) {
 					goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 				}
-				if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+				if (targetNote.place == NoteLane::Place::Down) {
 					goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 				}
+
+				//グッドのUIを出す
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 				//コンボを増やす
 				record_.combo++;
@@ -582,6 +610,10 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 				targetNote.judgement = NoteJudgement::Selection::Miss;
 				mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Miss));
 				isConfirmJudgement = true;
+
+				//ミスのUIを出す
+				mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
+
 
 				//コンボを0に戻す
 				record_.combo = 0u;
@@ -611,17 +643,21 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Perfect));
 					//コンボを増やす
 					record_.combo++;
+					targetNote.judgement = NoteJudgement::Selection::Perfect;
 					//スコアを加算
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::PERFECT * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
 					//パーティクルの放出
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					if (targetNote.place == NoteLane::Place::Up) {
 						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 					}
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					if (targetNote.place == NoteLane::Place::Down) {
 						perfectParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
+
+					//パーフェクトのUIを出す
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 
 				}
 				//Great用
@@ -632,18 +668,23 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Great));
 					//コンボを増やす
 					record_.combo++;
+					//グレート
+					targetNote.judgement = NoteJudgement::Selection::Great;
 					//スコアを加算
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GREAT * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
 
 					//パーティクルの放出
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					if (targetNote.place == NoteLane::Place::Up) {
 						greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 					}
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					if (targetNote.place == NoteLane::Place::Down) {
 						greatParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
+
+					//グレートのUIを出す
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 				}
 				//Good用
 				else if (absoluteJudgementTime < NoteJudgement::Time::GOOD) {
@@ -653,24 +694,31 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Good));
 					//コンボを増やす
 					record_.combo++;
+					//グッド
+					targetNote.judgement = NoteJudgement::Selection::Good;
 					//スコアを加算
 					record_.score += static_cast<uint32_t>(NoteJudgement::BasicScore::GOOD * comboBonusScale_);
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
 
 					//パーティクルの放出
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Up)) {
+					if (targetNote.place == NoteLane::Place::Up) {
 						goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Up)]->SetIsRelease();
 					}
-					if (targetNote.place == static_cast<uint8_t>(NoteLane::Place::Down)) {
+					if (targetNote.place == NoteLane::Place::Down) {
 						goodParticleArray_[static_cast<uint8_t>(NoteLane::Place::Down)]->SetIsRelease();
 					}
+
+					//グッドのUIを出す
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 				}
 				//Miss用
 				else if (absoluteJudgementTime < NoteJudgement::Time::MISS) {
 
 					//判定の設定
 					record_.miss++;
+					//ミス
+					targetNote.judgement = NoteJudgement::Selection::Miss;
 					mainScene_->GetGauge()->SetIncreaseValue(static_cast<size_t>(NoteJudgement::Selection::Miss));
 					//コンボを0に戻す
 					record_.combo = 0u;
@@ -678,7 +726,13 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
 					//始点を判定済みにする
 					targetNote.isLongStartJugged = true;
+
+					//ミスのUIを出す
+					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 				}
+
+				
+
 			}
 
 
@@ -699,7 +753,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 			if (isConfirmJudgement) {
 				laneCondition.isHoldLongNote = false;
 				targetNote.isJudged = true;
-
 				//また初期値に戻す
 				highPassLongNoteArray_[targetNote.poolIndex]->SetIsUsed(false);
 				highPassLongNoteArray_[targetNote.poolIndex]->SetPoolIndex(-1);
@@ -710,7 +763,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 #pragma region 各ノーツの更新
 	//通常ノーツの設定
-	for (uint8_t j = 0u; j < NORMAL_NOTE_MAX_SIZE_; j++) {
+	for (uint8_t j = 0u; j < NORMAL_NOTE_AMOUNT_; j++) {
 		//使用時
 		if (normalTapNoteArray_[j]->GetIsUsed()) {
 			//楽曲時間を設定
@@ -720,7 +773,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 	}
 	//ハイパスロングノーツの設定
-	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < HI_PASS_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (highPassLongNoteArray_[i]->GetIsUsed()) {
 			//楽曲時間を設定
@@ -732,7 +785,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 
 	//ToDo:ハイパスをもとに貼り換え
 	//ローパスロングノーツの設定
-	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < LOW_PASS_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (lowPassLongNoteArray_[i]->GetIsUsed()) {
 			size_t startIndex = 0u;
@@ -761,7 +814,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 	}
 	//トランスゲート8ノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (transGateEighthLongNoteArray_[i]->GetIsUsed()) {
 			size_t startIndex = 0u;
@@ -790,7 +843,7 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 		}
 	}
 	//トランスゲート16ノーツの設定
-	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_; i++) {
+	for (uint8_t i = 0u; i < TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_; i++) {
 		//使用時
 		if (transGateSixteenthLongNoteArray_[i]->GetIsUsed()) {
 			size_t startIndex = 0u;

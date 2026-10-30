@@ -177,7 +177,7 @@ private:
 	const float_t PLAYER_MOVE_DISTANCE_ = 10.0f;
 private:
 	//ウィンドウのサイズ
-	Vector2<int32_t> windowSize_ = {};
+	Vector2<float_t> windowSize_ = {};
 
 	//トランジション終了したかどうか
 	bool isEndTransition_ = false;

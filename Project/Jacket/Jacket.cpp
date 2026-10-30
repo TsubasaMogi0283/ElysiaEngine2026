@@ -34,7 +34,7 @@ void Jacket::Initialize(const std::vector<uint32_t> jacketTextureHandleVector, c
 		asset.levelFrameSprite->SetAnchorPoint({ .x = 0.5f,.y = 1.0f });
 
 		//座標のの設定
-		asset.position = { .x = static_cast<int32_t>(i) * JACKET_INTERVAL_X_ + INITIAL_JACKET_POSITION_X ,.y = JACKET_INITIAL_POSITION_Y_ };
+		asset.position = { .x = static_cast<float_t>(i) * JACKET_INTERVAL_X_ + INITIAL_JACKET_POSITION_X ,.y = JACKET_INITIAL_POSITION_Y_ };
 		asset.mainSprite->SetPosition(asset.position);
 		asset.levelFrameSprite->SetPosition(asset.position);
 

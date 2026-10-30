@@ -70,7 +70,7 @@ private:
 		uint8_t placeNumber;
 
 		//座標
-		Vector2<int32_t> position;
+		Vector2<float_t> position;
 		//移動が終わったかどうか
 		bool isMoved_ = false;
 	};
@@ -156,9 +156,9 @@ private:
 	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 
 	//ジャケットの隣同士の間隔
-	const int32_t JACKET_INTERVAL_X_ = 500;
+	const float_t JACKET_INTERVAL_X_ = 500.0f;
 	//初期座標Y
-	const int32_t JACKET_INITIAL_POSITION_Y_ = 500;
+	const float_t JACKET_INITIAL_POSITION_Y_ = 500.0f;
 
 	//選択時のスケール
 	const float_t SELECTED_SCALE_ = 0.4f;

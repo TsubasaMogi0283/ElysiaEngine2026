@@ -268,21 +268,21 @@ private:
 private:
 
 	//初期のコンボ座標
-	int32_t initialComboPositionY_ = 0;
+	float_t initialComboPositionY_ = 0.0f;
 	//通常表示時のコンボ座標
-	int32_t comboDisplayPositionY_ = 0;
+	float_t comboDisplayPositionY_ = 0.0f;
 
 	//初期のスコア座標
-	std::array<int32_t, SCORE_DIGIT_> initialScorePositionXArray_ = {};
-	int32_t initialScorePositionY_ = 0;
+	std::array<float_t, SCORE_DIGIT_> initialScorePositionXArray_ = {};
+	float_t initialScorePositionY_ = 0.0f;
 	//通常表示時のスコア座標
-	int32_t scoreDisplayPositionY_ = 0;
+	float_t scoreDisplayPositionY_ = 0.0f;
 	//スコア座標のオフセット
-	int32_t scorePositionOffsetX_ = 1000;
+	float_t scorePositionOffsetX_ = 1000.0f;
 	//スコアのスケール
 	float_t scoreScale_ = 0.5f;
-
-	Vector2<int32_t> numberTextureSize_ = { .x = 0, .y = 0 };
+	//数のサイズ
+	Vector2<float_t> numberTextureSize_ = { .x = 0.0f, .y = 0.0f };
 
 private:
 	/// <summary>
@@ -292,7 +292,7 @@ private:
 		//UI用のスプライト
 		std::unique_ptr<Elysia::Sprite>sprite;
 		//スプライトの座標
-		Vector2<int32_t> position;
+		Vector2<float_t> position;
 		//値
 		uint16_t value;
 		//テクスチャハンドル
@@ -306,7 +306,7 @@ public:
 	/// コンボの初期座標を取得
 	/// </summary>
 	/// <returns>初期座標</returns>
-	inline int32_t GetInitialComboPositionY()const {
+	inline float_t GetInitialComboPositionY()const {
 		return initialComboPositionY_;
 	}
 
@@ -314,7 +314,7 @@ public:
 	/// スコアの初期Y座標を取得
 	/// </summary>
 	/// <returns>初期Y座標</returns>
-	inline int32_t GetInitialScorePositionY()const {
+	inline float_t GetInitialScorePositionY()const {
 		return initialScorePositionY_;
 	}
 
@@ -322,7 +322,7 @@ public:
 	/// スコアの通常表示座標を取得
 	/// </summary>
 	/// <returns>スコアの通常表示座標</returns>
-	inline int32_t GetScoreDisplayPositionY()const {
+	inline float_t GetScoreDisplayPositionY()const {
 		return scoreDisplayPositionY_;
 	}
 
@@ -330,7 +330,7 @@ public:
 	/// スコアの座標を設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	inline void SetScorePositionsY(const int32_t& positionY) {
+	inline void SetScorePositionsY(const float_t& positionY) {
 		for (uint8_t i = 0u; i < SCORE_DIGIT_; i++) {
 			this->scoreArray_[i].sprite->SetPosition({initialScorePositionXArray_[i], positionY});
 		}
@@ -362,7 +362,13 @@ public:
 		return temporaryRecord_;
 	}
 
-	
+	/// <summary>
+	/// カメラの取得
+	/// </summary>
+	/// <returns></returns>
+	inline Camera GetCamera()const {
+		return camera_;
+	}
 
 
 private:

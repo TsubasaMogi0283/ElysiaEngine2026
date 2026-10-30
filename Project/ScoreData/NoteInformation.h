@@ -11,13 +11,14 @@
 #include <Note/BaseNote.h>
 #include <Note/NoteType.h>
 #include <Note/NoteJudgement.h>
+#include <Note/NoteLane.h>
 
 /// <summary>
 /// ノーツの情報
 /// </summary>
 struct NoteInformation {
 	//上下のレーン
-	uint8_t place = 0u;
+	NoteLane::Place place = NoteLane::Place::Up;
 	//ノーツの感覚(音符)
 	size_t length = 0u;
 	//種類

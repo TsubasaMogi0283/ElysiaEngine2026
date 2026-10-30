@@ -80,6 +80,8 @@ private:
 		bool isHold = false;
 	};
 
+	
+
 private:
 	/// <summary>
 	/// ノーツの流れる処理
@@ -109,23 +111,18 @@ private:
 private:
 	
 	//初期の座標
-	const Vector2<float_t> INITIAL_POSITION_ = { .x = 50.0f,.y = 0.0f };
-	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
-	//レーンのY座標
-	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = {15.0f,5.0f};
-	//レーンのZ座標
-	const float_t LANE_POSITION_Z_ = 0.0f;
-
+	const Vector2<float_t> NOTE_INITIAL_POSITION_ = { .x = 50.0f,.y = 0.0f };
+	
 	//ノーマルタップノーツ格納数の最大サイズ
-	static const uint8_t NORMAL_NOTE_MAX_SIZE_ = 32u;
+	static const uint8_t NORMAL_NOTE_AMOUNT_ = 64u;
 	//ロングノーツ(ハイパス)格納数の最大サイズ
-	static const uint8_t HI_PASS_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t HI_PASS_LONG_NOTE_AMOUNT_ = 16u;
 	//ロングノーツ(ローパス)格納数の最大サイズ
-	static const uint8_t LOW_PASS_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t LOW_PASS_LONG_NOTE_AMOUNT_ = 16u;
 	//ロングノーツ(トランスゲート8)格納数の最大サイズ
-	static const uint8_t TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_ = 16u;
 	//ロングノーツ(トランスゲート16)格納数の最大サイズ
-	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_ = 6u;
+	static const uint8_t TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_ = 16u;
 
 	//動き始める時間のオフセット
 	const float_t NOTE_MOVE_START_TIME_OFFSET_ = 2.0f;
@@ -134,7 +131,6 @@ private:
 
 	//ロングノーツのスコア増加量
 	const uint32_t LONG_NOTE_SCORE_INCREASE_VALUE_ = 100u;
-
 	//パーティクルの数
 	static const uint8_t PARTICLE_AMOUNT_ = 2u;
 
@@ -150,15 +146,15 @@ private:
 
 	//オブジェクトプールで管理するための変数
 	//通常タップノーツの固定配列
-	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_MAX_SIZE_> normalTapNoteArray_ = {};
+	std::array<std::unique_ptr<NormalTapNote>, NORMAL_NOTE_AMOUNT_> normalTapNoteArray_ = {};
 	//ロング開始ノーツ
-	std::array<std::unique_ptr<HighPassLongNote>, HI_PASS_LONG_NOTE_MAX_SIZE_> highPassLongNoteArray_ = {};
+	std::array<std::unique_ptr<HighPassLongNote>, HI_PASS_LONG_NOTE_AMOUNT_> highPassLongNoteArray_ = {};
 	//ロング(ローパス)開始ノーツ
-	std::array<std::unique_ptr<LowPassLongNote>, LOW_PASS_LONG_NOTE_MAX_SIZE_> lowPassLongNoteArray_ = {};
+	std::array<std::unique_ptr<LowPassLongNote>, LOW_PASS_LONG_NOTE_AMOUNT_> lowPassLongNoteArray_ = {};
 	//ロング(トランスゲート8)開始ノーツ
-	std::array<std::unique_ptr<TranceGateEighthLongNote>, TRANS_GATE_EIGHTH_LONG_NOTE_MAX_SIZE_> transGateEighthLongNoteArray_ = {};
+	std::array<std::unique_ptr<TranceGateEighthLongNote>, TRANS_GATE_EIGHTH_LONG_NOTE_AMOUNT_> transGateEighthLongNoteArray_ = {};
 	//ロング(トランスゲート16)開始ノーツ
-	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_MAX_SIZE_> transGateSixteenthLongNoteArray_ = {};
+	std::array<std::unique_ptr<TranceGateSixteenthLongNote>, TRANS_GATE_SIXTEENTH_LONG_NOTE_AMOUNT_> transGateSixteenthLongNoteArray_ = {};
 
 	//ポーズアセット
 	std::unique_ptr<PauseAsset> pauseAsset_ = nullptr;
@@ -180,16 +176,20 @@ private:
 	//レーンの状態
 	LaneCondition upLaneCondition = {};
 	LaneCondition downLaneCondition = {};
+	//レーンの座標
+	std::vector<float_t> lanePositionY_ = {};
 
 	//記録
 	NoteJudgement::Record record_ = {};
+
 	//判定のパーティクル
 	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> perfectParticleArray_ = {};
 	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> greatParticleArray_ = {};
 	std::array<std::unique_ptr<Elysia::Particle3D>, PARTICLE_AMOUNT_> goodParticleArray_ = {};
-
+	
+	//ハンドル
 	uint32_t perfectParticleTextureHandle_ = 0u;
 	uint32_t greatPartucleTextureHandle_ = 0u;
 	uint32_t goodPartucleTextureHandle_ = 0u;
-
+	
 };

@@ -199,7 +199,7 @@ private:
 		//スプライト
 		std::unique_ptr<Elysia::Sprite> sprite;
 		//スプライトの座標
-		Vector2<int32_t> position;
+		Vector2<float_t> position;
 		//値
 		uint8_t value;
 		//テクスチャハンドル

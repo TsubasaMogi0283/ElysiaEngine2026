@@ -177,7 +177,7 @@ Matrix4x4 Matrix4x4::MakeRotateXYZMatrix(const float_t& radianX, const float_t& 
 	return result;
 }
 
-Matrix4x4 Matrix4x4::MakeRotateMatrix(const Quaternion& quaternion){
+Matrix4x4 Matrix4x4::MakeRotateMatrix(const Quaternion& quaternion) {
 	Matrix4x4 result = {};
 	float_t w = quaternion.w;
 	float_t x = quaternion.x;
@@ -498,6 +498,32 @@ Matrix4x4 Matrix4x4::MakeTransposeMatrix(const Matrix4x4& m) {
 		result.m[3][1] = m.m[1][3],
 		result.m[3][2] = m.m[2][3],
 		result.m[3][3] = m.m[3][3],
+
+	};
+	return result;
+}
+
+Matrix4x4 Matrix4x4::MakeViewportMatrix(const float_t& left, const float_t& top, const float_t& width, const float_t& height, const float_t& minDepth, const float_t& maxDepth) {
+	Matrix4x4 result = {
+		result.m[0][0] = width / 2.0f,
+		result.m[0][1] = 0.0f,
+		result.m[0][2] = 0.0f,
+		result.m[0][3] = 0.0f,
+
+		result.m[1][0] = 0.0f,
+		result.m[1][1] = -(height / 2.0f),
+		result.m[1][2] = 0.0f,
+		result.m[1][3] = 0.0f,
+
+		result.m[2][0] = 0.0f,
+		result.m[2][1] = 0.0f,
+		result.m[2][2] = maxDepth - minDepth,
+		result.m[2][3] = 0.0f,
+
+		result.m[3][0] = left + width / 2.0f,
+		result.m[3][1] = top + height / 2,
+		result.m[3][2] = minDepth,
+		result.m[3][3] = 1.0f,
 
 	};
 	return result;

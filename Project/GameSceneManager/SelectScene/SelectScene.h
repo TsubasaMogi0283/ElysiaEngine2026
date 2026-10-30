@@ -153,7 +153,7 @@ private:
 
 	//矢印
 	std::array<std::unique_ptr<Elysia::Sprite>, ARRAOW_AMOUNT_> arrowSpriteArray_ = {};
-	std::array<Vector2<int32_t>, ARRAOW_AMOUNT_> arrowPositionArray_ = {};
+	std::array<Vector2<float_t>, ARRAOW_AMOUNT_> arrowPositionArray_ = {};
 
 	//決定
 	std::unique_ptr<Elysia::Sprite>decideSprite_ = nullptr;

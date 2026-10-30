@@ -63,18 +63,18 @@ void SelectScene::Initialize(){
 	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
 
 	uint32_t arrowTextureHandle = textureManager_->Load("Resources/Sprite/Select/Arrow.png");
-	Vector2<int32_t>arrowTextureSize = {
-		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(arrowTextureHandle)),
-		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(arrowTextureHandle))
+	Vector2<float_t>arrowTextureSize = {
+		.x = static_cast<float_t>(textureManager_->GetTextureWidth(arrowTextureHandle)),
+		.y = static_cast<float_t>(textureManager_->GetTextureHeight(arrowTextureHandle))
 	};
 
 	arrowPositionArray_[0] = {
-			.x = windowsSetup_->GetClientSize().x / 2 - arrowTextureSize.x / 2- frameTextureSize .x/4,
-			.y = 360
+			.x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u) - arrowTextureSize.x / 2.0f - frameTextureSize.x / 4.0f,
+			.y = 360.0f
 	};
 	arrowPositionArray_[1] = {
-			.x = windowsSetup_->GetClientSize().x / 2 + arrowTextureSize.x / 2+ frameTextureSize .x/4,
-			.y = 360
+			.x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u) + arrowTextureSize.x / 2.0f+ frameTextureSize .x/4.0f,
+			.y = 360.0f
 	};
 	for (uint8_t i = 0u; i < ARRAOW_AMOUNT_; i++) {
 		arrowSpriteArray_[i] = Elysia::Sprite::Create(arrowTextureHandle);

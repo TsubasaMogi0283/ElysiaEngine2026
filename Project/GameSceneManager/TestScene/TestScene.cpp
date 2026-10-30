@@ -86,9 +86,17 @@ void TestScene::Initialize(){
 
 #pragma endregion	
 
-	//判定線のモデルを生成
+	std::array<uint32_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)> judgementUITextureHandle = {};
+	for (uint8_t i = 0u;i < static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
+		std::string path = "Resources/Sprite/Judgement/";
+		std::string_view judgementStringView = magic_enum::enum_name(static_cast<NoteJudgement::Selection>(i));
+		std::string newJudgementString(judgementStringView);
+		judgementUITextureHandle[i] = textureManager_->Load(path + newJudgementString + ".png");
+	}
+
+	//判定線のモデルを生成j
 	judgementLine_ = std::make_unique<JudgementLine>();
-	judgementLine_->Initialize(normalNoteModelHandle);
+	judgementLine_->Initialize(normalNoteModelHandle, judgementUITextureHandle);
 
 	//譜面管理クラスより譜面データをいただく
 	scoreData_ = gameSceneManager_->GetScoreDataManager()->GetExistScoreData();
@@ -254,7 +262,7 @@ void TestScene::Update(){
 #endif // _DEBUG
 
 	//更新
-	judgementLine_->Update();
+	judgementLine_->UpdateObject3D();
 	camera_.Update();
 	directionalLight_.Update();
 }
@@ -295,7 +303,7 @@ void TestScene::DrawObject3D(){
 		}
 	}
 	//判定の線を取得
-	judgementLine_->Draw(camera_, directionalLight_);
+	judgementLine_->DrawObject3D(camera_, directionalLight_);
 }
 
 void TestScene::PreDrawPostEffect(){
@@ -336,7 +344,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.place = NoteLane::Place::Up,
 					.length = length,
 					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -355,7 +363,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::NormalTap,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -376,7 +384,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.place = NoteLane::Place::Up,
 					.length = length,
 					.type = NoteType::HiPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -395,7 +403,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::HiPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -416,7 +424,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.place = NoteLane::Place::Up,
 					.length = length,
 					.type = NoteType::LowPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -435,7 +443,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::LowPassLongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -457,7 +465,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.place = NoteLane::Place::Up,
 					.length = length,
 					.type = NoteType::TranceGate8LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -476,7 +484,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::TranceGate8LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -501,7 +509,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.place = NoteLane::Place::Up,
 					.length = length,
 					.type = NoteType::TranceGate16LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -520,7 +528,7 @@ void TestScene::GenerateNotes() {
 				musicData_.totalNote_++;
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::TranceGate16LongStart,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -541,7 +549,7 @@ void TestScene::GenerateNotes() {
 			if (note.upNote == NoteType::LongEnd) {
 				//ノーツ情報の設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Up),
+					.place = NoteLane::Place::Up,
 					.length = length,
 					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -558,7 +566,7 @@ void TestScene::GenerateNotes() {
 			if (note.downNote == NoteType::LongEnd) {
 				//ノーツ情報を設定
 				NoteInformation noteInformation = {
-					.place = static_cast<uint8_t>(NoteLane::Place::Down),
+					.place = NoteLane::Place::Down,
 					.length = length,
 					.type = NoteType::LongEnd,
 					.startMoveTime = totalTime + i * noteInterval - startTime,
@@ -600,7 +608,7 @@ void TestScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCon
 					//未使用時
 					if (!normalTapNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						normalTapNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						normalTapNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -622,7 +630,7 @@ void TestScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCon
 					//未使用時
 					if (!highPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						highPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						highPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -656,7 +664,7 @@ void TestScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCon
 					//未使用時
 					if (!lowPassLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						lowPassLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						lowPassLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -678,7 +686,7 @@ void TestScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCon
 					//未使用時
 					if (!transGateEighthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						transGateEighthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateEighthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定
@@ -700,7 +708,7 @@ void TestScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCon
 					//未使用時
 					if (!transGateSixteenthLongNoteArray_[j]->GetIsUsed()) {
 						//Y座標の設定
-						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[startNote.place]);
+						transGateSixteenthLongNoteArray_[j]->SetLanePositionY(LANE_POSITION_Y_[static_cast<uint8_t>(startNote.place)]);
 						//開始時間を設定
 						transGateSixteenthLongNoteArray_[j]->SetStartMoveTime(startNote.startMoveTime);
 						//到着時間を設定

@@ -5,10 +5,29 @@
  * @brief 判定線クラス
  * @author 茂木翼
  */
-
+#include <array>
 #include <Model.h>
 #include <WorldTransform.h>
 #include <Material.h>
+#include <Sprite.h>
+#include <Note/NoteLane.h>
+#include <Note/NoteJudgement.h>
+
+/// <summary>
+/// ElysiaEngine(前方宣言)
+/// </summary>
+namespace Elysia {
+	/// <summary>
+	/// テクスチャ管理クラス
+	/// </summary>
+	class TextureManager;
+	
+	/// <summary>
+	/// ウィンドウクラス
+	/// </summary>
+	class WindowsSetup;
+
+}
 
 /// <summary>
 /// 判定線クラス
@@ -18,25 +37,37 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	JudgementLine() = default;
+	JudgementLine();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="normalNoteModelHandle">通常ノーツのモデルハンドル</param>
-	void Initialize(uint32_t normalNoteModelHandle);
+	/// <param name="judgementTextureHandleArray">判定のテクスチャーハンドル</param>
+	void Initialize(const uint32_t& normalNoteModelHandle,const std::array<uint32_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)> judgementTextureHandleArray);
 
 	/// <summary>
-	/// 更新
+	/// 3Dオブジェクトの更新
 	/// </summary>
-	void Update();
+	void UpdateObject3D();
+
+	/// <summary>
+	/// スプライトの更新
+	/// </summary>
+	/// <param name="camera"></param>
+	void UpdateSprite(const Camera& camera);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
 	/// <param name="baseLight"></param>
-	void Draw(const Camera& camera, const BaseLight& baseLight);
+	void DrawObject3D(const Camera& camera, const BaseLight& baseLight);
+
+	/// <summary>
+	/// スプライトの描画
+	/// </summary>
+	void DrawSprite();
 
 	/// <summary>
 	/// デストラクタ
@@ -45,23 +76,112 @@ public:
 
 public:
 	/// <summary>
+	/// 成功判定UIを出す設定をする
+	/// </summary>
+	/// <param name="place"></param>
+	/// <param name="selection"></param>
+	void SetReleaseUI(const NoteLane::Place& place,const NoteJudgement::Selection& selection);
+
+public:
+	/// <summary>
 	/// 判定線のX座標を取得
 	/// </summary>
 	/// <returns>X座標</returns>
 	inline float_t GetJudgementPositionX()const {
-		return JUDGEMENT_POSITION_X_;
+		return LINE_POSITION_X_;
+	}
+
+	/// <summary>
+	/// プレイヤーの座標を設定
+	/// </summary>
+	/// <param name="playerPosition"></param>
+	inline void SetPlayerPosition(const Vector3<float_t>& playerPosition) {
+		this->playerPosition_ = playerPosition;
 	}
 
 private:
-	//判定のX座標
-	const float_t JUDGEMENT_POSITION_X_ = -17.0f;
+	//テクスチャ管理クラス
+	Elysia::TextureManager* textureManager_ = nullptr;
+	//ウィンドウクラス
+	Elysia::WindowsSetup* windowSetup_ = nullptr;
 
+private:
+	//判定のX座標
+	const float_t LINE_POSITION_X_ = -17.0f;
+	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
+	//レーンのY座標
+	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = { 15.0f,5.0f };
+
+	//判定のUIの数
+	static const uint8_t UI_AMOUNT_ = 8u;
+	//判定の動く時間
+	const float_t UI_MOVE_TIME_ = 0.15f;
+	//判定の出る時間
+	const float_t APPEAR_TIME_ = UI_MOVE_TIME_ * 2.0f;
+
+	//判定の移動距離
+	const float_t UI_MOVE_DISTANCE_ = 100u;
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f / 60.0f;
+	//UIの初期座標
+	const float_t INITIAL_UI_POSITION_X = 150.0f;
+
+private:
+
+	/// <summary>
+	/// 判定UI
+	/// </summary>
+	struct JudgementUI {
+		//スプライト
+		std::unique_ptr<Elysia::Sprite>sprite = nullptr;
+		//動き
+		float_t ratio = 0.0f;
+		//時間
+		float_t currentTime = 0.0f;
+
+		//使用中かどうか
+		bool isUse = false;
+		//場所
+		NoteLane::Place place = NoteLane::Place::Up;
+		//初期の座標
+		float_t initialPositionY = {};
+		//動いた後の座標
+		float_t movedPositionY = {};
+
+		//テクスチャーハンドル
+		uint32_t textureHandle = 0u;
+		//判定
+		NoteJudgement::Selection judgement = NoteJudgement::Selection::Size;
+	
+	};
+
+public:
+	/// <summary>
+	/// レーンの座標を設定
+	/// </summary>
+	/// <returns>座標</returns>
+	inline std::array<float_t, LANE_SIZE_> GetLanePosition() const{
+		return LANE_POSITION_Y_;
+	}
 
 private:
 	//モデル
-	std::unique_ptr<Elysia::Model> model_ = nullptr;
+	std::unique_ptr<Elysia::Model> lineModel_ = nullptr;
 	//ワールドトランスフォーム
-	WorldTransform worldTransform_ = {};
+	WorldTransform lineWorldTransform_ = {};
 	//マテリアル
-	Material material_ = {};
+	Material lineMaterial_ = {};
+
+	//判定のUI
+	//成功
+	std::array<JudgementUI, UI_AMOUNT_ >judgementUIArray_;
+	//ハンドル
+	std::array<uint32_t, static_cast<uint8_t>(NoteJudgement::Selection::Size)> judgementTextureHandleArray_ = {};
+
+	//プレイヤーの座標
+	Vector3<float_t> playerPosition_ = {};
+
+	//UIの座標
+	std::array<Vector3<float_t>, 2u> uiPositionArray_ = {};
+
 };

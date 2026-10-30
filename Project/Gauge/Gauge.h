@@ -62,7 +62,7 @@ public:
 	/// 初期の座標を設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	inline void SetInitialPosition(const Vector2<int32_t>& position) {
+	inline void SetInitialPosition(const Vector2<float_t>& position) {
 		this->initialPosition_ = position;
 	}
 
@@ -71,7 +71,7 @@ public:
 	/// Y座標の設定
 	/// </summary>
 	/// <param name="positionY">Y座標</param>
-	inline void SetPositionY(const int32_t& positionY) {
+	inline void SetPositionY(const float_t& positionY) {
 		this->back_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
 		this->main_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
 		this->frame_->SetPosition({ .x = this->initialPosition_.x,.y = positionY });
@@ -81,7 +81,7 @@ public:
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position"></param>
-	inline void SetPosition(const Vector2<int32_t>& position) {
+	inline void SetPosition(const Vector2<float_t>& position) {
 		this->position_ = position;
 		this->back_->SetPosition(this->position_);
 		this->main_->SetPosition(this->position_);
@@ -92,7 +92,7 @@ public:
 	/// 最終地点の設定
 	/// </summary>
 	/// <param name="position">Y座標</param>
-	inline void SetFinalPositionY(const int32_t& positionY) {
+	inline void SetFinalPositionY(const float_t& positionY) {
 		this->finalPosition_ = { .x = this->initialPosition_.x,.y = positionY };
 	}
 
@@ -128,7 +128,7 @@ public:
 	/// 初期ゲージ座標を取得
 	/// </summary>
 	/// <returns>初期ゲージ座標</returns>
-	inline Vector2<int32_t> GetInitialPosition()const {
+	inline Vector2<float_t> GetInitialPosition()const {
 		return initialPosition_;
 	}
 
@@ -136,7 +136,7 @@ public:
 	/// ゲージの通常表示座標を取得
 	/// </summary>
 	/// <returns>ゲージの通常表示座標</returns>
-	inline Vector2<int32_t> GetGaugePosition()const {
+	inline Vector2<float_t> GetGaugePosition()const {
 		return position_;
 	}
 
@@ -144,7 +144,7 @@ public:
 	/// 最終地点の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	inline Vector2<int32_t> GetFinalPosition()const {
+	inline Vector2<float_t> GetFinalPosition()const {
 		return finalPosition_;
 	}
 
@@ -185,11 +185,11 @@ private:
 
 	//ゲージの座標
 	//初期座標
-	Vector2<int32_t>initialPosition_ = {};
+	Vector2<float_t>initialPosition_ = {};
 	//座標
-	Vector2<int32_t>position_ = {};
+	Vector2<float_t>position_ = {};
 	//最終地点
-	Vector2<int32_t>finalPosition_ = {};
+	Vector2<float_t>finalPosition_ = {};
 
 
 	//総ノーツ数

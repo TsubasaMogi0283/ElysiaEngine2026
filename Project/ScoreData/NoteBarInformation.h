@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "NoteLane.h"
+#include <Note/NoteLane.h>
 
 /// <summary>
 /// 1小節のデータ

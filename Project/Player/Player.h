@@ -117,6 +117,14 @@ public:
 	/// <param name="judgementLine">判定線</param>
 	void SetJudgementLine(JudgementLine* judgementLine);
 
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	/// <returns>ワールド座標</returns>
+	inline Vector3<float_t> GetWorldPosition()const {
+		return worldTransform_.GetWorldPosition();
+	}
+
 private:
 	//判定線
 	JudgementLine* judgementLine_ = nullptr;
