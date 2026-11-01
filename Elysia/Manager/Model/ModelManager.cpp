@@ -97,8 +97,8 @@ ModelData Elysia::ModelManager::LoadFileForLevelData(const std::string& fileName
 		aiMaterial* material = scene->mMaterials[materialIndex];
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
 			aiString textureFilePath;
-			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-			modelData.textureFilePath = fileNameFolder + "/" + fileName + "/" + textureFilePath.C_Str();
+			material->GetTexture(aiTextureType_DIFFUSE, 0u, &textureFilePath);
+			modelData.materials[materialIndex].textureFilePath = fileNameFolder + "/" + fileName + "/" + textureFilePath.C_Str();
 		}
 	}
 	//ノードの読み込み
@@ -159,7 +159,7 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 	std::string filePath = directoryPath + "/" + fileName;
 	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
 	//メッシュがないのは対応しない
-	assert(scene->HasMeshes());
+	assert(scene && scene->HasMeshes());
 	//3.実際にファイルを読み、ModelDataを構築していく
 	//getline...streamから1行読んでstringに格納する
 	//istringstream...文字列を分解しながら読むためのクラス、空白を区切りとして読む
@@ -173,17 +173,22 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 		assert(mesh->HasNormals());
 		//TextureCoordsなのでTexCoordが無い時は止める
 		assert(mesh->HasTextureCoords(0));
+
+		//メッシュが始まる位置
+		const uint32_t BASE_VERTEX = static_cast<uint32_t>(modelData.vertices.size());
+		const uint32_t BASE_INDEX = static_cast<uint32_t>(modelData.indices.size());
 		//頂点を解析する
 		//最初に頂点数分のメモリを確保しておく
-		modelData.vertices.resize(mesh->mNumVertices);
+		modelData.vertices.resize(BASE_VERTEX + mesh->mNumVertices);
 		for (uint32_t verticesIndex = 0u; verticesIndex < mesh->mNumVertices; ++verticesIndex) {
 			aiVector3D& position = mesh->mVertices[verticesIndex];
 			aiVector3D& normal = mesh->mNormals[verticesIndex];
 			aiVector3D& texcoord = mesh->mTextureCoords[0][verticesIndex];
 			//右手から左手への変換
-			modelData.vertices[verticesIndex].position = { -position.x,position.y,position.z,1.0f };
-			modelData.vertices[verticesIndex].normal = { -normal.x,normal.y,normal.z };
-			modelData.vertices[verticesIndex].texCoord = { texcoord.x,texcoord.y };
+			VertexData& vertex = modelData.vertices[BASE_VERTEX + verticesIndex];
+			vertex.position = { -position.x, position.y, position.z, 1.0f };
+			vertex.normal = { -normal.x,normal.y,normal.z };
+			vertex.texCoord = { texcoord.x,texcoord.y };
 		}
 		//Indexの解析
 		for (uint32_t faceIndex = 0u; faceIndex < mesh->mNumFaces; ++faceIndex) {
@@ -191,10 +196,17 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 			//三角形で
 			assert(face.mNumIndices == 3);
 			for (uint32_t element = 0u; element < face.mNumIndices; ++element) {
-				uint32_t vertexIndex = face.mIndices[element];
-				modelData.indices.push_back(vertexIndex);
+				modelData.indices.push_back(BASE_VERTEX + face.mIndices[element]);
 			}
 		}
+
+		//メッシュ範囲の登録
+		MeshRange range = {
+			.indexStart = BASE_INDEX,
+			.indexCount = static_cast<uint32_t>(modelData.indices.size()) - BASE_INDEX,
+			.materialIndex = mesh->mMaterialIndex
+		};
+		modelData.meshRanges.push_back(range);
 
 		//SkinCluster構築用のデータ取得を追加
 		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
@@ -205,9 +217,9 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 
 			//InverseBindPoseMatrixの抽出
 			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
-			aiVector3D scale;
-			aiVector3D translate;
-			aiQuaternion rotate;
+			aiVector3D scale = {};
+			aiVector3D translate = {};
+			aiQuaternion rotate = {};
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
 
 			//SRTの作成
@@ -224,18 +236,19 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 
 			//Weight情報を取り出す
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
-				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId });
+				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId + BASE_VERTEX });
 			}
 		}
 	}
 
 	//Materialを解析する
-	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
-		aiMaterial* material = scene->mMaterials[materialIndex];
-		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
-			aiString textureFilePath;
-			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-			modelData.textureFilePath = directoryPath + "/" + textureFilePath.C_Str();
+	modelData.materials.resize(scene->mNumMaterials);
+	for (uint32_t i = 0u; i < scene->mNumMaterials; ++i) {
+		aiMaterial* material = scene->mMaterials[i];
+		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0u) {
+			aiString path;
+			material->GetTexture(aiTextureType_DIFFUSE, 0u, &path);
+			modelData.materials[i].textureFilePath = directoryPath + "/" + path.C_Str();
 		}
 	}
 

@@ -39,7 +39,7 @@ std::unique_ptr<Elysia::AnimationModel> Elysia::AnimationModel::Create(const uin
 	std::unique_ptr<Elysia::AnimationModel> model = std::make_unique<AnimationModel>();
 
 	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(Elysia::ModelManager::GetInstance()->GetModelData(modelHandle).textureFilePath);
+	model->textureHandle_ = model->textureManager_->Load(Elysia::ModelManager::GetInstance()->GetModelData(modelHandle).materials);
 	//モデルハンドル
 	model->modelHandle_ = modelHandle;
 	//アニメーションハンドル

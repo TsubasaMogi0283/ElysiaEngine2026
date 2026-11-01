@@ -36,7 +36,7 @@ InstancingModel* InstancingModel::Create(const uint32_t& modelHandle) {
 	InstancingModel* model = new InstancingModel();
 
 	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(model->modelmanager_->GetModelData(modelHandle).textureFilePath);
+	model->textureHandle_ = model->textureManager_->Load(model->modelmanager_->GetModelData(modelHandle).materials);
 
 	//モデルデータ
 	model->modelData_ = model->modelmanager_->GetModelData(modelHandle);

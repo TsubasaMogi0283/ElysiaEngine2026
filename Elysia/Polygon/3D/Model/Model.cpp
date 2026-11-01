@@ -33,7 +33,7 @@ std::unique_ptr<Elysia::Model> Elysia::Model::Create(const uint32_t& modelHandle
 	std::unique_ptr<Elysia::Model> model = std::make_unique<Elysia::Model>();
 
 	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(model->modelManager_->GetModelData(modelHandle).textureFilePath);
+	model->textureHandle_ = model->textureManager_->Load(model->modelManager_->GetModelData(modelHandle).materials);
 	//モデルデータ
 	model->modelData_ = model->modelManager_->GetModelData(modelHandle);
 
