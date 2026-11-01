@@ -32,10 +32,14 @@ std::unique_ptr<Elysia::Model> Elysia::Model::Create(const uint32_t& modelHandle
 	//生成
 	std::unique_ptr<Elysia::Model> model = std::make_unique<Elysia::Model>();
 
-	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(model->modelManager_->GetModelData(modelHandle).materials);
+	
 	//モデルデータ
 	model->modelData_ = model->modelManager_->GetModelData(modelHandle);
+	//テクスチャの読み込み
+	for (uint32_t i = 0u;i < model->modelManager_->GetModelData(modelHandle).materials.size();i++) {
+		model->modelData_.materials[i].textureFilePath = model->modelManager_->GetModelData(modelHandle).materials[i].textureFilePath;
+	}
+	model->textureHandle_ = model->textureManager_->Load(model->modelManager_->GetModelData(modelHandle).materials);
 
 	//頂点リソースを作る
 	model->vertexResource_ = model->directXSetup_->CreateBufferResource(sizeof(VertexData) * model->modelManager_->GetModelData(modelHandle).vertices.size()).Get();
@@ -121,7 +125,6 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	if (isInvisible_) {
 		return;
 	}
-
 
 	//頂点バッファ
 	VertexData* vertexData = nullptr;

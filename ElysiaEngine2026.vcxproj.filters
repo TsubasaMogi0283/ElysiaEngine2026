@@ -414,9 +414,6 @@
     <ClCompile Include="Elysia\Polygon\3D\AnimationModel\AnimationModel.cpp">
       <Filter>Elysia\ソース ファイル\Polygone\3D\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Elysia\Polygon\3D\InstancingModel\InstancingModel.cpp">
-      <Filter>Elysia\ソース ファイル\Polygone\3D\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Elysia\Polygon\3D\Model\Model.cpp">
       <Filter>Elysia\ソース ファイル\Polygone\3D\Model</Filter>
     </ClCompile>
@@ -770,9 +767,6 @@
       <Filter>Elysia\ヘッダー ファイル\Polygone\2D</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Polygon\3D\AnimationModel\AnimationModel.h">
-      <Filter>Elysia\ヘッダー ファイル\Polygone\3D\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Elysia\Polygon\3D\InstancingModel\InstancingModel.h">
       <Filter>Elysia\ヘッダー ファイル\Polygone\3D\Model</Filter>
     </ClInclude>
     <ClInclude Include="Elysia\Polygon\3D\Model\Model.h">
