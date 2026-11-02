@@ -117,20 +117,18 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
+	
+	//カメラ
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, camera.resource->GetGPUVirtualAddress());
+	//PixelShaderに送る方のカメラ
+	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
+	//DrawCall
 	//テクスチャー
 	for (const MeshRange& range : modelData_.meshRanges) {
 		const uint32_t textureHandle = textureHandleVector_[range.materialIndex];
 		textureManager_->GraphicsCommand(2u, textureHandle);
 		directXSetup_->GetCommandList()->DrawIndexedInstanced(range.indexCount, 1u, range.indexStart, 0u, 0u);
 	}
-
-	//カメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, camera.resource->GetGPUVirtualAddress());
-	//PixelShaderに送る方のカメラ
-	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
-
 }
 
 void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const BaseLight& baseLight){
@@ -189,10 +187,9 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	for (const MeshRange& range : modelData_.meshRanges) {
 		const uint32_t textureHandle = textureHandleVector_[range.materialIndex];
 		textureManager_->GraphicsCommand(2u, textureHandle);
+		//DrawCall
 		directXSetup_->GetCommandList()->DrawIndexedInstanced(range.indexCount, 1u, range.indexStart, 0u, 0u);
 	}
 
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
-
+	
 }
