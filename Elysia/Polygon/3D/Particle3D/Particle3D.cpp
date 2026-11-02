@@ -82,7 +82,7 @@ std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& m
 	//モデルの読み込み
 	ModelData modelData = particle3D->modelManager_->GetModelData(modelHandle);
 	//テクスチャの読み込み
-	particle3D->textureHandle_ = particle3D->textureManager_->Load(modelData.materials);
+	particle3D->textureHandle_ = particle3D->textureManager_->Load("Resources/External/Texture/Circle/circle.png");
 	//動きの種類
 	particle3D->moveType_ = moveType;
 
