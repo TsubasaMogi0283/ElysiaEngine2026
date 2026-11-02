@@ -175,7 +175,7 @@ namespace Elysia {
 
 
 		//テクスチャハンドル
-		uint32_t textureHandle_ = 0u;
+		std::vector<uint32_t> textureHandleVector_ = {};
 		//環境マップ
 		uint32_t environmentTextureHandle_ = 0;
 		//モデルハンドル

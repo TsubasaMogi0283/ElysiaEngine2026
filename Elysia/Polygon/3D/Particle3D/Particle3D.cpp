@@ -111,6 +111,9 @@ std::unique_ptr<Elysia::Particle3D> Elysia::Particle3D::Create(const uint32_t& m
 	//カメラ
 	particle3D->cameraResource_ = particle3D->directXSetup_->CreateBufferResource(sizeof(Vector3<float_t>));
 
+	//マテリアル
+	particle3D->material_.Initialize();
+
 	return particle3D;
 
 }
@@ -531,7 +534,7 @@ void Elysia::Particle3D::Draw(const Camera& camera,const BaseLight& baseLight){
 		break;
 
 	case LightingType::SpotLighting:
-		material_.lightingKinds = LightingType::PointLighting;
+		material_.lightingKinds = LightingType::SpotLighting;
 		directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(7u, baseLight.resource->GetGPUVirtualAddress());
 		break;
 
