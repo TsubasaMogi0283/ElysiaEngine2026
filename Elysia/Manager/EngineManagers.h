@@ -18,6 +18,7 @@
 #include <Audio.h>
 #include <GlobalVariables.h>
 #include <LevelDataManager.h>
+#include <MiniAudio.h>
 
 /// <summary>
 /// エンジンの管理クラスをまとめた構造体
@@ -37,8 +38,10 @@ struct EngineManagers {
 	Elysia::PipelineManager* pipelineManager_ = nullptr;
 	//Inputクラス
 	Elysia::Input* input_ = nullptr;
-	//オーディオクラス
+	//XAudio2クラス
 	Elysia::Audio* audio_ = nullptr;
+	//miniAudioクラス
+	Elysia::MiniAudio* miniAudio_ = nullptr;
 	//JSON読み込み(グローバル変数)
 	Elysia::GlobalVariables* globalVariables_ = nullptr;
 	//レベルデータ管理クラス

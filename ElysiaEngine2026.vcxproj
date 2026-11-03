@@ -137,6 +137,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elysia\Audio\Audio.cpp" />
+    <ClCompile Include="Elysia\Audio\MiniAudio.cpp" />
     <ClCompile Include="Elysia\Camera\Camera.cpp" />
     <ClCompile Include="Elysia\Convert\Convert.cpp" />
     <ClCompile Include="Elysia\DirectX\DirectXSetup.cpp" />
@@ -250,6 +251,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Elysia\Audio\Audio.h" />
     <ClInclude Include="Elysia\Audio\AudioInformation.h" />
     <ClInclude Include="Elysia\Audio\AudioScale.h" />
+    <ClInclude Include="Elysia\Audio\MiniAudio.h" />
     <ClInclude Include="Elysia\Camera\Camera.h" />
     <ClInclude Include="Elysia\Convert\Convert.h" />
     <ClInclude Include="Elysia\DirectX\BufferResource.h" />

@@ -29,8 +29,10 @@ Elysia::Framework::Framework() {
 	engineManagers_.pipelineManager_ = Elysia::PipelineManager::GetInstance();
 	//入力
 	engineManagers_.input_ = Elysia::Input::GetInstance();
-	//Audio
+	//XAudio2
 	engineManagers_.audio_ = Elysia::Audio::GetInstance();
+	//miniAudio
+	engineManagers_.miniAudio_ = Elysia::MiniAudio::GetInstance();
 	//JSON読み込み
 	engineManagers_.globalVariables_ = Elysia::GlobalVariables::GetInstance();
 	//レベルデータ管理クラス
@@ -73,8 +75,10 @@ void Elysia::Framework::Initialize() {
 	engineManagers_.pipelineManager_->Initialize();
 	//Inputの初期化
 	engineManagers_.input_->Initialize();
-	//Audioの初期化
+	//XAudio2の初期化
 	engineManagers_.audio_->Initialize();
+	//miniAudioの初期化
+	engineManagers_.miniAudio_->Initialize();
 	//JSON読み込みの初期化
 	engineManagers_.globalVariables_->LoadAllFile();
 	//ゲームシーン管理クラスの生成
@@ -143,9 +147,10 @@ void Elysia::Framework::Finalize() {
 
 	//レベルエディタの解放
 	engineManagers_.levelDataManager_->Finalize();
-	//オーディオの解放
+	//XAudio2の解放
 	engineManagers_.audio_->Finalize();
-
+	//miniAudioの解放
+	engineManagers_.miniAudio_->Finalize();
 #ifdef _DEBUG
 	//ImGuiの解放	
 	engineManagers_.imGuiManager_->Finalize();
