@@ -239,6 +239,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="External\magic_enum\magic_enum.vcxproj">
       <Project>{a5854b22-251f-4c84-8af8-8c36fd714e6f}</Project>
     </ProjectReference>
+    <ProjectReference Include="External\miniaudio\miniaudio.vcxproj">
+      <Project>{435cbd08-4c1b-4620-9258-17fb8ae81c82}</Project>
+    </ProjectReference>
     <ProjectReference Include="External\nlohmannJSON\nlohmannJSON.vcxproj">
       <Project>{6a069f8d-4e27-4764-bbbd-f5522ceb957d}</Project>
     </ProjectReference>
