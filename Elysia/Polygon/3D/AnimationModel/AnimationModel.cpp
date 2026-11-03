@@ -38,14 +38,27 @@ std::unique_ptr<Elysia::AnimationModel> Elysia::AnimationModel::Create(const uin
 	
 	std::unique_ptr<Elysia::AnimationModel> model = std::make_unique<AnimationModel>();
 
-	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(Elysia::ModelManager::GetInstance()->GetModelData(modelHandle).textureFilePath);
 	//モデルハンドル
 	model->modelHandle_ = modelHandle;
 	//アニメーションハンドル
 	model->animationHandle_ = animationHandle;
 	//モデルデータ
 	model->modelData_ = model->modelManager_->GetModelData(modelHandle);
+
+	//テクスチャの読み込み
+	//テクスチャの読み込み
+	model->textureHandleVector_.resize(model->modelData_.materials.size(), 0u);
+	for (size_t i = 0u; i < model->modelData_.materials.size(); ++i) {
+		const std::string& PATH = model->modelData_.materials[i].textureFilePath;
+		if (PATH.empty()) {
+			//空の場合テクスチャーにする
+			model->textureHandleVector_[i] = model->textureManager_->Load("Resources/Sprite/Back/White.png");
+		}
+		else {
+			//通常のテクスチャー
+			model->textureHandleVector_[i] = model->textureManager_->Load(PATH);
+		}
+	}
 
 	//頂点
 	//リソースを作る
@@ -129,10 +142,7 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 	directXSetup_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
-	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
+	
 	//カメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, camera.resource->GetGPUVirtualAddress());
 	//PixelShaderに送る方のカメラ
@@ -163,6 +173,18 @@ void Elysia::AnimationModel::Draw(const WorldTransform& worldTransform, const Ca
 		srvManager_->SetGraphicsRootDescriptorTable(9u, environmentTextureHandle_);
 	}
 
+	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
+	/*if (textureHandle_ != 0u) {
+		textureManager_->GraphicsCommand(2u, textureHandle_);
+	}*/
+	//テクスチャー
+	for (const MeshRange& range : modelData_.meshRanges) {
+		const uint32_t textureHandle = textureHandleVector_[range.materialIndex];
+		textureManager_->GraphicsCommand(2u, textureHandle);
+		directXSetup_->GetCommandList()->DrawIndexedInstanced(range.indexCount, 1u, range.indexStart, 0u, 0u);
+	}
+
+
 	//DrawCall
-	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
+	//directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
 }

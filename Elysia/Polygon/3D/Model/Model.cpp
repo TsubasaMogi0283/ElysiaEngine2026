@@ -32,13 +32,25 @@ std::unique_ptr<Elysia::Model> Elysia::Model::Create(const uint32_t& modelHandle
 	//生成
 	std::unique_ptr<Elysia::Model> model = std::make_unique<Elysia::Model>();
 
-	//テクスチャの読み込み
-	model->textureHandle_ = model->textureManager_->Load(model->modelManager_->GetModelData(modelHandle).textureFilePath);
-	//モデルデータ
+	
+	//モデルデータの読みこみ
 	model->modelData_ = model->modelManager_->GetModelData(modelHandle);
+	//テクスチャの読み込み
+	model->textureHandleVector_.resize(model->modelData_.materials.size(), 0u);
+	for(size_t i=0u;i<model->modelData_.materials.size();++i){
+		const std::string& PATH = model->modelData_.materials[i].textureFilePath;
+		if (PATH.empty()) {
+			//空の場合テクスチャーにする
+			model->textureHandleVector_[i] = model->textureManager_->Load("Resources/Sprite/Back/White.png");
+		}
+		else {
+			//通常のテクスチャー
+			model->textureHandleVector_[i] = model->textureManager_->Load(PATH);
+		}
+	}
 
 	//頂点リソースを作る
-	model->vertexResource_ = model->directXSetup_->CreateBufferResource(sizeof(VertexData) * model->modelManager_->GetModelData(modelHandle).vertices.size()).Get();
+	model->vertexResource_ = model->directXSetup_->CreateBufferResource(sizeof(VertexData) * model->modelManager_->GetModelData(modelHandle).vertices.size());
 	//リソースの先頭のアドレスから使う
 	model->vertexBufferView_.BufferLocation = model->vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースは頂点のサイズ
@@ -46,8 +58,16 @@ std::unique_ptr<Elysia::Model> Elysia::Model::Create(const uint32_t& modelHandle
 	//１頂点あたりのサイズ
 	model->vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
+
+	//頂点バッファにデータを書き込む
+	VertexData* vertexData = nullptr;
+	model->vertexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&vertexData));//書き込むためのアドレスを取得
+	std::memcpy(vertexData, model->modelData_.vertices.data(), sizeof(VertexData) * model->modelData_.vertices.size());
+	model->vertexResource_->Unmap(0u, nullptr);
+
+	
 	//解析したデータを使ってResourceとBufferViewを作成する
-	model->indexResource_ = model->directXSetup_->CreateBufferResource(sizeof(uint32_t) * model->modelManager_->GetModelData(modelHandle).indices.size()).Get();
+	model->indexResource_ = model->directXSetup_->CreateBufferResource(sizeof(uint32_t) * model->modelManager_->GetModelData(modelHandle).indices.size());
 	//場所
 	model->indexBufferView_.BufferLocation = model->indexResource_->GetGPUVirtualAddress();
 	//サイズ
@@ -55,8 +75,15 @@ std::unique_ptr<Elysia::Model> Elysia::Model::Create(const uint32_t& modelHandle
 	//フォーマット
 	model->indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 
+	//インデックス
+	uint32_t* index = nullptr;
+	model->indexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&index));
+	std::memcpy(index, model->modelData_.indices.data(), sizeof(uint32_t) * model->modelData_.indices.size());
+	model->indexResource_->Unmap(0u, nullptr);
+
+
 	//カメラ
-	model->cameraResource_ = model->directXSetup_->CreateBufferResource(sizeof(CameraForGPU)).Get();
+	model->cameraResource_ = model->directXSetup_->CreateBufferResource(sizeof(CameraForGPU));
 
 	return model;
 
@@ -70,19 +97,6 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 
 	//ライティング無しだけ
 	assert(material.lightingKinds == LightingType::NoneLighting);
-
-
-	//頂点バッファにデータを書き込む
-	VertexData* vertexData = nullptr;
-	vertexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&vertexData));//書き込むためのアドレスを取得
-	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
-	vertexResource_->Unmap(0u, nullptr);
-
-	//インデックス
-	uint32_t* index = nullptr;
-	indexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&index));
-	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
-	indexResource_->Unmap(0u, nullptr);
 
 	//PixelShaderに送る方のカメラ
 	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraForGPU_));
@@ -103,17 +117,18 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
-	//テクスチャ
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
+	
 	//カメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(4u, camera.resource->GetGPUVirtualAddress());
 	//PixelShaderに送る方のカメラ
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(5u, cameraResource_->GetGPUVirtualAddress());
 	//DrawCall
-	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
-
+	//テクスチャー
+	for (const MeshRange& range : modelData_.meshRanges) {
+		const uint32_t textureHandle = textureHandleVector_[range.materialIndex];
+		textureManager_->GraphicsCommand(2u, textureHandle);
+		directXSetup_->GetCommandList()->DrawIndexedInstanced(range.indexCount, 1u, range.indexStart, 0u, 0u);
+	}
 }
 
 void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& camera, const Material& material, const BaseLight& baseLight){
@@ -121,19 +136,6 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	if (isInvisible_) {
 		return;
 	}
-
-
-	//頂点バッファ
-	VertexData* vertexData = nullptr;
-	vertexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&vertexData));//書き込むためのアドレスを取得
-	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
-	vertexResource_->Unmap(0u, nullptr);
-
-	//インデックス
-	uint32_t* index = nullptr;
-	indexResource_->Map(0u, nullptr, reinterpret_cast<void**>(&index));
-	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
-	indexResource_->Unmap(0u, nullptr);
 
 	//PixelShaderに送る方のカメラ
 	cameraResource_->Map(0u, nullptr, reinterpret_cast<void**>(&cameraForGPU_));
@@ -155,10 +157,7 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(0u, material.resource->GetGPUVirtualAddress());
 	//コマンド送ってGPUで計算
 	directXSetup_->GetCommandList()->SetGraphicsRootConstantBufferView(1u, worldTransform.resource->GetGPUVirtualAddress());
-	//SRVのDescriptorTableの先頭を設定。2はrootParameter[2]である
-	if (textureHandle_ != 0u) {
-		textureManager_->GraphicsCommand(2u, textureHandle_);
-	}
+	
 	//ライトの設定
 	switch (material.lightingKinds) {
 	case LightingType::DirectionalLighting:
@@ -184,7 +183,13 @@ void Elysia::Model::Draw(const WorldTransform& worldTransform, const Camera& cam
 		srvManager_->SetGraphicsRootDescriptorTable(8u, environmentTextureHandle_);
 	}
 
-	//DrawCall
-	directXSetup_->GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1u, 0u, 0u, 0u);
+	//テクスチャー
+	for (const MeshRange& range : modelData_.meshRanges) {
+		const uint32_t textureHandle = textureHandleVector_[range.materialIndex];
+		textureManager_->GraphicsCommand(2u, textureHandle);
+		//DrawCall
+		directXSetup_->GetCommandList()->DrawIndexedInstanced(range.indexCount, 1u, range.indexStart, 0u, 0u);
+	}
 
+	
 }

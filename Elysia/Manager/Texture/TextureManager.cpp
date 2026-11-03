@@ -10,9 +10,6 @@ Elysia::TextureManager* Elysia::TextureManager::GetInstance() {
 	return &instance;
 }
 
-
-
-
 const D3D12_RESOURCE_DESC Elysia::TextureManager::GetResourceDesc(const uint32_t& textureHandle) {
 	//テクスチャの情報を取得
 	// handleからfilePathを取得
@@ -51,8 +48,6 @@ uint64_t Elysia::TextureManager::GetTextureHeight(const uint32_t& textureHandle)
 }
 
 
-
-
 //統合させた関数
 uint32_t Elysia::TextureManager::Load(const std::string& filePath) {
 
@@ -79,7 +74,7 @@ uint32_t Elysia::TextureManager::Load(const std::string& filePath) {
 	//リソースの設定
 	textureInfo.resource = CreateTextureResource(metadata);
 	textureInfo.intermediateResource = TransferTextureData(
-		textureInfo.resource.Get(), textureInfo.mipImages).Get();
+		textureInfo.resource.Get(), textureInfo.mipImages);
 
 	//SRVの生成
 	Elysia::SrvManager::GetInstance()->CreateSRVForTexture2D(
@@ -108,7 +103,7 @@ uint32_t Elysia::TextureManager::Load(const std::string& filePath) {
 
 
 
-//CubeMap...箱を構成する6毎のTextureをひとまとめにしたTextureのこと
+//CubeMap...箱を構成する6枚のTextureをひとまとめにしたTextureのこと
 //さいころみたいなもの
 
 
