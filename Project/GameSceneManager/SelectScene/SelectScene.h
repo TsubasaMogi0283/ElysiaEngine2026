@@ -49,7 +49,7 @@ namespace Elysia {
 	/// <summary>
 	/// オーディオ
 	/// </summary>
-	class Audio;
+	class XAudio2;
 
 	/// <summary>
 	/// ウィンドウクラス
@@ -124,7 +124,7 @@ private:
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
 	//オーディオ
-	Elysia::Audio* audio_ = nullptr;
+	Elysia::XAudio2* audio_ = nullptr;
 	//ウィンドウ
 	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 

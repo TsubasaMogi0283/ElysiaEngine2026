@@ -120,7 +120,7 @@ public:
 	
 private:
 	//オーディオ
-	Elysia::Audio* audio_ = nullptr;
+	Elysia::XAudio2* audio_ = nullptr;
 	
 	//レベルエディタ側で設定した値を持ってくる
 	AudioDataForLevelEditor audioDataForLevelEditor_ = {};

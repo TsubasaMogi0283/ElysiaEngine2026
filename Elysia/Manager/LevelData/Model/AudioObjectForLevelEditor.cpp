@@ -5,7 +5,7 @@
 
 AudioObjectForLevelEditor::AudioObjectForLevelEditor(){
 	//インスタンスの取得
-	audio_ = Elysia::Audio::GetInstance();
+	audio_ = Elysia::XAudio2::GetInstance();
 }
 
 void AudioObjectForLevelEditor::Initialize(const uint32_t& modelHandle, const Transform& transform){

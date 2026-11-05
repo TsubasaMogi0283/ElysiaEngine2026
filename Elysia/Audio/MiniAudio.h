@@ -96,14 +96,21 @@ namespace Elysia {
 		/// 停止(最初から)
 		/// </summary>
 		/// <param name="audioHandle">ハンドル</param>
-		void Stop(const int32_t audioHandle);
+		void Stop(const int32_t& audioHandle);
 
 		/// <summary>
 		/// 再生時間の取得
 		/// </summary>
 		/// <param name="audioHandle">ハンドル</param>
-		/// <returns></returns>
-		float_t GetPlayCurrentTime(const int32_t audioHandle);
+		/// <returns>時間</returns>
+		float_t GetPlayCurrentTime(const int32_t& audioHandle);
+
+		/// <summary>
+		/// 長さを取得
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <returns>時間の長さ</returns>
+		float_t GetLength(const int32_t& audioHandle);
 
 	private:
 		/// <summary>

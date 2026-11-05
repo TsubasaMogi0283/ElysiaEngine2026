@@ -15,7 +15,7 @@ TestScene::TestScene(){
 	//入力
 	input_ = Elysia::Input::GetInstance();
 	//オーディオ
-	audio_ = Elysia::Audio::GetInstance();
+	audio_ = Elysia::XAudio2::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//テクスチャ管理クラス

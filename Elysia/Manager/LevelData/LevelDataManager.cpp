@@ -21,7 +21,7 @@
 
 Elysia::LevelDataManager::LevelDataManager() {
 	//オーディオのインスタンスを取得
-	audio_ = Elysia::Audio::GetInstance();
+	audio_ = Elysia::XAudio2::GetInstance();
 }
 
 

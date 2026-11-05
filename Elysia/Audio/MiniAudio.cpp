@@ -133,7 +133,7 @@ void Elysia::MiniAudio::Resume(const int32_t& audioHandle){
 
 }
 
-void Elysia::MiniAudio::Stop(const int32_t audioHandle){
+void Elysia::MiniAudio::Stop(const int32_t& audioHandle){
     ma_sound* sound = GetSound(audioHandle);
     if (sound) {
         ma_sound_stop(sound);
@@ -141,12 +141,40 @@ void Elysia::MiniAudio::Stop(const int32_t audioHandle){
     }
 }
 
-float_t Elysia::MiniAudio::GetPlayCurrentTime(const int32_t audioHandle){
+float_t Elysia::MiniAudio::GetPlayCurrentTime(const int32_t& audioHandle){
+    //データの取得
+    ma_sound* sound = GetSound(audioHandle);
 
-    audioHandle;
+    //無かった場合0を返す
+    if (!sound) {
+        return 0.0f;
+    }
 
-
-    return float_t();
+    //長さ(カーソル)を取得
+    float cursor = 0.0f;
+    if (ma_sound_get_cursor_in_seconds(sound, &cursor) != MA_SUCCESS) {
+        return 0.0f;
+    }
+    return cursor;
 }
+
+
+float_t Elysia::MiniAudio::GetLength(const int32_t& audioHandle) {
+    //データの取得
+    ma_sound* sound = GetSound(audioHandle);
+
+    //無かった場合0を返す
+    if (!sound) {
+        return 0.0f;
+    }
+
+    //長さの取得
+    float_t length = 0.0f;
+    if (ma_sound_get_length_in_seconds(sound, &length) != MA_SUCCESS) {
+        return 0.0f;
+    }
+    return length;
+}
+
 
 #pragma endregion

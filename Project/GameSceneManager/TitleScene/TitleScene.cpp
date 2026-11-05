@@ -101,6 +101,7 @@ void TitleScene::Initialize() {
 }
 
 void TitleScene::Update(){
+
 	//開始を選択時
 	if (isSelectStart_&& !isSelectEnd_) {
 		startWorldTransform_.scale = { .x = SELECTED_SCALE_ ,.y = SELECTED_SCALE_ ,.z = SELECTED_SCALE_ };
@@ -164,8 +165,29 @@ void TitleScene::Update(){
 	}
 
 
+	if (input_->IsTriggerKey(DIK_Q)) {
+		Elysia::MiniAudio::GetInstance()->Stop(audioHandle_);
+	}
+
+	if (input_->IsTriggerKey(DIK_W)) {
+		Elysia::MiniAudio::GetInstance()->Pause(audioHandle_);
+	}
+
+	if (input_->IsTriggerKey(DIK_E)) {
+		Elysia::MiniAudio::GetInstance()->Resume(audioHandle_);
+	}
+
+	if (input_->IsTriggerKey(DIK_R)) {
+		Elysia::MiniAudio::GetInstance()->Play(audioHandle_,false);
+	}
+
 #ifdef _DEBUG
 	ImGui::Begin("タイトル");
+	float_t length = Elysia::MiniAudio::GetInstance()->GetLength(audioHandle_);
+	float_t currentTime = Elysia::MiniAudio::GetInstance()->GetPlayCurrentTime(audioHandle_);
+
+	ImGui::InputFloat("再生時間", &length);
+	ImGui::InputFloat("現在の再生位置", &currentTime);
 	ImGui::SliderFloat3("開始座標", &startWorldTransform_.translate.x, -20.0f, 20.0f);
 	ImGui::SliderFloat3("終了座標", &endWorldTransform_.translate.x, -20.0f, 20.0f);
 	ImGui::SliderFloat3("矢印座標", &arrowWorldTransform_.translate.x, -30.0f, 30.0f);

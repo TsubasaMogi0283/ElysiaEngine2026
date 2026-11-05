@@ -51,7 +51,7 @@ namespace Elysia {
 	/// <summary>
 	/// オーディオ
 	/// </summary>
-	class Audio;
+	class XAudio2;
 
 }
 
@@ -125,7 +125,7 @@ protected:
 	//入力
 	Elysia::Input* input_ = nullptr;
 	//オーディオ
-	Elysia::Audio* audio_ = nullptr;
+	Elysia::XAudio2* audio_ = nullptr;
 	//モデル管理クラス
 	Elysia::ModelManager* modelManager_ = nullptr;
 	//テクスチャーハンドル

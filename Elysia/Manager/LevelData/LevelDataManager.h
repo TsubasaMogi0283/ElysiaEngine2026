@@ -619,7 +619,7 @@ namespace Elysia {
 
 	private:
 		//オーディオ
-		Elysia::Audio* audio_ = nullptr;
+		Elysia::XAudio2* audio_ = nullptr;
 
 	private:
 		//Resourceにあるレベルデータの場所

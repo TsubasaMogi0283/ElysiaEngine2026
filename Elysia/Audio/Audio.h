@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- * @file Audio.h
- * @brief オーディオクラス
+ * @file XAudio2.h
+ * @brief XAudio2クラス
  * @author 茂木翼
  */
 #define XAUDIO2_HELPER_FUNCTIONS
@@ -48,37 +48,37 @@ namespace Elysia {
 	/// <summary>
 	/// オーディオ
 	/// </summary>
-	class Audio final {
+	class XAudio2 final {
 	private:
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		Audio() = default;
+		XAudio2() = default;
 
 		/// <summary>
 		/// デストラクタ
 		/// </summary>
-		~Audio() = default;
+		~XAudio2() = default;
 	public:
 
 		/// <summary>
 		/// インスタンスの取得
 		/// </summary>
 		/// <returns></returns>
-		static Audio* GetInstance();
+		static XAudio2* GetInstance();
 
 		/// <summary>
 		/// コピーコンストラクタ禁止
 		/// </summary>
 		/// <param name="audio"></param>
-		Audio(const Audio& audio) = delete;
+		XAudio2(const XAudio2& audio) = delete;
 
 		/// <summary>
 		/// 代入演算子を無効にする
 		/// </summary>
 		/// <param name="audio"></param>
 		/// <returns></returns>
-		Audio& operator=(const Audio& audio) = delete;
+		XAudio2& operator=(const XAudio2& audio) = delete;
 
 	public:
 
@@ -490,5 +490,3 @@ namespace Elysia {
 		std::array<IXAudio2SubmixVoice*, SUBMIXVOICE_AMOUNT_> submixVoice_{};
 	};
 }
-
-
