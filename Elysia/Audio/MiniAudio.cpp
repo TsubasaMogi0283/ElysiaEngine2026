@@ -1,5 +1,6 @@
 #include "MiniAudio.h"
 #include <cassert>
+#include <Windows.h>
 
 Elysia::MiniAudio* Elysia::MiniAudio::GetInstance(){
     static Elysia::MiniAudio instance;
@@ -228,23 +229,6 @@ void Elysia::MiniAudio::StartLoop(ma_sound* sound, const float_t& startTime){
     ma_sound_start(sound);
 }
 
-void Elysia::MiniAudio::BeforeLoop(const int32_t& audioHandle, float_t& endTime){
-    ma_sound* sound = GetSound(audioHandle);
-    float_t startTime = 0.0f;
-    if (!sound || !SetLoopRange(sound, startTime, endTime)) {
-        return;
-    }
-    StartLoop(sound, 0.0f);
-}
-
-void Elysia::MiniAudio::AfterLoop(const int32_t& audioHandle, float_t& startTime){
-    
-    ma_sound* sound = GetSound(audioHandle);
-    if (!sound || !SetLoopRange(sound, startTime, -1.0f)) {
-        return;
-    }
-    StartLoop(sound, 0.0f);
-}
 
 void Elysia::MiniAudio::PartlyLoop(const int32_t& audioHandle, float_t& startTime, const float_t& endTime){
     ma_sound* sound = GetSound(audioHandle);

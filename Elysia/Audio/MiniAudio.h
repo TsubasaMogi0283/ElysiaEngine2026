@@ -132,19 +132,6 @@ namespace Elysia {
 		void StartLoop(ma_sound* sound, const float_t& startTime);
 
 	public:
-		/// <summary>
-		/// 前半ループ
-		/// </summary>
-		/// <param name="audioHandle">ハンドル</param>
-		/// <param name="endTime">ループ終了時間</param>
-		void BeforeLoop(const int32_t& audioHandle, float_t& endTime);
-
-		/// <summary>
-		/// 後半ループ
-		/// </summary>
-		/// <param name="audioHandle">ハンドル</param>
-		/// <param name="startTime">ループ開始時間</param>
-		void AfterLoop(const int32_t& audioHandle, float_t& startTime);
 
 		/// <summary>
 		/// 部分ループ

@@ -96,9 +96,10 @@ void TitleScene::Initialize() {
 	arrowMaterial_.color.w = 0.0f;
 	
 	
-	audioHandle_ = Elysia::MiniAudio::GetInstance()->Load("Resources/Audio/SE/Deside.wav");
-	//float_t y = 1.0f;
-	Elysia::MiniAudio::GetInstance()->Play(audioHandle_, true);
+	audioHandle_ = Elysia::MiniAudio::GetInstance()->Load("Resources/Audio/Stelladiance.mp3");
+	float_t start = 5.0f;
+	float_t end = 10.0f;
+	Elysia::MiniAudio::GetInstance()->PartlyLoop(audioHandle_, start, end);
 }
 
 void TitleScene::Update(){
@@ -185,6 +186,16 @@ void TitleScene::Update(){
 		Elysia::MiniAudio::GetInstance()->ExitLoop(audioHandle_);
 	}
 
+	ma_sound* s = Elysia::MiniAudio::GetInstance()->GetSound(audioHandle_);
+	if (s) {
+		ma_uint64 cursor = 0;
+		ma_sound_get_cursor_in_pcm_frames(s, &cursor);
+		std::string log = "cursor=" + std::to_string(cursor)
+			+ " playing=" + std::to_string(ma_sound_is_playing(s))
+			+ " atEnd=" + std::to_string(ma_sound_at_end(s))
+			+ " looping=" + std::to_string(ma_sound_is_looping(s)) + "\n";
+		OutputDebugStringA(log.c_str());
+	}
 
 #ifdef _DEBUG
 	ImGui::Begin("タイトル");
