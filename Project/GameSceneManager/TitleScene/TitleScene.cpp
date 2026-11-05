@@ -97,8 +97,8 @@ void TitleScene::Initialize() {
 	
 	
 	audioHandle_ = Elysia::MiniAudio::GetInstance()->Load("Resources/Audio/SE/Deside.wav");
-	float_t y = 1.0f;
-	Elysia::MiniAudio::GetInstance()->BeforeLoop(audioHandle_, y);
+	//float_t y = 1.0f;
+	Elysia::MiniAudio::GetInstance()->Play(audioHandle_, true);
 }
 
 void TitleScene::Update(){
@@ -181,6 +181,10 @@ void TitleScene::Update(){
 	if (input_->IsTriggerKey(DIK_R)) {
 		Elysia::MiniAudio::GetInstance()->Play(audioHandle_,false);
 	}
+	if (input_->IsTriggerKey(DIK_T)) {
+		Elysia::MiniAudio::GetInstance()->ExitLoop(audioHandle_);
+	}
+
 
 #ifdef _DEBUG
 	ImGui::Begin("タイトル");
