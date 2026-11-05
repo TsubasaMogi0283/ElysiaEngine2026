@@ -97,8 +97,8 @@ void TitleScene::Initialize() {
 	
 	
 	audioHandle_ = Elysia::MiniAudio::GetInstance()->Load("Resources/Audio/SE/Deside.wav");
-	//float_t y = 1.0f;
-	Elysia::MiniAudio::GetInstance()->Play(audioHandle_, true);
+	float_t y = 1.0f;
+	Elysia::MiniAudio::GetInstance()->BeforeLoop(audioHandle_, y);
 }
 
 void TitleScene::Update(){
