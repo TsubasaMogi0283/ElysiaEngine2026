@@ -124,20 +124,27 @@ namespace Elysia {
 		/// <param name="endTime">終了時間</param>
 		bool SetLoopRange(ma_sound* sound, float_t& startTime,const float_t& endTime);
 
+		/// <summary>
+		/// ループ開始
+		/// </summary>
+		/// <param name="sound">サウンドデータ</param>
+		/// <param name="startTime">開始時間</param>
+		void StartLoop(ma_sound* sound, const float_t& startTime);
+
 	public:
 		/// <summary>
 		/// 前半ループ
 		/// </summary>
 		/// <param name="audioHandle">ハンドル</param>
 		/// <param name="endTime">ループ終了時間</param>
-		void BeforeLoop(const int32_t& audioHandle,const float_t& endTime);
+		void BeforeLoop(const int32_t& audioHandle, float_t& endTime);
 
 		/// <summary>
 		/// 後半ループ
 		/// </summary>
 		/// <param name="audioHandle">ハンドル</param>
 		/// <param name="startTime">ループ開始時間</param>
-		void AfterLoop(const int32_t& audioHandle,const float_t& startTime);
+		void AfterLoop(const int32_t& audioHandle, float_t& startTime);
 
 		/// <summary>
 		/// 部分ループ
@@ -145,7 +152,7 @@ namespace Elysia {
 		/// <param name="audioHandle">ハンドル</param>
 		/// <param name="startTime">開始時間</param>
 		/// <param name="endTime">終了時間</param>
-		void PartlyLoop(const int32_t& audioHandle, const float_t& startTime, const float_t& endTime);
+		void PartlyLoop(const int32_t& audioHandle, float_t& startTime, const float_t& endTime);
 
 		/// <summary>
 		/// ループ解除

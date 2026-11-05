@@ -96,8 +96,9 @@ void TitleScene::Initialize() {
 	arrowMaterial_.color.w = 0.0f;
 	
 	
-	audioHandle_ = Elysia::MiniAudio::GetInstance()->Load("Resources/Audio/Stelladiance.mp3");
-	Elysia::MiniAudio::GetInstance()->Play(audioHandle_, false);
+	audioHandle_ = Elysia::MiniAudio::GetInstance()->Load("Resources/Audio/SE/Deside.wav");
+	//float_t y = 1.0f;
+	Elysia::MiniAudio::GetInstance()->Play(audioHandle_, true);
 }
 
 void TitleScene::Update(){

@@ -217,20 +217,47 @@ bool Elysia::MiniAudio::SetLoopRange(ma_sound* sound, float_t& startTime, const 
         ma_sound_get_data_source(sound), beginFrame, endFrame) == MA_SUCCESS;
 }
 
-void Elysia::MiniAudio::BeforeLoop(const int32_t& audioHandle, const float_t& endTime){
+void Elysia::MiniAudio::StartLoop(ma_sound* sound, const float_t& startTime){
+    ma_uint32 sampleRate = 0u;
+    ma_sound_get_data_format(sound, nullptr, nullptr, &sampleRate, nullptr, 0u);
 
+    ma_sound_stop(sound);
+    ma_sound_seek_to_pcm_frame(sound, static_cast<ma_uint64>(startTime * sampleRate));
+    ma_sound_set_looping(sound, MA_TRUE);
+    ma_sound_set_stop_time_in_pcm_frames(sound, ~(ma_uint64)0);
+    ma_sound_start(sound);
 }
 
-void Elysia::MiniAudio::AfterLoop(const int32_t& audioHandle, const float_t& startTime){
-
+void Elysia::MiniAudio::BeforeLoop(const int32_t& audioHandle, float_t& endTime){
+    ma_sound* sound = GetSound(audioHandle);
+    float_t startTime = 0.0f;
+    if (!sound || !SetLoopRange(sound, startTime, endTime)) {
+        return;
+    }
+    StartLoop(sound, 0.0f);
 }
 
-void Elysia::MiniAudio::PartlyLoop(const int32_t& audioHandle, const float_t& startTime, const float_t& endTime){
+void Elysia::MiniAudio::AfterLoop(const int32_t& audioHandle, float_t& startTime){
+    
+    ma_sound* sound = GetSound(audioHandle);
+    if (!sound || !SetLoopRange(sound, startTime, -1.0f)) {
+        return;
+    }
+    StartLoop(sound, 0.0f);
+}
 
+void Elysia::MiniAudio::PartlyLoop(const int32_t& audioHandle, float_t& startTime, const float_t& endTime){
+    ma_sound* sound = GetSound(audioHandle);
+    if (!sound || !SetLoopRange(sound, startTime, endTime)) {
+        return;
+    }
+    StartLoop(sound, startTime);
 }
 
 void Elysia::MiniAudio::ExitLoop(const int32_t& audioHandle){
-
+    if (ma_sound* sound = GetSound(audioHandle)) {
+        ma_sound_set_looping(sound, MA_FALSE);
+    }
 }
 
 
