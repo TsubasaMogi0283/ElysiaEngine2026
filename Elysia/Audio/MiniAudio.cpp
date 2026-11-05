@@ -176,5 +176,62 @@ float_t Elysia::MiniAudio::GetLength(const int32_t& audioHandle) {
     return length;
 }
 
+bool Elysia::MiniAudio::SetLoopRange(ma_sound* sound, float_t& startTime, const float_t& endTime){
+
+    //サンプルレートの取得
+    ma_uint32 sampleRate = 0;
+    if (ma_sound_get_data_format(sound, nullptr, nullptr, &sampleRate, nullptr, 0) != MA_SUCCESS
+        || sampleRate == 0) {
+        return false;
+    }
+
+    //長さを取得
+    ma_uint64 length = 0;
+    if (ma_sound_get_length_in_pcm_frames(sound, &length) != MA_SUCCESS || length == 0) {
+        return false;
+    }
+
+    //0より小さくならないようにする
+    if (startTime < 0.0f) {
+        startTime = 0.0f;
+    }
+    ma_uint64 beginFrame = static_cast<ma_uint64>(startTime * sampleRate);
+    ma_uint64 endFrame = 0u;
+    
+    if (endTime < 0.0f) {
+        endFrame = length;
+    }
+    else {
+        endFrame = static_cast<ma_uint64>(endTime * sampleRate);
+    }
+    
+    //全体の長さより大きくなってはいけない
+    if (endFrame > length) {
+        endFrame = length;
+    }
+    if (beginFrame >= endFrame) {
+        return false;
+    }
+
+    return ma_data_source_set_loop_point_in_pcm_frames(
+        ma_sound_get_data_source(sound), beginFrame, endFrame) == MA_SUCCESS;
+}
+
+void Elysia::MiniAudio::BeforeLoop(const int32_t& audioHandle, const float_t& endTime){
+
+}
+
+void Elysia::MiniAudio::AfterLoop(const int32_t& audioHandle, const float_t& startTime){
+
+}
+
+void Elysia::MiniAudio::PartlyLoop(const int32_t& audioHandle, const float_t& startTime, const float_t& endTime){
+
+}
+
+void Elysia::MiniAudio::ExitLoop(const int32_t& audioHandle){
+
+}
+
 
 #pragma endregion

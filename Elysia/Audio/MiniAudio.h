@@ -112,6 +112,50 @@ namespace Elysia {
 		/// <returns>時間の長さ</returns>
 		float_t GetLength(const int32_t& audioHandle);
 
+#pragma region ループ
+
+	private:
+
+		/// <summary>
+		/// ループ設定
+		/// </summary>
+		/// <param name="sound">サウンドデータ</param>
+		/// <param name="startTime">開始時間</param>
+		/// <param name="endTime">終了時間</param>
+		bool SetLoopRange(ma_sound* sound, float_t& startTime,const float_t& endTime);
+
+	public:
+		/// <summary>
+		/// 前半ループ
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="endTime">ループ終了時間</param>
+		void BeforeLoop(const int32_t& audioHandle,const float_t& endTime);
+
+		/// <summary>
+		/// 後半ループ
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="startTime">ループ開始時間</param>
+		void AfterLoop(const int32_t& audioHandle,const float_t& startTime);
+
+		/// <summary>
+		/// 部分ループ
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="startTime">開始時間</param>
+		/// <param name="endTime">終了時間</param>
+		void PartlyLoop(const int32_t& audioHandle, const float_t& startTime, const float_t& endTime);
+
+		/// <summary>
+		/// ループ解除
+		/// </summary>
+		/// <param name="audioHandle"></param>
+		void ExitLoop(const int32_t& audioHandle);
+
+#pragma endregion
+
+
 	private:
 		/// <summary>
 		/// サウンドの取得
