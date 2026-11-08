@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- * @file Audio.h
- * @brief オーディオクラス
+ * @file XAudio2.h
+ * @brief XAudio2クラス
  * @author 茂木翼
  */
 #define XAUDIO2_HELPER_FUNCTIONS
@@ -490,5 +490,3 @@ namespace Elysia {
 		std::array<IXAudio2SubmixVoice*, SUBMIXVOICE_AMOUNT_> submixVoice_{};
 	};
 }
-
-

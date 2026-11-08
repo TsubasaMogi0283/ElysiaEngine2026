@@ -96,9 +96,14 @@ void TitleScene::Initialize() {
 	arrowMaterial_.color.w = 0.0f;
 	
 	
+	audioHandle_ = Elysia::MiniAudio::GetInstance()->Load("Resources/Audio/Stelladiance.mp3");
+	float_t start = 5.0f;
+	float_t end = 10.0f;
+	Elysia::MiniAudio::GetInstance()->PartlyLoop(audioHandle_, start, end);
 }
 
 void TitleScene::Update(){
+
 	//開始を選択時
 	if (isSelectStart_&& !isSelectEnd_) {
 		startWorldTransform_.scale = { .x = SELECTED_SCALE_ ,.y = SELECTED_SCALE_ ,.z = SELECTED_SCALE_ };
@@ -148,6 +153,9 @@ void TitleScene::Update(){
 
 	//処理が終わったら次のシーンへ
 	if (isProcessEnd_) {
+		//BGMを止める
+		Elysia::MiniAudio::GetInstance()->Stop(audioHandle_);
+
 		//選曲
 		if (isSelectStart_ && !isSelectEnd_) {
 			gameSceneManager_->ChangeScene("Select");
@@ -162,8 +170,33 @@ void TitleScene::Update(){
 	}
 
 
+	if (input_->IsTriggerKey(DIK_Q)) {
+		Elysia::MiniAudio::GetInstance()->Stop(audioHandle_);
+	}
+
+	if (input_->IsTriggerKey(DIK_W)) {
+		Elysia::MiniAudio::GetInstance()->Pause(audioHandle_);
+	}
+
+	if (input_->IsTriggerKey(DIK_E)) {
+		Elysia::MiniAudio::GetInstance()->Resume(audioHandle_);
+	}
+
+	if (input_->IsTriggerKey(DIK_R)) {
+		Elysia::MiniAudio::GetInstance()->Play(audioHandle_,false);
+	}
+	if (input_->IsTriggerKey(DIK_T)) {
+		Elysia::MiniAudio::GetInstance()->ExitLoop(audioHandle_);
+	}
+
+
 #ifdef _DEBUG
 	ImGui::Begin("タイトル");
+	float_t length = Elysia::MiniAudio::GetInstance()->GetLength(audioHandle_);
+	float_t currentTime = Elysia::MiniAudio::GetInstance()->GetPlayCurrentTime(audioHandle_);
+
+	ImGui::InputFloat("再生時間", &length);
+	ImGui::InputFloat("現在の再生位置", &currentTime);
 	ImGui::SliderFloat3("開始座標", &startWorldTransform_.translate.x, -20.0f, 20.0f);
 	ImGui::SliderFloat3("終了座標", &endWorldTransform_.translate.x, -20.0f, 20.0f);
 	ImGui::SliderFloat3("矢印座標", &arrowWorldTransform_.translate.x, -30.0f, 30.0f);

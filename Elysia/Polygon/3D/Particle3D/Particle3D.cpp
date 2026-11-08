@@ -10,8 +10,6 @@
 #include "PipelineManager.h"
 #include "ModelManager.h"
 #include "SrvManager.h"
-
-
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"

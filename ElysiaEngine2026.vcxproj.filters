@@ -621,6 +621,9 @@
     <ClCompile Include="Project\Player\Player.cpp">
       <Filter>Project\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Elysia\Audio\MiniAudio.cpp">
+      <Filter>Elysia\ソース ファイル\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig">
@@ -1056,6 +1059,9 @@
     </ClInclude>
     <ClInclude Include="Project\Note\NoteLane.h">
       <Filter>Project\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="Elysia\Audio\MiniAudio.h">
+      <Filter>Elysia\ヘッダー ファイル\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

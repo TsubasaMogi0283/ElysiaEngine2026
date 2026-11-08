@@ -1,6 +1,7 @@
 #include "AudioObjectForLevelEditor.h"
 
 #include <imgui.h>
+#include <Audio.h>
 
 
 AudioObjectForLevelEditor::AudioObjectForLevelEditor(){

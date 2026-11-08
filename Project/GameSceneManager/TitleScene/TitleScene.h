@@ -23,6 +23,7 @@
 #include <TitleScene/BaseTitleScene.h>
 #include <GameNameObject/GameNameObject.h>
 #include <Player/Player.h>
+#include <MiniAudio.h>
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -48,6 +49,11 @@ namespace Elysia {
 	/// 入力クラス
 	/// </summary>
 	class Input;
+
+	/// <summary>
+	/// miniaudioクラス
+	/// </summary>
+	class MiniAudio;
 
 }
 
@@ -197,6 +203,8 @@ private:
 	Elysia::GameSceneManager* gameSceneManager_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
+	//miniaudio
+	Elysia::MiniAudio* miniAudio_ = nullptr;
 
 private:
 	
@@ -256,5 +264,7 @@ private:
 	bool isProcessEnd_ = false;
 
 	
+	int32_t audioHandle_ = -1;
 
+	
 };
