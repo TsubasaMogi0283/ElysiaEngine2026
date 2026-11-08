@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- * @file XAudio2.h
- * @brief XAudio2クラス
+ * @file Audio.h
+ * @brief Audio(XAudio2)クラス
  * @author 茂木翼
  */
 #define XAUDIO2_HELPER_FUNCTIONS
