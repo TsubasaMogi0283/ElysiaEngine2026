@@ -153,6 +153,9 @@ void TitleScene::Update(){
 
 	//処理が終わったら次のシーンへ
 	if (isProcessEnd_) {
+		//BGMを止める
+		Elysia::MiniAudio::GetInstance()->Stop(audioHandle_);
+
 		//選曲
 		if (isSelectStart_ && !isSelectEnd_) {
 			gameSceneManager_->ChangeScene("Select");
@@ -186,16 +189,6 @@ void TitleScene::Update(){
 		Elysia::MiniAudio::GetInstance()->ExitLoop(audioHandle_);
 	}
 
-	ma_sound* s = Elysia::MiniAudio::GetInstance()->GetSound(audioHandle_);
-	if (s) {
-		ma_uint64 cursor = 0;
-		ma_sound_get_cursor_in_pcm_frames(s, &cursor);
-		std::string log = "cursor=" + std::to_string(cursor)
-			+ " playing=" + std::to_string(ma_sound_is_playing(s))
-			+ " atEnd=" + std::to_string(ma_sound_at_end(s))
-			+ " looping=" + std::to_string(ma_sound_is_looping(s)) + "\n";
-		OutputDebugStringA(log.c_str());
-	}
 
 #ifdef _DEBUG
 	ImGui::Begin("タイトル");

@@ -30,7 +30,7 @@ Elysia::Framework::Framework() {
 	//入力
 	engineManagers_.input_ = Elysia::Input::GetInstance();
 	//XAudio2
-	engineManagers_.audio_ = Elysia::XAudio2::GetInstance();
+	engineManagers_.audio_ = Elysia::Audio::GetInstance();
 	//miniAudio
 	engineManagers_.miniAudio_ = Elysia::MiniAudio::GetInstance();
 	//JSON読み込み

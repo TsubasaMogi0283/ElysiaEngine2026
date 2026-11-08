@@ -50,7 +50,7 @@ namespace Elysia {
 	/// <summary>
 	/// オーディオクラス
 	/// </summary>
-	class XAudio2;
+	class Audio;
 
 	/// <summary>
 	/// JSON読み込み(グローバル変数)

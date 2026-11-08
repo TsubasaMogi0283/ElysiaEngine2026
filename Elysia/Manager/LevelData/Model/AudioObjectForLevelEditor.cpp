@@ -1,11 +1,12 @@
 #include "AudioObjectForLevelEditor.h"
 
 #include <imgui.h>
+#include <Audio.h>
 
 
 AudioObjectForLevelEditor::AudioObjectForLevelEditor(){
 	//インスタンスの取得
-	audio_ = Elysia::XAudio2::GetInstance();
+	audio_ = Elysia::Audio::GetInstance();
 }
 
 void AudioObjectForLevelEditor::Initialize(const uint32_t& modelHandle, const Transform& transform){

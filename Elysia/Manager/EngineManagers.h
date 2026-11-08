@@ -39,7 +39,7 @@ struct EngineManagers {
 	//Inputクラス
 	Elysia::Input* input_ = nullptr;
 	//XAudio2クラス
-	Elysia::XAudio2* audio_ = nullptr;
+	Elysia::Audio* audio_ = nullptr;
 	//miniAudioクラス
 	Elysia::MiniAudio* miniAudio_ = nullptr;
 	//JSON読み込み(グローバル変数)

@@ -19,7 +19,7 @@ PlayMainScene::PlayMainScene() {
 	//入力
 	input_ = Elysia::Input::GetInstance();
 	//オーディオ
-	audio_ = Elysia::XAudio2::GetInstance();
+	audio_ = Elysia::Audio::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//テクスチャ管理クラス

@@ -10,7 +10,7 @@
 ScoreDataManager::ScoreDataManager(){
 	//インスタンスの取得
 	//オーディオ
-	audio_ = Elysia::XAudio2::GetInstance();
+	audio_ = Elysia::Audio::GetInstance();
 	//テクスチャ
 	textureManager_ = Elysia::TextureManager::GetInstance();
 }

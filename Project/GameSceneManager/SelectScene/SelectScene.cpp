@@ -21,7 +21,7 @@ SelectScene::SelectScene(){
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
 	//オーディオ
-	audio_ = Elysia::XAudio2::GetInstance();
+	audio_ = Elysia::Audio::GetInstance();
 	//ウィンドウクラス
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }

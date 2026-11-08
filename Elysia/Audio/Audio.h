@@ -48,37 +48,37 @@ namespace Elysia {
 	/// <summary>
 	/// オーディオ
 	/// </summary>
-	class XAudio2 final {
+	class Audio final {
 	private:
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		XAudio2() = default;
+		Audio() = default;
 
 		/// <summary>
 		/// デストラクタ
 		/// </summary>
-		~XAudio2() = default;
+		~Audio() = default;
 	public:
 
 		/// <summary>
 		/// インスタンスの取得
 		/// </summary>
 		/// <returns></returns>
-		static XAudio2* GetInstance();
+		static Audio* GetInstance();
 
 		/// <summary>
 		/// コピーコンストラクタ禁止
 		/// </summary>
 		/// <param name="audio"></param>
-		XAudio2(const XAudio2& audio) = delete;
+		Audio(const Audio& audio) = delete;
 
 		/// <summary>
 		/// 代入演算子を無効にする
 		/// </summary>
 		/// <param name="audio"></param>
 		/// <returns></returns>
-		XAudio2& operator=(const XAudio2& audio) = delete;
+		Audio& operator=(const Audio& audio) = delete;
 
 	public:
 
