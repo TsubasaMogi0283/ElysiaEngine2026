@@ -168,18 +168,17 @@ public:
 	}
 
 	/// <summary>
-	/// 上攻撃(パンチ)
+	/// 上攻撃(キック)
 	/// </summary>
 	inline void SetUpAttack() {
-		currentState_ = AnimationState::Punch;
-		//animationHandleVector_[static_cast<uint8_t>(AnimationState::Punch)];
+		currentState_ = AnimationState::Kick;
 	}
 
 	/// <summary>
-	/// 下攻撃(キック)
+	/// 下攻撃(パンチ)
 	/// </summary>
 	inline void SetDownAttack() {
-		currentState_ = AnimationState::Kick;
+		currentState_ = AnimationState::Punch;
 	}
 
 
@@ -195,6 +194,8 @@ private:
 
 	//地面のY座標
 	const float_t GROUND_POSITION_Y_ = 0.0f;
+	//攻撃時の座標のオフセット
+	const float_t OFFSET_POSITION_Y_ = -2.5f;
 
 private:
 	//モデル

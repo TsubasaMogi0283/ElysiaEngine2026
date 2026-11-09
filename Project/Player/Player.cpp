@@ -67,7 +67,7 @@ void Player::Fall(){
 
 void Player::Punch(){
 	//下側に移動
-	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(NoteLane::Place::Down)];
+	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(NoteLane::Place::Down)]+ OFFSET_POSITION_Y_;
 
 	//アニメーション時間の加算
 	punchAnimationTime_ += DELTA_TIME_;
@@ -81,7 +81,7 @@ void Player::Punch(){
 
 void Player::Kick(){
 	//上側に移動
-	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(NoteLane::Place::Up)];
+	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(NoteLane::Place::Up)]+ OFFSET_POSITION_Y_;
 
 	//アニメーション時間の加算
 	kickAnimationTime_ += DELTA_TIME_;
