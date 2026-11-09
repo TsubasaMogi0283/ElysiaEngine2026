@@ -59,30 +59,72 @@ public:
 	/// </summary>
 	~Player() = default;
 
-public:
+private:
 	/// <summary>
-	/// アニメーション
+	/// 待機
 	/// </summary>
-	enum class AnimationSelection {
+	void Wait();
+
+	/// <summary>
+	/// 走る
+	/// </summary>
+	void Run();
+
+	/// <summary>
+	/// 落ちる
+	/// </summary>
+	void Fall();
+
+	/// <summary>
+	/// パンチ
+	/// </summary>
+	void Punch();
+
+	/// <summary>
+	/// キック
+	/// </summary>
+	void Kick();
+
+public:
+
+	/// <summary>
+	/// 各状態を実行
+	/// </summary>
+	typedef void (Player::* function)();
+
+	/// <summary>
+	/// テーブル
+	/// </summary>
+	inline static void (Player::* functionTable[])() = {
+		&Player::Wait,
+		&Player::Run,
+		&Player::Fall,
+		&Player::Punch,
+		&Player::Kick,
+	};
+
+	/// <summary>
+	/// アニメーション状態
+	/// </summary>
+	enum class AnimationState {
 		//待機
 		Wait,
 		//走る
 		Run,
+		//落ちる
+		Fall,
 
-		//メインシーンにて
+
+		//余裕があれば片腕片足だけではなく両方対応できるようにしたい
 		//パンチ(上)
 		Punch,
 		//キック(下)
 		Kick,
 	};
 
-private:
-	//アニメーション管理クラス
-	Elysia::AnimationManager* animationManager_ = nullptr;
+	//現在の状態
+	AnimationState currentState_ = AnimationState::Run;
 
-private:
-	//時間変化
-	const float_t DELTA_TIME_ = 1.0f / 60.0f;
 
 
 public:
@@ -125,15 +167,41 @@ public:
 		return worldTransform_.GetWorldPosition();
 	}
 
+	/// <summary>
+	/// 上攻撃(パンチ)
+	/// </summary>
+	inline void SetUpAttack() {
+		currentState_ = AnimationState::Punch;
+		//animationHandleVector_[static_cast<uint8_t>(AnimationState::Punch)];
+	}
+
+	/// <summary>
+	/// 下攻撃(キック)
+	/// </summary>
+	inline void SetDownAttack() {
+		currentState_ = AnimationState::Kick;
+	}
+
+
 private:
+	//アニメーション管理クラス
+	Elysia::AnimationManager* animationManager_ = nullptr;
 	//判定線
 	JudgementLine* judgementLine_ = nullptr;
+
+private:
+	//時間変化
+	const float_t DELTA_TIME_ = 1.0f / 60.0f;
+
+	//地面のY座標
+	const float_t GROUND_POSITION_Y_ = 0.0f;
 
 private:
 	//モデル
 	std::unique_ptr<Elysia::AnimationModel> animationModel_ = nullptr;
 	//アニメーションのハンドル
 	std::vector<uint32_t>animationHandleVector_ = {};
+	uint32_t currentAnimationHandle_ = 0u;
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_ = {};
@@ -141,8 +209,13 @@ private:
 	Material material_ = {};
 
 	//アニメーション時間
-	float_t animationTime_ = 0.0f;
-
+	float_t runAnimationTime_ = 0.0f;
+	float_t maxRunAnimationTime_ = 0.5f;
+	//キックのアニメーション時間
+	float_t kickAnimationTime_ = 0.0f;
+	float_t maxKickAnimationTime_ = 0.5f;
+	//パンチのアニメーション時間
+	float_t punchAnimationTime_ = 0.0f;
+	float_t maxPunchAnimationTime_ = 0.5f;
 
 };
-

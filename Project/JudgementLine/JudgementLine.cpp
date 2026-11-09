@@ -64,7 +64,7 @@ void JudgementLine::UpdateSprite(const Camera& camera){
 
 			for (uint8_t j = 0u;j < static_cast<uint8_t>(NoteLane::Place::Size);j++) {
 				uiPositionArray_[j] = playerPosition_;
-				uiPositionArray_[j].y = LANE_POSITION_Y_[static_cast<uint8_t>(j)];
+				uiPositionArray_[j].y = LANE_POSITION_Y_ARRAY_[static_cast<uint8_t>(j)];
 				Matrix4x4 viewportMatrix = Matrix4x4::MakeViewportMatrix(0.0f, 0.0f, windowSetup_->GetInstance()->GetClientSize().x, windowSetup_->GetInstance()->GetClientSize().y, 0.0f, 1.0f);
 				Matrix4x4 viewProjectionViewportMatrix = Matrix4x4::Multiply(Matrix4x4::Multiply(camera.viewMatrix, camera.projectionMatrix), viewportMatrix);
 				uiPositionArray_[j] = Vector3<float_t>::MakeTransformCoordinate(uiPositionArray_[j], viewProjectionViewportMatrix);

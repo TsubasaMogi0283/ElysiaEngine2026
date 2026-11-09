@@ -137,8 +137,16 @@ namespace Elysia {
 		/// 環境マップで使うテクスチャのの設定
 		/// </summary>
 		/// <param name="textureHandle"></param>
-		void SetEnvironmentTexture(const uint32_t& textureHandle) {
+		inline void SetEnvironmentTexture(const uint32_t& textureHandle) {
 			this->environmentTextureHandle_ = textureHandle;
+		}
+
+		/// <summary>
+		/// アニメーションハンドルの設定(上書き用)
+		/// </summary>
+		/// <param name="animationHandle">ハンドル</param>
+		inline void SetAnimationHandle(const uint32_t& animationHandle) {
+			this->animationHandle_ = animationHandle;
 		}
 
 

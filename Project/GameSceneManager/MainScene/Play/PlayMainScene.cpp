@@ -116,9 +116,11 @@ void PlayMainScene::Initialize() {
 #pragma endregion
 
 	//レーンの座標を取得
-	for (uint8_t i = 0u;i < mainScene_->GetJudgementLine()->GetLanePosition().size();i++) {
+	for (uint8_t i = 0u;i < static_cast<uint8_t>(NoteLane::Place::Size);i++) {
 		lanePositionY_.push_back(mainScene_->GetJudgementLine()->GetLanePosition()[i]);
+		laneConditionArray_[i].place = static_cast<NoteLane::Place>(i);
 	}
+
 
 	//パーティクルのテクスチャの読み込み
 	perfectParticleTextureHandle_ = textureManager_->Load("Resources/Sprite/Particle/PerfectParticle.png");
@@ -128,7 +130,6 @@ void PlayMainScene::Initialize() {
 	//パーティクルの生成
 	for (uint8_t i = 0u;i < PARTICLE_AMOUNT_;i++) {
 		perfectParticleArray_[i]=Elysia::Particle3D::Create(ParticleMoveType::NormalRelease);
-		
 		
 		perfectParticleArray_[i]->SetIsDynamicReleaseMode(true);
 		perfectParticleArray_[i]->TextureOverride(perfectParticleTextureHandle_);
@@ -157,8 +158,6 @@ void PlayMainScene::Initialize() {
 			.z = 0.0f });
 		goodParticleArray_[i]->SetCount(5);
 	}
-	
-	
 
 	//楽曲の再生
 	audio_->PartlyLoopPlayMp3(musicHandle_, 0.0f, audio_->GetAudioLength(musicHandle_));
@@ -178,15 +177,15 @@ void PlayMainScene::Update() {
 		
 		//入力処理
 		//上
-		Touch(upLaneCondition, DIK_R, DIK_I);
+		Touch(laneConditionArray_[static_cast<uint8_t>(NoteLane::Place::Up)], DIK_R, DIK_I);
 		//下
-		Touch(downLaneCondition, DIK_F, DIK_J);
+		Touch(laneConditionArray_[static_cast<uint8_t>(NoteLane::Place::Down)], DIK_F, DIK_J);
 
 		//譜面の流れる処理
 		//上
-		NoteFlow(musicScoreData_.upInformation, upLaneCondition);
+		NoteFlow(musicScoreData_.upInformation, laneConditionArray_[static_cast<uint8_t>(NoteLane::Place::Up)]);
 		//下
-		NoteFlow(musicScoreData_.downInformation, downLaneCondition);
+		NoteFlow(musicScoreData_.downInformation, laneConditionArray_[static_cast<uint8_t>(NoteLane::Place::Down)]);
 
 		//UIの更新
 		mainScene_->GetJudgementLine()->UpdateSprite(mainScene_->GetCamera());
@@ -214,8 +213,8 @@ void PlayMainScene::Update() {
 #ifdef _DEBUG
 	
 	ImGui::Begin("プレイシーン");
-	ImGui::Checkbox("上ボタン", &upLaneCondition.isHit);
-	ImGui::Checkbox("下ボタン", &downLaneCondition.isHit);
+	ImGui::Checkbox("上ボタン", &laneConditionArray_[static_cast<uint8_t>(NoteLane::Place::Up)].isHit);
+	ImGui::Checkbox("下ボタン", &laneConditionArray_[static_cast<uint8_t>(NoteLane::Place::Down)].isHit);
 	int32_t perfect = static_cast<int32_t>(record_.perfect);
 	int32_t great = static_cast<int32_t>(record_.great);
 	int32_t good = static_cast<int32_t>(record_.good);
@@ -730,9 +729,6 @@ void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, Lan
 					//ミスのUIを出す
 					mainScene_->GetJudgementLine()->SetReleaseUI(targetNote.place, targetNote.judgement);
 				}
-
-				
-
 			}
 
 
@@ -929,6 +925,16 @@ void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft
 	if (input_->IsTriggerKey(inputLeft) || input_->IsTriggerKey(inputRight)) {
 		laneCondition.isHit = true;
 		laneCondition.touchTime = musicTime_;
+
+		//プレイヤー上攻撃
+		if (laneCondition.place == NoteLane::Place::Up) {
+			mainScene_->GetPlayer()->SetUpAttack();
+		}
+		//下攻撃
+		else if(laneCondition.place == NoteLane::Place::Down){
+			mainScene_->GetPlayer()->SetDownAttack();
+		}
+
 	} else {
 		laneCondition.isHit = false;
 	}

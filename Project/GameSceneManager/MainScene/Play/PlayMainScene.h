@@ -78,6 +78,8 @@ private:
 
 		//ホールド状態
 		bool isHold = false;
+		//ノーツの位置
+		NoteLane::Place place = NoteLane::Place::Up;
 	};
 
 	
@@ -174,8 +176,7 @@ private:
 	float_t comboBonusScale_ = INITIAL_COMBO_BONUS_SCALE_;
 
 	//レーンの状態
-	LaneCondition upLaneCondition = {};
-	LaneCondition downLaneCondition = {};
+	std::array<LaneCondition, static_cast<uint8_t>(NoteLane::Place::Size)> laneConditionArray_ = {};
 	//レーンの座標
 	std::vector<float_t> lanePositionY_ = {};
 

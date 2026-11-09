@@ -10,24 +10,29 @@ Player::Player(){
 
 void Player::Initialize(const uint32_t& modelHandle, const std::vector<uint32_t>& animationHandle){
 	
+	//初期状態は走る
+	currentState_ = AnimationState::Run;
+	//アニメーションハンドルの設定
+	animationHandleVector_ = animationHandle;
+	//currentAnimationHandle_ = animationHandleVector_[static_cast<uint8_t>(currentState_)];
+	currentAnimationHandle_ = animationHandleVector_[0u];
+
 
 	//モデルの生成
 	//待機アニメーションで初期化
-	animationModel_ = Elysia::AnimationModel::Create(modelHandle, animationHandle[static_cast<uint8_t>(AnimationSelection::Wait)]);
-
-	//ワールドトランスフォーム
-	//初期化
+	animationModel_ = Elysia::AnimationModel::Create(modelHandle, currentAnimationHandle_);
+	
+	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
-	//マテリアル
-	//初期化
+	//マテリアルの初期化
 	material_.Initialize();
-
 
 }
 
 void Player::Update(){
-	//アニメーションの時間を設定
-	animationTime_ += DELTA_TIME_;
+
+	//アニメーションの実行
+	(this->*functionTable[static_cast<uint8_t>(currentState_)])();
 
 	//更新
 	worldTransform_.Update();
@@ -36,7 +41,56 @@ void Player::Update(){
 }
 
 void Player::DrawObject3D(const Camera& camera, const BaseLight& baseLight){
-	animationModel_->Draw(worldTransform_, camera,animationTime_ ,material_, baseLight);
+	//モデルの描画
+	animationModel_->Draw(worldTransform_, camera,runAnimationTime_ ,material_, baseLight);
+}
+
+void Player::Wait(){
+
+}
+
+void Player::Run(){
+	//アニメーションの時間を設定
+	runAnimationTime_ += DELTA_TIME_;
+}
+
+void Player::Fall(){
+	//落下
+	worldTransform_.translate.y -= 0.2f;
+
+	//地面に到達したら落下を止める
+	if (worldTransform_.translate.y < GROUND_POSITION_Y_) {
+		worldTransform_.translate.y = GROUND_POSITION_Y_;
+		currentState_ = AnimationState::Run;
+	}
+}
+
+void Player::Punch(){
+	//下側に移動
+	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(NoteLane::Place::Down)];
+
+	//アニメーション時間の加算
+	punchAnimationTime_ += DELTA_TIME_;
+
+	//動作が終わったら走る動作へ
+	if (punchAnimationTime_ >= maxPunchAnimationTime_) {
+		punchAnimationTime_ = 0.0f;
+		currentState_ = AnimationState::Fall;
+	}
+}
+
+void Player::Kick(){
+	//上側に移動
+	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(NoteLane::Place::Up)];
+
+	//アニメーション時間の加算
+	kickAnimationTime_ += DELTA_TIME_;
+
+	//動作が終わったら走る動作へ
+	if (kickAnimationTime_ >= maxKickAnimationTime_) {
+		kickAnimationTime_ = 0.0f;
+		currentState_ = AnimationState::Fall;
+	}
 }
 
 void Player::SetJudgementLine(JudgementLine* judgementLine){

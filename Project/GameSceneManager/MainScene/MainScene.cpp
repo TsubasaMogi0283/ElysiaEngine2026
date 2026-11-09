@@ -142,6 +142,7 @@ void MainScene::Initialize() {
 	uint32_t playerWalkAnimationHandle = animationManager_->Load("Resources/External/Model/human", "walk.gltf");
 	std::vector<uint32_t> playerAnimationHandleVector;
 	playerAnimationHandleVector.push_back(playerWalkAnimationHandle);
+	playerAnimationHandleVector.push_back(playerWalkAnimationHandle);
 	//生成
 	player_ = std::make_unique<Player>();
 	player_->SetJudgementLine(judgementLine_.get());
