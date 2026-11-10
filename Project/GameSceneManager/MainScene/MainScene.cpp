@@ -151,6 +151,15 @@ void MainScene::Initialize() {
 	player_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
 	player_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t>/2,.z = 0.0f });
 	
+	//プレイヤー2
+	player2_=std::make_unique<Player>();
+	player2_->SetJudgementLine(judgementLine_.get());
+	player2_->Initialize(playerModelhandle, playerAnimationHandleVector);
+	player2_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
+	player2_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t> / 2,.z = 0.0f });
+
+
+
 	//メインシーン
 	baseMainScene_ = std::make_unique<StartMainScene>();
 	baseMainScene_->SetMainScene(this);
@@ -180,10 +189,13 @@ void MainScene::Update() {
 	AssignToTexture();
 	//プレイヤー
 	player_->Update();
+	player2_->Update();
 	//ゲージの更新
 	gauge_->Update();
 	//判定線の更新
 	judgementLine_->SetPlayerPosition(player_->GetWorldPosition());
+	judgementLine_->UpdateObject3D();
+	judgementLine_->SetPlayerPosition(player2_->GetWorldPosition());
 	judgementLine_->UpdateObject3D();
 
 	//更新
@@ -205,6 +217,10 @@ void MainScene::DrawObject3D() {
 	judgementLine_->DrawObject3D(camera_, directionalLight_);
 	//プレイヤー
 	player_->DrawObject3D(camera_, directionalLight_);
+	//プレイヤー2
+	player2_->DrawObject3D(camera_, directionalLight_);
+
+
 	//オブジェクトの描画
 	baseMainScene_->DrawObject3D(camera_, directionalLight_);
 	

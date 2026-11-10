@@ -213,6 +213,14 @@ public:
 		return player_.get();
 	}
 
+	/// <summary>
+	/// プレイヤー2を取得
+	/// </summary>
+	/// <returns></returns>
+	inline Player* GetPlayer2()const {
+		return player2_.get();
+	}
+
 
 private:
 	/// <summary>
@@ -271,7 +279,6 @@ private:
 	float_t initialComboPositionY_ = 0.0f;
 	//通常表示時のコンボ座標
 	float_t comboDisplayPositionY_ = 0.0f;
-
 	//初期のスコア座標
 	std::array<float_t, SCORE_DIGIT_> initialScorePositionXArray_ = {};
 	float_t initialScorePositionY_ = 0.0f;
@@ -298,7 +305,6 @@ private:
 		//テクスチャハンドル
 		uint32_t textureHandle;
 	};
-
 
 public:
 	
@@ -408,6 +414,10 @@ private:
 	std::unique_ptr<JudgementLine> judgementLine_ = nullptr;
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
+	//
+	std::unique_ptr<Player> player2_ = nullptr;
+
+
 	//一時記録用
 	NoteJudgement::Record temporaryRecord_ = {};
 };

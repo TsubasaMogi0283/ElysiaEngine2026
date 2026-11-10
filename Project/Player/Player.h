@@ -125,8 +125,6 @@ public:
 	//現在の状態
 	AnimationState currentState_ = AnimationState::Run;
 
-
-
 public:
 
 	/// <summary>
