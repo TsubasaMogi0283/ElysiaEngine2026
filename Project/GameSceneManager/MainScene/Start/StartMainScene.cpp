@@ -137,10 +137,14 @@ void StartMainScene::Initialize() {
 		baseLineSpriteArray_[i]->SetColor(levelColor);
 	}
 
-	mainPositionX = mainScene_->GetJudgementLine()->GetJudgementPositionX() - 7.5f;
-	initialPositionX = mainPositionX;
-	initialPositionX -= PLAYER_MOVE_DISTANCE_;
-	mainScene_->GetPlayer()->SetPosition({ .x = initialPositionX ,.y = 0.0f,.z = 0.0f });
+	playerMainPositionX_ = mainScene_->GetJudgementLine()->GetJudgementPositionX() - 7.5f;
+	playerInitialPositionX_ = playerMainPositionX_-PLAYER_MOVE_DISTANCE_;
+	const float_t PLAYER2_OFFSET = -3.0f;
+	player2MainPositionX_ = playerMainPositionX_ + PLAYER2_OFFSET;
+	player2InitialPositionX_ = player2MainPositionX_ - PLAYER_MOVE_DISTANCE_;
+
+	mainScene_->GetPlayer()->SetPosition({ .x = playerInitialPositionX_ ,.y = 0.0f,.z = 0.0f });
+	mainScene_->GetPlayer2()->SetPosition({ .x = player2InitialPositionX_ ,.y = 0.0f,.z = 0.0f });
 }
 
 void StartMainScene::Update() {
@@ -219,8 +223,10 @@ void StartMainScene::PlayerMove(){
 	float_t t = SingleCalculation::InverseLerp(0.0f, PLAYER_MOVE_TIME_, playerMoveTime_);
 	t = std::clamp(t, 0.0f, 1.0f);
 	float_t easedT = Easing::EaseOutQuart(t);
-	float_t newPositionX = SingleCalculation::Lerp(initialPositionX, mainPositionX, easedT);
-	mainScene_->GetPlayer()->SetPosition({ .x = newPositionX ,.y = 0.0f,.z = 0.0f });
+	float_t playerNewPositionX = SingleCalculation::Lerp(playerInitialPositionX_, playerMainPositionX_, easedT);
+	float_t player2NewPositionX = SingleCalculation::Lerp(player2InitialPositionX_, player2MainPositionX_, easedT);
+	mainScene_->GetPlayer()->SetPosition({ .x = playerNewPositionX ,.y = 0.0f,.z = 0.0f });
+	mainScene_->GetPlayer2()->SetPosition({ .x = player2NewPositionX ,.y = 0.0f,.z = 0.0f });
 
 	if (t >= 1.0f) {
 		//トランジションが終わったらUIの移動へ 

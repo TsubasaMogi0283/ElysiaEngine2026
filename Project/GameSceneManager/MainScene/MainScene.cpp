@@ -195,8 +195,6 @@ void MainScene::Update() {
 	//判定線の更新
 	judgementLine_->SetPlayerPosition(player_->GetWorldPosition());
 	judgementLine_->UpdateObject3D();
-	judgementLine_->SetPlayerPosition(player2_->GetWorldPosition());
-	judgementLine_->UpdateObject3D();
 
 	//更新
 	baseMainScene_->Update();

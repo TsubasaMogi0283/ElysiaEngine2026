@@ -82,8 +82,6 @@ private:
 		NoteLane::Place place = NoteLane::Place::Up;
 	};
 
-	
-
 private:
 	/// <summary>
 	/// ノーツの流れる処理
