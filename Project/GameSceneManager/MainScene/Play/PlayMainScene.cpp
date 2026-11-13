@@ -928,11 +928,11 @@ void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft
 
 		//プレイヤー上攻撃
 		if (laneCondition.place == NoteLane::Place::Up) {
-			mainScene_->GetPlayer()->SetUpAttack();
+			mainScene_->GetPlayer2()->SetAttack(laneCondition.place);
 		}
 		//下攻撃
 		else if(laneCondition.place == NoteLane::Place::Down){
-			mainScene_->GetPlayer()->SetDownAttack();
+			mainScene_->GetPlayer1()->SetAttack(laneCondition.place);
 		}
 
 	} else {

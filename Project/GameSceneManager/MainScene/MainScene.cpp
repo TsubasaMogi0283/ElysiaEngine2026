@@ -218,10 +218,8 @@ void MainScene::DrawObject3D() {
 	//プレイヤー2
 	player2_->DrawObject3D(camera_, directionalLight_);
 
-
 	//オブジェクトの描画
 	baseMainScene_->DrawObject3D(camera_, directionalLight_);
-	
 }
 
 void MainScene::PreDrawPostEffect() {

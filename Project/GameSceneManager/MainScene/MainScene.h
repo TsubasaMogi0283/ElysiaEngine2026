@@ -209,7 +209,7 @@ public:
 	/// プレイヤーを取得
 	/// </summary>
 	/// <returns></returns>
-	inline Player* GetPlayer()const {
+	inline Player* GetPlayer1()const {
 		return player_.get();
 	}
 

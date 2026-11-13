@@ -8,6 +8,7 @@
 
 #include <AnimationModel.h>
 #include <Material.h>
+#include <Note/NoteLane.h>
 
 
 /// <summary>
@@ -76,14 +77,9 @@ private:
 	void Fall();
 
 	/// <summary>
-	/// パンチ
+	/// 攻撃
 	/// </summary>
-	void Punch();
-
-	/// <summary>
-	/// キック
-	/// </summary>
-	void Kick();
+	void Attack();
 
 public:
 
@@ -99,8 +95,7 @@ public:
 		&Player::Wait,
 		&Player::Run,
 		&Player::Fall,
-		&Player::Punch,
-		&Player::Kick,
+		&Player::Attack
 	};
 
 	/// <summary>
@@ -114,12 +109,8 @@ public:
 		//落ちる
 		Fall,
 
-
-		//余裕があれば片腕片足だけではなく両方対応できるようにしたい
-		//パンチ(上)
-		Punch,
-		//キック(下)
-		Kick,
+		//攻撃
+		Attack
 	};
 
 	//現在の状態
@@ -166,19 +157,13 @@ public:
 	}
 
 	/// <summary>
-	/// 上攻撃(キック)
+	/// 攻撃の設定
 	/// </summary>
-	inline void SetUpAttack() {
-		currentState_ = AnimationState::Kick;
+	/// <param name="place">位置</param>
+	inline void SetAttack(const NoteLane::Place& place) {
+		currentState_ = AnimationState::Attack;
+		attackPlace_ = place;
 	}
-
-	/// <summary>
-	/// 下攻撃(パンチ)
-	/// </summary>
-	inline void SetDownAttack() {
-		currentState_ = AnimationState::Punch;
-	}
-
 
 private:
 	//アニメーション管理クラス
@@ -217,4 +202,6 @@ private:
 	float_t punchAnimationTime_ = 0.0f;
 	float_t maxPunchAnimationTime_ = 0.5f;
 
+	//攻撃位置
+	NoteLane::Place attackPlace_ = NoteLane::Place::Size;
 };

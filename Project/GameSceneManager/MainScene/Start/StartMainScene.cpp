@@ -143,7 +143,7 @@ void StartMainScene::Initialize() {
 	player2MainPositionX_ = playerMainPositionX_ + PLAYER2_OFFSET;
 	player2InitialPositionX_ = player2MainPositionX_ - PLAYER_MOVE_DISTANCE_;
 
-	mainScene_->GetPlayer()->SetPosition({ .x = playerInitialPositionX_ ,.y = 0.0f,.z = 0.0f });
+	mainScene_->GetPlayer1()->SetPosition({ .x = playerInitialPositionX_ ,.y = 0.0f,.z = 0.0f });
 	mainScene_->GetPlayer2()->SetPosition({ .x = player2InitialPositionX_ ,.y = 0.0f,.z = 0.0f });
 }
 
@@ -225,7 +225,7 @@ void StartMainScene::PlayerMove(){
 	float_t easedT = Easing::EaseOutQuart(t);
 	float_t playerNewPositionX = SingleCalculation::Lerp(playerInitialPositionX_, playerMainPositionX_, easedT);
 	float_t player2NewPositionX = SingleCalculation::Lerp(player2InitialPositionX_, player2MainPositionX_, easedT);
-	mainScene_->GetPlayer()->SetPosition({ .x = playerNewPositionX ,.y = 0.0f,.z = 0.0f });
+	mainScene_->GetPlayer1()->SetPosition({ .x = playerNewPositionX ,.y = 0.0f,.z = 0.0f });
 	mainScene_->GetPlayer2()->SetPosition({ .x = player2NewPositionX ,.y = 0.0f,.z = 0.0f });
 
 	if (t >= 1.0f) {
