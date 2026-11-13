@@ -46,12 +46,11 @@ std::unique_ptr<Elysia::AnimationModel> Elysia::AnimationModel::Create(const uin
 	model->modelData_ = model->modelManager_->GetModelData(modelHandle);
 
 	//テクスチャの読み込み
-	//テクスチャの読み込み
 	model->textureHandleVector_.resize(model->modelData_.materials.size(), 0u);
 	for (size_t i = 0u; i < model->modelData_.materials.size(); ++i) {
 		const std::string& PATH = model->modelData_.materials[i].textureFilePath;
 		if (PATH.empty()) {
-			//空の場合テクスチャーにする
+			//空の場合テクスチャにする
 			model->textureHandleVector_[i] = model->textureManager_->Load("Resources/Sprite/Back/White.png");
 		}
 		else {

@@ -27,7 +27,7 @@ void Player::Initialize(const uint32_t& modelHandle, const std::vector<uint32_t>
 
 void Player::Update(){
 	//アニメーションの時間を設定
-	animationTime_ += DELTA_TIME_;
+	//animationTime_ += DELTA_TIME_;
 
 	//更新
 	worldTransform_.Update();

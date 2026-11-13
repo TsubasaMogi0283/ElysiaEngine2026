@@ -57,15 +57,15 @@ void TitleScene::Initialize() {
 
 	//プレイヤー
 	//モデル
-	uint32_t playerModelhandle = modelManager_->Load("Resources/External/Model/human", "walk.gltf");
+	uint32_t playerModelhandle = modelManager_->Load("Resources/External/Model/human", "walk.fbx");
 	//アニメーション
-	uint32_t playerWalkAnimationHandle = animationManager_->Load("Resources/External/Model/human", "walk.gltf");
+	uint32_t playerWalkAnimationHandle = animationManager_->Load("Resources/External/Model/human", "walk.fbx");
 	std::vector<uint32_t> playerAnimationHandleVector;
 	playerAnimationHandleVector.push_back(playerWalkAnimationHandle);
-	//生成
+	//生成y
 	player_ = std::make_unique<Player>();
 	player_->Initialize(playerModelhandle, playerAnimationHandleVector);
-	const float_t PLAYER_SCALE = 2.0f;
+	const float_t PLAYER_SCALE = 0.05f;
 	player_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
 	player_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t>,.z=0.0f });
 	

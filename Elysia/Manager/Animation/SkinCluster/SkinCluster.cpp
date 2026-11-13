@@ -24,7 +24,6 @@ void  SkinCluster::Create(const Skeleton& newSkeleton, const ModelData& modelDat
     srvIndex = srvManager->Allocate();
     paletteSrvHandle.first = srvManager->GetCPUDescriptorHandle(srvIndex);
     paletteSrvHandle.second = srvManager->GetGPUDescriptorHandle(srvIndex);
-    paletteResource->Unmap(0u, nullptr);
 
     //Palette用のSRVの生成
     srvManager->CreateSRVForPalette(static_cast<UINT>(skeleton.joints.size()), sizeof(WellForGPU), paletteResource.Get(), srvIndex);
@@ -44,7 +43,6 @@ void  SkinCluster::Create(const Skeleton& newSkeleton, const ModelData& modelDat
     influenceBufferView.BufferLocation = influenceResource->GetGPUVirtualAddress();
     influenceBufferView.SizeInBytes = UINT(sizeof(VertexInfluence) * modelData.vertices.size());
     influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
-    influenceResource->Unmap(0u, nullptr);
 
     //InfluenceBindPoseMatrixの保存領域を作成
     inverseBindPoseMatrices.resize(skeleton.joints.size());
@@ -96,6 +94,4 @@ void SkinCluster::Update(const Skeleton& newSkeleton){
         mappedPalette[jointIndex].skeletonSpaceIncerseTransposeMatrix = 
             Matrix4x4::MakeTransposeMatrix(Matrix4x4::Inverse(mappedPalette[jointIndex].skeletonSpaceMatrix));
     }
-
-
 }

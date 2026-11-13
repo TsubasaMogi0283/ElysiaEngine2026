@@ -1,6 +1,6 @@
 #include "Modelmanager.h"
 #include <cassert>
-
+#include <filesystem>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -248,7 +248,13 @@ ModelData Elysia::ModelManager::LoadFile(const std::string& directoryPath, const
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0u) {
 			aiString path;
 			material->GetTexture(aiTextureType_DIFFUSE, 0u, &path);
-			modelData.materials[i].textureFilePath = directoryPath + "/" + path.C_Str();
+
+			std::filesystem::path texturePath(path.C_Str());
+			if (texturePath.is_absolute() || texturePath.has_root_name()) {
+				texturePath = texturePath.filename();
+			}
+			modelData.materials[i].textureFilePath =
+				(std::filesystem::path(directoryPath) / texturePath).generic_string();
 		}
 	}
 
