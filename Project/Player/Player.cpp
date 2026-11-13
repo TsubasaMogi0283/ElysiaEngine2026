@@ -27,12 +27,25 @@ void Player::Initialize(const uint32_t& modelHandle, const std::vector<uint32_t>
 	//マテリアルの初期化
 	material_.Initialize();
 
+	isJump_ = false;
+	isInitializeJumpPosition_ = false;
+	worldTransform_.translate.y = GROUND_POSITION_Y_;
 }
 
 void Player::Update() {
 
 	//アニメーションの実行
 	(this->*functionTable[static_cast<uint8_t>(currentState_)])();
+
+	//ジャンプ時
+	if (isJump_) {
+		//落下
+		velocityAccelerationY_ += JUMP_ACCELERATION_Y_;
+		worldTransform_.translate.y += velocityAccelerationY_;
+	}
+	else {
+		worldTransform_.translate.y = GROUND_POSITION_Y_;
+	}
 
 	//更新
 	worldTransform_.Update();
@@ -55,20 +68,27 @@ void Player::Run() {
 }
 
 void Player::Fall() {
-	//落下
-	worldTransform_.translate.y -= 0.2f;
-
+	
 	//地面に到達したら落下を止める
 	if (worldTransform_.translate.y < GROUND_POSITION_Y_) {
 		worldTransform_.translate.y = GROUND_POSITION_Y_;
 		currentState_ = AnimationState::Run;
+		//初期値に設定
+		velocityAccelerationY_ = INITIAL_LAUNCH_VELOCITY_Y_;
+		//ジャンプの初期化
+		isJump_ = false;
+		isInitializeJumpPosition_ = false;
 	}
 }
 
 void Player::Attack() {
 	
 	//下側に移動
-	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(attackPlace_)] + OFFSET_POSITION_Y_;
+	if (!isInitializeJumpPosition_) {
+		worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(attackPlace_)] + OFFSET_POSITION_Y_;
+		isInitializeJumpPosition_ = true;
+	}
+	
 	//アニメーション時間の加算
 	punchAnimationTime_ += DELTA_TIME_;
 

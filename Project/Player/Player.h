@@ -161,8 +161,12 @@ public:
 	/// </summary>
 	/// <param name="place">位置</param>
 	inline void SetAttack(const NoteLane::Place& place) {
-		currentState_ = AnimationState::Attack;
-		attackPlace_ = place;
+		//攻撃状態にする
+		this->currentState_ = AnimationState::Attack;
+		//攻撃位置の設定
+		this->attackPlace_ = place;
+		//ジャンプの設定
+		this->isJump_ = true;
 	}
 
 private:
@@ -180,6 +184,9 @@ private:
 	//攻撃時の座標のオフセット
 	const float_t OFFSET_POSITION_Y_ = -2.5f;
 
+	//初期の打ち上げ速度
+	const float_t INITIAL_LAUNCH_VELOCITY_Y_ = 0.5f;
+
 private:
 	//モデル
 	std::unique_ptr<Elysia::AnimationModel> animationModel_ = nullptr;
@@ -189,6 +196,16 @@ private:
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_ = {};
+
+	//ジャンプ(攻撃)したかどうか
+	bool isJump_ = false;
+	//ジャンプ時の初期設定
+	bool isInitializeJumpPosition_ = false;
+
+	//加速の合計値
+	float_t velocityAccelerationY_ = INITIAL_LAUNCH_VELOCITY_Y_;
+	//ジャンプ時の加速度
+	const float_t JUMP_ACCELERATION_Y_ = -0.05f;
 	//マテリアル
 	Material material_ = {};
 
