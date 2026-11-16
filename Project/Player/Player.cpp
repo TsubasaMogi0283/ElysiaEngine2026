@@ -17,7 +17,6 @@ void Player::Initialize(const uint32_t& modelHandle, const std::vector<uint32_t>
 	//currentAnimationHandle_ = animationHandleVector_[static_cast<uint8_t>(currentState_)];
 	currentAnimationHandle_ = animationHandleVector_[0u];
 
-
 	//モデルの生成
 	//待機アニメーションで初期化
 	animationModel_ = Elysia::AnimationModel::Create(modelHandle, currentAnimationHandle_);
@@ -28,7 +27,6 @@ void Player::Initialize(const uint32_t& modelHandle, const std::vector<uint32_t>
 	material_.Initialize();
 
 	isJump_ = false;
-	isInitializeJumpPosition_ = false;
 	worldTransform_.translate.y = GROUND_POSITION_Y_;
 }
 
@@ -45,6 +43,12 @@ void Player::Update() {
 	}
 	else {
 		worldTransform_.translate.y = GROUND_POSITION_Y_;
+	}
+
+	//
+	if (worldTransform_.translate.y < GROUND_POSITION_Y_) {
+		worldTransform_.translate.y = GROUND_POSITION_Y_;
+		isGround_ = true;
 	}
 
 	//更新
@@ -68,27 +72,17 @@ void Player::Run() {
 }
 
 void Player::Fall() {
-	
 	//地面に到達したら落下を止める
-	if (worldTransform_.translate.y < GROUND_POSITION_Y_) {
-		worldTransform_.translate.y = GROUND_POSITION_Y_;
+	if (isGround_) {
 		currentState_ = AnimationState::Run;
 		//初期値に設定
 		velocityAccelerationY_ = INITIAL_LAUNCH_VELOCITY_Y_;
 		//ジャンプの初期化
 		isJump_ = false;
-		isInitializeJumpPosition_ = false;
 	}
 }
 
 void Player::Attack() {
-	
-	//下側に移動
-	if (!isInitializeJumpPosition_) {
-		worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(attackPlace_)] + OFFSET_POSITION_Y_;
-		isInitializeJumpPosition_ = true;
-	}
-	
 	//アニメーション時間の加算
 	punchAnimationTime_ += DELTA_TIME_;
 
@@ -102,4 +96,20 @@ void Player::Attack() {
 
 void Player::SetJudgementLine(JudgementLine* judgementLine) {
 	this->judgementLine_ = judgementLine;
+}
+
+void Player::SetAttack(const NoteLane::Place& place){
+	//攻撃状態にする
+	currentState_ = AnimationState::Attack;
+	//攻撃位置の設定
+	attackPlace_ = place;
+	//ジャンプの設定
+	isJump_ = true;
+	//空中にいる設定
+	isGround_ = false;
+	//初期値に戻す
+	worldTransform_.translate.y = judgementLine_->GetLanePosition()[static_cast<uint8_t>(attackPlace_)] + OFFSET_POSITION_Y_;
+
+	//落下
+	velocityAccelerationY_ = INITIAL_LAUNCH_VELOCITY_Y_;
 }

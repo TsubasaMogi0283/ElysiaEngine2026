@@ -160,14 +160,7 @@ public:
 	/// 攻撃の設定
 	/// </summary>
 	/// <param name="place">位置</param>
-	inline void SetAttack(const NoteLane::Place& place) {
-		//攻撃状態にする
-		this->currentState_ = AnimationState::Attack;
-		//攻撃位置の設定
-		this->attackPlace_ = place;
-		//ジャンプの設定
-		this->isJump_ = true;
-	}
+	void SetAttack(const NoteLane::Place& place);
 
 private:
 	//アニメーション管理クラス
@@ -199,8 +192,9 @@ private:
 
 	//ジャンプ(攻撃)したかどうか
 	bool isJump_ = false;
-	//ジャンプ時の初期設定
-	bool isInitializeJumpPosition_ = false;
+	//地面にいる
+	bool isGround_ = false;
+
 
 	//加速の合計値
 	float_t velocityAccelerationY_ = INITIAL_LAUNCH_VELOCITY_Y_;
