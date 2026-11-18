@@ -96,11 +96,7 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-!External/assimp/lib/
-!External/assimp/lib/Debug/
-!External/assimp/lib/Debug/*.lib
-!External/assimp/lib/Release/
-!External/assimp/lib/Release/*.lib
+External/assimp/lib/
 
 
 # Chutzpah Test files
