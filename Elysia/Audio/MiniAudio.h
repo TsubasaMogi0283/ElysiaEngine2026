@@ -112,6 +112,20 @@ namespace Elysia {
 		/// <returns>時間の長さ</returns>
 		float_t GetLength(const int32_t& audioHandle);
 
+		/// <summary>
+		/// 音量調整
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <param name="volume">音量</param>
+		void ChangeVolume(const int32_t& audioHandle, const float_t& volume);
+
+		/// <summary>
+		/// 終了したかどうかを取得
+		/// </summary>
+		/// <param name="audioHandle">ハンドル</param>
+		/// <returns>終了状態</returns>
+		bool GetIsEnd(const int32_t& audioHandle);
+
 #pragma region ループ
 
 	private:
@@ -158,11 +172,11 @@ namespace Elysia {
 		/// <returns>サウンド</returns>
 		ma_sound* GetSound(const int32_t& handle) {
 			//無い場合は空を返す
-			if (!soundArray_[handle]) {
+			if (!soundDataArray_[handle]) {
 				return nullptr;
 			}
 			//見つかった時
-			return soundArray_[handle]->sound.get();
+			return soundDataArray_[handle]->sound.get();
 		}
 
 	public:
@@ -176,7 +190,8 @@ namespace Elysia {
 			std::string path = "";
 			//ハンドル
 			int32_t handle = -1;
-
+			//ポーズ中かどうか
+			bool isPause = false;
 		};
 
 	private:
@@ -194,7 +209,7 @@ namespace Elysia {
 		//サブミックス用
 		std::array<ma_sound_group, SUBMIXVOICE_AMOUNT_> submixGroupArray_ = {};
 		//サウンド
-		std::array<std::unique_ptr<SoundData>, SOUND_AMOUNT_> soundArray_ = { };
+		std::array<std::unique_ptr<SoundData>, SOUND_AMOUNT_> soundDataArray_ = { };
 
 	};
 }

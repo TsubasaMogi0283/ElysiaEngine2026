@@ -18,7 +18,7 @@ namespace Elysia{
 	/// <summary>
 	/// オーディオ
 	/// </summary>
-	class Audio;
+	class MiniAudio;
 
 	/// <summary>
 	/// テクスチャ管理クラス
@@ -125,7 +125,7 @@ public:
 
 private:
 	//オーディオ
-	Elysia::Audio* audio_ = nullptr;
+	Elysia::MiniAudio* miniAudio_ = nullptr;
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
 

@@ -38,7 +38,7 @@ void Elysia::MiniAudio::Initialize(){
 void Elysia::MiniAudio::Finalize(){
 
     //サウンドの解放
-	for(auto& soundInfo : soundArray_) {
+	for(auto& soundInfo : soundDataArray_) {
 		if (soundInfo && soundInfo->sound) {
 			ma_sound_uninit(soundInfo->sound.get());
 			soundInfo->sound.reset();
@@ -62,15 +62,15 @@ int32_t Elysia::MiniAudio::Load(const std::string& filePath){
 
     //既存だったらそれを返す
     for (uint16_t i = 0u; i < SOUND_AMOUNT_; i++) {
-        if (soundArray_[i] && soundArray_[i]->path == filePath) {
-			return soundArray_[i]->handle;
+        if (soundDataArray_[i] && soundDataArray_[i]->path == filePath) {
+			return soundDataArray_[i]->handle;
         }
     }
 
     //空きを探し空だった所から入れていく
     int32_t handle = -1;
     for (int32_t i = 0; i < SOUND_AMOUNT_; ++i) {
-        if (!soundArray_[i]) {
+        if (!soundDataArray_[i]) {
             handle = i;
             break;
         }
@@ -94,7 +94,7 @@ int32_t Elysia::MiniAudio::Load(const std::string& filePath){
     //登録
     soundData->path = filePath;
     soundData->handle = handle;
-    soundArray_[handle] = std::move(soundData);
+    soundDataArray_[handle] = std::move(soundData);
 
     return handle;
 
@@ -116,10 +116,11 @@ void Elysia::MiniAudio::Play(const int32_t audioHandle,const bool& isLoop){
 void Elysia::MiniAudio::Pause(const int32_t& audioHandle){
     //データの取得
     ma_sound* sound = GetSound(audioHandle);
-
+    
 	//見つかれば一時停止
     if (sound) {
         ma_sound_stop(sound);
+		soundDataArray_[audioHandle]->isPause = true;
     }
 }
 
@@ -130,8 +131,8 @@ void Elysia::MiniAudio::Resume(const int32_t& audioHandle){
     //見つかれば再開
     if (sound) { 
         ma_sound_start(sound); 
+        soundDataArray_[audioHandle]->isPause = false;
     }  
-
 }
 
 void Elysia::MiniAudio::Stop(const int32_t& audioHandle){
@@ -139,6 +140,7 @@ void Elysia::MiniAudio::Stop(const int32_t& audioHandle){
     if (sound) {
         ma_sound_stop(sound);
         ma_sound_seek_to_pcm_frame(sound, 0);
+        soundDataArray_[audioHandle]->isPause = false;
     }
 }
 
@@ -175,6 +177,35 @@ float_t Elysia::MiniAudio::GetLength(const int32_t& audioHandle) {
         return 0.0f;
     }
     return length;
+}
+
+void Elysia::MiniAudio::ChangeVolume(const int32_t& audioHandle, const float_t& volume){
+	//データの取得
+	ma_sound* sound = GetSound(audioHandle);
+	//無かった場合は何もしない
+	if (!sound) {
+		return;
+	}
+	//音量の変更
+	ma_sound_set_volume(sound, volume);
+}
+
+bool Elysia::MiniAudio::GetIsEnd(const int32_t& audioHandle){
+    //データの取得
+    ma_sound* sound = GetSound(audioHandle);
+
+    //最後まで再生した場合
+    if (ma_sound_at_end(sound)) {
+        return true;
+    }
+
+    //再生中、または一時停止中の場合
+    if (ma_sound_is_playing(sound) || 
+        soundDataArray_[audioHandle]->isPause) {
+        return false;
+    }
+
+    return false;
 }
 
 bool Elysia::MiniAudio::SetLoopRange(ma_sound* sound, float_t& startTime, const float_t& endTime){

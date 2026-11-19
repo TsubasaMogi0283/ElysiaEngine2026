@@ -8,7 +8,7 @@
 #include "ModelManager.h"
 #include <GameSceneManager.h>
 #include <TextureManager.h>
-#include <Audio.h>
+#include <MiniAudio.h>
 #include <WindowsSetup.h>
 #include <StringOption.h>
 
@@ -21,7 +21,7 @@ SelectScene::SelectScene(){
 	//テクスチャ管理クラス
 	textureManager_ = Elysia::TextureManager::GetInstance();
 	//オーディオ
-	audio_ = Elysia::Audio::GetInstance();
+	miniAudio_ = Elysia::MiniAudio::GetInstance();
 	//ウィンドウクラス
 	windowsSetup_ = Elysia::WindowsSetup::GetInstance();
 }
@@ -91,9 +91,9 @@ void SelectScene::Initialize(){
 	backSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
 	backSprite_->SetPosition({ .x = 10,.y = 500 });
 
-
-	decideSEHandle_ = audio_->Load("Resources/Audio/SE/Deside.wav");
-	selectSEHandle_ = audio_->Load("Resources/Audio/SE/Select.wav");
+	//効果音の読み込み
+	decideSEHandle_ = miniAudio_->Load("Resources/Audio/SE/Deside.wav");
+	selectSEHandle_ = miniAudio_->Load("Resources/Audio/SE/Select.wav");
 }
 
 void SelectScene::Update(){
@@ -110,7 +110,7 @@ void SelectScene::Update(){
 			startTime = 48.5f;
 			endTime = 61.0f;
 		}
-		audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+		miniAudio_->PartlyLoop(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
 
 	}
 	if (isOpendTransiont_) {
@@ -119,26 +119,27 @@ void SelectScene::Update(){
 		//右に選択
 		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
 			jacket_->SetIsMoveToRight(true);
-			audio_->Play(selectSEHandle_,false);
+			miniAudio_->Play(selectSEHandle_,false);
 			
 		}
 		//左に選択
 		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
 			jacket_->SetIsMoveToLeft(true);
-			audio_->Play(selectSEHandle_, false);
+			miniAudio_->Play(selectSEHandle_, false);
 		}
 
 		//難易度の設定
 		//上を選択
 		if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
 			currentDifficultyNumber_++;
-			audio_->Play(selectSEHandle_, false);
+			miniAudio_->Play(selectSEHandle_, false);
 		}
 		//下を選択
 		if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
 			currentDifficultyNumber_--;
-			audio_->Play(selectSEHandle_, false);
+			miniAudio_->Play(selectSEHandle_, false);
 		}
+
 		//簡単から難しいまでにする
 		currentDifficultyNumber_ = std::clamp(currentDifficultyNumber_, static_cast<int8_t>(Difficulty::Easy), static_cast<int8_t>(Difficulty::Hard));
 		jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
@@ -150,23 +151,19 @@ void SelectScene::Update(){
 			gameSceneManager_->SetTemporaryMusicScoreData(allScoreData_[currentSelectedMusicNumber_]);
 			gameSceneManager_->SetTemporaryDifficulty(currentDifficultyNumber_);
 			gameSceneManager_->SetTemporaryHandle(allScoreData_[currentSelectedMusicNumber_].musicHandle, allScoreData_[currentSelectedMusicNumber_].jacketTextureHandle);
-			audio_->Play(decideSEHandle_, false);
+			miniAudio_->Play(decideSEHandle_, false);
 		}
-
 		currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();
-
-		
-		
 
 		// 選択曲が変わったときだけ再生し直す
 		if (currentSelectedMusicNumber_ != playingMusicNumber_) {
-			// 前の曲を止める（以前作ったReset等）
+			// 前の曲を止める
 			if (playingMusicNumber_ >= 0) {
-				audio_->Reset(allScoreData_[playingMusicNumber_].musicHandle);
+				miniAudio_->Stop(allScoreData_[playingMusicNumber_].musicHandle);
 			}
 
-			float startTime = 0.0f;
-			float endTime = 2.0f;
+			float_t startTime = 0.0f;
+			float_t endTime = 2.0f;
 			//NeonStreet
 			if (currentSelectedMusicNumber_ == 1) {
 				startTime = 70.3f;
@@ -176,7 +173,7 @@ void SelectScene::Update(){
 				startTime = 48.5f;
 				endTime = 61.0f;
 			}
-			audio_->PartlyLoopPlayMp3(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+			miniAudio_->PartlyLoop(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
 			playingMusicNumber_ = currentSelectedMusicNumber_;
 		}
 		
@@ -195,8 +192,7 @@ void SelectScene::Update(){
 	directionalLight_.Update();
 	
 
-	//指定時間を超えたらビネット
-	//仮置きでトランジェント
+	//トランジェント
 	if (waitingTime_ >= WATING_TIME_) {
 		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
 			isEnd_ = true;
@@ -205,11 +201,8 @@ void SelectScene::Update(){
 
 	//メインシーン
 	if (isEnd_) {
-		
-		for (uint8_t i = 0u;i < allScoreData_.size();i++) {
-			audio_->Reset(allScoreData_[i].musicHandle);
-		}
-
+		//楽曲を止める
+		miniAudio_->Stop(allScoreData_[playingMusicNumber_].musicHandle);
 		gameSceneManager_->ChangeScene("Main");
 		return;
 	}
