@@ -1,8 +1,8 @@
 #include "TextureManager.h"
-#include "SrvManager.h"
 
 #include <vector>
 
+#include "SrvManager.h"
 #include "Convert.h"
 
 Elysia::TextureManager* Elysia::TextureManager::GetInstance() {
@@ -23,28 +23,23 @@ const D3D12_RESOURCE_DESC Elysia::TextureManager::GetResourceDesc(const uint32_t
 	return D3D12_RESOURCE_DESC{};
 }
 
-uint64_t Elysia::TextureManager::GetTextureWidth(const uint32_t& textureHandle){
+Vector2<float_t> Elysia::TextureManager::GetTextureSize(const uint32_t& textureHandle){
+	
 	//テクスチャの情報を取得
 	//handleからfilePathを取得
 	auto it = handleToFilePathMap_.find(textureHandle);
 	if (it != handleToFilePathMap_.end()) {
-		const std::string& filePath = it->second;
-		return textureInformation_[filePath].resource->GetDesc().Width;		
-	}
-	//見つからなかった場合は0uを返す
-	return 0u;
-}
+		const std::string& FILE_PATH = it->second;
 
-uint64_t Elysia::TextureManager::GetTextureHeight(const uint32_t& textureHandle){
-	//テクスチャの情報を取得
-	//handleからfilePathを取得
-	auto it = handleToFilePathMap_.find(textureHandle);
-	if (it != handleToFilePathMap_.end()) {
-		const std::string& filePath = it->second;
-		return textureInformation_[filePath].resource->GetDesc().Height;
+		//サイズを取得
+		Vector2<float_t> size = {
+			.x = static_cast<float_t>(textureInformation_[FILE_PATH].resource->GetDesc().Width),
+			.y = static_cast<float_t>(textureInformation_[FILE_PATH].resource->GetDesc().Height)
+		};
+		return size;
 	}
 	//見つからなかった場合は0uを返す
-	return 0u;
+	return {.x = 0.0f, .y = 0.0f};
 }
 
 

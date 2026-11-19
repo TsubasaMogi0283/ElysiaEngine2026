@@ -72,10 +72,7 @@ void ResultScene::Initialize() {
 	}
 
 	//数字のテクスチャの横幅を取得
-	Vector2<int32_t> numberTextureSize = {
-		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(numberTextureHandle_[0])),
-		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(numberTextureHandle_[0]))
-	};
+	Vector2<float_t> numberTextureSize = textureManager_->GetTextureSize(numberTextureHandle_[0]);
 
 	//判定のテクスチャの読み込み
 	std::array<uint32_t, static_cast<size_t>(NoteJudgement::Selection::Size)> judgementTextureHandle = {};
@@ -84,10 +81,7 @@ void ResultScene::Initialize() {
 	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Great)] = textureManager_->Load("Resources/Sprite/Judgement/Great.png");
 	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Perfect)] = textureManager_->Load("Resources/Sprite/Judgement/Perfect.png");
 	//サイズを取得
-	Vector2<int32_t> judgementTextureSize = {
-		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)])),
-		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)])),
-	};
+	Vector2<float_t> judgementTextureSize = textureManager_->GetTextureSize(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)]);
 
 	//判定の座標
 	const Vector2<float_t> JUDGEMENT_POSITION = { .x = 50.0f,.y = 300.0f };
@@ -99,6 +93,7 @@ void ResultScene::Initialize() {
 	Vector2<float_t> comboPosition = {};
 	//0で初期化
 	const uint8_t INITIAL_NUMBER = 0u;
+
 	//判定の文字のスプライト
 	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
 		//スプライトの生成
@@ -143,7 +138,6 @@ void ResultScene::Initialize() {
 	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Good)] = temporaryRecievedRecord_.good;
 	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] = temporaryRecievedRecord_.miss;
 
-
 	//最大コンボ数
 	uint32_t comboTextureHandle = textureManager_->Load("Resources/Sprite/Judgement/Combo.png");
 	maxComboSprite_ = Elysia::Sprite::Create(comboTextureHandle);
@@ -181,12 +175,12 @@ void ResultScene::Initialize() {
 	rankTexturehHandle[static_cast<uint8_t>(RankSelection::B)] = textureManager_->Load("Resources/Sprite/Result/Rank/B.png");
 	rankTexturehHandle[static_cast<uint8_t>(RankSelection::C)] = textureManager_->Load("Resources/Sprite/Result/Rank/C.png");
 	rankTexturehHandle[static_cast<uint8_t>(RankSelection::D)] = textureManager_->Load("Resources/Sprite/Result/Rank/D.png");
+
 	//生成
 	rankSprite_ = Elysia::Sprite::Create(rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)]);
 	rankSprite_->SetInvisible(true);
 	rankSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 	rankSprite_->SetPosition({ .x = SCORE_BOARD_CENTER_POSITION_X + 250,.y = 475 });
-
 
 	//決定
 	uint32_t decideTexturehandle = textureManager_->Load("Resources/Sprite/Select/Decide.png");
@@ -302,6 +296,12 @@ void ResultScene::IncreaseValue(){
 		scoreIncreaseTime_ += DELTA_TIME_;
 		float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, scoreIncreaseTime_);
 		t = std::clamp(t, 0.0f, 1.0f);
+
+		//スキップ
+		if (input_->IsTriggerKey(DIK_RETURN)) {
+			t = 1.0f;
+		}
+
 		//各桁の値を求めていく
 		uint32_t score = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.score * t));
 		for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
@@ -322,6 +322,13 @@ void ResultScene::IncreaseValue(){
 			
 			float_t t = SingleCalculation::InverseLerp(judgementIncreaseStartTimeArray_[i], judgementIncreaseEndTimeArray_[i], judgementIncreaseTime);
 			t = std::clamp(t, 0.0f, 1.0f);
+
+			//スキップ
+			if (input_->IsTriggerKey(DIK_RETURN)) {
+				t = 1.0f;
+				isIncreaseMaxCombo_ = true;
+			}
+
 			//各桁の値を求めていく
 			uint32_t value = static_cast<uint32_t>(static_cast<float_t>(judgementValue_[i] * t));
 
@@ -346,6 +353,12 @@ void ResultScene::IncreaseValue(){
 		increaseMaxComboTime_ += DELTA_TIME_;
 		float_t t = SingleCalculation::InverseLerp(0.0f, MAX_COMBO_INCREASE_TIME_, increaseMaxComboTime_);
 		t = std::clamp(t, 0.0f, 1.0f);
+
+		//スキップ
+		if (input_->IsTriggerKey(DIK_RETURN)) {
+			t = 1.0f;
+		}
+
 		//各桁の値を求めていく
 		uint32_t value = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.maxCombo * t));
 
@@ -382,8 +395,10 @@ void ResultScene::MoveRank(){
 }
 
 void ResultScene::Display(){
+	//表示
 	decideSprite_->SetInvisible(false);
 
+	//エンターを押したら戻る
 	if (input_->IsTriggerKey(DIK_RETURN)) {
 		currentState_ = ResultSceneState::Return;
 	}

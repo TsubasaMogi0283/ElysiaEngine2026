@@ -54,19 +54,13 @@ void SelectScene::Initialize(){
 	}
 	//フレーム
 	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
-	Vector2<int32_t>frameTextureSize = { 
-		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(frameTextureHandle)),
-		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(frameTextureHandle))
-	};
+	Vector2<float_t>frameTextureSize = textureManager_->GetTextureSize(frameTextureHandle);
 	//初期化
 	jacket_->Initialize(jacketTextureHandleVector, frameTextureHandle);
 	jacket_->SetDifficulty(static_cast<Difficulty>(currentDifficultyNumber_));
 
 	uint32_t arrowTextureHandle = textureManager_->Load("Resources/Sprite/Select/Arrow.png");
-	Vector2<float_t>arrowTextureSize = {
-		.x = static_cast<float_t>(textureManager_->GetTextureWidth(arrowTextureHandle)),
-		.y = static_cast<float_t>(textureManager_->GetTextureHeight(arrowTextureHandle))
-	};
+	Vector2<float_t>arrowTextureSize = textureManager_->GetTextureSize(arrowTextureHandle);
 
 	arrowPositionArray_[0] = {
 			.x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u) - arrowTextureSize.x / 2.0f - frameTextureSize.x / 4.0f,
