@@ -245,6 +245,15 @@ private:
 	//ウィンドウクラス
 	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 
+
+private:
+#ifdef _DEBUG
+	float_t judgementTextureScale_ = 0.5f;
+
+#endif // _DEBUG
+
+
+
 private:
 
 	//一の桁
@@ -278,7 +287,7 @@ private:
 	const int32_t SCORE_POSITION_OFFSET_X_ = 50;
 
 	//判定のテクスチャのスケール
-	const float_t JUDGEMENT_TEXTURE_SCALE_ = 0.75f;
+	const float_t JUDGEMENT_TEXTURE_SCALE_ = judgementTextureScale_;
 	const float_t MAX_JUDGEMENT_INCREASE_TIME_ = 1.0f;
 
 	//コンボ
