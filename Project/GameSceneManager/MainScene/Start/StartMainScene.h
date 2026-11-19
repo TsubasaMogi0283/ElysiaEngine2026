@@ -190,8 +190,10 @@ private:
 	//プレイヤーの動く時間
 	float_t playerMoveTime_ = 0.0f;
 	//判定線の前に行くようにする
-	float_t mainPositionX = 0.0f;
-	float_t initialPositionX = 0.0f;
+	float_t playerMainPositionX_ = 0.0f;
+	float_t player2MainPositionX_ = 0.0f;
+	float_t playerInitialPositionX_ = 0.0f;
+	float_t player2InitialPositionX_ = 0.0f;
 
 
 	//Readyに関する変数

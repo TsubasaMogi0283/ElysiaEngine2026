@@ -108,9 +108,8 @@ private:
 private:
 	//判定のX座標
 	const float_t LINE_POSITION_X_ = -17.0f;
-	static const uint8_t LANE_SIZE_ = static_cast<uint8_t>(NoteLane::Place::Size);
 	//レーンのY座標
-	const std::array<float_t, LANE_SIZE_> LANE_POSITION_Y_ = { 15.0f,5.0f };
+	const std::array<float_t, static_cast<uint8_t>(NoteLane::Place::Size)> LANE_POSITION_Y_ARRAY_ = { 15.0f,5.0f };
 
 	//判定のUIの数
 	static const uint8_t UI_AMOUNT_ = 8u;
@@ -160,8 +159,8 @@ public:
 	/// レーンの座標を設定
 	/// </summary>
 	/// <returns>座標</returns>
-	inline std::array<float_t, LANE_SIZE_> GetLanePosition() const{
-		return LANE_POSITION_Y_;
+	inline std::array<float_t, static_cast<uint8_t>(NoteLane::Place::Size)> GetLanePosition() const{
+		return LANE_POSITION_Y_ARRAY_;
 	}
 
 private:

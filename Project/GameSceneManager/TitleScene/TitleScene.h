@@ -250,7 +250,6 @@ private:
 	Material arrowMaterial_ = {};
 	float_t arrowRotateX_ = 0.0f;
 	
-	
 
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;

@@ -31,12 +31,12 @@ MainScene::MainScene() {
 }
 
 void MainScene::Initialize() {
+
 	//楽曲譜面情報を取得
 	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
 	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreData[difficulty_];
 	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();;
 	jacketTextureHandle_ = gameSceneManager_->GetTemporaryJacketTextureHandle();
-
 
 	//ノーツの生成
 	GenerateNotes();
@@ -46,7 +46,7 @@ void MainScene::Initialize() {
 
 	//平行光源の初期化
 	directionalLight_.Initialize();
-	directionalLight_.direction = {.x = 0.04f,.y = -1.0f,.z = 0.75f };
+	directionalLight_.direction = { .x = 0.04f,.y = -1.0f,.z = 0.75f };
 	//背景
 	backTexture_ = std::make_unique<Elysia::BackTexture>();
 	backTexture_->Initialize();
@@ -74,13 +74,13 @@ void MainScene::Initialize() {
 	//初期座標
 	Vector2<float_t> initialPosition = {
 		.x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u) - static_cast<float_t>(gaugeTextureSize.x / 2u),
-		.y = static_cast<float_t>(windowsSetup_->GetClientSize().y+ static_cast<float_t>(gaugeTextureSize.y))
+		.y = static_cast<float_t>(windowsSetup_->GetClientSize().y + static_cast<float_t>(gaugeTextureSize.y))
 	};
 	//初期の座標
 	gauge_->SetInitialPosition(initialPosition);
 	gauge_->SetPosition(initialPosition);
 	//移動後の座標
-	gauge_->SetFinalPositionY(initialPosition.y - static_cast<int32_t>(gaugeTextureSize.y)*3);
+	gauge_->SetFinalPositionY(initialPosition.y - static_cast<int32_t>(gaugeTextureSize.y) * 3);
 
 	//数字のテクスチャーの読み込み
 	uint32_t numberTextureHandle[NUMBER_TEXTURE_AMOUNT_] = {};
@@ -115,7 +115,7 @@ void MainScene::Initialize() {
 
 		//座標の設定
 		comboArray_[i].position = {
-			.x = static_cast<float_t>(COMBO_DIGIT_-i - 3) * numberTextureSize_.x + 640.0f,
+			.x = static_cast<float_t>(COMBO_DIGIT_ - i - 3) * numberTextureSize_.x + 640.0f,
 			.y = 0.0f
 		};
 		comboArray_[i].sprite->SetPosition(comboArray_[i].position);
@@ -142,14 +142,22 @@ void MainScene::Initialize() {
 	uint32_t playerWalkAnimationHandle = animationManager_->Load("Resources/External/Model/human", "walk.gltf");
 	std::vector<uint32_t> playerAnimationHandleVector;
 	playerAnimationHandleVector.push_back(playerWalkAnimationHandle);
+	playerAnimationHandleVector.push_back(playerWalkAnimationHandle);
 	//生成
 	player_ = std::make_unique<Player>();
 	player_->SetJudgementLine(judgementLine_.get());
 	player_->Initialize(playerModelhandle, playerAnimationHandleVector);
 	const float_t PLAYER_SCALE = 2.0f;
 	player_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
-	player_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t>/2,.z = 0.0f });
-	
+	player_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t> / 2,.z = 0.0f });
+
+	//プレイヤー2
+	player2_ = std::make_unique<Player>();
+	player2_->SetJudgementLine(judgementLine_.get());
+	player2_->Initialize(playerModelhandle, playerAnimationHandleVector);
+	player2_->SetScale({ .x = PLAYER_SCALE,.y = PLAYER_SCALE,.z = PLAYER_SCALE });
+	player2_->SetRotate({ .x = 0.0f,.y = std::numbers::pi_v<float_t> / 2,.z = 0.0f });
+
 	//メインシーン
 	baseMainScene_ = std::make_unique<StartMainScene>();
 	baseMainScene_->SetMainScene(this);
@@ -179,6 +187,7 @@ void MainScene::Update() {
 	AssignToTexture();
 	//プレイヤー
 	player_->Update();
+	player2_->Update();
 	//ゲージの更新
 	gauge_->Update();
 	//判定線の更新
@@ -199,14 +208,16 @@ void MainScene::Update() {
 }
 
 void MainScene::DrawObject3D() {
-	
+
 	//判定線の描画
 	judgementLine_->DrawObject3D(camera_, directionalLight_);
 	//プレイヤー
 	player_->DrawObject3D(camera_, directionalLight_);
+	//プレイヤー2
+	player2_->DrawObject3D(camera_, directionalLight_);
+
 	//オブジェクトの描画
 	baseMainScene_->DrawObject3D(camera_, directionalLight_);
-	
 }
 
 void MainScene::PreDrawPostEffect() {
@@ -221,7 +232,7 @@ void MainScene::DrawPostEffect() {
 }
 
 void MainScene::DrawSprite() {
-	
+
 	//ゲージ
 	//gauge_->DrawSprite();
 
@@ -507,6 +518,7 @@ void MainScene::GenerateNotes() {
 }
 
 void MainScene::AssignToTexture() {
+
 #pragma region スコア
 
 	//各桁に数字を割り当てる
@@ -523,7 +535,6 @@ void MainScene::AssignToTexture() {
 
 #pragma endregion
 
-
 #pragma region コンボ
 
 	//各桁の数字を割り当てる
@@ -531,7 +542,7 @@ void MainScene::AssignToTexture() {
 	for (uint8_t i = 0;i < COMBO_DIGIT_;i++) {
 		comboArray_[i].value = static_cast<uint16_t>(combo % 10u);
 		//最後の桁以外は10で割る
-		if (i != COMBO_DIGIT_-1u) {
+		if (i != COMBO_DIGIT_ - 1u) {
 			combo /= 10u;
 		}
 		//テクスチャハンドルに割り当てる

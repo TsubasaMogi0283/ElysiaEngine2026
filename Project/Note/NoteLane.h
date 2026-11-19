@@ -26,8 +26,12 @@ namespace NoteLane {
 	/// 位置
 	/// </summary>
 	enum class Place {
+		//上
 		Up,
+		//下
 		Down,
+
+		//サイズ
 		Size
 	};
 }
