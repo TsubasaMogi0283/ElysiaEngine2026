@@ -316,7 +316,6 @@ void PlayMainScene::DrawSprite() {
 		//判定UIの表示
 		mainScene_->GetJudgementLine()->DrawSprite();
 	}
-
 }
 
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition) {
@@ -911,8 +910,6 @@ void PlayMainScene::Pause() {
 void PlayMainScene::Stop() {
 	//ESCAPEでポーズ
 	miniAudio_->Stop(musicHandle_);
-	//音量も0にする
-	//miniAudio_->ChangeVolume(musicHandle_, 0.0f);
 	//止めた時間を記録
 	stopTime_ = musicTime_;
 	//ポーズ中にする

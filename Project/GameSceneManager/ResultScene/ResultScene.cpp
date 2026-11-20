@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <numbers>
+#include <magic_enum/magic_enum.hpp>
 
 #include <Easing.h>
 #include "Input.h"
@@ -43,7 +44,9 @@ void ResultScene::Initialize() {
 
 	//下地
 	baseSprite_ = Elysia::Sprite::Create();
-	baseSprite_->SetScale({ .x = 1.0f,.y = 0.65f });
+	baseSprite_->SetScale({ .x = 0.9f,.y = 0.65f });
+	baseSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.0f });
+	baseSprite_->SetPosition({ .x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u),.y = 20.0f });
 	baseSprite_->SetTransparency(0.25f);
 
 	//タイトルのスプライト
@@ -51,9 +54,6 @@ void ResultScene::Initialize() {
 	//作曲者のスプライト
 	musicComposerSprite_ = Elysia::Sprite::Create();
 
-	//スコアボードの中心座標
-	const float_t SCORE_BORD_SIZE = static_cast<float_t>(windowsSetup_->GetClientSize().x) * 0.75f;
-	const float_t SCORE_BOARD_CENTER_POSITION_X = SCORE_BORD_SIZE / 2.0f;
 
 	//ゲージ
 	//テクスチャの読み込み
@@ -64,7 +64,7 @@ void ResultScene::Initialize() {
 	gauge_->SetTotalNotes(temporaryRecievedRecord_.totalNotes);
 	gauge_->SetAllScale(GAUGE_MAX_SCALE_);
 	gauge_->SetMainScale({ .x = 0.0f,.y = 0.0f });
-	gauge_->SetInitialPosition({ .x = SCORE_BOARD_CENTER_POSITION_X / 2 - 140 ,.y = 225 });
+	gauge_->SetPosition({ .x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 4u) - 50.0f,.y = 125.0f });
 	//数字のテクスチャを読み込む
 	const std::string NUMBER_PATH = "Resources/Sprite/Number/";
 	for (uint8_t i = 0u; i < NUMBER_AMOUNT_; i++) {
@@ -84,14 +84,15 @@ void ResultScene::Initialize() {
 	Vector2<float_t> judgementTextureSize = textureManager_->GetTextureSize(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)]);
 
 	//判定の座標
-	const Vector2<float_t> JUDGEMENT_POSITION = { .x = 50.0f,.y = 150.0f };
+	const Vector2<float_t> JUDGEMENT_POSITION = { .x = 100.0f,.y = 200.0f };
 	//判定のオフセットX座標
-	const float_t JUDGEMENT_OFFSET_POSITION_Y = -10.0f;
-	//コンボの座標(記録用)
-	Vector2<float_t> comboPosition = {};
+	const float_t JUDGEMENT_OFFSET_POSITION_Y = 10.0f;
 	//0で初期化
 	const uint8_t INITIAL_NUMBER = 0u;
+	//桁の座標オフセット
+	const float_t DIGIT_OFFSET_POSITION_X_ = -100.0f;
 
+	Vector2<float_t> judgementTexturePosition = {};
 	//判定の文字のスプライト
 	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
 		//スプライトの生成
@@ -100,23 +101,15 @@ void ResultScene::Initialize() {
 		judgementSpriteArray_[i]->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
 
 		//座標の設定
-		Vector2<float_t> textPosition = {
+		judgementTexturePosition = {
 			.x = JUDGEMENT_POSITION.x,
-			.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<float_t>(i)
+			.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<float_t>(i) * JUDGEMENT_TEXTURE_SCALE_
 		};
-		judgementSpriteArray_[i]->SetPosition(textPosition);
-
-		//コンボの座標
-		if (i == static_cast<size_t>(NoteJudgement::Selection::Miss)) {
-			comboPosition = {
-				.x = (static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) + 100.0f,
-				.y = textPosition.y + judgementTextureSize.y
-			};
-		}
+		judgementSpriteArray_[i]->SetPosition(judgementTexturePosition);
 
 		//各桁
 		Vector2<float_t> digitPosition = {};
-		digitPosition.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<float_t>(i);
+		digitPosition.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<float_t>(i) * JUDGEMENT_TEXTURE_SCALE_;
 		for (uint8_t j = 0u; j < ONE_THOUSAND_DIGIT_; j++) {
 			//生成
 			judgementDigitArray_[i][j].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
@@ -125,7 +118,7 @@ void ResultScene::Initialize() {
 			//スケールの設定
 			judgementDigitArray_[i][j].sprite->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
 			//座標の設定
-			digitPosition.x = JUDGEMENT_POSITION.x + judgementTextureSize.x + static_cast<float_t>(ONE_THOUSAND_DIGIT_ - j - 3u) * numberTextureSize.x* JUDGEMENT_TEXTURE_SCALE_;
+			digitPosition.x = JUDGEMENT_POSITION.x + judgementTextureSize.x + static_cast<float_t>(ONE_THOUSAND_DIGIT_ - j) * numberTextureSize.x * JUDGEMENT_TEXTURE_SCALE_ + DIGIT_OFFSET_POSITION_X_;
 			judgementDigitArray_[i][j].sprite->SetPosition(digitPosition);
 		}
 		//増加開始時間
@@ -147,59 +140,62 @@ void ResultScene::Initialize() {
 	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] = 0u;
 #endif // _DEBUG
 
-	//最大コンボ数
+	//コンボのテクスチャを読み込み
 	uint32_t comboTextureHandle = textureManager_->Load("Resources/Sprite/Judgement/Combo.png");
-	//サイズを取得
-	float_t comboTextureSizeX = textureManager_->GetTextureSize(comboTextureHandle).x;
 
 	//最大コンボ
 	//生成
 	maxComboSprite_ = Elysia::Sprite::Create(comboTextureHandle);
 	maxComboSprite_->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
-	maxComboSprite_->SetPosition({ .x = JUDGEMENT_POSITION.x ,.y = comboPosition.y });
+	maxComboSprite_->SetPosition({ .x = JUDGEMENT_POSITION.x ,.y = judgementTexturePosition.y + judgementTextureSize.y * JUDGEMENT_TEXTURE_SCALE_ });
 	//各桁
 	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
+		//生成
 		maxComboDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
-
 		//スケールの設定
 		maxComboDigit_[i].sprite->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
-
 		//座標の設定
 		maxComboDigit_[i].position = {
-			.x = comboTextureSizeX + static_cast<float_t>(ONE_THOUSAND_DIGIT_ - i - 3u) * numberTextureSize.x * JUDGEMENT_TEXTURE_SCALE_,
-			.y = comboPosition.y
+			.x = JUDGEMENT_POSITION.x + judgementTextureSize.x + static_cast<float_t>(ONE_THOUSAND_DIGIT_ - i) * numberTextureSize.x * JUDGEMENT_TEXTURE_SCALE_ + DIGIT_OFFSET_POSITION_X_,
+			.y = judgementTexturePosition.y + judgementTextureSize.y * JUDGEMENT_TEXTURE_SCALE_
 		};
 		maxComboDigit_[i].sprite->SetPosition(maxComboDigit_[i].position);
+		//テクスチャハンドルの設定
 		maxComboDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 	}
 
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+		//設定
 		scoreDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
-		scoreDigit_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+		//スケールの設定
+		scoreDigit_[i].sprite->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_ ,.y = JUDGEMENT_TEXTURE_SCALE_ });
 		//座標の設定
 		Vector2<float_t>digitPosition = {
-			.x = static_cast<float_t>(static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) + SCORE_BOARD_CENTER_POSITION_X / 2,
-			.y = 100.0f
+			.x = numberTextureSize.x * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_ * JUDGEMENT_TEXTURE_SCALE_ + 700.0f,
+			.y = JUDGEMENT_POSITION.y
 		};
 		scoreDigit_[i].sprite->SetPosition(digitPosition);
+		//テクスチャハンドル
 		scoreDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 	}
 
 	//ランク
 	//テクスチャ読み込み
 	uint32_t rankTexturehHandle[static_cast<uint8_t>(RankSelection::Size)] = {};
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)] = textureManager_->Load("Resources/Sprite/Result/Rank/S.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::A)] = textureManager_->Load("Resources/Sprite/Result/Rank/A.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::B)] = textureManager_->Load("Resources/Sprite/Result/Rank/B.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::C)] = textureManager_->Load("Resources/Sprite/Result/Rank/C.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::D)] = textureManager_->Load("Resources/Sprite/Result/Rank/D.png");
-	
+	//Sから始める
+	for (uint8_t i = static_cast<uint8_t>(RankSelection::S);i < static_cast<uint8_t>(RankSelection::Size);i++) {
+		std::string_view rank = magic_enum::enum_name(static_cast<RankSelection>(i));
+		std::string newString{ rank };
+		const std::string PATH = "Resources/Sprite/Result/Rank/" + newString + ".png";
+		rankTexturehHandle[static_cast<uint8_t>(i)] = textureManager_->Load(PATH);
+
+	}
+
 	//生成
 	rankSprite_ = Elysia::Sprite::Create(rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)]);
 	rankSprite_->SetInvisible(true);
 	rankSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
-	rankSprite_->SetPosition({ .x = SCORE_BOARD_CENTER_POSITION_X + 250,.y = 475 });
 
 	//決定
 	uint32_t decideTexturehandle = textureManager_->Load("Resources/Sprite/Select/Decide.png");
@@ -207,6 +203,13 @@ void ResultScene::Initialize() {
 	decideSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
 	decideSprite_->SetPosition({ .x = 1050,.y = 500 });
 	decideSprite_->SetInvisible(true);
+
+
+#ifdef _DEBUG
+	temporaryRecievedRecord_.gaugeRatio = 0.8f;
+#endif // _DEBUG
+
+
 }
 
 void ResultScene::Update() {
@@ -230,7 +233,9 @@ void ResultScene::Update() {
 	}
 
 #ifdef _DEBUG
+	ImGui::Begin("リザルトシーン");
 
+	ImGui::End();
 
 
 #endif // _DEBUG
@@ -258,7 +263,7 @@ void ResultScene::DrawSprite() {
 	//musicTitleSprite_->Draw();
 	//musicComposerSprite_->Draw();
 	//ゲージ
-	//gauge_->DrawSprite();
+	gauge_->DrawSprite();
 
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
@@ -271,7 +276,7 @@ void ResultScene::DrawSprite() {
 	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
 		maxComboDigit_[i].sprite->Draw(maxComboDigit_[i].textureHandle);
 	}
-	
+
 
 	//判定
 	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
@@ -285,8 +290,8 @@ void ResultScene::DrawSprite() {
 	}
 
 	//ランクの表示
-	//rankSprite_->Draw();
-	
+	rankSprite_->Draw();
+
 	//決定ボタン
 	decideSprite_->Draw();
 }
@@ -294,7 +299,7 @@ void ResultScene::DrawSprite() {
 void ResultScene::Open() {
 	//トランジションを開く
 	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
-		currentState_ = ResultSceneState::IncreaseValue;
+		currentState_ = ResultSceneState::IncreaseGauge;
 	}
 }
 
@@ -396,7 +401,6 @@ void ResultScene::IncreaseValue() {
 			currentState_ = ResultSceneState::MoveRank;
 		}
 	}
-
 }
 
 void ResultScene::MoveRank() {

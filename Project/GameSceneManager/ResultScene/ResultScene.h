@@ -248,7 +248,7 @@ private:
 
 private:
 #ifdef _DEBUG
-	float_t judgementTextureScale_ = 0.5f;
+	float_t judgementTextureScale_ = 0.65f;
 
 #endif // _DEBUG
 
@@ -292,6 +292,8 @@ private:
 
 	//コンボ
 	const float_t MAX_COMBO_INCREASE_TIME_ = 0.5f;
+	//スケール
+	const float_t MAX_COMBO_SCALE_ = 0.5f;
 	//スケールダウンの時間
 	const float_t MAX_SCALE_DOWN_TIME_ = 1.0f;
 
