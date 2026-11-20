@@ -132,14 +132,6 @@ void ResultScene::Initialize() {
 	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Good)] = temporaryRecievedRecord_.good;
 	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] = temporaryRecievedRecord_.miss;
 
-
-#ifdef _DEBUG
-	for (uint8_t i = 0;i < static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
-		judgementValue_[i] = 1234u;
-	}
-	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] = 0u;
-#endif // _DEBUG
-
 	//コンボのテクスチャを読み込み
 	uint32_t comboTextureHandle = textureManager_->Load("Resources/Sprite/Judgement/Combo.png");
 
@@ -180,6 +172,16 @@ void ResultScene::Initialize() {
 		scoreDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 	}
 
+
+#ifdef _DEBUG
+	temporaryRecievedRecord_.totalNotes = 1000u;
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Perfect)] = 500;
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Great)] = 300;
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Good)] = 150;
+	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] = 50;
+
+#endif // _DEBUG
+
 	//ランク
 	//テクスチャ読み込み
 	uint32_t rankTexturehHandle[static_cast<uint8_t>(RankSelection::Size)] = {};
@@ -189,13 +191,19 @@ void ResultScene::Initialize() {
 		std::string newString{ rank };
 		const std::string PATH = "Resources/Sprite/Result/Rank/" + newString + ".png";
 		rankTexturehHandle[static_cast<uint8_t>(i)] = textureManager_->Load(PATH);
-
 	}
 
-	//生成
+	uint16_t allPerfectJudgementScore = temporaryRecievedRecord_.totalNotes*3u;
+	const uint16_t GREAT_DECREASE_SCALE = judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Great)] * static_cast<uint16_t>(NoteJudgement::Selection::Great);
+	const uint16_t GOOD_DECREASE_SCALE = judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Good)] * static_cast<uint16_t>(NoteJudgement::Selection::Good);
+	const uint16_t MISS_DECREASE_SCALE = judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] * static_cast<uint16_t>(NoteJudgement::Selection::Miss);
+	uint16_t judgementScore = allPerfectJudgementScore - (GREAT_DECREASE_SCALE + GOOD_DECREASE_SCALE + MISS_DECREASE_SCALE);
+
+	//ランク
 	rankSprite_ = Elysia::Sprite::Create(rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)]);
 	rankSprite_->SetInvisible(true);
 	rankSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+	rankSprite_->SetPosition({ .x = static_cast<float_t>(windowsSetup_->GetClientSize().x) / 2.0f + 200.0f,.y = 400.0f });
 
 	//決定
 	uint32_t decideTexturehandle = textureManager_->Load("Resources/Sprite/Select/Decide.png");
@@ -204,11 +212,9 @@ void ResultScene::Initialize() {
 	decideSprite_->SetPosition({ .x = 1050,.y = 500 });
 	decideSprite_->SetInvisible(true);
 
-
 #ifdef _DEBUG
-	temporaryRecievedRecord_.gaugeRatio = 0.8f;
+	temporaryRecievedRecord_.gaugeRatio = static_cast<float_t>(judgementScore) / static_cast<float_t>(allPerfectJudgementScore);
 #endif // _DEBUG
-
 
 }
 
@@ -411,7 +417,7 @@ void ResultScene::MoveRank() {
 	rankScaleDownTime_ += DELTA_TIME_;
 	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_SCALE_DOWN_TIME_, rankScaleDownTime_);
 	t = std::clamp(t, 0.0f, 1.0f);
-	float_t easeScale = Easing::EaseInOutQuart(t);
+	float_t easeScale = Easing::EaseInOutQuart(t) * RANK_SCALE_;
 	rankSprite_->SetScale({ .x = easeScale,.y = easeScale });
 
 	if (t >= 1.0f) {
