@@ -324,18 +324,24 @@ void ResultScene::IncreaseGauge() {
 
 void ResultScene::IncreaseJudgement(){
 	judgementIncreaseTime += DELTA_TIME_;
+
+
+	if (input_->IsTriggerKey(DIK_RETURN)) {
+		isSkipJudgement_ = true;
+	}
+
 	for (uint8_t i = 0u;i < static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
 
-		float_t t = SingleCalculation::InverseLerp(judgementInformation_[i].increaseStartTime, judgementInformation_[i].increaseEndTime, judgementIncreaseTime);
-		t = std::clamp(t, 0.0f, 1.0f);
+		judgementInformation_[i].t = SingleCalculation::InverseLerp(judgementInformation_[i].increaseStartTime, judgementInformation_[i].increaseEndTime, judgementIncreaseTime);
+		judgementInformation_[i].t = std::clamp(judgementInformation_[i].t, 0.0f, 1.0f);
 
-		//スキップ
-		if (input_->IsTriggerKey(DIK_RETURN)) {
-			t = 1.0f;
+		//スキップされたら一気に満タンへ
+		if (isSkipJudgement_) {
+			judgementInformation_[i].t = 1.0f;
 		}
 
 		//各桁の値を求めていく
-		uint32_t value = static_cast<uint32_t>(static_cast<float_t>(judgementInformation_[i].value * t));
+		uint32_t value = static_cast<uint32_t>(static_cast<float_t>(judgementInformation_[i].value * judgementInformation_[i].t));
 
 		for (uint8_t j = 0u;j < ONE_THOUSAND_DIGIT_;j++) {
 			//各桁の数字を求める
@@ -348,7 +354,7 @@ void ResultScene::IncreaseJudgement(){
 	}
 
 	//コンボの増加へ
-	if (judgementIncreaseTime >= judgementInformation_[static_cast<uint8_t>(NoteJudgement::Selection::Miss)].increaseEndTime) {
+	if (isSkipJudgement_|| judgementIncreaseTime>= judgementInformation_[static_cast<uint8_t>(NoteJudgement::Selection::Miss)].increaseEndTime) {
 		currentState_ = ResultSceneState::IncreaseMaxCombo;
 	}
 }

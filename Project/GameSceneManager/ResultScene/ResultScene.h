@@ -306,6 +306,9 @@ private:
 		//値
 		uint16_t value = 0u;
 
+		//増加で使う線形保管変数
+		float_t t = 0.0f;
+
 	};
 
 	/// <summary>
@@ -360,6 +363,7 @@ private:
 	std::array<JudgementInformation, static_cast<uint8_t>(NoteJudgement::Selection::Size)>judgementInformation_ = {};
 	float_t judgementIncreaseTime = 0.0f;
 	bool isEndIncreaseJudgement_ = false;
+	bool isSkipJudgement_ = false;
 
 	//最大コンボ数
 	std::array<ValueDigitInformation, ONE_THOUSAND_DIGIT_> maxComboDigit_ = {};
