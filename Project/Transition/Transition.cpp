@@ -9,7 +9,7 @@ void Transition::Initialize(){
 	textureHandle_ = Elysia::TextureManager::GetInstance()->Load("Resources/Sprite/Back/White.png");
 
 	//テクスチャの縦幅を取得
-	uint64_t textureHeight = Elysia::TextureManager::GetInstance()->GetTextureHeight(textureHandle_);
+	uint16_t textureHeight = static_cast<uint16_t>(Elysia::TextureManager::GetInstance()->GetTextureSize(textureHandle_).y);
 	heightScale_ = 1.0f / static_cast<float_t>(DIVIDE_NUMBER_)+0.01f;
 	//スプライトの生成
 	for (uint8_t i = 0u;i < DIVIDE_NUMBER_;i++) {

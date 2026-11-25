@@ -61,6 +61,11 @@ namespace Elysia {
 	/// </summary>
 	class Input;
 
+	/// <summary>
+	/// オーディオ
+	/// </summary>
+	class Audio;
+
 }
 
 /// <summary>

@@ -3,7 +3,7 @@
 #include <imgui.h>
 
 #include <Input.h>
-#include <Audio.h>
+#include <MiniAudio.h>
 #include <ModelManager.h>
 #include <MainScene/MainScene.h>
 #include "GameSceneManager.h"
@@ -19,7 +19,7 @@ PlayMainScene::PlayMainScene() {
 	//入力
 	input_ = Elysia::Input::GetInstance();
 	//オーディオ
-	audio_ = Elysia::Audio::GetInstance();
+	miniAudio_ = Elysia::MiniAudio::GetInstance();
 	//モデル管理クラス
 	modelManager_ = Elysia::ModelManager::GetInstance();
 	//テクスチャ管理クラス
@@ -160,15 +160,15 @@ void PlayMainScene::Initialize() {
 	}
 
 	//楽曲の再生
-	audio_->PartlyLoopPlayMp3(musicHandle_, 0.0f, audio_->GetAudioLength(musicHandle_));
-	musicLength_ = audio_->GetAudioLength(musicHandle_);
+	miniAudio_->Play(musicHandle_, false);
+	musicLength_ = miniAudio_->GetLength(musicHandle_);
 }
 
 void PlayMainScene::Update() {
 	//再生時間を取得
-	musicTime_ = audio_->GetPlayCurrentTime(musicHandle_);
+	musicTime_ = miniAudio_->GetPlayCurrentTime(musicHandle_);
 	//楽曲を再生し終わったとき
-	if (audio_->IsEnd(musicHandle_)) {
+	if (miniAudio_->GetIsEnd(musicHandle_)) {
 		isPlay_ = false;
 	}
 
@@ -203,7 +203,7 @@ void PlayMainScene::Update() {
 	} 
 	else {
 		//楽曲停止
-		audio_->Stop(musicHandle_);
+		miniAudio_->Stop(musicHandle_);
 		//終了シーンへ
 		mainScene_->ChangeMainScene(std::make_unique<EndMainScene>());
 		return;
@@ -316,7 +316,6 @@ void PlayMainScene::DrawSprite() {
 		//判定UIの表示
 		mainScene_->GetJudgementLine()->DrawSprite();
 	}
-
 }
 
 void PlayMainScene::NoteFlow(std::vector<NoteInformation>& noteInformations, LaneCondition& laneCondition) {
@@ -879,9 +878,9 @@ void PlayMainScene::Pause() {
 		//再開処理
 		if (pauseAsset_->GetIsEnd()) {
 			//音量をもとに戻す
-			audio_->ChangeVolume(musicHandle_, 1.0f);
+			miniAudio_->ChangeVolume(musicHandle_, 1.0f);
 			//再生する
-			audio_->Resume(musicHandle_);
+			miniAudio_->Resume(musicHandle_);
 			//ポーズ解除
 			isPause_ = false;
 			//初期状態に戻す
@@ -910,16 +909,14 @@ void PlayMainScene::Pause() {
 
 void PlayMainScene::Stop() {
 	//ESCAPEでポーズ
-	audio_->Stop(musicHandle_);
-	//音量も0にする
-	audio_->ChangeVolume(musicHandle_, 0.0f);
+	miniAudio_->Stop(musicHandle_);
 	//止めた時間を記録
 	stopTime_ = musicTime_;
 	//ポーズ中にする
 	isPause_ = true;
 }
 
-void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight) {
+void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t& inputRight) {
 
 	//トリガー
 	if (input_->IsTriggerKey(inputLeft) || input_->IsTriggerKey(inputRight)) {

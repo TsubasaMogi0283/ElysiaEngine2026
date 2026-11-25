@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <numbers>
+#include <magic_enum/magic_enum.hpp>
 
 #include <Easing.h>
 #include "Input.h"
@@ -11,7 +12,7 @@
 #include <TextureManager.h>
 #include <WindowsSetup.h>
 
-ResultScene::ResultScene(){
+ResultScene::ResultScene() {
 	//インスタンスの取得	
 	//入力
 	input_ = Elysia::Input::GetInstance();
@@ -43,7 +44,9 @@ void ResultScene::Initialize() {
 
 	//下地
 	baseSprite_ = Elysia::Sprite::Create();
-	baseSprite_->SetScale({ .x = 0.75f,.y = 1.0f });
+	baseSprite_->SetScale({ .x = 0.9f,.y = 0.65f });
+	baseSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.0f });
+	baseSprite_->SetPosition({ .x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u),.y = 20.0f });
 	baseSprite_->SetTransparency(0.25f);
 
 	//タイトルのスプライト
@@ -51,9 +54,6 @@ void ResultScene::Initialize() {
 	//作曲者のスプライト
 	musicComposerSprite_ = Elysia::Sprite::Create();
 
-	//スコアボードの中心座標
-	const float_t SCORE_BORD_SIZE = static_cast<float_t>(windowsSetup_->GetClientSize().x) * 0.75f;
-	const float_t SCORE_BOARD_CENTER_POSITION_X = SCORE_BORD_SIZE / 2.0f;
 
 	//ゲージ
 	//テクスチャの読み込み
@@ -64,7 +64,7 @@ void ResultScene::Initialize() {
 	gauge_->SetTotalNotes(temporaryRecievedRecord_.totalNotes);
 	gauge_->SetAllScale(GAUGE_MAX_SCALE_);
 	gauge_->SetMainScale({ .x = 0.0f,.y = 0.0f });
-	gauge_->SetInitialPosition({ .x = SCORE_BOARD_CENTER_POSITION_X / 2-140 ,.y = 225 });
+	gauge_->SetPosition({ .x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 4u) - 50.0f,.y = 125.0f });
 	//数字のテクスチャを読み込む
 	const std::string NUMBER_PATH = "Resources/Sprite/Number/";
 	for (uint8_t i = 0u; i < NUMBER_AMOUNT_; i++) {
@@ -72,10 +72,7 @@ void ResultScene::Initialize() {
 	}
 
 	//数字のテクスチャの横幅を取得
-	Vector2<int32_t> numberTextureSize = {
-		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(numberTextureHandle_[0])),
-		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(numberTextureHandle_[0]))
-	};
+	Vector2<float_t> numberTextureSize = textureManager_->GetTextureSize(numberTextureHandle_[0]);
 
 	//判定のテクスチャの読み込み
 	std::array<uint32_t, static_cast<size_t>(NoteJudgement::Selection::Size)> judgementTextureHandle = {};
@@ -84,109 +81,129 @@ void ResultScene::Initialize() {
 	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Great)] = textureManager_->Load("Resources/Sprite/Judgement/Great.png");
 	judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Perfect)] = textureManager_->Load("Resources/Sprite/Judgement/Perfect.png");
 	//サイズを取得
-	Vector2<int32_t> judgementTextureSize = {
-		.x = static_cast<int32_t>(textureManager_->GetTextureWidth(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)])),
-		.y = static_cast<int32_t>(textureManager_->GetTextureHeight(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)])),
-	};
+	Vector2<float_t> judgementTextureSize = textureManager_->GetTextureSize(judgementTextureHandle[static_cast<size_t>(NoteJudgement::Selection::Miss)]);
 
 	//判定の座標
-	const Vector2<float_t> JUDGEMENT_POSITION = { .x = 50.0f,.y = 300.0f };
+	const Vector2<float_t> JUDGEMENT_POSITION = { .x = 100.0f,.y = 200.0f };
 	//判定のオフセットX座標
 	const float_t JUDGEMENT_OFFSET_POSITION_Y = 10.0f;
-	//文字と値の間隔
-	const float_t DIDIT_INTERVAL_POSITION_X = 10.0f;
-	//コンボの座標(記録用)
-	Vector2<float_t> comboPosition = {};
 	//0で初期化
 	const uint8_t INITIAL_NUMBER = 0u;
+	//桁の座標オフセット
+	const float_t DIGIT_OFFSET_POSITION_X_ = -100.0f;
+
+	Vector2<float_t> judgementTexturePosition = {};
 	//判定の文字のスプライト
 	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
 		//スプライトの生成
-		judgementSpriteArray_[i] = Elysia::Sprite::Create(judgementTextureHandle[i]);
+		judgementInformation_[i].textSprite = Elysia::Sprite::Create(judgementTextureHandle[i]);
 		//スケールの設定
-		judgementSpriteArray_[i]->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
+		judgementInformation_[i].textSprite->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
 
 		//座標の設定
-		Vector2<float_t> position = {
+		judgementTexturePosition = {
 			.x = JUDGEMENT_POSITION.x,
-			.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<int32_t>(i)
+			.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<float_t>(i) * JUDGEMENT_TEXTURE_SCALE_
 		};
-		judgementSpriteArray_[i]->SetPosition(position);
-
-		//コンボの座標
-		if (i == static_cast<size_t>(NoteJudgement::Selection::Miss)) {
-			comboPosition = {
-				.x = (static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) +100.0f,
-				.y = position.y + judgementTextureSize.y
-			};
-		}
+		judgementInformation_[i].textSprite->SetPosition(judgementTexturePosition);
 
 		//各桁
 		Vector2<float_t> digitPosition = {};
-		digitPosition.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + 8) * static_cast<int32_t>(i);
+		digitPosition.y = JUDGEMENT_POSITION.y + (judgementTextureSize.y + JUDGEMENT_OFFSET_POSITION_Y) * static_cast<float_t>(i) * JUDGEMENT_TEXTURE_SCALE_;
 		for (uint8_t j = 0u; j < ONE_THOUSAND_DIGIT_; j++) {
 			//生成
-			judgementDigitArray_[i][j].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
-			judgementDigitArray_[i][j].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
-			digitPosition.x = (ONE_THOUSAND_DIGIT_ - j - 3) * numberTextureSize.x + JUDGEMENT_POSITION.x + judgementTextureSize.x + DIDIT_INTERVAL_POSITION_X;
-			//0で初期化
-			judgementDigitArray_[i][j].sprite->SetPosition(digitPosition);
+			judgementInformation_[i].valueDigitInformationArray_[j].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
+			judgementInformation_[i].valueDigitInformationArray_[j].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
+
+			//スケールの設定
+			judgementInformation_[i].valueDigitInformationArray_[j].sprite->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
+			//座標の設定
+			digitPosition.x = JUDGEMENT_POSITION.x + judgementTextureSize.x + static_cast<float_t>(ONE_THOUSAND_DIGIT_ - j) * numberTextureSize.x * JUDGEMENT_TEXTURE_SCALE_ + DIGIT_OFFSET_POSITION_X_;
+			judgementInformation_[i].valueDigitInformationArray_[j].sprite->SetPosition(digitPosition);
 		}
 		//増加開始時間
-		judgementIncreaseStartTimeArray_[i] = MAX_JUDGEMENT_INCREASE_TIME_ * static_cast<float_t>(i + 1u)-0.5f;
+		judgementInformation_[i].increaseStartTime = MAX_JUDGEMENT_INCREASE_TIME_ * static_cast<float_t>(i + 1u) - 0.5f;
 		//増加終了時間
-		judgementIncreaseEndTimeArray_[i] = judgementIncreaseStartTimeArray_[i] + MAX_JUDGEMENT_INCREASE_TIME_;
+		judgementInformation_[i].increaseEndTime = judgementInformation_[i].increaseStartTime + MAX_JUDGEMENT_INCREASE_TIME_;
 	}
 
-	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Perfect)] = temporaryRecievedRecord_.perfect;
-	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Great)] = temporaryRecievedRecord_.great;
-	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Good)] = temporaryRecievedRecord_.good;
-	judgementValue_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)] = temporaryRecievedRecord_.miss;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Perfect)].value = temporaryRecievedRecord_.perfect;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Great)].value = temporaryRecievedRecord_.great;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Good)].value = temporaryRecievedRecord_.good;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)].value = temporaryRecievedRecord_.miss;
 
-
-	//最大コンボ数
+	//コンボのテクスチャを読み込み
 	uint32_t comboTextureHandle = textureManager_->Load("Resources/Sprite/Judgement/Combo.png");
+
+	//最大コンボ
+	//生成
 	maxComboSprite_ = Elysia::Sprite::Create(comboTextureHandle);
 	maxComboSprite_->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
-	maxComboSprite_->SetPosition({ .x = JUDGEMENT_POSITION.x ,.y = comboPosition.y });
+	maxComboSprite_->SetPosition({ .x = JUDGEMENT_POSITION.x ,.y = judgementTexturePosition.y + judgementTextureSize.y * JUDGEMENT_TEXTURE_SCALE_ });
 	//各桁
 	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
+		//生成
 		maxComboDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
+		//スケールの設定
+		maxComboDigit_[i].sprite->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_,.y = JUDGEMENT_TEXTURE_SCALE_ });
 		//座標の設定
 		maxComboDigit_[i].position = {
-			.x = (ONE_THOUSAND_DIGIT_ - i - 3) * numberTextureSize.x + JUDGEMENT_POSITION .x+ judgementTextureSize.x+ DIDIT_INTERVAL_POSITION_X,
-			.y = comboPosition.y
+			.x = JUDGEMENT_POSITION.x + judgementTextureSize.x + static_cast<float_t>(ONE_THOUSAND_DIGIT_ - i) * numberTextureSize.x * JUDGEMENT_TEXTURE_SCALE_ + DIGIT_OFFSET_POSITION_X_,
+			.y = judgementTexturePosition.y + judgementTextureSize.y * JUDGEMENT_TEXTURE_SCALE_
 		};
 		maxComboDigit_[i].sprite->SetPosition(maxComboDigit_[i].position);
+		//テクスチャハンドルの設定
 		maxComboDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 	}
 
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+		//設定
 		scoreDigit_[i].sprite = Elysia::Sprite::Create(numberTextureHandle_[INITIAL_NUMBER]);
-		scoreDigit_[i].sprite->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
+		//スケールの設定
+		scoreDigit_[i].sprite->SetScale({ .x = JUDGEMENT_TEXTURE_SCALE_ ,.y = JUDGEMENT_TEXTURE_SCALE_ });
 		//座標の設定
-		Vector2<float_t>digitPosition = { 
-			.x = static_cast<float_t>(static_cast<float_t>(numberTextureSize.x) * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_) + SCORE_BOARD_CENTER_POSITION_X/2,
-			.y = 175.0f
+		Vector2<float_t>digitPosition = {
+			.x = numberTextureSize.x * static_cast<float_t>(ONE_MILLION_DIGIT_ - i) * scoreScale_ * JUDGEMENT_TEXTURE_SCALE_ + 700.0f,
+			.y = JUDGEMENT_POSITION.y
 		};
 		scoreDigit_[i].sprite->SetPosition(digitPosition);
+		//テクスチャハンドル
 		scoreDigit_[i].textureHandle = numberTextureHandle_[INITIAL_NUMBER];
 	}
-	
+
+
+#ifdef _DEBUG
+	temporaryRecievedRecord_.totalNotes = 1000u;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Perfect)].value = 500;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Great)].value = 300;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Good)].value = 150;
+	judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)].value = 50;
+	temporaryRecievedRecord_.maxCombo = 1234u;
+#endif // _DEBUG
+
 	//ランク
+	//テクスチャ読み込み
 	uint32_t rankTexturehHandle[static_cast<uint8_t>(RankSelection::Size)] = {};
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)] = textureManager_->Load("Resources/Sprite/Result/Rank/S.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::A)] = textureManager_->Load("Resources/Sprite/Result/Rank/A.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::B)] = textureManager_->Load("Resources/Sprite/Result/Rank/B.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::C)] = textureManager_->Load("Resources/Sprite/Result/Rank/C.png");
-	rankTexturehHandle[static_cast<uint8_t>(RankSelection::D)] = textureManager_->Load("Resources/Sprite/Result/Rank/D.png");
-	//生成
+	//Sから始める
+	for (uint8_t i = static_cast<uint8_t>(RankSelection::S);i < static_cast<uint8_t>(RankSelection::Size);i++) {
+		std::string_view rank = magic_enum::enum_name(static_cast<RankSelection>(i));
+		std::string newString{ rank };
+		const std::string PATH = "Resources/Sprite/Result/Rank/" + newString + ".png";
+		rankTexturehHandle[static_cast<uint8_t>(i)] = textureManager_->Load(PATH);
+	}
+
+	uint16_t allPerfectJudgementScore = temporaryRecievedRecord_.totalNotes*3u;
+	const uint16_t GREAT_DECREASE_SCALE = judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Great)].value * static_cast<uint16_t>(NoteJudgement::Selection::Great);
+	const uint16_t GOOD_DECREASE_SCALE = judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Good)].value * static_cast<uint16_t>(NoteJudgement::Selection::Good);
+	const uint16_t MISS_DECREASE_SCALE = judgementInformation_[static_cast<uint16_t>(NoteJudgement::Selection::Miss)].value * static_cast<uint16_t>(NoteJudgement::Selection::Miss);
+	uint16_t judgementScore = allPerfectJudgementScore - (GREAT_DECREASE_SCALE + GOOD_DECREASE_SCALE + MISS_DECREASE_SCALE);
+
+	//ランク
 	rankSprite_ = Elysia::Sprite::Create(rankTexturehHandle[static_cast<uint8_t>(RankSelection::S)]);
 	rankSprite_->SetInvisible(true);
 	rankSprite_->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
-	rankSprite_->SetPosition({ .x = SCORE_BOARD_CENTER_POSITION_X + 250,.y = 475 });
-
+	rankSprite_->SetPosition({ .x = static_cast<float_t>(windowsSetup_->GetClientSize().x) / 2.0f + 200.0f,.y = 350.0f });
 
 	//決定
 	uint32_t decideTexturehandle = textureManager_->Load("Resources/Sprite/Select/Decide.png");
@@ -194,9 +211,16 @@ void ResultScene::Initialize() {
 	decideSprite_->SetScale({ .x = 0.8f,.y = 0.8f });
 	decideSprite_->SetPosition({ .x = 1050,.y = 500 });
 	decideSprite_->SetInvisible(true);
+
+#ifdef _DEBUG
+	temporaryRecievedRecord_.gaugeRatio = static_cast<float_t>(judgementScore) / static_cast<float_t>(allPerfectJudgementScore);
+	temporaryRecievedRecord_.score = 123456u;
+	temporaryRecievedRecord_.combo = 1234u;
+#endif // _DEBUG
+
 }
 
-void ResultScene::Update(){
+void ResultScene::Update() {
 
 	//各状態の処理を実行
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
@@ -213,39 +237,41 @@ void ResultScene::Update(){
 		gameSceneManager_->ResetRecord();
 		//セレクトへ
 		gameSceneManager_->ChangeScene("Select");
+		return;
 	}
 
 #ifdef _DEBUG
-	ImGui::Begin("テストシーンカメラ");
-	ImGui::SliderFloat3("回転", &camera_.rotate.x, -3.0f, 3.0f);
-	ImGui::SliderFloat3("座標", &camera_.translate.x, -30.0f, 30.0f);
+	ImGui::Begin("リザルトシーン");
+
 	ImGui::End();
+
+
 #endif // _DEBUG
 }
 
-void ResultScene::DrawObject3D(){
+void ResultScene::DrawObject3D() {
 
 
 }
 
-void ResultScene::PreDrawPostEffect(){
+void ResultScene::PreDrawPostEffect() {
 	//描画前処理
 	backTexture_->PreDraw();
 }
 
-void ResultScene::DrawPostEffect(){
+void ResultScene::DrawPostEffect() {
 	//描画前処理
 	backTexture_->Draw();
 }
 
-void ResultScene::DrawSprite(){
+void ResultScene::DrawSprite() {
 	//下地用
 	baseSprite_->Draw();
 
 	//musicTitleSprite_->Draw();
 	//musicComposerSprite_->Draw();
 	//ゲージ
-	//gauge_->DrawSprite();
+	gauge_->DrawSprite();
 
 	//スコア
 	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
@@ -253,119 +279,134 @@ void ResultScene::DrawSprite(){
 	}
 
 	//最大コンボ数
+	maxComboSprite_->Draw();
+	//桁
 	for (uint8_t i = 0u;i < ONE_THOUSAND_DIGIT_;i++) {
 		maxComboDigit_[i].sprite->Draw(maxComboDigit_[i].textureHandle);
 	}
-	maxComboSprite_->Draw();
-	
+
 	//判定
 	for (size_t i = 0u; i < static_cast<size_t>(NoteJudgement::Selection::Size); i++) {
-		judgementSpriteArray_[i]->Draw();
-	}
-	//桁
-	for (uint8_t j = 0u; j < static_cast<uint8_t>(NoteJudgement::Selection::Size);j++) {
-		for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
-			judgementDigitArray_[j][i].sprite->Draw(judgementDigitArray_[j][i].textureHandle);
+		//テキスト
+		judgementInformation_[i].textSprite->Draw();
+		//各桁の数字
+		for (uint8_t j = 0u; j < ONE_THOUSAND_DIGIT_; j++) {
+			judgementInformation_[i].valueDigitInformationArray_[j].sprite->Draw(judgementInformation_[i].valueDigitInformationArray_[j].textureHandle);
 		}
 	}
 
 	//ランクの表示
-	//rankSprite_->Draw();
+	rankSprite_->Draw();
 
+	//決定ボタン
 	decideSprite_->Draw();
 }
 
-void ResultScene::Open(){
+void ResultScene::Open() {
 	//トランジションを開く
 	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
-		currentState_ = ResultSceneState::IncreaseValue;
+		currentState_ = ResultSceneState::IncreaseGauge;
 	}
 }
 
-void ResultScene::IncreaseGauge(){
+void ResultScene::IncreaseGauge() {
 	//ゲージの上昇
 	gaugeIncreaseTime_ += DELTA_TIME_;
 	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, gaugeIncreaseTime_);
-	t=std::clamp(t, 0.0f, 1.0f);
-	gauge_->SetMainScale({ .x = temporaryRecievedRecord_.gaugeRatio * Easing::EaseOutQuart(t)* GAUGE_MAX_SCALE_.x,.y = 1.0f });
+	t = std::clamp(t, 0.0f, 1.0f);
+	gauge_->SetMainScale({ .x = temporaryRecievedRecord_.gaugeRatio * Easing::EaseOutQuart(t) * GAUGE_MAX_SCALE_.x,.y = 1.0f });
 
 	//値の増加へ
 	if (t >= 1.0f) {
-		currentState_ = ResultSceneState::IncreaseValue;
+		currentState_ = ResultSceneState::IncreaseJudgement;
 	}
 }
 
-void ResultScene::IncreaseValue(){
+void ResultScene::IncreaseJudgement(){
+	judgementIncreaseTime += DELTA_TIME_;
+	for (uint8_t i = 0u;i < static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
 
-	//スコアの上昇
-	if (!isEndIncreaseScore_) {
-		scoreIncreaseTime_ += DELTA_TIME_;
-		float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, scoreIncreaseTime_);
+		float_t t = SingleCalculation::InverseLerp(judgementInformation_[i].increaseStartTime, judgementInformation_[i].increaseEndTime, judgementIncreaseTime);
 		t = std::clamp(t, 0.0f, 1.0f);
+
+		//スキップ
+		if (input_->IsTriggerKey(DIK_RETURN)) {
+			t = 1.0f;
+		}
+
 		//各桁の値を求めていく
-		uint32_t score = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.score * t));
-		for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
-			//各桁の数字を求める
-			uint8_t digit = score % 10;
-			scoreDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
-			//10で割っていく
-			score /= 10;
-		}
-		if (t >= 1.0f) {
-			isEndIncreaseScore_ = true;
-		}
-	}
-	//判定の上昇
-	else {
-		judgementIncreaseTime += DELTA_TIME_;
-		for (uint8_t i = 0u;i<static_cast<uint8_t>(NoteJudgement::Selection::Size);i++) {
-			
-			float_t t = SingleCalculation::InverseLerp(judgementIncreaseStartTimeArray_[i], judgementIncreaseEndTimeArray_[i], judgementIncreaseTime);
-			t = std::clamp(t, 0.0f, 1.0f);
-			//各桁の値を求めていく
-			uint32_t value = static_cast<uint32_t>(static_cast<float_t>(judgementValue_[i] * t));
+		uint32_t value = static_cast<uint32_t>(static_cast<float_t>(judgementInformation_[i].value * t));
 
-			for (uint8_t j = 0u;j < ONE_THOUSAND_DIGIT_;j++) {
-				//各桁の数字を求める
-				uint8_t digit = value % 10;
-				judgementDigitArray_[i][j].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
-				//10で割っていく
-				value /= 10;
-			}
-		}
-
-
-		if (judgementIncreaseTime >= judgementIncreaseEndTimeArray_[static_cast<uint8_t>(NoteJudgement::Selection::Miss)]) {
-			isIncreaseMaxCombo_ = true;
-		}
-		
-	}
-
-
-	if (isIncreaseMaxCombo_) {
-		increaseMaxComboTime_ += DELTA_TIME_;
-		float_t t = SingleCalculation::InverseLerp(0.0f, MAX_COMBO_INCREASE_TIME_, increaseMaxComboTime_);
-		t = std::clamp(t, 0.0f, 1.0f);
-		//各桁の値を求めていく
-		uint32_t value = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.maxCombo * t));
-
-		for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
+		for (uint8_t j = 0u;j < ONE_THOUSAND_DIGIT_;j++) {
 			//各桁の数字を求める
 			uint8_t digit = value % 10;
-			maxComboDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
+			judgementInformation_[i].valueDigitInformationArray_[j].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
 			//10で割っていく
 			value /= 10;
 		}
 
-		//ランクへ
-		if (t >= 1.0f) {
-			currentState_= ResultSceneState::MoveRank;
-		}
 	}
-	
+
+	//コンボの増加へ
+	if (judgementIncreaseTime >= judgementInformation_[static_cast<uint8_t>(NoteJudgement::Selection::Miss)].increaseEndTime) {
+		currentState_ = ResultSceneState::IncreaseMaxCombo;
+	}
 }
 
-void ResultScene::MoveRank(){
+void ResultScene::IncreaseMaxCombo(){
+	increaseMaxComboTime_ += DELTA_TIME_;
+	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_COMBO_INCREASE_TIME_, increaseMaxComboTime_);
+	t = std::clamp(t, 0.0f, 1.0f);
+
+	//スキップ
+	if (input_->IsTriggerKey(DIK_RETURN)) {
+		t = 1.0f;
+	}
+
+	//各桁の値を求めていく
+	uint32_t value = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.maxCombo * t));
+
+	for (uint8_t i = 0u; i < ONE_THOUSAND_DIGIT_; i++) {
+		//各桁の数字を求める
+		uint8_t digit = value % 10;
+		maxComboDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
+		//10で割っていく
+		value /= 10;
+	}
+
+	//ランクへ
+	if (t >= 1.0f) {
+		currentState_ = ResultSceneState::IncreaseScore;
+	}
+}
+
+void ResultScene::IncreaseScore(){
+	//スコアの上昇
+	scoreIncreaseTime_ += DELTA_TIME_;
+	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_GAUGE_INCREASE_TIME_, scoreIncreaseTime_);
+	t = std::clamp(t, 0.0f, 1.0f);
+
+	//スキップ
+	if (input_->IsTriggerKey(DIK_RETURN)) {
+		t = 1.0f;
+	}
+
+	//各桁の値を求めていく
+	uint32_t score = static_cast<uint32_t>(static_cast<float_t>(temporaryRecievedRecord_.score * t));
+	for (uint8_t i = 0u;i < ONE_MILLION_DIGIT_;i++) {
+		//各桁の数字を求める
+		uint8_t digit = score % 10;
+		scoreDigit_[i].textureHandle = numberTextureHandle_[static_cast<uint16_t>(digit)];
+		//10で割っていく
+		score /= 10;
+	}
+	if (t >= 1.0f) {
+		currentState_ = ResultSceneState::MoveRank;
+	}
+}
+
+
+void ResultScene::MoveRank() {
 	//ランク表示
 	rankSprite_->SetInvisible(false);
 
@@ -373,27 +414,29 @@ void ResultScene::MoveRank(){
 	rankScaleDownTime_ += DELTA_TIME_;
 	float_t t = SingleCalculation::InverseLerp(0.0f, MAX_SCALE_DOWN_TIME_, rankScaleDownTime_);
 	t = std::clamp(t, 0.0f, 1.0f);
-	float_t easeScale =Easing::EaseInOutQuart(t);
-	rankSprite_->SetScale({ .x = easeScale,.y = easeScale});
+	float_t easeScale = Easing::EaseInOutQuart(t) * RANK_SCALE_;
+	rankSprite_->SetScale({ .x = easeScale,.y = easeScale });
 
 	if (t >= 1.0f) {
 		currentState_ = ResultSceneState::Display;
 	}
 }
 
-void ResultScene::Display(){
+void ResultScene::Display() {
+	//表示
 	decideSprite_->SetInvisible(false);
 
+	//エンターを押したら戻る
 	if (input_->IsTriggerKey(DIK_RETURN)) {
 		currentState_ = ResultSceneState::Return;
 	}
 }
 
-void ResultScene::Return(){
+void ResultScene::Return() {
 	currentState_ = ResultSceneState::Close;
 }
 
-void ResultScene::Close(){
+void ResultScene::Close() {
 	//トランジションを開く
 	if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
 		isEnd_ = true;

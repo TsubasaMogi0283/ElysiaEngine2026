@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include <magic_enum/magic_enum.hpp>
-#include <Audio.h>
+#include <MiniAudio.h>
 #include <TextureManager.h>
 #include <ScoreData/MusicScoreData.h>
 #include <StringOption.h>
@@ -10,7 +10,7 @@
 ScoreDataManager::ScoreDataManager(){
 	//インスタンスの取得
 	//オーディオ
-	audio_ = Elysia::Audio::GetInstance();
+	miniAudio_ = Elysia::MiniAudio::GetInstance();
 	//テクスチャ
 	textureManager_ = Elysia::TextureManager::GetInstance();
 }
@@ -33,7 +33,7 @@ void ScoreDataManager::Initialize(){
 		//楽曲の読み込み
 		const std::string MUSIC_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName, existScoreDataVector_[i].musicName);
 		const std::string MUSIC_FULL_FILE_PATH = MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName + "/" + existScoreDataVector_[i].musicName + MUSIC_EXTENSION;
-		existScoreDataVector_[i].musicHandle = audio_->Load(MUSIC_FULL_FILE_PATH);
+		existScoreDataVector_[i].musicHandle = miniAudio_->Load(MUSIC_FULL_FILE_PATH);
 
 		//ジャケットの読み込み
 		const std::string JACKET_EXTENSION = StringOption::FindExtension(MUSIC_SCORE_PATH_ + "/" + existScoreDataVector_[i].musicName, existScoreDataVector_[i].musicName + "_Jacket");

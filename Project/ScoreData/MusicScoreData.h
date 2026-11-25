@@ -44,16 +44,16 @@ struct MusicScoreData {
 /// </summary>
 struct ExistMusicScoreData {
 	//楽曲名
-	std::string musicName="";
+	std::string musicName = "";
 	//楽曲ハンドル
-	uint32_t musicHandle;
+	int32_t musicHandle = -1;
 	//ジャケットハンドル
-	uint32_t jacketTextureHandle;
+	uint32_t jacketTextureHandle = 0u;
 
 	//難易度存在チェック
-	std::array<bool, static_cast<uint8_t>(Difficulty::Size)>isExistDifficulty;
+	std::array<bool, static_cast<uint8_t>(Difficulty::Size)>isExistDifficulty = {};
 	//譜面データ
-	std::array<MusicScoreData, static_cast<uint8_t>(Difficulty::Size)>musicScoreData;
+	std::array<MusicScoreData, static_cast<uint8_t>(Difficulty::Size)>musicScoreData = {};
 
 	
 };

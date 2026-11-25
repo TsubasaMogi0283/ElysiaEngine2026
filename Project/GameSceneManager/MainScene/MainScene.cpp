@@ -35,7 +35,7 @@ void MainScene::Initialize() {
 	//楽曲譜面情報を取得
 	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
 	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreData[difficulty_];
-	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();;
+	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();
 	jacketTextureHandle_ = gameSceneManager_->GetTemporaryJacketTextureHandle();
 
 	//ノーツの生成
@@ -66,15 +66,15 @@ void MainScene::Initialize() {
 	gauge_->SetTotalNotes(musicScoreData_.totalNote_);
 
 	//画像サイズ
-	Vector2<uint64_t> gaugeTextureSize = {
-		.x = textureManager_->GetTextureWidth(gaugeTextureHandle),
-		.y = textureManager_->GetTextureHeight(gaugeTextureHandle)
+	Vector2<float_t> gaugeTextureSize = {
+		.x = textureManager_->GetTextureSize(gaugeTextureHandle).x,
+		.y = textureManager_->GetTextureSize(gaugeTextureHandle).y
 	};
 
 	//初期座標
 	Vector2<float_t> initialPosition = {
-		.x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u) - static_cast<float_t>(gaugeTextureSize.x / 2u),
-		.y = static_cast<float_t>(windowsSetup_->GetClientSize().y + static_cast<float_t>(gaugeTextureSize.y))
+		.x = static_cast<float_t>(windowsSetup_->GetClientSize().x / 2u) - gaugeTextureSize.x / 2.0f,
+		.y = static_cast<float_t>(windowsSetup_->GetClientSize().y + gaugeTextureSize.y)
 	};
 	//初期の座標
 	gauge_->SetInitialPosition(initialPosition);
@@ -90,8 +90,7 @@ void MainScene::Initialize() {
 	}
 
 	//数字のテクスチャーの横幅を取得
-	numberTextureSize_.x = static_cast<float_t>(textureManager_->GetTextureWidth(numberTextureHandle[0]));
-	numberTextureSize_.y = static_cast<float_t>(textureManager_->GetTextureHeight(numberTextureHandle[0]));
+	numberTextureSize_ = textureManager_->GetTextureSize(numberTextureHandle[0]);
 
 	//スコア
 	//初期Y座標を設定

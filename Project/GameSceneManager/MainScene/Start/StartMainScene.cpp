@@ -49,18 +49,15 @@ void StartMainScene::Initialize() {
 		};
 
 		//テクスチャサイズ
-		Vector2<int32_t> readyTextureSize = {
-			.x = static_cast<int32_t>(textureManager_->GetTextureWidth(readyTextureHandle)),
-			.y = static_cast<int32_t>(textureManager_->GetTextureHeight(readyTextureHandle))
-		};
+		Vector2<float_t> readyTextureSize = textureManager_->GetTextureSize(readyTextureHandle);
 
 		//アンカーポイント
 		readySpriteArray_[i]->SetAnchorPoint({ .x = 0.5f,.y = 0.5f });
 
 		//座標の設定
 		readySpriteArray_[i]->SetPosition({
-			.x = windowSize_.x / 2 - (2 - i) * (readyTextureSize.x),
-			.y = windowSize_.y / 2
+			.x = windowSize_.x / 2.0f - (2.0f - static_cast<float_t>(i)) * (readyTextureSize.x),
+			.y = windowSize_.y / 2.0f
 			}
 		);
 		//最初は非表示にする
@@ -75,8 +72,8 @@ void StartMainScene::Initialize() {
 
 		//サイズ
 		goTextureSize = {
-			.x = static_cast<int32_t>(textureManager_->GetTextureWidth(goTextureHandle)) ,
-			.y = static_cast<int32_t>(textureManager_->GetTextureHeight(goTextureHandle))
+			.x = static_cast<int32_t>(textureManager_->GetTextureSize(goTextureHandle).x),
+			.y = static_cast<int32_t>(textureManager_->GetTextureSize(goTextureHandle).y)
 		};
 
 		//生成
@@ -138,7 +135,7 @@ void StartMainScene::Initialize() {
 	}
 
 	playerMainPositionX_ = mainScene_->GetJudgementLine()->GetJudgementPositionX() - 7.5f;
-	playerInitialPositionX_ = playerMainPositionX_-PLAYER_MOVE_DISTANCE_;
+	playerInitialPositionX_ = playerMainPositionX_ - PLAYER_MOVE_DISTANCE_;
 	const float_t PLAYER2_OFFSET = -3.0f;
 	player2MainPositionX_ = playerMainPositionX_ + PLAYER2_OFFSET;
 	player2InitialPositionX_ = player2MainPositionX_ - PLAYER_MOVE_DISTANCE_;
@@ -216,8 +213,8 @@ void StartMainScene::Transition() {
 	}
 }
 
-void StartMainScene::PlayerMove(){
-	
+void StartMainScene::PlayerMove() {
+
 	//時間変化
 	playerMoveTime_ += DELTA_TIME_;
 	float_t t = SingleCalculation::InverseLerp(0.0f, PLAYER_MOVE_TIME_, playerMoveTime_);
@@ -234,7 +231,7 @@ void StartMainScene::PlayerMove(){
 	}
 }
 
-void StartMainScene::UIScaleUp(){
+void StartMainScene::UIScaleUp() {
 	//線形補間の時間を加算
 	startMoveTime_ += DELTA_TIME_;
 	float_t startMoveT = SingleCalculation::InverseLerp(0.0f, UI_MOVE_TIME_, startMoveTime_);
@@ -277,7 +274,7 @@ void StartMainScene::UIScaleUp(){
 	}
 }
 
-void StartMainScene::Ready(){
+void StartMainScene::Ready() {
 
 	//Readyの表示
 	allReadyStartTime_ += DELTA_TIME_;
@@ -329,11 +326,11 @@ void StartMainScene::Ready(){
 
 }
 
-void StartMainScene::Go(){
+void StartMainScene::Go() {
 
 	//スケールダウンの時間
 	if (isScaleDown_) {
-		
+
 		goFirstScaleDownTime_ += DELTA_TIME_;
 
 		//線形補間とイージングで滑らかにスケールダウン
@@ -380,7 +377,7 @@ void StartMainScene::Go(){
 	}
 }
 
-void StartMainScene::UIScaleDown(){
+void StartMainScene::UIScaleDown() {
 	//時間
 	baseScaleTime_ += DELTA_TIME_;
 	//スケールの設定

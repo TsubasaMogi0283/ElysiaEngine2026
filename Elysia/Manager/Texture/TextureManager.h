@@ -83,19 +83,11 @@ namespace Elysia {
 		const D3D12_RESOURCE_DESC GetResourceDesc(const uint32_t& textureHandle);
 
 		/// <summary>
-		/// テクスチャの横幅を取得
+		/// テクスチャのサイズを取得
 		/// </summary>
 		/// <param name="textureHandle">ハンドル</param>
-		/// <returns>横幅</returns>
-		uint64_t GetTextureWidth(const uint32_t& textureHandle);
-
-		/// <summary>
-		/// テクスチャの縦幅を取得
-		/// </summary>
-		/// <param name="textureHandle">ハンドル</param>
-		/// <returns>縦幅</returns>
-		uint64_t GetTextureHeight(const uint32_t& textureHandle);
-
+		/// <returns>サイズ</returns>
+		Vector2<float_t> GetTextureSize(const uint32_t& textureHandle);
 
 	private:
 

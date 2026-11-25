@@ -106,7 +106,7 @@ private:
 	/// <param name="laneCondition">レーンの状態</param>
 	/// <param name="inputLeft">左入力</param>
 	/// <param name="inputRight">右入力</param>
-	void Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight);
+	void Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t& inputRight);
 
 private:
 	

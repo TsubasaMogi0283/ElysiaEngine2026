@@ -160,7 +160,7 @@ public:
 	/// 楽曲ハンドルを取得
 	/// </summary>
 	/// <returns>楽曲ハンドル</returns>
-	inline uint32_t GetMusicHandle()const {
+	inline int32_t GetMusicHandle()const {
 		return musicHandle_;
 	}
 
@@ -393,7 +393,7 @@ private:
 	//難易度
 	int8_t difficulty_ = 0;
 	//ハンドル
-	uint32_t musicHandle_ = 0u;
+	int32_t musicHandle_ = 0u;
 	uint32_t jacketTextureHandle_ = 0u;
 
 	//ハイスピ

@@ -49,7 +49,7 @@ namespace Elysia {
 	/// <summary>
 	/// オーディオ
 	/// </summary>
-	class Audio;
+	class MiniAudio;
 
 	/// <summary>
 	/// ウィンドウクラス
@@ -124,7 +124,7 @@ private:
 	//テクスチャ管理クラス
 	Elysia::TextureManager* textureManager_ = nullptr;
 	//オーディオ
-	Elysia::Audio* audio_ = nullptr;
+	Elysia::MiniAudio* miniAudio_ = nullptr;
 	//ウィンドウ
 	Elysia::WindowsSetup* windowsSetup_ = nullptr;
 
@@ -175,6 +175,6 @@ private:
 	bool isEnd_ = false;
 
 	uint32_t playingMusicNumber_ = 0u;
-	uint32_t decideSEHandle_ = 0u;
-	uint32_t selectSEHandle_ = 0u;
+	int32_t decideSEHandle_ = 0u;
+	int32_t selectSEHandle_ = 0u;
 };
