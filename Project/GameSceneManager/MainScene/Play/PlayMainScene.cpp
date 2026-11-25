@@ -916,7 +916,7 @@ void PlayMainScene::Stop() {
 	isPause_ = true;
 }
 
-void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t inputRight) {
+void PlayMainScene::Touch(LaneCondition& laneCondition, const uint8_t& inputLeft, const uint8_t& inputRight) {
 
 	//トリガー
 	if (input_->IsTriggerKey(inputLeft) || input_->IsTriggerKey(inputRight)) {
