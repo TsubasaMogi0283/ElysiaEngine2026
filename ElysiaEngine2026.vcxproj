@@ -207,6 +207,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\GameSceneManager\MainScene\Play\PlayMainScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\MainScene\Start\StartMainScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\ResultScene\ResultScene.cpp" />
+    <ClCompile Include="Project\GameSceneManager\SelectScene\BaseSelectScene.cpp" />
+    <ClCompile Include="Project\GameSceneManager\SelectScene\Difficulty\DifficultySelectScene.cpp" />
+    <ClCompile Include="Project\GameSceneManager\SelectScene\Music\MusicSelectScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\SelectScene\SelectScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\TestScene\TestScene.cpp" />
     <ClCompile Include="Project\GameSceneManager\TitleScene\BaseTitleScene.cpp" />
@@ -357,6 +360,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\GameSceneManager\MainScene\Play\PlayMainScene.h" />
     <ClInclude Include="Project\GameSceneManager\MainScene\Start\StartMainScene.h" />
     <ClInclude Include="Project\GameSceneManager\ResultScene\ResultScene.h" />
+    <ClInclude Include="Project\GameSceneManager\SelectScene\BaseSelectScene.h" />
+    <ClInclude Include="Project\GameSceneManager\SelectScene\Difficulty\DifficultySelectScene.h" />
+    <ClInclude Include="Project\GameSceneManager\SelectScene\Music\MusicSelectScene.h" />
     <ClInclude Include="Project\GameSceneManager\SelectScene\SelectScene.h" />
     <ClInclude Include="Project\GameSceneManager\TestScene\TestScene.h" />
     <ClInclude Include="Project\GameSceneManager\TitleScene\BaseTitleScene.h" />

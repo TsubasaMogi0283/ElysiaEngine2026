@@ -343,6 +343,12 @@
     <Filter Include="Project\Player">
       <UniqueIdentifier>{01bebeff-be0f-401d-966e-4343e03e8156}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Select\Music">
+      <UniqueIdentifier>{beaa732f-2fc8-46f7-a5b2-7f6d81920794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GameSceneManager\Selection\Select\Difficulty">
+      <UniqueIdentifier>{1c6f3996-410f-4a32-a57c-b6aa168b23a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elysia\Audio\Audio.cpp">
@@ -623,6 +629,15 @@
     </ClCompile>
     <ClCompile Include="Elysia\Audio\MiniAudio.cpp">
       <Filter>Elysia\ソース ファイル\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\SelectScene\BaseSelectScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\SelectScene\Music\MusicSelectScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Select\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameSceneManager\SelectScene\Difficulty\DifficultySelectScene.cpp">
+      <Filter>Project\GameSceneManager\Selection\Select\Difficulty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1062,6 +1077,15 @@
     </ClInclude>
     <ClInclude Include="Elysia\Audio\MiniAudio.h">
       <Filter>Elysia\ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\SelectScene\BaseSelectScene.h">
+      <Filter>Project\GameSceneManager\Selection\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\SelectScene\Music\MusicSelectScene.h">
+      <Filter>Project\GameSceneManager\Selection\Select\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameSceneManager\SelectScene\Difficulty\DifficultySelectScene.h">
+      <Filter>Project\GameSceneManager\Selection\Select\Difficulty</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

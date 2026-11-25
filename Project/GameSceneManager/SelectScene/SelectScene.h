@@ -21,6 +21,7 @@
 #include "DirectionalLight.h"
 #include <Jacket/Jacket.h>
 #include <ScoreData/MusicScoreData.h>
+#include "BaseSelectScene.h"
 
 /// <summary>
 /// ElysiaEngine(前方宣言)
@@ -108,9 +109,47 @@ public:
 	/// <summary>
 	/// ゲーム管理クラスを設定
 	/// </summary>
-	/// <param name="gameManager"></param>
-	void SetGameManager(Elysia::GameSceneManager* gameManager) override {
-		this->gameSceneManager_ = gameManager;
+	/// <param name="gameSceneManager">ゲームシーン管理</param>
+	inline void SetGameManager(Elysia::GameSceneManager* gameSceneManager) override {
+		this->gameSceneManager_ = gameSceneManager;
+	}
+
+	/// <summary>
+	/// ゲーム管理クラスを取得
+	/// </summary>
+	/// <returns>ゲーム管理クラス</returns>
+	inline Elysia::GameSceneManager* GetGameSceneManager()const {
+		return gameSceneManager_;
+	}
+
+	/// <summary>
+	/// 選択シーンの変更
+	/// </summary>
+	/// <param name="newSelectScene">新しい選択シーン</param>
+	inline void ChangeSelectScene(std::unique_ptr<BaseSelectScene> newSelectScene) {
+		if (baseSelectScene_ != newSelectScene) {
+			//セット
+			baseSelectScene_ = std::move(newSelectScene);
+			//初期化
+			baseSelectScene_->SetSelectScene(this);
+			baseSelectScene_->Initialize();
+		}
+	}
+
+	/// <summary>
+	/// 終了設定
+	/// </summary>
+	/// <param name="isEnd">終了</param>
+	inline void SetIsEnd(const bool& isEnd) {
+		this->isEnd_ = isEnd;
+	}
+
+	/// <summary>
+	/// 全ての譜面データを取得
+	/// </summary>
+	/// <returns>譜面データ</returns>
+	inline std::vector<ExistMusicScoreData> GetAllScoreData()const {
+		return allScoreData_;
 	}
 
 private:
@@ -177,4 +216,8 @@ private:
 	uint32_t playingMusicNumber_ = 0u;
 	int32_t decideSEHandle_ = 0u;
 	int32_t selectSEHandle_ = 0u;
+
+	//各クラス
+	std::unique_ptr<BaseSelectScene> baseSelectScene_ = nullptr;
+
 };

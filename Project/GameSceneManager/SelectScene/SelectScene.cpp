@@ -11,6 +11,7 @@
 #include <MiniAudio.h>
 #include <WindowsSetup.h>
 #include <StringOption.h>
+#include "Music/MusicSelectScene.h"
 
 SelectScene::SelectScene(){
 	//インスタンスの取得	
@@ -94,11 +95,18 @@ void SelectScene::Initialize(){
 	//効果音の読み込み
 	decideSEHandle_ = miniAudio_->Load("Resources/Audio/SE/Deside.wav");
 	selectSEHandle_ = miniAudio_->Load("Resources/Audio/SE/Select.wav");
+
+	//楽曲選択シーンから始める
+	baseSelectScene_ = std::make_unique<MusicSelectScene>();
+	//初期化
+	baseSelectScene_->SetSelectScene(this);
+	baseSelectScene_->Initialize();
+
 }
 
 void SelectScene::Update(){
 
-	if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
+	/*if (gameSceneManager_->GetTransition()->SetOpenTransition()) {
 		isOpendTransiont_ = true;
 
 		float startTime = 0.0f;
@@ -112,33 +120,33 @@ void SelectScene::Update(){
 		}
 		miniAudio_->PartlyLoop(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
 
-	}
+	}*/
 	if (isOpendTransiont_) {
 
-		//楽曲
-		//右に選択
-		if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
-			jacket_->SetIsMoveToRight(true);
-			miniAudio_->Play(selectSEHandle_,false);
-			
-		}
-		//左に選択
-		else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
-			jacket_->SetIsMoveToLeft(true);
-			miniAudio_->Play(selectSEHandle_, false);
-		}
+		////楽曲
+		////右に選択
+		//if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
+		//	jacket_->SetIsMoveToRight(true);
+		//	miniAudio_->Play(selectSEHandle_,false);
+		//	
+		//}
+		////左に選択
+		//else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
+		//	jacket_->SetIsMoveToLeft(true);
+		//	miniAudio_->Play(selectSEHandle_, false);
+		//}
 
-		//難易度の設定
-		//上を選択
-		if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
-			currentDifficultyNumber_++;
-			miniAudio_->Play(selectSEHandle_, false);
-		}
-		//下を選択
-		if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
-			currentDifficultyNumber_--;
-			miniAudio_->Play(selectSEHandle_, false);
-		}
+		////難易度の設定
+		////上を選択
+		//if (input_->IsTriggerKey(DIK_W) || input_->IsTriggerKey(DIK_UP)) {
+		//	currentDifficultyNumber_++;
+		//	miniAudio_->Play(selectSEHandle_, false);
+		//}
+		////下を選択
+		//if (input_->IsTriggerKey(DIK_S) || input_->IsTriggerKey(DIK_DOWN)) {
+		//	currentDifficultyNumber_--;
+		//	miniAudio_->Play(selectSEHandle_, false);
+		//}
 
 		//簡単から難しいまでにする
 		currentDifficultyNumber_ = std::clamp(currentDifficultyNumber_, static_cast<int8_t>(Difficulty::Easy), static_cast<int8_t>(Difficulty::Hard));
@@ -155,27 +163,27 @@ void SelectScene::Update(){
 		}
 		currentSelectedMusicNumber_ = jacket_->GetCurrentSelectMusicNumber();
 
-		// 選択曲が変わったときだけ再生し直す
-		if (currentSelectedMusicNumber_ != playingMusicNumber_) {
-			// 前の曲を止める
-			if (playingMusicNumber_ >= 0) {
-				miniAudio_->Stop(allScoreData_[playingMusicNumber_].musicHandle);
-			}
+		//// 選択曲が変わったときだけ再生し直す
+		//if (currentSelectedMusicNumber_ != playingMusicNumber_) {
+		//	// 前の曲を止める
+		//	if (playingMusicNumber_ >= 0) {
+		//		miniAudio_->Stop(allScoreData_[playingMusicNumber_].musicHandle);
+		//	}
 
-			float_t startTime = 0.0f;
-			float_t endTime = 2.0f;
-			//NeonStreet
-			if (currentSelectedMusicNumber_ == 1) {
-				startTime = 70.3f;
-				endTime = 96.0f;
-			}
-			else {
-				startTime = 48.5f;
-				endTime = 61.0f;
-			}
-			miniAudio_->PartlyLoop(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
-			playingMusicNumber_ = currentSelectedMusicNumber_;
-		}
+		//	float_t startTime = 0.0f;
+		//	float_t endTime = 2.0f;
+		//	//NeonStreet
+		//	if (currentSelectedMusicNumber_ == 1) {
+		//		startTime = 70.3f;
+		//		endTime = 96.0f;
+		//	}
+		//	else {
+		//		startTime = 48.5f;
+		//		endTime = 61.0f;
+		//	}
+		//	miniAudio_->PartlyLoop(allScoreData_[currentSelectedMusicNumber_].musicHandle, startTime, endTime);
+		//	playingMusicNumber_ = currentSelectedMusicNumber_;
+		//}
 		
 		//処理終了
 		if (jacket_->GetIsProcessEnd()) {
@@ -190,7 +198,8 @@ void SelectScene::Update(){
 	camera_.Update();
 	//平行光源
 	directionalLight_.Update();
-	
+	//各シーンの更新
+	baseSelectScene_->Update();
 
 	//トランジェント
 	if (waitingTime_ >= WATING_TIME_) {
@@ -217,7 +226,8 @@ void SelectScene::Update(){
 }
 
 void SelectScene::DrawObject3D(){
-	
+	//各シーンのオブジェクトの描画
+	baseSelectScene_->DrawObject3D(camera_, directionalLight_);
 }
 
 void SelectScene::PreDrawPostEffect(){
@@ -231,9 +241,13 @@ void SelectScene::DrawPostEffect(){
 }
 
 void SelectScene::DrawSprite(){
+	//各シーンのスプライトの描画
+	baseSelectScene_->DrawSprite();
+
 	//ジャケット
 	jacket_->DrawSprite();
 
+	//矢印
 	for (uint8_t i = 0u; i < ARRAOW_AMOUNT_; i++) {
 		arrowSpriteArray_[i]->Draw();
 	}
