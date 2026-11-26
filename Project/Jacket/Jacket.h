@@ -22,6 +22,17 @@ namespace Elysia {
 	class TextureManager;
 }
 
+struct JacketInformation {
+	//メイン
+	std::unique_ptr<Elysia::Sprite> mainSprite = nullptr;
+	//番号
+	int32_t index = -1;
+	//選択中か
+	bool isSelected = false;
+
+};
+
+
 /// <summary>
 /// ジャケット(選曲用)
 /// </summary>
@@ -114,10 +125,6 @@ public:
 	/// <param name="difficulty">難易度</param>
 	inline void SetDifficulty(const Difficulty& difficulty) {
 		this->selectedDifficulty_ = difficulty;
-	}
-
-	inline void DownDifficulty() {
-
 	}
 
 

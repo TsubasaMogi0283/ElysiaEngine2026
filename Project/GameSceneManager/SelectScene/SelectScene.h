@@ -139,18 +139,24 @@ public:
 	/// <summary>
 	/// 終了設定
 	/// </summary>
-	/// <param name="isEnd">終了</param>
-	inline void SetIsEnd(const bool& isEnd) {
-		this->isEnd_ = isEnd;
+	inline void SetIsEnd() {
+		this->isEnd_ = true;
 	}
 
 	/// <summary>
 	/// 全ての譜面データを取得
 	/// </summary>
 	/// <returns>譜面データ</returns>
-	inline std::vector<ExistMusicScoreData> GetAllScoreData()const {
+	inline std::vector<ExistMusicScoreData> GetExistMusicScoreData()const {
 		return allScoreData_;
 	}
+
+
+
+	inline void SetCurrentDifficulty(const Difficulty& difficulty) {
+		this->currentDifficultyNumber_ = difficulty;
+	}
+
 
 private:
 
@@ -173,9 +179,6 @@ private:
 	//待機時間
 	const float_t WATING_TIME_ = 2.0f;
 
-	//矢印の数
-	static const uint8_t ARRAOW_AMOUNT_ = 2u;
-
 private:
 
 	//背景
@@ -190,10 +193,6 @@ private:
 	//ジャケット
 	std::unique_ptr<Jacket>jacket_ = {};
 
-	//矢印
-	std::array<std::unique_ptr<Elysia::Sprite>, ARRAOW_AMOUNT_> arrowSpriteArray_ = {};
-	std::array<Vector2<float_t>, ARRAOW_AMOUNT_> arrowPositionArray_ = {};
-
 	//決定
 	std::unique_ptr<Elysia::Sprite>decideSprite_ = nullptr;
 	//戻る
@@ -207,7 +206,7 @@ private:
 	//現在選択している楽曲の番号
 	uint8_t currentSelectedMusicNumber_ = 0u;
 	//現在設定されている難易度
-	int8_t currentDifficultyNumber_ = static_cast<int8_t>(Difficulty::Normal);
+	Difficulty currentDifficultyNumber_ = Difficulty::Normal;
 	//選択した後の待機時間
 	float_t waitingTime_ = 0.0f;
 	//終了

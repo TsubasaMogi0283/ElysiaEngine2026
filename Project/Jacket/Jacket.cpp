@@ -122,7 +122,6 @@ void Jacket::Update() {
 
 			case Difficulty::Special:
 				//特別の色を設定
-				//虹でもあり?笑
 				specialHsv_.hue += 0.25f * DELTA_TIME_;
 				specialHsv_.hue -= std::floor(specialHsv_.hue);
 				frameColor = Color::HsvToRgb(specialHsv_);
