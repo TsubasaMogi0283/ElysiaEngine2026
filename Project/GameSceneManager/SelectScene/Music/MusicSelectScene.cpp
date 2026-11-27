@@ -32,16 +32,28 @@ void MusicSelectScene::Initialize(){
 		//難易度が1つでも格納されているかチェック
 		bool isExistAnyDifficulty= std::any_of(existMusicScoreDataVector_.begin(), existMusicScoreDataVector_.end(), [](const ExistMusicScoreData& data) {
 			return data.isExistDifficulty;
-
 			});
 
 		//空では無ければ格納していく
-		if (existMusicScoreDataVector_[i].musicHandle != -1&& isExistAnyDifficulty){
-			
+		if (existMusicScoreDataVector_[i].musicHandle != -1&& !isExistAnyDifficulty){
+			MusicJacket musicJacket= {
+				//ハンドル
+				.mainTextureHandle = existMusicScoreDataVector_[i].jacketTextureHandle,
+				//格納順の番号
+				.index = i,
+				//選択されているかどうか
+				.isSelected = false,
+				//座標
+				.position = {},
+				//ジャケットメイン部分
+				.mainSprite = Elysia::Sprite::Create(existMusicScoreDataVector_[i].jacketTextureHandle),
 
+			}
+			
+			std::unique_ptr<Elysia::Sprite>jacketSprite = Elysia::Sprite::Create(existMusicScoreDataVector_[i].jacketTextureHandle);
+			musicJacketVector_.push_back(std::move(jacketSprite));
 		}
-		std::unique_ptr<Elysia::Sprite>jacketSprite = Elysia::Sprite::Create(existMusicScoreDataVector_[i].jacketTextureHandle);
-		musicJacketSpriteVector_.push_back(std::move(jacketSprite));
+		
 	}
 
 	//フレーム

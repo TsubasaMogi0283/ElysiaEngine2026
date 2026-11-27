@@ -150,7 +150,7 @@ private:
 	std::array<Arrow, ARRAOW_AMOUNT_> arrowArray_ = {};
 
 	//楽曲のジャケット
-	std::vector<std::unique_ptr<Elysia::Sprite>>musicJacketSpriteVector_ = {};
+	std::vector<MusicJacket>musicJacketVector_ = {};
 
 	//現在選択している楽曲の番号
 	uint8_t currentSelectedMusicNumber_ = 0u;
