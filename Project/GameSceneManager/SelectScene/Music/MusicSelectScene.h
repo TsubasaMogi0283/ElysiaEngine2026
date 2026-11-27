@@ -102,17 +102,27 @@ private:
 	/// <summary>
 	/// 楽曲のジャケット情報
 	/// </summary>
-	struct MusicJacketInformation {
-		//ジャケットメイン部分
-		std::unique_ptr<Elysia::Sprite>mainSprite_ = nullptr;
+	struct MusicJacket {
 		//ハンドル
 		uint32_t mainTextureHandle = 0u;
+		//格納順の番号
+		int32_t index = -1;
+		//選択されているかどうか
+		bool isSelected = false;
+		//座標
+		Vector2<float_t> position = {};
+		//ジャケットメイン部分
+		std::unique_ptr<Elysia::Sprite>mainSprite = nullptr;
 	};
 
 	/// <summary>
 	/// 矢印
 	/// </summary>
 	struct Arrow {
+
+		/// <summary>
+		/// 方向
+		/// </summary>
 		enum Direction {
 			//左
 			Left,
@@ -132,13 +142,15 @@ private:
 
 
 private:
+	//格納チェック
+	std::vector<ExistMusicScoreData> existMusicScoreDataVector_ = {};
+
 
 	//矢印
 	std::array<Arrow, ARRAOW_AMOUNT_> arrowArray_ = {};
 
-
-	//テクスチャの読みこみ
-	std::vector<uint32_t>jacketTextureHandleVector = {};
+	//楽曲のジャケット
+	std::vector<std::unique_ptr<Elysia::Sprite>>musicJacketSpriteVector_ = {};
 
 	//現在選択している楽曲の番号
 	uint8_t currentSelectedMusicNumber_ = 0u;
@@ -148,6 +160,9 @@ private:
 	//長押ししているかどうか
 	//楽曲の高速移動で使う
 	bool isLongPush_ = false;
+
+	//現在選択中の楽曲番号
+	int32_t currentSelectedMusicNumber_ = -1;
 
 	//効果音
 	//決定

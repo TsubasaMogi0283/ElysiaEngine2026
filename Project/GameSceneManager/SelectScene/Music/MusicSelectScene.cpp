@@ -26,9 +26,22 @@ MusicSelectScene::MusicSelectScene() {
 void MusicSelectScene::Initialize(){
 
 	//全ての楽曲データを取得
-	std::vector<ExistMusicScoreData> existData = selectScene_->GetExistMusicScoreData();
-	for (size_t i = 0u;i < existData.size();i++) {
-		jacketTextureHandleVector.push_back(existData[i].jacketTextureHandle);
+	existMusicScoreDataVector_ = selectScene_->GetExistMusicScoreData();
+	for (size_t i = 0u;i < existMusicScoreDataVector_.size();i++) {
+
+		//難易度が1つでも格納されているかチェック
+		bool isExistAnyDifficulty= std::any_of(existMusicScoreDataVector_.begin(), existMusicScoreDataVector_.end(), [](const ExistMusicScoreData& data) {
+			return data.isExistDifficulty;
+
+			});
+
+		//空では無ければ格納していく
+		if (existMusicScoreDataVector_[i].musicHandle != -1&& isExistAnyDifficulty){
+			
+
+		}
+		std::unique_ptr<Elysia::Sprite>jacketSprite = Elysia::Sprite::Create(existMusicScoreDataVector_[i].jacketTextureHandle);
+		musicJacketSpriteVector_.push_back(std::move(jacketSprite));
 	}
 
 	//フレーム
@@ -66,8 +79,23 @@ void MusicSelectScene::Initialize(){
 }
 
 void MusicSelectScene::Update(){
+	
+	//右選択
+	if (input_->IsTriggerButton(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
+		currentSelectedMusicNumber_++;
+	}
+	//左選択
+	if (input_->IsTriggerButton(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
+		currentSelectedMusicNumber_--;
+	}
+
+	
 	//各状態を実行
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
+
+
+
+
 
 }
 
@@ -76,6 +104,11 @@ void MusicSelectScene::DrawSprite(){
 	//矢印
 	for (uint8_t i = 0u; i < ARRAOW_AMOUNT_; i++) {
 		arrowArray_[i].sprite->Draw();
+	}
+
+	//ジャケットの描画
+	for (const auto& musicJacketSprite : musicJacketSpriteVector_) {
+		musicJacketSprite->Draw();
 	}
 }
 
