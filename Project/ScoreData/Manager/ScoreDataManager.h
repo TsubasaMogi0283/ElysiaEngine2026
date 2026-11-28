@@ -87,9 +87,9 @@ public:
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
 		for (size_t i = 0u; i < existScoreDataVector_.size(); i++) {
-			for (size_t j = 0u; j < existScoreDataVector_[i].musicScoreData.size(); j++) {
-				if (existScoreDataVector_[i].musicScoreData[j].musicInformation.id == title + "_" + difficulty) {
-					return existScoreDataVector_[i].musicScoreData[j];
+			for (size_t j = 0u; j < existScoreDataVector_[i].musicScoreDataArray.size(); j++) {
+				if (existScoreDataVector_[i].musicScoreDataArray[j].musicInformation.id == title + "_" + difficulty) {
+					return existScoreDataVector_[i].musicScoreDataArray[j];
 				}
 			}
 		}
@@ -105,9 +105,9 @@ public:
 		MusicScoreData musicScoreData = {};
 		//見つけたら代入
 		for (size_t i = 0u; i < existScoreDataVector_.size(); i++) {
-			for (size_t j = 0u; j < existScoreDataVector_[i].musicScoreData.size(); j++) {
-				if (existScoreDataVector_[i].musicScoreData[j].musicInformation.id == "Construction_Easy") {
-					return existScoreDataVector_[i].musicScoreData[j];
+			for (size_t j = 0u; j < existScoreDataVector_[i].musicScoreDataArray.size(); j++) {
+				if (existScoreDataVector_[i].musicScoreDataArray[j].musicInformation.id == "Construction_Easy") {
+					return existScoreDataVector_[i].musicScoreDataArray[j];
 				}
 			}
 		}

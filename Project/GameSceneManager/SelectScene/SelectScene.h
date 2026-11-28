@@ -140,7 +140,14 @@ public:
 	/// 終了設定
 	/// </summary>
 	inline void SetIsEnd() {
-		this->isEnd_ = true;
+		this->isToMein_ = true;
+	}
+
+	/// <summary>
+	/// タイトルへ設定
+	/// </summary>
+	inline void SetIsToTitle() {
+		this->isToTitle_ = true;
 	}
 
 	/// <summary>
@@ -210,7 +217,8 @@ private:
 	//選択した後の待機時間
 	float_t waitingTime_ = 0.0f;
 	//終了
-	bool isEnd_ = false;
+	bool isToMein_ = false;
+	bool isToTitle_ = false;
 
 	uint32_t playingMusicNumber_ = 0u;
 	int32_t decideSEHandle_ = 0u;

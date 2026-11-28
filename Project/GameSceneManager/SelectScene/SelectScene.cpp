@@ -93,7 +93,7 @@ void SelectScene::Update(){
 	baseSelectScene_->Update();
 
 	//メインシーン
-	if (isEnd_) {
+	if (isToMein_) {
 		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
 			//楽曲を止める
 			miniAudio_->Stop(allScoreData_[playingMusicNumber_].musicHandle);
@@ -102,6 +102,19 @@ void SelectScene::Update(){
 		}
 		
 	}
+
+	//タイトル
+	if (isToTitle_) {
+		if (gameSceneManager_->GetTransition()->SetCloseTransition()) {
+			//楽曲を止める
+			miniAudio_->Stop(allScoreData_[playingMusicNumber_].musicHandle);
+			gameSceneManager_->ChangeScene("Title");
+			return;
+		}
+
+	}
+
+
 
 #ifdef _DEBUG
 	ImGui::Begin("テストシーンカメラ");

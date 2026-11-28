@@ -1,6 +1,7 @@
 #include "MusicSelectScene.h"
 
 #include <numbers>
+#include <algorithm>
 
 #include <SelectScene/SelectScene.h>
 #include <GameSceneManager.h>
@@ -24,37 +25,70 @@ MusicSelectScene::MusicSelectScene() {
 }
 
 void MusicSelectScene::Initialize(){
+	//選択時の位置はウィンドウの中心にする
+	selectedJacketPositionX_ = static_cast<float_t>(windowsSetup_->GetClientSize().x/2u);
 
 	//全ての楽曲データを取得
 	existMusicScoreDataVector_ = selectScene_->GetExistMusicScoreData();
 	for (size_t i = 0u;i < existMusicScoreDataVector_.size();i++) {
 
 		//難易度が1つでも格納されているかチェック
-		bool isExistAnyDifficulty= std::any_of(existMusicScoreDataVector_.begin(), existMusicScoreDataVector_.end(), [](const ExistMusicScoreData& data) {
-			return data.isExistDifficulty;
+		bool isExistAnyDifficulty= std::any_of(existMusicScoreDataVector_[i].isExistDifficultyArray.begin(), existMusicScoreDataVector_[i].isExistDifficultyArray.end(), [](const bool& isExist) {
+			return isExist;
 			});
 
+		
 		//空では無ければ格納していく
-		if (existMusicScoreDataVector_[i].musicHandle != -1&& !isExistAnyDifficulty){
-			MusicJacket musicJacket= {
+		if (existMusicScoreDataVector_[i].musicHandle != -1&& isExistAnyDifficulty){
+			//情報を設定していく
+			MusicJacket musicJacket = {
 				//ハンドル
 				.mainTextureHandle = existMusicScoreDataVector_[i].jacketTextureHandle,
 				//格納順の番号
-				.index = i,
+				.index = static_cast<uint8_t>(i),
 				//選択されているかどうか
 				.isSelected = false,
 				//座標
 				.position = {},
 				//ジャケットメイン部分
 				.mainSprite = Elysia::Sprite::Create(existMusicScoreDataVector_[i].jacketTextureHandle),
-
-			}
+			};
 			
-			std::unique_ptr<Elysia::Sprite>jacketSprite = Elysia::Sprite::Create(existMusicScoreDataVector_[i].jacketTextureHandle);
-			musicJacketVector_.push_back(std::move(jacketSprite));
-		}
-		
+			//挿入
+			musicJacketVector_.push_back(std::move(musicJacket));
+		}	
 	}
+
+
+#ifdef _DEBUG
+	currentSelectedMusicNumber_ = 1;
+#endif // _DEBUG
+
+
+	for (uint8_t i = 0u; i < musicJacketVector_.size(); i++) {
+
+		//現在選択中の楽曲からの番号差分
+		int32_t musicDifference = musicJacketVector_[i].index - currentSelectedMusicNumber_;
+		Vector2<float_t>position = {
+			.x = static_cast<float_t>(musicDifference) * JACKET_INTERVAL_X_ + selectedJacketPositionX_ ,
+			.y = JACKET_INITIAL_POSITION_Y_ };
+		musicJacketVector_[i].mainSprite->SetPosition(position);
+
+
+		//アンカーポイントの設定
+		musicJacketVector_[i].mainSprite->SetAnchorPoint({ .x = 0.5f,.y = 1.0f });
+
+		//選択されている時
+		if (currentSelectedMusicNumber_ == musicJacketVector_[i].index) {
+			musicJacketVector_[i].isSelected = true;
+			musicJacketVector_[i].mainSprite->SetScale({ .x = SELECTED_SCALE_,.y = SELECTED_SCALE_ });
+		}
+		else {
+			musicJacketVector_[i].isSelected = false;
+			musicJacketVector_[i].mainSprite->SetScale({ .x = NO_SELECTED_SCALE_,.y = NO_SELECTED_SCALE_ });
+		}
+	}
+
 
 	//フレーム
 	uint32_t frameTextureHandle = textureManager_->Load("Resources/Sprite/Jacket/DifficultyFrame.png");
@@ -92,23 +126,22 @@ void MusicSelectScene::Initialize(){
 
 void MusicSelectScene::Update(){
 	
-	//右選択
-	if (input_->IsTriggerButton(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
-		currentSelectedMusicNumber_++;
-	}
-	//左選択
-	if (input_->IsTriggerButton(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
-		currentSelectedMusicNumber_--;
-	}
-
-	
 	//各状態を実行
 	(this->*functionTable[static_cast<size_t>(currentState_)])();
 
 
+	for (uint8_t i = 0u; i < musicJacketVector_.size(); i++) {
 
+		//現在選択中の楽曲からの番号差分
+		int32_t musicDifference=musicJacketVector_[i].index - currentSelectedMusicNumber_;
 
-
+		//座標の設定
+		Vector2<float_t> position = {
+			.x = static_cast<float_t>(musicDifference) * JACKET_INTERVAL_X_ + selectedJacketPositionX_ ,
+			.y = JACKET_INITIAL_POSITION_Y_ 
+		};
+		musicJacketVector_[i].mainSprite->SetPosition(position);
+	}
 }
 
 
@@ -119,8 +152,8 @@ void MusicSelectScene::DrawSprite(){
 	}
 
 	//ジャケットの描画
-	for (const auto& musicJacketSprite : musicJacketSpriteVector_) {
-		musicJacketSprite->Draw();
+	for (const auto& musicJacketSprite : musicJacketVector_) {
+		musicJacketSprite.mainSprite->Draw();
 	}
 }
 
@@ -135,12 +168,30 @@ void MusicSelectScene::MusicSelect(){
 	//楽曲
 	//右に選択
 	if (input_->IsTriggerKey(DIK_D) || input_->IsTriggerKey(DIK_RIGHT)) {
+		currentSelectedMusicNumber_++;
 		miniAudio_->Play(selectSEHandle_, false);
 	}
 	//左に選択
 	else if (input_->IsTriggerKey(DIK_A) || input_->IsTriggerKey(DIK_LEFT)) {
+		currentSelectedMusicNumber_--;
 		miniAudio_->Play(selectSEHandle_, false);
 	}
+
+	//範囲制限
+	currentSelectedMusicNumber_ = std::clamp(currentSelectedMusicNumber_, 0, static_cast<int32_t>(existMusicScoreDataVector_.size()-1));
+
+	for (uint8_t i = 0u; i < musicJacketVector_.size(); i++) {
+		//選択されている時
+		if (currentSelectedMusicNumber_ == musicJacketVector_[i].index) {
+			musicJacketVector_[i].isSelected = true;
+			musicJacketVector_[i].mainSprite->SetScale({ .x = SELECTED_SCALE_,.y = SELECTED_SCALE_ });
+		}
+		else {
+			musicJacketVector_[i].isSelected = false;
+			musicJacketVector_[i].mainSprite->SetScale({ .x = NO_SELECTED_SCALE_,.y = NO_SELECTED_SCALE_ });
+		}
+	}
+	
 
 	// 選択曲が変わったときだけ再生し直す
 	if (currentSelectedMusicNumber_ != playingMusicNumber_) {
@@ -168,9 +219,20 @@ void MusicSelectScene::MusicSelect(){
 		currentState_ = MusicSelectSceneState::Decide;
 	}
 
+	//タイトルへ戻る
+	if (input_->IsTriggerKey(DIK_ESCAPE)) {
+		miniAudio_->Stop(selectScene_->GetExistMusicScoreData()[currentSelectedMusicNumber_].musicHandle);
+		currentState_ = MusicSelectSceneState::Return;
+	}
+
 }
 
 void MusicSelectScene::Decide(){
 	//難易度選択へ
 	selectScene_->ChangeSelectScene(std::make_unique<DifficultySelectScene>());
+}
+
+void MusicSelectScene::Return(){
+	//タイトルに戻る設定
+	selectScene_->SetIsToTitle();
 }

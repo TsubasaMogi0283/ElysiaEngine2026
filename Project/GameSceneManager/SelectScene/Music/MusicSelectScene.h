@@ -6,9 +6,11 @@
  * @author 茂木翼
  */
 
+#include <vector>
 
-#include <SelectScene/BaseSelectScene.h>
 #include <Sprite.h>
+#include <SelectScene/BaseSelectScene.h>
+#include <ScoreData/MusicScoreData.h>
 
 /// <summary>
 /// 楽曲選択シーン
@@ -59,6 +61,11 @@ private:
 	/// </summary>
 	void Decide();
 
+	/// <summary>
+	/// 戻る
+	/// </summary>
+	void Return();
+
 private:
 	/// <summary>
 	/// 各状態を実行
@@ -72,6 +79,8 @@ private:
 		&MusicSelectScene::OpenTransition,
 		& MusicSelectScene::MusicSelect,
 		& MusicSelectScene::Decide,
+		& MusicSelectScene::Return,
+
 	};
 
 private:
@@ -86,6 +95,8 @@ private:
 		MusicSelect,
 		//決定
 		Decide,
+		//戻る
+		Return,
 
 		//この列挙体の量
 		Amount,
@@ -140,12 +151,23 @@ private:
 	//矢印の数
 	static const uint8_t ARRAOW_AMOUNT_ = 2u;
 
+	//ジャケットの隣同士の間隔
+	const float_t JACKET_INTERVAL_X_ = 500.0f;
+	//初期座標Y
+	const float_t JACKET_INITIAL_POSITION_Y_ = 500.0f;
 
+	//選択時のスケール
+	const float_t SELECTED_SCALE_ = 0.4f;
+	//非選択時のスケール
+	const float_t NO_SELECTED_SCALE_ = SELECTED_SCALE_ / 2.5f;
+	//縮小時間
+	const float_t SCALE_DOWN_TIME_ = 0.75f;
 private:
+	//選択時のジャケットの位置
+	float_t selectedJacketPositionX_ = 0.0f;
+
 	//格納チェック
 	std::vector<ExistMusicScoreData> existMusicScoreDataVector_ = {};
-
-
 	//矢印
 	std::array<Arrow, ARRAOW_AMOUNT_> arrowArray_ = {};
 
@@ -153,7 +175,7 @@ private:
 	std::vector<MusicJacket>musicJacketVector_ = {};
 
 	//現在選択している楽曲の番号
-	uint8_t currentSelectedMusicNumber_ = 0u;
+	int32_t currentSelectedMusicNumber_ = -1;
 	//現在再生中の楽曲番号
 	int32_t playingMusicNumber_ = -1;
 
@@ -161,8 +183,9 @@ private:
 	//楽曲の高速移動で使う
 	bool isLongPush_ = false;
 
-	//現在選択中の楽曲番号
-	int32_t currentSelectedMusicNumber_ = -1;
+
+
+
 
 	//効果音
 	//決定

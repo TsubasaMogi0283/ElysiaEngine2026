@@ -51,9 +51,9 @@ struct ExistMusicScoreData {
 	uint32_t jacketTextureHandle = 0u;
 
 	//難易度存在チェック
-	std::array<bool, static_cast<uint8_t>(Difficulty::Size)>isExistDifficulty = {};
+	std::array<bool, static_cast<uint8_t>(Difficulty::Size)>isExistDifficultyArray = {};
 	//譜面データ
-	std::array<MusicScoreData, static_cast<uint8_t>(Difficulty::Size)>musicScoreData = {};
+	std::array<MusicScoreData, static_cast<uint8_t>(Difficulty::Size)>musicScoreDataArray = {};
 
 	
 };

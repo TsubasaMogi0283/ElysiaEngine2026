@@ -106,12 +106,29 @@ namespace Elysia {
 		}
 
 		/// <summary>
+		/// 楽曲番号を一時保存
+		/// </summary>
+		/// <param name="number">番号</param>
+		inline void SetTemporaryMusciNumber(const int8_t& number) {
+			this->temporaryMusicNumber_ = number;
+		}
+
+		/// <summary>
+		/// 一時保存した楽曲番号を取得
+		/// </summary>
+		/// <returns>楽曲番号</returns>
+		inline int8_t GetTemporaryMusciNumber()const {
+			return temporaryMusicNumber_;
+		}
+
+		/// <summary>
 		/// 一時保存の難易度を記録
 		/// </summary>
 		/// <param name="difficulty">難易度</param>
 		inline void SetTemporaryDifficulty(const int8_t& difficulty) {
 			this->temporaryDifficulty_ = difficulty;
 		}
+
 
 		/// <summary>
 		/// 一時保存の難易度を取得
@@ -211,6 +228,7 @@ namespace Elysia {
 		//一時保管場所
 		ExistMusicScoreData temporarymusicScoreData_ = {};
 		int8_t temporaryDifficulty_ = 0;
+		int8_t temporaryMusicNumber_ = -1;
 		uint32_t temporaryMusicHandle_ = 0u;
 		uint32_t temporaryJacketTextureHandle_ = 0u;
 

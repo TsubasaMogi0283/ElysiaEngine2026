@@ -55,11 +55,11 @@ void ScoreDataManager::Initialize(){
 
 			//見つからなかったら譜面データを読み込み
 			if (std::filesystem::exists(fullFilePath)) {
-				existScoreDataVector_[i].isExistDifficulty[j] = true;
-				existScoreDataVector_[i].musicScoreData[j] = Load(fullFilePath);
+				existScoreDataVector_[i].isExistDifficultyArray[j] = true;
+				existScoreDataVector_[i].musicScoreDataArray[j] = Load(fullFilePath);
 			}
 			else {
-				existScoreDataVector_[i].isExistDifficulty[j] = false;
+				existScoreDataVector_[i].isExistDifficultyArray[j] = false;
 			}
 		}
 	}

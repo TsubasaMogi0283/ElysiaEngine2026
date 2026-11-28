@@ -38,7 +38,7 @@ void ResultScene::Initialize() {
 
 
 	//メインシーンで記録したものを取得
-	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreData[gameSceneManager_->GetTemporaryDifficulty()];
+	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreDataArray[gameSceneManager_->GetTemporaryDifficulty()];
 	temporaryRecievedRecord_ = gameSceneManager_->GetNoteJudgementResult();
 
 

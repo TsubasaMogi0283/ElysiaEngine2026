@@ -34,7 +34,7 @@ void MainScene::Initialize() {
 
 	//楽曲譜面情報を取得
 	difficulty_ = gameSceneManager_->GetTemporaryDifficulty();
-	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreData[difficulty_];
+	musicScoreData_ = gameSceneManager_->GetTemporaryMusicScoreData().musicScoreDataArray[difficulty_];
 	musicHandle_ = gameSceneManager_->GetTemporaryMusicHandle();
 	jacketTextureHandle_ = gameSceneManager_->GetTemporaryJacketTextureHandle();
 
